@@ -62,7 +62,7 @@ const LoginPage = () => {
                             Sign in
                         </Button>
                         <div className="text-right mt-2">
-                            <a href="#" className="text-sm text-[#1A1D1F] font-bold">Forgot your password?</a>
+                            <Link href="/auth/forgot-password" className='text-sm text-[#1A1D1F] font-bold'>Forgot your password?</Link>
                         </div>
                     </form>
                     
