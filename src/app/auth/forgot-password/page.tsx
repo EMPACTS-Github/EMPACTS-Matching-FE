@@ -4,29 +4,31 @@ import Image from 'next/image';
 import { Input, Button } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import VerificationScreen from './VerificationSreen';
+import EnterEmailScreen from './EnterEmailScreen';
+import ResetPasswordScreen from './ResetPasswordScreen';
 
-const SignupPage = () => {
+const ForgotPasswordPage = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [isVerifiedScreen, setIsVerifiedScreen] = useState(false);
+    const [isEmailScreen, setIsEmailScreen] = useState(false);
+    const [isResetPasswordScreen, setIsResetPasswordScreen] = useState(false);
 
-    const handleSignup = (e: { preventDefault: () => void; }) => {
+    const handleSentCode = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        if (password === confirmPassword) {
-            setIsVerifiedScreen(true); // Show verification screen
-        } else {
-            alert("Passwords do not match");
-        }
+        setIsEmailScreen(true);
     };
 
     return (
         <div className="grid grid-cols-3 min-h-screen">
             <div className="col-span-1 bg-white flex items-center justify-center">
                 <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
-                    {isVerifiedScreen ? (
-                        <VerificationScreen email={email} setIsVerifiedScreen={setIsVerifiedScreen} />
+                    {isEmailScreen ? (
+                        <EnterEmailScreen 
+                            email={email} 
+                            setEmailSent={setIsEmailScreen} 
+                            setResetPasswordScreen={setIsResetPasswordScreen}
+                        />
+                    ) : isResetPasswordScreen ? (
+                        <ResetPasswordScreen setOpenResetPasswordScreen={setIsResetPasswordScreen} />
                     ) : (
                         <div>
                             <div className="flex flex-col items-center text-center">
@@ -39,31 +41,16 @@ const SignupPage = () => {
                                     style={{ width: '50%', height: 'auto' }} 
                                     priority 
                                 />
-                                <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign up</h2>
+                                <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Enter your email</h2>
                             </div>
-                            <form onSubmit={handleSignup} className="space-y-4">
+                            <form onSubmit={handleSentCode} className="space-y-4">
                                 <Input
+                                    type='email'
                                     size="large"
                                     placeholder="Email"
                                     prefix={<MailOutlined />}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                                <Input.Password
-                                    size="large"
-                                    placeholder="Password"
-                                    prefix={<LockOutlined />}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                                <Input.Password
-                                    size="large"
-                                    placeholder="Confirm Password"
-                                    prefix={<LockOutlined />}
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
                                 />
                                 <Button
@@ -76,16 +63,9 @@ const SignupPage = () => {
                                         padding: '12px',
                                     }}
                                 >
-                                    Sign up
+                                    Send code to email
                                 </Button>
-                                <div className="text-right mt-2">
-                                    <Link href="/auth/forgot-password" className='text-sm text-[#1A1D1F] font-bold'>Forgot your password?</Link>
-                                </div>
                             </form>
-                            <div className="text-center mt-10">
-                                <span className="text-gray-500">Already have an account? </span>
-                                <Link href="/auth/login" className="text-blue-600">Sign in</Link>
-                            </div>
                         </div>
                     )}
                 </div>
@@ -106,4 +86,4 @@ const SignupPage = () => {
     );
 };
 
-export default SignupPage;
+export default ForgotPasswordPage;
