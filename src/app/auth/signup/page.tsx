@@ -91,14 +91,15 @@ const SignupPage = () => {
                 </div>
             </div>
 
-            <div className="col-span-2">
-                <Image 
+            <div className="col-span-2 h-screen overflow-hidden relative">
+                <Image
                     src="/empacts-bg.png" 
                     alt="Background image" 
                     width={0}
                     height={0}
                     sizes="100vw"
-                    style={{ width: 'auto', height: '100%' }} 
+                    layout="fill"
+                    objectFit="cover"
                     priority 
                 />
             </div>
