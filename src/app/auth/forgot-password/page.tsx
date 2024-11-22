@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Input, Button } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import EmpactsBg from '../../../../public/empacts-bg.png';
+import EmpactsLogo from '../../../../public/empacts-logo.png';
 import Link from 'next/link';
 import EnterEmailScreen from './EnterEmailScreen';
 import ResetPasswordScreen from './ResetPasswordScreen';
@@ -33,11 +35,8 @@ const ForgotPasswordPage = () => {
                         <div>
                             <div className="flex flex-col items-center text-center">
                                 <Image 
-                                    src="/empacts-logo.png" 
-                                    alt="Background image" 
-                                    width={0}
-                                    height={0}
-                                    sizes="100vw"
+                                    src={EmpactsLogo}
+                                    alt="EMPACTS Logo Image"
                                     style={{ width: '50%', height: 'auto' }} 
                                     priority 
                                 />
@@ -73,14 +72,9 @@ const ForgotPasswordPage = () => {
 
             <div className="col-span-2 h-screen overflow-hidden relative">
                 <Image
-                    src="/empacts-bg.png" 
-                    alt="Background image" 
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    layout="fill"
-                    objectFit="cover"
-                    priority 
+                    src={EmpactsBg}
+                    alt="EMPACTS Background Image"
+                    priority
                 />
             </div>
         </div>

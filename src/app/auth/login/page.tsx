@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react';
 import Image from 'next/image';
+import EmpactsBg from '../../../../public/empacts-bg.png';
+import EmpactsLogo from '../../../../public/empacts-logo.png';
 import { Input, Button, Divider } from 'antd';
 import { MailOutlined, LockOutlined, GoogleOutlined } from '@ant-design/icons';
 import Link from 'next/link';
@@ -20,12 +22,8 @@ const LoginPage = () => {
                 <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
                 <div className="flex flex-col items-center text-center">
                     <Image 
-                        src="/empacts-logo.png" 
-                        alt="Background image" 
-                        width={0}
-                        height={0}
-                        sizes="100vw"
-                        style={{ width: '50%', height: 'auto' }} 
+                        src={EmpactsLogo}
+                        alt="EMPACTS Logo Image" 
                         priority 
                     />
                     <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign in</h2>
@@ -91,13 +89,8 @@ const LoginPage = () => {
 
             <div className="col-span-2 h-screen overflow-hidden relative">
                 <Image
-                    src="/empacts-bg.png" 
-                    alt="Background image" 
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    layout="fill"
-                    objectFit="cover"
+                    src={EmpactsBg}
+                    alt="EMPACTS Background Image"
                     priority 
                 />
             </div>
