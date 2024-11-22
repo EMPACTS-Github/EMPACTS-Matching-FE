@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react';
 import Image from 'next/image';
+import EmpactsBg from '../../../../public/empacts-bg.png';
+import EmpactsLogo from '../../../../public/empacts-logo.png';
 import { Input, Button } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import Link from 'next/link';
@@ -30,14 +32,11 @@ const SignupPage = () => {
                     ) : (
                         <div>
                             <div className="flex flex-col items-center text-center">
-                                <Image 
-                                    src="/empacts-logo.png" 
-                                    alt="Background image" 
-                                    width={0}
-                                    height={0}
-                                    sizes="100vw"
-                                    style={{ width: '50%', height: 'auto' }} 
-                                    priority 
+                                <Image
+                                    src={EmpactsLogo}
+                                    alt="EMPACTS Logo Image"
+                                    style={{ width: '50%', height: 'auto' }}
+                                    priority
                                 />
                                 <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign up</h2>
                             </div>
@@ -70,8 +69,8 @@ const SignupPage = () => {
                                     type="primary"
                                     htmlType="submit"
                                     className="w-full mt-4"
-                                    style={{ 
-                                        backgroundColor: '#7f00ff', 
+                                    style={{
+                                        backgroundColor: '#7f00ff',
                                         borderColor: '#7f00ff',
                                         padding: '12px',
                                     }}
@@ -93,14 +92,9 @@ const SignupPage = () => {
 
             <div className="col-span-2 h-screen overflow-hidden relative">
                 <Image
-                    src="/empacts-bg.png" 
-                    alt="Background image" 
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    layout="fill"
-                    objectFit="cover"
-                    priority 
+                    src={EmpactsBg}
+                    alt="EMPACTS Background Image"
+                    priority
                 />
             </div>
         </div>
