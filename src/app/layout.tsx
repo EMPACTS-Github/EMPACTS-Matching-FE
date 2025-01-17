@@ -4,7 +4,7 @@ import './globals.css';
 import { NextUIProvider } from '@nextui-org/react';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS
 import { ToastContainer } from 'react-toastify';
-import Header from './auth/(components)/Header';
+import HomepageBackground from '../../public/homepage-bg.png';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,10 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-cover bg-center bg-no-repeat`} style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
         <ToastContainer />
         <NextUIProvider>
-          <Header />
           <div className="min-h-screen flex flex-col">{children}</div>
         </NextUIProvider>
       </body>
