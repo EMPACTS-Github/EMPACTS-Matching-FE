@@ -1,0 +1,19 @@
+[
+    { "value": "no-poverty", "label": "No Poverty" },
+    { "value": "zero-hunger", "label": "Zero Hunger" },
+    { "value": "good-health", "label": "Good Health and Well-being" },
+    { "value": "quality-education", "label": "Quality Education" },
+    { "value": "gender-equality", "label": "Gender Equality" },
+    { "value": "clean-water", "label": "Clean Water and Sanitation" },
+    { "value": "affordable-clean-energy", "label": "Affordable and Clean Energy" },
+    { "value": "decent-work", "label": "Decent Work and Economic Growth" },
+    { "value": "industry-innovation", "label": "Industry, Innovation, and Infrastructure" },
+    { "value": "reduced-inequalities", "label": "Reduced Inequalities" },
+    { "value": "sustainable-cities", "label": "Sustainable Cities and Communities" },
+    { "value": "responsible-consumption", "label": "Responsible Consumption and Production" },
+    { "value": "climate-action", "label": "Climate Action" },
+    { "value": "life-below-water", "label": "Life Below Water" },
+    { "value": "life-on-land", "label": "Life on Land" },
+    { "value": "peace-justice", "label": "Peace and Justice Strong Institutions" },
+    { "value": "partnerships-goals", "label": "Partnerships to achieve the Goal" }
+]

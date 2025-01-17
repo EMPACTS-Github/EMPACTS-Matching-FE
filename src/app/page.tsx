@@ -3,9 +3,8 @@
 import StartupCard from './auth/(components)/StartupCard';
 import Tabs from './auth/(components)/Tabs';
 import SearchBar from './auth/(components)/SearchBar';
-import HomepageBackground from '../../public/homepage-bg.png';
-import Image from 'next/image';
 import { HeroSection } from './auth/(components)/HeroSection';
+import Header from './auth/(components)/Header';
 
 export default function Home() {
   const startupMockData = [
@@ -152,12 +151,9 @@ export default function Home() {
   ];  
 
   return (
-    <main
-      className="flex flex-col items-center min-h-screen bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: `url(${HomepageBackground.src})`,
-      }}
-    >
+    <main className="flex flex-col items-center min-h-screen">
+      <Header />
+
       {/* Content Section */}
       <div className="relative z-10 w-full flex flex-col items-center">
         <HeroSection />

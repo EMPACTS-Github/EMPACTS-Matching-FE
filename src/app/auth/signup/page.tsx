@@ -6,7 +6,6 @@ import EmpactsLogo from '../../../../public/empacts-logo.png';
 import { Input, Button } from '@nextui-org/react';
 import Link from 'next/link';
 import EnterEmailScreen from '../forgot-password/EnterEmailScreen';
-import { Divider } from 'antd';
 import { toast } from 'react-toastify';
 
 const SignupPage = () => {
