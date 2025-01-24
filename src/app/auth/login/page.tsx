@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Input, Button } from '@nextui-org/react';
 import Link from 'next/link';
@@ -8,8 +8,15 @@ import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';
 import { Divider } from 'antd';
 import { toast } from 'react-toastify';
+import { loginWithGoogleAPI } from '../../../apis/auth';
+import { useSearchParams } from 'next/navigation';
+import { getUserAuthInfoAPI } from '@/apis/user';
+import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -78,6 +85,31 @@ const LoginPage = () => {
     }
   };
 
+  useEffect(() => {
+    async function getUserAuthInfo() {
+      const success = searchParams.get('success');
+      if (success === 'true') {
+        try {
+          const userInfo = await getUserAuthInfoAPI();
+          localStorage.setItem('user', JSON.stringify(userInfo.data));
+          toast.success('Login with Google successful!', {
+            autoClose: 1000,
+          });
+          router.push('/'); // Navigate to home page after successful login
+        } catch (error) {
+          toast.error('Login with Google failed!', {
+            autoClose: 1000,
+          });
+        }
+      } else if (success == 'false') {
+        toast.error('Login with Google failed!', {
+          autoClose: 1000,
+        });
+      }
+    }
+    getUserAuthInfo()
+  }, [searchParams, router]);
+
   return (
     <div className="grid grid-cols-3 min-h-screen">
       {/* Left Side: Login Form */}
@@ -142,6 +174,7 @@ const LoginPage = () => {
 
           {/* Google Sign In Button */}
           <Button
+            onClick={loginWithGoogleAPI}
             size="lg"
             className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
           >
