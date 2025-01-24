@@ -31,7 +31,7 @@ const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
           classNames={{
             trigger:
               "h-[48px] bg-white border border-[#e4e4e7] rounded-lg px-3 flex justify-between items-center",
-            value: "font-semibold text-[14px] text-[#9200fe]",
+            value: "font-semibold text-[14px] text-empacts",
           }}
           placeholder="Select a location"
         >
@@ -41,7 +41,7 @@ const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
               value={province}
               className={`text-[14px] font-semibold ${
                 selectedLocation === province
-                  ? "text-[#9200fe]"
+                  ? "text-empacts"
                   : "text-gray-700 hover:text-gray-900"
               }`}
             >

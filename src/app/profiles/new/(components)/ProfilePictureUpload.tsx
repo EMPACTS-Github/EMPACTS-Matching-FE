@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 interface ProfilePictureUploadProps {
   onImageUpload?: (file: File) => void;
@@ -27,17 +28,19 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
     <div className="flex flex-col items-center gap-5 w-full py-4">
       <div className="relative">
         <div className="w-[120px] h-[120px] rounded-full overflow-hidden">
-          <img 
+          <Image 
             src={image} 
             alt="Profile" 
-            className="w-full h-full object-cover"
+            layout="fill"
+            objectFit="cover"
           />
         </div>
         <label className="cursor-pointer flex items-center justify-center w-[40px] h-[40px] bg-white rounded-full absolute bottom-0 right-0">
-          <img 
+          <Image 
             src="https://dashboard.codeparrot.ai/api/assets/Z4oNjBgaGNOSvOZQ" 
             alt="Upload" 
-            className="w-6 h-6"
+            width={24}
+            height={24}
           />
           <input 
             type="file" 

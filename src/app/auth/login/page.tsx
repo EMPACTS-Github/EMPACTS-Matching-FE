@@ -158,7 +158,7 @@ const LoginPage = () => {
           {/* Sign Up Link */}
           <div className="text-center mt-4">
             <span className="text-gray-500">Don&apos;t have an account? </span>
-            <Link href="/auth/signup" color="secondary" className="text-[#9200FE]">
+            <Link href="/auth/signup" color="secondary" className="text-empacts">
               Sign Up
             </Link>
           </div>
