@@ -29,7 +29,7 @@ const StartupNameSection: React.FC<StartupNameSectionProps> = ({
       />
 
       <p className="text-[14px] font-normal text-[#71717a] leading-5">
-        Your profile could be found with username <span className="text-[#9200FE]">@company_name</span>. You can change it later in Settings
+        Your profile could be found with username <span className="text-empacts">@company_name</span>. You can change it later in Settings
       </p>
     </div>
   );

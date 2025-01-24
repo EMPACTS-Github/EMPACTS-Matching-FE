@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Button } from '@nextui-org/react';
+import Image from 'next/image';
 
 interface Member {
   email: string;
@@ -79,7 +80,7 @@ const AddMemberSection: React.FC<AddMemberSectionProps> = ({
             <div className="flex flex-col gap-1">
               <div
                 className={`text-sm font-medium ${
-                  'text-[#9200fe]'
+                  'text-empacts'
                 }`}
               >
                 {member.title}
@@ -90,10 +91,11 @@ const AddMemberSection: React.FC<AddMemberSectionProps> = ({
               onClick={() => handleRemoveMember(index)}
               className="w-5 h-5 flex items-center justify-center"
             >
-              <img
+              <Image
                 src="https://dashboard.codeparrot.ai/api/assets/Z4oNlBgaGNOSvOZS"
                 alt="remove"
-                className="w-5 h-5"
+                width={20}
+                height={20}
               />
             </button>
           </div>

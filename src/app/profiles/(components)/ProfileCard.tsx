@@ -55,7 +55,7 @@ const ProfileCard = () => {
         <Tabs aria-label="Profile Tabs" variant="underlined">
           {/* Startups Tab */}
           <Tab key="startups" title="Startups">
-            <div className="space-y-4 overflow-y-scroll">
+            <div className="space-y-4">
               {fakeStartups.map((startup) => (
                 <div
                   key={startup.id}

@@ -26,9 +26,9 @@ const SDGGoalSection: React.FC<SDGGoalSectionProps> = ({
         size="sm"
         classNames={{
           trigger:
-            "h-12 border border-[#e4e4e7] bg-white rounded-lg px-3 flex justify-between text-[#9200fe]",
-          value: "text-[14px] font-semibold text-[#9200fe]",
-          selectorIcon: "text-[#9200fe]",
+            "h-12 border border-[#e4e4e7] bg-white rounded-lg px-3 flex justify-between text-empacts",
+          value: "text-[14px] font-semibold text-empacts",
+          selectorIcon: "text-empacts",
         }}
         placeholder="Select an SDG Goal"
       >
@@ -38,7 +38,7 @@ const SDGGoalSection: React.FC<SDGGoalSectionProps> = ({
             value={goal.value}
             className={`text-[14px] font-semibold ${
               selectedGoal === goal.value
-                ? "text-[#9200fe]"
+                ? "text-empacts"
                 : "text-gray-700 hover:text-gray-900"
             }`}
           >
