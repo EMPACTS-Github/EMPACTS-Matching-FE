@@ -8,7 +8,7 @@ import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';
 import { Divider } from 'antd';
 import { toast } from 'react-toastify';
-import { loginWithGoogleAPI } from '../../../apis/auth';
+import { email_signin, loginWithGoogleAPI } from '../../../apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
@@ -60,28 +60,38 @@ const LoginPage = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Step 1: Validate email format before sending request
     const isEmailValid = validateEmailFormat(email);
     if (!isEmailValid) return;
 
     // Step 2: Send request and validate credentials
-    const response = await mockLogin(email, password);
+    try {
+      const response = await email_signin(email, password);
 
-    if (!response.success) {
-      setPasswordError(response.message || 'Invalid credentials');
-      setPasswordColor('danger');
-      setIsValidPassword(false);
-      setEmailColor('danger');
-      setIsValidEmail(false);
-      toast.error(response.message || 'Invalid credentials');
-    } else {
-      setPasswordError('');
-      setPasswordColor('default');
-      setIsValidPassword(true);
-      setEmailColor('default');
-      setIsValidEmail(true);
-      toast.success('Login successful');
-      console.log('Login successful:', { email, password });
+      if (response.code !== "LOGIN") {
+        setPasswordError(response.message || 'Invalid credentials');
+        setPasswordColor('danger');
+        setIsValidPassword(false);
+        setEmailColor('danger');
+        setIsValidEmail(false);
+        toast.error(response.message || 'Invalid credentials');
+      } else {
+        setPasswordError('');
+        setPasswordColor('default');
+        setIsValidPassword(true);
+        setEmailColor('default');
+        setIsValidEmail(true);
+        toast.success('Login successful');
+
+        // Save necessary info to localStorage
+        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+
+        router.push('/'); // Redirect to home page after successful login
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('An error occurred while logging in');
     }
   };
 

@@ -25,8 +25,8 @@ export const create_new_profile = async (email: string, avtUrl: string, name: st
   return response.data
 }
 
-export const email_signin = async (email: string) => {
-  const response = await axiosInstance.post('/auth/sign-in', { email })
+export const email_signin = async (email: string, password: string) => {
+  const response = await axiosInstance.post('/auth/sign-in', { email, password })
   return response.data
 }
 
