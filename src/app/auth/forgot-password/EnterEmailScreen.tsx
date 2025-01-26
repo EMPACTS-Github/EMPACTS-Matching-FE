@@ -5,6 +5,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import { Button } from 'antd';
 import { toast } from 'react-toastify';
+import { send_forgot_password_otp, verify_forgot_password_otp } from '@/apis/auth';
 
 const EnterEmailScreen = (props: { 
     email: string, 
@@ -35,21 +36,47 @@ const EnterEmailScreen = (props: {
         return () => clearInterval(timer!);
     }, [isResendDisabled]);
 
-    const handleResendCode = () => {
-        toast.success('Resended code successfully');
-        console.log("Resend code logic triggered");
-        setIsResendDisabled(true);
+    const handleResendCode = async () => {
+        try {
+            const response = await send_forgot_password_otp(props.email);
+            if (response.code === "VERIFICATION_CODE_SENT") {
+                toast.success('Verification code sent successfully');
+                setIsResendDisabled(true);
+            } else if (response.code === "EMAIL_ALREADY_SENT") {
+                toast.error('Email already sent. Please wait before requesting again.');
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('An error occurred while resending the code');
+        }
     };
 
-    const handleOtpChange = (value: string, index: number) => {
+    const handleOtpChange = async (value: string, index: number) => {
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
 
         // Check if OTP is fully entered
         if (newOtp.every(digit => digit !== "")) {
-            props.setEmailSent(false);
-            props.setResetPasswordScreen(true);
+            try {
+                const response = await verify_forgot_password_otp(props.email, newOtp.join(""));
+                if (response.code === "OTP_VERIFIED") {
+                    toast.success('OTP code verified successfully');
+                    props.setEmailSent(false);
+                    props.setResetPasswordScreen(true);
+                } else if (response.code === "OTP_INCORRECT") {
+                    toast.error('Incorrect OTP code. Please try again.');
+                } else if (response.code === "OTP_EXPIRED") {
+                    toast.error('OTP code has expired. Please request a new one.');
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error('An error occurred while verifying the OTP');
+            }
         }
     };
 

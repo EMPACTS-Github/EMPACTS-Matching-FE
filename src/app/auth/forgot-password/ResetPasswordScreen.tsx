@@ -4,8 +4,9 @@ import { Input, Button } from '@nextui-org/react'; // Replacing Ant Design compo
 import { ArrowLeftOutlined } from '@ant-design/icons'; // Keeping the icon for now
 import { toast } from 'react-toastify';
 import Image from 'next/image';
+import { reset_password } from '@/apis/auth';
 
-const ResetPasswordScreen = (props: { setOpenResetPasswordScreen: (arg0: boolean) => void }) => {
+const ResetPasswordScreen = (props: { email: string, setOpenResetPasswordScreen: (arg0: boolean) => void }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isValidPassword, setIsValidPassword] = useState(true);
@@ -16,7 +17,7 @@ const ResetPasswordScreen = (props: { setOpenResetPasswordScreen: (arg0: boolean
     const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
     const [confirmPasswordColor, setConfirmPasswordColor] = useState<'default' | 'danger'>('default');
 
-    const handleResetPassword = (e: { preventDefault: () => void }) => {
+    const handleResetPassword = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         if (password.length < 12) {
             setIsValidPassword(false);
@@ -33,15 +34,18 @@ const ResetPasswordScreen = (props: { setOpenResetPasswordScreen: (arg0: boolean
             setConfirmPasswordError('Passwords do not match');
             toast.error('Passwords do not match');
         } else {
-            setIsValidPassword(true);
-            setPasswordError('');
-            setPasswordDescription('');
-            setPasswordColor('default');
-
-            setIsValidConfirmPassword(true);
-            setConfirmPasswordError('');
-            setConfirmPasswordColor('default');
-            toast.success('Password reset successful');
+            try {
+                const response = await reset_password(props.email, password);
+                if (response.code === "PASSWORD_RESETED") {
+                    toast.success('Password reset successful');
+                    props.setOpenResetPasswordScreen(false);
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error('An error occurred while resetting the password');
+            }
         }
     };
 
