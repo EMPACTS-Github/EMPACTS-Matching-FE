@@ -5,27 +5,19 @@ import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';
 import { Input, Button } from '@nextui-org/react';
 import Link from 'next/link';
-import EnterEmailScreen from '../forgot-password/EnterEmailScreen';
 import { toast } from 'react-toastify';
+import { email_signup } from '@/apis/auth';
+import VerificationScreen from './VerificationSreen';
+import CreatePasswordScreen from './CreatePasswordScreen';
 
 const SignupPage = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [isVerifiedScreen, setIsVerifiedScreen] = useState(false);
+    const [isCreatePasswordScreen, setIsCreatePasswordScreen] = useState(false);
 
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [emailError, setEmailError] = useState('');
     const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
-
-    const [isValidPassword, setIsValidPassword] = useState(true);
-    const [passwordError, setPasswordError] = useState('');
-    const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
-
-    const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
-    const [confirmPasswordError, setConfirmPasswordError] = useState('');
-    const [confirmPasswordColor, setConfirmPasswordColor] = useState<'default' | 'danger'>('default');
-
     // Function to validate email format
     const validateEmailFormat = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,38 +33,25 @@ const SignupPage = () => {
         return true;
     };
 
-    const handleSignup = (e: { preventDefault: () => void; }) => {
+    const handleSignup = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         const isEmailValid = validateEmailFormat(email);
         if (!isEmailValid) {
             toast.error('Invalid email format');
             return;
         }
-
-        if (password.length < 12) {
-            setIsValidPassword(false);
-            setPasswordError('Password must contain at least 12 characters');
-            setPasswordColor('danger');
-            toast.error('Password must contain at least 12 characters');
-        } else if (password !== confirmPassword) {
-            setPasswordError('');
-            setIsValidPassword(false);
-            setPasswordColor('danger');
-            setIsValidConfirmPassword(false);
-            setConfirmPasswordColor('danger');
-            setConfirmPasswordError('Passwords do not match');
-            toast.error('Passwords do not match');
-        } else {
-            setIsValidPassword(true);
-            setPasswordError('');
-            setPasswordColor('default');
-
-            setIsValidConfirmPassword(true);
-            setConfirmPasswordError('');
-            setConfirmPasswordColor('default');
-            setIsVerifiedScreen(true); // Show verification screen
-            toast.success('Signup successful');
+        try {
+            const response = await email_signup(email);
+            if (response.code == "VERIFICATION_CODE_SENT") {
+                toast.success('Verification code sent to your email');
+                setIsVerifiedScreen(true);
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            toast.error('An error occurred while signing up');
         }
+        // setIsVerifiedScreen(true);
     };
 
     return (
@@ -81,13 +60,13 @@ const SignupPage = () => {
             <div className="col-span-1 bg-white flex items-center justify-center">
                 <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
                     {isVerifiedScreen ? (
-                        <EnterEmailScreen 
+                        <VerificationScreen 
                             email={email} 
-                            setEmailSent={setIsVerifiedScreen} 
-                            setResetPasswordScreen={setIsVerifiedScreen}
-                            title="Verification code"
-                            description={`A verification code has been sent to <strong>${email}</strong>. Please input your OTP code to finish the registration process.`}
+                            setIsVerifiedScreen={setIsVerifiedScreen} 
+                            setIsCreatePasswordScreen={setIsCreatePasswordScreen}
                         />
+                    ) : isCreatePasswordScreen ? (
+                        <CreatePasswordScreen email={email} />
                     ) : (
                         <div>
                             <div className="flex flex-col items-center text-center">
@@ -110,30 +89,6 @@ const SignupPage = () => {
                                     color={emailColor}
                                     errorMessage={emailError}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                                <Input
-                                    variant="underlined"
-                                    size="lg"
-                                    type="password"
-                                    label="Password"
-                                    value={password}
-                                    isInvalid={!isValidPassword}
-                                    color={passwordColor}
-                                    errorMessage={passwordError}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                                <Input
-                                    variant="underlined"
-                                    size="lg"
-                                    type="password"
-                                    label="Confirm Password"
-                                    value={confirmPassword}
-                                    isInvalid={!isValidConfirmPassword}
-                                    color={confirmPasswordColor}
-                                    errorMessage={confirmPasswordError}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
                                 />
                                 <Button

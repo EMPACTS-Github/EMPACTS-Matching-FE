@@ -10,6 +10,7 @@ import ResetPasswordScreen from './ResetPasswordScreen';
 import { toast } from 'react-toastify';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation'
+import { send_forgot_password_otp } from '@/apis/auth';
 
 const ForgotPasswordPage = () => {
     const router = useRouter();
@@ -37,11 +38,24 @@ const ForgotPasswordPage = () => {
         return true;
     };
 
-    const handleSentCode = (e: { preventDefault: () => void }) => {
+    const handleSentCode = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         const isEmailValid = validateEmailFormat(email);
         if (isEmailValid) {
-            setIsEmailScreen(true);
+            try {
+                const response = await send_forgot_password_otp(email);
+                if (response.code === "VERIFICATION_CODE_SENT") {
+                    toast.success('Verification code sent to your email');
+                    setIsEmailScreen(true);
+                } else if (response.code === "EMAIL_ALREADY_SENT") {
+                    toast.error('Email already sent. Please wait before requesting again.');
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error('An error occurred while sending the verification code');
+            }
         } else {
             toast.error('Invalid email format');
         }
@@ -71,7 +85,7 @@ const ForgotPasswordPage = () => {
                                 description={`A verification code has been sent to <strong>${email}</strong>. Please input your OTP code to finish reset password.`}
                             />
                         ) : isResetPasswordScreen ? (
-                            <ResetPasswordScreen setOpenResetPasswordScreen={setIsResetPasswordScreen} />
+                            <ResetPasswordScreen email={email} setOpenResetPasswordScreen={setIsResetPasswordScreen} />
                         ) : (
                             <div>
                                 {/* Logo and Title */}

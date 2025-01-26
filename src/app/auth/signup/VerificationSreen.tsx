@@ -1,20 +1,51 @@
 'use client'
 import { useState } from 'react';
 import Image from 'next/image';
-import { Button, Input} from 'antd';
+import { Button, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { verify_OTP } from '@/apis/auth';
+import { toast } from 'react-toastify';
 
 const VerificationScreen = (props: {
     email: string;
     setIsVerifiedScreen: (arg0: boolean) => void;
+    setIsCreatePasswordScreen: (arg0: boolean) => void;
 }) => {
     const [otp, setOtp] = useState(Array(6).fill("")); // OTP input
 
-    const handleOtpChange = (value: string, index: number) => {
-        const newOtp = [...otp];
-        newOtp[index] = value;
-        setOtp(newOtp);
+    const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const value = e.target.value;
+        if (/^[0-9]$/.test(value) || value === "") {
+            const newOtp = [...otp];
+            newOtp[index] = value;
+            setOtp(newOtp);
+
+            // Trigger OTP submission when all digits are entered
+            if (newOtp.every(digit => digit !== "")) {
+                handleSubmitOtp();
+            }
+        }
     };
+
+    const handleSubmitOtp = async () => {
+        try {
+            const response = await verify_OTP(props.email, otp.join(""));
+            if (response.code === "OTP_VERIFIED") {
+                toast.success("OTP code verified successfully");
+                props.setIsVerifiedScreen(false);
+                props.setIsCreatePasswordScreen(true); // Render CreatePasswordScreen
+            } else if (response.code === "OTP_EXPIRED") {
+                toast.error("OTP code has expired. Please request a new one.");
+            } else if (response.code === "OTP_INCORRECT") {
+                toast.error("Incorrect OTP code. Please try again.");
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("An error occurred while verifying the OTP");
+        }
+    }
     
     return (
         <div className="text-center">
@@ -49,7 +80,7 @@ const VerificationScreen = (props: {
                         key={index}
                         maxLength={1}
                         value={digit}
-                        onChange={(e) => handleOtpChange(e.target.value, index)}
+                        onChange={(e) => handleOtpChange(e, index)}
                         className="text-center w-12 h-12"
                     />
                 ))}
