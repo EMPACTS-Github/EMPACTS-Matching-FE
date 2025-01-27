@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import EmpactsLogo from '../../../../public/empacts-logo.svg';
+import EmpactsLogo from '../../../public/empacts-logo.svg';
 import { useRouter } from 'next/navigation';
 
 interface HeaderProps {

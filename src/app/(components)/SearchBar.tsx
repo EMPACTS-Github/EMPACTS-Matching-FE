@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import Image from 'next/image';
-import SearchIcon from '../../../../public/assets/search-icon.png';
+import SearchIcon from '../../../public/assets/search-icon.png';
 
 interface SearchBarProps {
   placeholder?: string;
