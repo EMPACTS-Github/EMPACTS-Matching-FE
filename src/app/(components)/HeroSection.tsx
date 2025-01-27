@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 export const HeroSection = () => {
   return (
     <div className="relative z-10 text-center py-10">
