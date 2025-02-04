@@ -8,7 +8,7 @@ import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';
 import { Divider } from 'antd';
 import { toast } from 'react-toastify';
-import { email_signin, loginWithGoogleAPI } from '../../../apis/auth';
+import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
