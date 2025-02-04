@@ -7,7 +7,7 @@ import SearchBar from './(components)/SearchBar';
 import { HeroSection } from './(components)/HeroSection';
 import Header from './(components)/Header';
 import { startup_list, startup_private_list } from '../apis/startup';
-
+import { useRouter } from 'next/navigation';
 interface Startup {
   id: number;
   name: string;
@@ -16,6 +16,7 @@ interface Startup {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [startups, setStartups] = useState<Startup[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -58,6 +59,10 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
+  const handleStartupDetail = (id: number) => {
+    router.push(`/startup/${id}`);
+  }
+
   return (
     <main className="flex flex-col items-center min-h-screen">
       <Header />
@@ -68,7 +73,7 @@ export default function Home() {
         <Tabs />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
           {startups.map((card, index) => (
-            <StartupCard key={index} {...card} />
+            <StartupCard key={index} {...card} onClick={handleStartupDetail}/>
           ))}
         </div>
       </div>
