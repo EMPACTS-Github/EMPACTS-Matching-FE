@@ -12,6 +12,11 @@ export const startup_private_list = async (limit: number, page: number) => {
     return response.data
 }
 
+export const startup_detail = async (id: number) => {
+    const response = await axiosInstance.get(`/startups/${id}`)
+    return response.data
+}
+
 // reponse.data
 // {
 //     "code": "STARTUPS_FOUND",
