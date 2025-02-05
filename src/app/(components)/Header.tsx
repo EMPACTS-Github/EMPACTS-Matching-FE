@@ -12,7 +12,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onLogin = () => alert('Login clicked!') }) => {
   const router = useRouter();
   const handleLogin = () => {
-    onLogin();
+    // onLogin();
     router.push('auth/login');
   }
   return (
