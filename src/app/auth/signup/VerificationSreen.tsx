@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react';
 import Image from 'next/image';
-import { Button, Input } from 'antd';
+import { Button } from 'antd';
+import { InputOtp } from '@heroui/react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { verify_OTP } from '@/apis/auth';
 import { toast } from 'react-toastify';
@@ -11,25 +12,11 @@ const VerificationScreen = (props: {
     setIsVerifiedScreen: (arg0: boolean) => void;
     setIsCreatePasswordScreen: (arg0: boolean) => void;
 }) => {
-    const [otp, setOtp] = useState(Array(6).fill("")); // OTP input
-
-    const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-        const value = e.target.value;
-        if (/^[0-9]$/.test(value) || value === "") {
-            const newOtp = [...otp];
-            newOtp[index] = value;
-            setOtp(newOtp);
-
-            // Trigger OTP submission when all digits are entered
-            if (newOtp.every(digit => digit !== "")) {
-                handleSubmitOtp();
-            }
-        }
-    };
+    const [otp, setOtp] = useState(""); // OTP input
 
     const handleSubmitOtp = async () => {
         try {
-            const response = await verify_OTP(props.email, otp.join(""));
+            const response = await verify_OTP(props.email, otp);
             if (response.code === "OTP_VERIFIED") {
                 toast.success("OTP code verified successfully");
                 props.setIsVerifiedScreen(false);
@@ -75,15 +62,13 @@ const VerificationScreen = (props: {
                 Please input your OTP code to finish the registration process.
             </p>
             <div className="flex justify-center space-x-2 mt-6">
-                {otp.map((digit, index) => (
-                    <Input
-                        key={index}
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleOtpChange(e, index)}
-                        className="text-center w-12 h-12"
-                    />
-                ))}
+            <InputOtp 
+                length={6} 
+                value={otp} 
+                onValueChange={setOtp} 
+                onComplete={handleSubmitOtp}
+                variant='underlined'
+            />
             </div>
             <div className="text-gray-500 mt-4">
                 Did not receive code? <span className="text-purple-600 cursor-pointer">Resend code</span>

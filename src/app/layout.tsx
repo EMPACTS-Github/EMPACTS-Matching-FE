@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { NextUIProvider } from '@nextui-org/react';
+import { HeroUIProvider } from "@heroui/react";
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS
 import { ToastContainer } from 'react-toastify';
 import HomepageBackground from '../../public/homepage-bg.png';
+import Header from './(components)/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,9 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-cover bg-center bg-no-repeat`} style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
         <ToastContainer />
-        <NextUIProvider>
+        <HeroUIProvider>
+          <Header />
           <div className="min-h-screen flex flex-col">{children}</div>
-        </NextUIProvider>
+        </HeroUIProvider>
       </body>
     </html>
   );

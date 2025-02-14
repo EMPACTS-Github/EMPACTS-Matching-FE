@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Button, Tab, Tabs } from "@nextui-org/react";
+import { Avatar, Button, Tab, Tabs } from "@heroui/react";
 import { useParams } from "next/navigation";
 import Image from 'next/image';
 import GroupIcon from '../../../../public/assets/group.png';

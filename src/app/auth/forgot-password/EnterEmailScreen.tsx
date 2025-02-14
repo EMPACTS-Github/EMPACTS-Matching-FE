@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Input } from '@nextui-org/react'; // Replace antd with NextUI
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import { Button } from 'antd';
 import { toast } from 'react-toastify';
 import { send_forgot_password_otp, verify_forgot_password_otp } from '@/apis/auth';
+import { InputOtp } from '@heroui/react';
 
 const EnterEmailScreen = (props: { 
     email: string, 
@@ -14,8 +14,7 @@ const EnterEmailScreen = (props: {
     title: string,
     description: string
 }) => {
-
-    const [otp, setOtp] = useState(Array(6).fill("")); // OTP input
+    const [otp, setOtp] = useState("");
     const [isResendDisabled, setIsResendDisabled] = useState(false);
     const [resendCountdown, setResendCountdown] = useState(60);
 
@@ -53,30 +52,23 @@ const EnterEmailScreen = (props: {
         }
     };
 
-    const handleOtpChange = async (value: string, index: number) => {
-        const newOtp = [...otp];
-        newOtp[index] = value;
-        setOtp(newOtp);
-
-        // Check if OTP is fully entered
-        if (newOtp.every(digit => digit !== "")) {
-            try {
-                const response = await verify_forgot_password_otp(props.email, newOtp.join(""));
-                if (response.code === "OTP_VERIFIED") {
-                    toast.success('OTP code verified successfully');
-                    props.setEmailSent(false);
-                    props.setResetPasswordScreen(true);
-                } else if (response.code === "OTP_INCORRECT") {
-                    toast.error('Incorrect OTP code. Please try again.');
-                } else if (response.code === "OTP_EXPIRED") {
-                    toast.error('OTP code has expired. Please request a new one.');
-                } else {
-                    toast.error(response.message);
-                }
-            } catch (error) {
-                console.error(error);
-                toast.error('An error occurred while verifying the OTP');
+    const handleSubmitOtp = async () => {
+        try {
+            const response = await verify_forgot_password_otp(props.email, otp);
+            if (response.code === "OTP_VERIFIED") {
+                toast.success('OTP code verified successfully');
+                props.setEmailSent(false);
+                props.setResetPasswordScreen(true);
+            } else if (response.code === "OTP_INCORRECT") {
+                toast.error('Incorrect OTP code. Please try again.');
+            } else if (response.code === "OTP_EXPIRED") {
+                toast.error('OTP code has expired. Please request a new one.');
+            } else {
+                toast.error(response.message);
             }
+        } catch (error) {
+            console.error(error);
+            toast.error('An error occurred while verifying the OTP');
         }
     };
 
@@ -105,16 +97,13 @@ const EnterEmailScreen = (props: {
             </div>
             <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: props.description }} />
             <div className="flex justify-center space-x-2 mt-6">
-                {otp.map((digit, index) => (
-                    <input
-                        key={index}
-                        type="text"
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleOtpChange(e.target.value, index)}
-                        className="w-12 h-12 text-center text-[#000000] text-xl border-b-2 border-gray-300 focus:outline-none focus:border-[#000000]"
-                    />
-                ))}
+                <InputOtp 
+                    length={6} 
+                    value={otp} 
+                    onValueChange={setOtp} 
+                    onComplete={handleSubmitOtp}
+                    variant='underlined'
+                />
             </div>
             <div className="text-gray-500 mt-4">
                 Did not receive code? <span> </span>

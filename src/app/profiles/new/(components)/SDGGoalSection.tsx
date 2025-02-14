@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, SelectItem } from '@nextui-org/react';
+import { Select, SelectItem } from "@heroui/react";
 import sdgGoals from '../../../(utils)/(data)/sdgGoals.json';
 
 interface SDGGoalSectionProps {

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Input, Button } from '@nextui-org/react'; // Replacing Ant Design components
+import { Input, Button } from "@heroui/react"; // Replacing Ant Design components
 import { ArrowLeftOutlined } from '@ant-design/icons'; // Keeping the icon for now
 import { toast } from 'react-toastify';
 import Image from 'next/image';
