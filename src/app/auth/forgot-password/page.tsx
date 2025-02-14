@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import { Input, Button } from '@nextui-org/react'; // Replace antd with NextUI
+import { Input, Button } from "@heroui/react";
 import { Button as AntdButton } from 'antd';
 import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';

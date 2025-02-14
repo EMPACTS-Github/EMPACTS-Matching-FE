@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Select, SelectItem } from '@nextui-org/react';
+import { Select, SelectItem } from "@heroui/react";
 import provinces from '../../../(utils)/(data)/provinces.json';
 interface LocationBasedSectionProps {
   location?: string;

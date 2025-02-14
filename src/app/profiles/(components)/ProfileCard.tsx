@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button, Avatar, Tabs, Tab } from "@nextui-org/react";
+import { Button, Avatar, Tabs, Tab } from "@heroui/react";
 import { RightOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 // Fake Data

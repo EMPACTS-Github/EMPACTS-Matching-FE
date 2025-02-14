@@ -4,7 +4,7 @@ import { create_new_password } from '@/apis/auth';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button } from "@heroui/react";
 import EmpactsLogo from '../../../../public/empacts-logo.png';
 import Link from 'next/link';
 

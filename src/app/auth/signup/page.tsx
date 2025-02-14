@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { email_signup } from '@/apis/auth';

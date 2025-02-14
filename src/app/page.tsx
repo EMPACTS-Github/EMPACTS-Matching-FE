@@ -65,7 +65,6 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center min-h-screen">
-      <Header />
       {/* Content Section */}
       <div className="relative z-10 w-full flex flex-col items-center">
         <HeroSection />

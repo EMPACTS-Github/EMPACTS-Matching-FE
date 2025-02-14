@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
 import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';
@@ -147,10 +147,12 @@ const LoginPage = () => {
               color={emailColor}
               errorMessage={emailError}
               onChange={(e) => setEmail(e.target.value)}
+              style={{ borderRadius: '0px' }}
             />
             {/* Password Input */}
             <Input
               variant="underlined"
+              className='rounded-none'
               size="lg"
               type="password"
               label="Password"
@@ -159,6 +161,7 @@ const LoginPage = () => {
               color={passwordColor}
               errorMessage={passwordError}
               onChange={(e) => setPassword(e.target.value)}
+              style={{ borderRadius: '0px' }}
             />
             {/* Forgot Password */}
             <div className="text-right !mt-1">
