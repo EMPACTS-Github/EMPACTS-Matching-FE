@@ -1,9 +1,8 @@
 'use client'
 import { useState } from 'react';
 import Image from 'next/image';
-import { Button } from 'antd';
-import { InputOtp } from '@heroui/react';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { InputOtp, Button } from '@heroui/react';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { verify_OTP } from '@/apis/auth';
 import { toast } from 'react-toastify';
 
@@ -20,7 +19,7 @@ const VerificationScreen = (props: {
             if (response.code === "OTP_VERIFIED") {
                 toast.success("OTP code verified successfully");
                 props.setIsVerifiedScreen(false);
-                props.setIsCreatePasswordScreen(true); // Render CreatePasswordScreen
+                props.setIsCreatePasswordScreen(true);
             } else if (response.code === "OTP_EXPIRED") {
                 toast.error("OTP code has expired. Please request a new one.");
             } else if (response.code === "OTP_INCORRECT") {
@@ -37,15 +36,9 @@ const VerificationScreen = (props: {
     return (
         <div className="text-center">
             <div className="flex flex-col items-center text-center h-3/4">
-                <Button
-                    type='text'
-                    onClick={() => props.setIsVerifiedScreen(false)}
-                    className="absolute left-4"
-                >
-                    <ArrowLeftOutlined
-                        style={{ fontSize: '16px' }}
-                    />
-                </Button>
+                <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => props.setIsVerifiedScreen(false)}>
+                    <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+                </div>
                 <Image 
                     src="/empacts-logo.png" 
                     alt="Background image" 

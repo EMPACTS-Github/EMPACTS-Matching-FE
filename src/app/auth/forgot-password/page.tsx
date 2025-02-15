@@ -2,13 +2,12 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Input, Button } from "@heroui/react";
-import { Button as AntdButton } from 'antd';
-import EmpactsBg from '../../../../public/empacts-bg.png';
-import EmpactsLogo from '../../../../public/empacts-logo.png';
+import EmpactsBg from '/public/empacts-bg.png';
+import EmpactsLogo from '/public/empacts-logo.png';
 import EnterEmailScreen from './EnterEmailScreen';
 import ResetPasswordScreen from './ResetPasswordScreen';
 import { toast } from 'react-toastify';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { useRouter } from 'next/navigation'
 import { send_forgot_password_otp } from '@/apis/auth';
 
@@ -67,15 +66,9 @@ const ForgotPasswordPage = () => {
                 {/* Left Panel */}
                 <div className="col-span-1 bg-white flex items-center justify-center">
                     <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
-                        <AntdButton
-                            type='text'
-                            onClick={() => router.back()}
-                            className="absolute left-4"
-                        >
-                            <ArrowLeftOutlined
-                                style={{ fontSize: '16px' }}
-                            />
-                        </AntdButton>
+                        <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => router.back()}>
+                            <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+                        </div>
                         {isEmailScreen ? (
                             <EnterEmailScreen 
                                 email={email}
@@ -112,6 +105,7 @@ const ForgotPasswordPage = () => {
                                     <Input
                                         variant='underlined'
                                         fullWidth
+                                        radius='none'
                                         size="lg"
                                         label="Email"
                                         value={email}

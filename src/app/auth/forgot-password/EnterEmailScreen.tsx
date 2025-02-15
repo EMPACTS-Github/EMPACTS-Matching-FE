@@ -1,11 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { ArrowLeftOutlined } from '@ant-design/icons';
 import Image from 'next/image';
-import { Button } from 'antd';
 import { toast } from 'react-toastify';
 import { send_forgot_password_otp, verify_forgot_password_otp } from '@/apis/auth';
 import { InputOtp } from '@heroui/react';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
 const EnterEmailScreen = (props: { 
     email: string, 
@@ -75,15 +74,9 @@ const EnterEmailScreen = (props: {
     return (
         <div className="text-center">
             <div className="flex flex-col items-center text-center h-3/4">
-                <Button
-                    type='text'
-                    onClick={() => props.setEmailSent(false)}
-                    className="absolute left-4"
-                >
-                    <ArrowLeftOutlined
-                        style={{ fontSize: '16px' }}
-                    />
-                </Button>
+                <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => props.setEmailSent(false)}>
+                    <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+                </div>
                 <Image 
                     src="/empacts-logo.png" 
                     alt="Background image" 

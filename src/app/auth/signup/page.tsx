@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react';
 import Image from 'next/image';
-import EmpactsBg from '../../../../public/empacts-bg.png';
-import EmpactsLogo from '../../../../public/empacts-logo.png';
+import EmpactsBg from '/public/empacts-bg.png';
+import EmpactsLogo from '/public/empacts-logo.png';
 import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
 import { toast } from 'react-toastify';
@@ -83,6 +83,7 @@ const SignupPage = () => {
                                 <Input
                                     variant="underlined"
                                     size="lg"
+                                    radius='none'
                                     label="Email"
                                     value={email}
                                     isInvalid={!isValidEmail}

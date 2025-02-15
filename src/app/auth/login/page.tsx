@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Input, Button } from "@heroui/react";
+import { Input, Button, extendVariants } from "@heroui/react";
 import Link from 'next/link';
 import EmpactsBg from '../../../../public/empacts-bg.png';
 import EmpactsLogo from '../../../../public/empacts-logo.png';
-import { Divider } from 'antd';
 import { toast } from 'react-toastify';
 import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
@@ -41,19 +40,6 @@ const LoginPage = () => {
     setEmailColor('default');
     setIsValidEmail(true);
     return true;
-  };
-
-  // Mock Login Function for validating credentials
-  const mockLogin = (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (email === 'test@example.com' && password === '123') {
-          resolve({ success: true });
-        } else {
-          resolve({ success: false, message: 'Invalid email or password' });
-        }
-      }, 1000);
-    });
   };
 
   // Handle form submission
@@ -143,16 +129,16 @@ const LoginPage = () => {
               size="lg"
               label="Email"
               value={email}
+              radius='none'
               isInvalid={!isValidEmail}
               color={emailColor}
               errorMessage={emailError}
               onChange={(e) => setEmail(e.target.value)}
-              style={{ borderRadius: '0px' }}
             />
             {/* Password Input */}
             <Input
               variant="underlined"
-              className='rounded-none'
+              radius='none'
               size="lg"
               type="password"
               label="Password"
@@ -181,9 +167,11 @@ const LoginPage = () => {
           </form>
 
           {/* Divider */}
-          <Divider className="my-6 text-gray-500">
-            <span className="text-black text-sm">Or</span>
-          </Divider>
+          <div className="my-6 text-gray-500 flex items-center">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="mx-4 text-black text-sm">Or</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
 
           {/* Google Sign In Button */}
           <Button
