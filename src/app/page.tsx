@@ -5,8 +5,7 @@ import StartupCard from './(components)/StartupCard';
 import Tabs from './(components)/Tabs';
 import SearchBar from './(components)/SearchBar';
 import { HeroSection } from './(components)/HeroSection';
-import Header from './(components)/Header';
-import { startup_list, startup_private_list } from '../apis/startup';
+import { startup_list, startup_private_list } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 interface Startup {
   id: number;
@@ -40,7 +39,8 @@ export default function Home() {
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    setIsLoggedIn(!!token);
+    const user = localStorage.getItem('user');
+    setIsLoggedIn(!!user);
   }, []);
 
   useEffect(() => {

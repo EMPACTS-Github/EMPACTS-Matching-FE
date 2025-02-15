@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { Button, Avatar, Tabs, Tab } from "@heroui/react";
-import { RightOutlined } from "@ant-design/icons";
+import RightArrow from "public/assets/arrow-right.svg";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 // Fake Data
 const fakeStartups = [
@@ -73,11 +74,7 @@ const ProfileCard = () => {
                     </div>
                   </div>
                   {/* <span className="text-gray-400">&gt;</span> */}
-                  <RightOutlined
-                    width={24}
-                    height={24}
-                    className="text-gray-400"
-                   />
+                  <Image src={RightArrow} className="text-gray-400 text-lg" alt={""} width={24} height={24}/>
                 </div>
               ))}
             </div>
