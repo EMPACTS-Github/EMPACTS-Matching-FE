@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { Input, Button } from "@heroui/react"; // Replacing Ant Design components
-import { ArrowLeftOutlined } from '@ant-design/icons'; // Keeping the icon for now
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { reset_password } from '@/apis/auth';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
 const ResetPasswordScreen = (props: { email: string, setOpenResetPasswordScreen: (arg0: boolean) => void }) => {
     const [password, setPassword] = useState('');
@@ -52,16 +52,9 @@ const ResetPasswordScreen = (props: { email: string, setOpenResetPasswordScreen:
     return (
         <div>
             <div className="flex flex-col items-center text-center h-3/4">
-                <Button
-                    isIconOnly
-                    variant="light"
-                    onClick={() => props.setOpenResetPasswordScreen(false)}
-                    className="absolute left-4"
-                >
-                    <ArrowLeftOutlined
-                        style={{ fontSize: '16px' }}
-                    />
-                </Button>
+                <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => props.setOpenResetPasswordScreen(false)}>
+                    <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+                </div>
                 <Image
                     src="/empacts-logo.png"
                     alt="Background image"
@@ -79,6 +72,7 @@ const ResetPasswordScreen = (props: { email: string, setOpenResetPasswordScreen:
                         variant='underlined'
                         label="Password"
                         type="password"
+                        radius='none'
                         isInvalid={!isValidPassword}
                         color={passwordColor}
                         errorMessage={passwordError}
@@ -92,6 +86,7 @@ const ResetPasswordScreen = (props: { email: string, setOpenResetPasswordScreen:
                         variant='underlined'
                         label="Confirm Password"
                         type="password"
+                        radius='none'
                         isInvalid={!isValidConfirmPassword}
                         color={confirmPasswordColor}
                         errorMessage={confirmPasswordError}

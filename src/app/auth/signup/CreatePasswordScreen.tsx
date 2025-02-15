@@ -47,6 +47,7 @@ const CreatePasswordScreen = (props: { email: string }) => {
             <div className="space-y-4">
                 <Input
                     variant="underlined"
+                    radius='none'
                     size="lg"
                     type='password'
                     label="Password"
@@ -56,6 +57,7 @@ const CreatePasswordScreen = (props: { email: string }) => {
                 />
                 <Input
                     variant="underlined"
+                    radius='none'
                     size="lg"
                     type='password'
                     label="Confirm Password"
