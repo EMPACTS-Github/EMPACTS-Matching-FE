@@ -50,6 +50,9 @@ const Tabs: React.FC<TabsProps> = ({
             onPress={() => handleTabClick(tab.id)}
             size="sm"
             variant={selectedTabs.includes(tab.id) ? "flat" : "ghost"}
+            style={{
+              border: selectedTabs.includes(tab.id) ? "1.6px solid #EBEBEC" : "",
+            }}
             radius="full"
           >
             {tab.label}

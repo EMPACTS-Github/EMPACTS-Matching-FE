@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import EmpactsLogo from '../../../public/empacts-logo.svg';
-import AvatarPlaceholder from '../../../public/assets/avatar-placeholder.png';
+import EmpactsLogo from '/public/empacts-logo.svg';
+import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import { useRouter } from 'next/navigation';
 import {
   Dropdown,
@@ -13,21 +13,23 @@ import {
   Button
 } from "@heroui/react";
 
-import DropdownIcon from '../../../public/assets/dropdown-icon.svg'; 
-import PlusSquareIcon from '../../../public/assets/plus-square.svg';
-import SoleLogoEmpacts from '../../../public/assets/sole-logo-empacts.svg';
+import DropdownIcon from '/public/assets/dropdown-icon.svg'; 
+import PlusSquareIcon from '/public/assets/plus-square.svg';
+import SoleLogoEmpacts from '/public/assets/sole-logo-empacts.svg';
+import BellIcon from '/public/assets/bell_icon.svg';
 
 interface HeaderProps {
   onLogin?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onLogin = () => alert('Login clicked!') }) => {
+const Header: React.FC<HeaderProps> = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    setIsLoggedIn(!!token);
+    const user = localStorage.getItem('user');
+    setIsLoggedIn(!!user);
   }, []);
 
   const handleLogin = () => {
@@ -81,22 +83,31 @@ const Header: React.FC<HeaderProps> = ({ onLogin = () => alert('Login clicked!')
           </Dropdown>
         </div>
         {isLoggedIn ? (
-          <Dropdown>
-            <DropdownTrigger>
-              <Image 
-                src={AvatarPlaceholder} 
-                alt="Avatar" 
-                width={40} 
-                height={40} 
-                className="rounded-full cursor-pointer"
-              />
-            </DropdownTrigger>
-            <DropdownMenu>
-              <DropdownItem key="profile">Profile</DropdownItem>
-              <DropdownItem key="settings">Settings</DropdownItem>
-              <DropdownItem key="logout">Logout</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <div className="flex items-center gap-3">
+            <Image 
+              src={BellIcon} 
+              alt="Notifications" 
+              width={28} 
+              height={28} 
+              className="cursor-pointer"
+            />
+            <Dropdown>
+              <DropdownTrigger>
+                <Image 
+                  src={AvatarPlaceholder} 
+                  alt="Avatar" 
+                  width={40} 
+                  height={40} 
+                  className="rounded-full cursor-pointer"
+                />
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem key="profile">Profile</DropdownItem>
+                <DropdownItem key="settings">Settings</DropdownItem>
+                <DropdownItem key="logout">Logout</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         ) : (
           <button 
             className="border-2 border-gray-300 rounded-md px-6 py-2 text-gray-600 hover:bg-gray-100"
