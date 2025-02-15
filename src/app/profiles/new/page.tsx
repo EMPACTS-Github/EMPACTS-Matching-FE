@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { RightOutlined } from "@ant-design/icons";
+import RightArrow from "public/assets/arrow-right.svg";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function NewProfilePage() {
@@ -26,7 +27,7 @@ export default function NewProfilePage() {
                 <p className="text-sm text-gray-500">I want to guide startups</p>
               </div>
             </div>
-            <RightOutlined className="text-gray-400 text-lg" />
+            <Image src={RightArrow} className="text-gray-400 text-lg" alt={""} width={24} height={24}/>
           </div>
 
           {/* Startup Option */}
@@ -39,7 +40,7 @@ export default function NewProfilePage() {
                 <p className="text-sm text-gray-500">I want to build a business</p>
               </div>
             </div>
-            <RightOutlined className="text-gray-400 text-lg" />
+            <Image src={RightArrow} className="text-gray-400 text-lg" alt={""} width={24} height={24}/>
           </div>
         </div>
       </div>
