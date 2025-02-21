@@ -2,7 +2,7 @@
 import axiosInstance from "."
 
 export const loginWithGoogleAPI = () => {
-  window.location.href = `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/google/login`
+  window.location.href = `${process.env.NEXT_PUBLIC_BASE_API_URL}/oauth/google/login`
 }
 
 export const email_signup = async (email: string) => {
