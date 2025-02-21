@@ -102,9 +102,9 @@ const Header: React.FC<HeaderProps> = () => {
                 />
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="profile">Profile</DropdownItem>
-                <DropdownItem key="settings">Settings</DropdownItem>
-                <DropdownItem key="logout">Logout</DropdownItem>
+                <DropdownItem key="profile" className='text-black'>Profile</DropdownItem>
+                <DropdownItem key="settings" className='text-black'>Settings</DropdownItem>
+                <DropdownItem key="logout" className='text-black'>Logout</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
