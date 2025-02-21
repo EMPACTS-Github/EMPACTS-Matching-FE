@@ -5,7 +5,7 @@ import StartupCard from './(components)/StartupCard';
 import Tabs from './(components)/Tabs';
 import SearchBar from './(components)/SearchBar';
 import { HeroSection } from './(components)/HeroSection';
-import { startup_list, startup_private_list } from '@/apis/startup';
+import { startup_list } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 interface Startup {
   id: number;
@@ -23,7 +23,7 @@ export default function Home() {
 
   const fetchStartups = useCallback(async () => {
     try {
-      let response = isLoggedIn ? await startup_private_list(4, page) : await startup_list(4, page);
+      let response = await startup_list(4, page);
       if (isLoggedIn && response.statusCode === 401) {
         localStorage.removeItem('accessToken');
         setIsLoggedIn(false);
@@ -72,7 +72,7 @@ export default function Home() {
         <Tabs />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
           {startups.map((card, index) => (
-            <StartupCard key={index} {...card} onClick={handleStartupDetail}/>
+            <StartupCard key={index} {...card} onClick={handleStartupDetail} />
           ))}
         </div>
       </div>

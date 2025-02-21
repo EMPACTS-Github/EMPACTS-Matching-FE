@@ -3,12 +3,7 @@
 import axiosInstance from "."
 
 export const startup_list = async (limit: number, page: number) => {
-    const response = await axiosInstance.get(`/startups/public/all?limit=${limit}&page=${page}`)
-    return response.data
-}
-
-export const startup_private_list = async (limit: number, page: number) => {
-    const response = await axiosInstance.get(`/startups/private/all?limit=${limit}&page=${page}`)
+    const response = await axiosInstance.get(`/startups?limit=${limit}&page=${page}`)
     return response.data
 }
 
