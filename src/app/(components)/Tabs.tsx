@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@heroui/react";
+import { STARTUP_SDG_GOALS } from "@/constants/sdgs";
 
 interface Tab {
   id: string;
@@ -9,26 +10,24 @@ interface Tab {
 }
 
 interface TabsProps {
-  onTabChange?: (selectedTabs: string[]) => void;
-  defaultTabs?: string[];
+  selectedTabs?: string[];
+  setSelectedTabs: (tabs: string[]) => void;
 }
 
 const Tabs: React.FC<TabsProps> = ({
-  onTabChange = () => {},
-  defaultTabs = [],
+  selectedTabs = [],
+  setSelectedTabs,
 }) => {
-  const [selectedTabs, setSelectedTabs] = useState<string[]>(defaultTabs);
+  const allTabs: Tab[] = (Object.keys(STARTUP_SDG_GOALS) as Array<keyof typeof STARTUP_SDG_GOALS>).map((key) => ({
+    id: STARTUP_SDG_GOALS[key].textValue,
+    label: STARTUP_SDG_GOALS[key].label,
+  }));
 
-  const tabs: Tab[] = [
-    { id: "all", label: "All" },
-    { id: "no-poverty", label: "No poverty" },
-    { id: "zero-hunger", label: "Zero Hunger" },
-    { id: "health", label: "Good health and Well-being" },
-    { id: "education", label: "Quality Education" },
-    { id: "gender", label: "Gender equality" },
-    { id: "water", label: "Clean water and sanitation" },
-    { id: "more", label: "More" },
-  ];
+  const initialTabs = allTabs.slice(0, 7);
+  const moreTabs1 = allTabs.slice(7,12);
+  const moreTabs2 = allTabs.slice(12);
+
+  const [showMore, setShowMore] = useState(false);
 
   const handleTabClick = (tabId: string) => {
     const isSelected = selectedTabs.includes(tabId);
@@ -38,27 +37,73 @@ const Tabs: React.FC<TabsProps> = ({
       : [...selectedTabs, tabId]; // Add if not selected
 
     setSelectedTabs(updatedTabs);
-    onTabChange(updatedTabs); // Notify parent component
+    console.log("updatedTabs", selectedTabs);
   };
 
   return (
     <div className="w-full p-4">
       <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap">
-        {tabs.map((tab) => (
+        {initialTabs.map((tab) => (
           <Button
             key={tab.id}
             onPress={() => handleTabClick(tab.id)}
             size="sm"
             variant={selectedTabs.includes(tab.id) ? "flat" : "ghost"}
             style={{
-              border: selectedTabs.includes(tab.id) ? "1.6px solid #EBEBEC" : "",
+              border: selectedTabs.includes(tab.id) ? "2px solid #EBEBEC" : "",
             }}
             radius="full"
           >
             {tab.label}
           </Button>
         ))}
+        <Button
+          onPress={() => setShowMore(!showMore)}
+          size="sm"
+          variant="ghost"
+          radius="full"
+        >
+          {showMore ? "Less" : "More"}
+        </Button>
       </div>
+      {showMore && (
+        <div className="flex flex-col items-center">
+          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap w-3/4">
+            {moreTabs1.map((tab) => (
+              <Button
+                key={tab.id}
+                onPress={() => handleTabClick(tab.id)}
+                size="sm"
+                variant={selectedTabs.includes(tab.id) ? "flat" : "ghost"}
+                className="w-min"
+                style={{
+                  border: selectedTabs.includes(tab.id) ? "2px solid #EBEBEC" : "",
+                }}
+                radius="full"
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </div>
+          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap w-3/4">
+            {moreTabs2.map((tab) => (
+              <Button
+                key={tab.id}
+                onPress={() => handleTabClick(tab.id)}
+                size="sm"
+                variant={selectedTabs.includes(tab.id) ? "flat" : "ghost"}
+                className="w-min"
+                style={{
+                  border: selectedTabs.includes(tab.id) ? "2px solid #EBEBEC" : "",
+                }}
+                radius="full"
+              >
+                {tab.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

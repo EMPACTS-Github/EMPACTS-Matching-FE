@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import { Select, SelectItem } from "@heroui/react";
-import provinces from '../../../(utils)/(data)/provinces.json';
+import provinces from '@/app/(utils)/(data)/provinces.json';
+
 interface LocationBasedSectionProps {
-  location?: string;
+  selectedLocation?: string;
   onChange?: (value: string) => void;
 }
 
 const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
-  location = 'Hanoi',
+  selectedLocation = 'HA_NOI',
   onChange = () => {},
 }) => {
-  const [selectedLocation, setSelectedLocation] = useState(location);
-
-  const handleChange = (value: string) => {
-    setSelectedLocation(value);
-    onChange(value);
-  };
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -25,27 +20,28 @@ const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
       <div className="relative w-full">
         <Select
           selectedKeys={[selectedLocation]}
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           className="w-full"
           size="sm"
           classNames={{
             trigger:
-              "h-[48px] bg-white border border-[#e4e4e7] rounded-lg px-3 flex justify-between items-center",
-            value: "font-semibold text-[14px] text-empacts",
+              "h-12 border border-[#e4e4e7] bg-white rounded-lg px-3 flex justify-between text-empacts",
+            value: "text-[14px] font-semibold text-empacts",
+            selectorIcon: "text-empacts",
           }}
           placeholder="Select a location"
         >
           {provinces.map((province) => (
             <SelectItem
-              key={province}
-              value={province}
+              key={province.value}
+              value={province.value}
               className={`text-[14px] font-semibold ${
-                selectedLocation === province
+                selectedLocation === province.value
                   ? "text-empacts"
                   : "text-gray-700 hover:text-gray-900"
               }`}
             >
-              {province}
+              {province.label}
             </SelectItem>
           ))}
         </Select>

@@ -19,33 +19,29 @@ export default function Home() {
   const [startups, setStartups] = useState<Startup[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedTabs, setSelectedTabs] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const fetchStartups = useCallback(async () => {
     try {
-      let response = await startup_list(4, page);
-      if (isLoggedIn && response.statusCode === 401) {
-        localStorage.removeItem('accessToken');
-        setIsLoggedIn(false);
-        response = await startup_list(4, page);
-      }
+      let response = await startup_list(12, page, selectedTabs);
       const data = response.data;
-      setStartups(prev => [...prev, ...data.startups]);
+      
+      setStartups(prev => (page === 1 ? data.startups : [...prev, ...data.startups]));
       setHasMore(data.hasMore);
     } catch (error) {
       console.error('Failed to fetch startups:', error);
     }
-  }, [page, isLoggedIn]);
-
+  }, [page, selectedTabs]);
+  
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const user = localStorage.getItem('user');
-    setIsLoggedIn(!!user);
-  }, []);
-
+    setStartups([]); 
+    setPage(1);      
+  }, [selectedTabs]);
+  
   useEffect(() => {
     fetchStartups();
-  }, [page, isLoggedIn, fetchStartups]);
+  }, [page, fetchStartups]);
 
   const handleScroll = useCallback(() => {
     const bottomReached =
@@ -69,7 +65,7 @@ export default function Home() {
       <div className="relative z-10 w-full flex flex-col items-center">
         <HeroSection />
         <SearchBar className="mb-8 w-full max-w-2xl shadow-md" />
-        <Tabs />
+        <Tabs setSelectedTabs={setSelectedTabs} selectedTabs={selectedTabs} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
           {startups.map((card, index) => (
             <StartupCard key={index} {...card} onClick={handleStartupDetail} />

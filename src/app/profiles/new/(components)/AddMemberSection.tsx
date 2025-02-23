@@ -9,20 +9,17 @@ interface Member {
 
 interface AddMemberSectionProps {
   accentColor?: string;
+  members: Member[];
+  setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
 }
 
 const AddMemberSection: React.FC<AddMemberSectionProps> = ({
-  accentColor = "#70a75c", 
+  accentColor = "#70a75c",
+  members,
+  setMembers,
 }) => {
   const [email, setEmail] = useState('');
   const [title, setTitle] = useState('');
-  const [members, setMembers] = useState<Member[]>([
-    { email: 'abc@gmail.com', title: 'CEO' },
-    { email: 'abc@gmail.com', title: 'CEO' },
-    { email: 'abc@gmail.com', title: 'CEO' },
-    { email: 'nguyenvana@gmail.com', title: 'Nguyễn Văn A' },
-    { email: 'nguyenvana@gmail.com', title: 'Nguyễn Văn A' },
-  ]);
 
   const handleAddMember = () => {
     if (email && title) {
