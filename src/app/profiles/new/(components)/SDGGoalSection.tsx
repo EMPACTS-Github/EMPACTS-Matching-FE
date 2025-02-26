@@ -8,7 +8,7 @@ interface SDGGoalSectionProps {
 }
 
 const SDGGoalSection: React.FC<SDGGoalSectionProps> = ({
-  selectedGoal = 'zero-hunger',
+  selectedGoal = 'ZERO_HUNGER',
   onGoalChange = () => {},
 }) => {
   const isValidGoal = sdgGoals.some(goal => goal.value === selectedGoal);
