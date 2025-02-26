@@ -42,7 +42,7 @@ const SignupPage = () => {
         }
         try {
             const response = await email_signup(email);
-            if (response.code == "VERIFICATION_CODE_SENT") {
+            if (response.code == "VERIFICATION_EMAIL_SENT") {
                 toast.success('Verification code sent to your email');
                 setIsVerifiedScreen(true);
             } else {
@@ -60,9 +60,9 @@ const SignupPage = () => {
             <div className="col-span-1 bg-white flex items-center justify-center">
                 <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
                     {isVerifiedScreen ? (
-                        <VerificationScreen 
-                            email={email} 
-                            setIsVerifiedScreen={setIsVerifiedScreen} 
+                        <VerificationScreen
+                            email={email}
+                            setIsVerifiedScreen={setIsVerifiedScreen}
                             setIsCreatePasswordScreen={setIsCreatePasswordScreen}
                         />
                     ) : isCreatePasswordScreen ? (
