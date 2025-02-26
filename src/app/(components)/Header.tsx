@@ -17,6 +17,7 @@ import DropdownIcon from '/public/assets/dropdown-icon.svg';
 import PlusSquareIcon from '/public/assets/plus-square.svg';
 import SoleLogoEmpacts from '/public/assets/sole-logo-empacts.svg';
 import BellIcon from '/public/assets/bell_icon.svg';
+import { logout } from '@/apis/auth';
 
 interface HeaderProps {
   onLogin?: () => void;
@@ -40,6 +41,14 @@ const Header: React.FC<HeaderProps> = () => {
   const handleBackToHome = () => {
     router.push('/');
   };
+
+  const handleLogout = () => {
+    logout()
+    .then(() => {
+      setIsLoggedIn(false);
+      router.push('/');
+    })
+  }
 
   return (
     <header className="w-full bg-white flex justify-center py-3">
@@ -77,8 +86,6 @@ const Header: React.FC<HeaderProps> = () => {
                   <div className='text-sm'>Discover SDGs Startups</div>
                 </div>
               </DropdownItem>
-              <DropdownItem key="option3">Option 3</DropdownItem>
-              <DropdownItem key="option4">Option 4</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -104,7 +111,7 @@ const Header: React.FC<HeaderProps> = () => {
               <DropdownMenu>
                 <DropdownItem key="profile" className='text-black'>Profile</DropdownItem>
                 <DropdownItem key="settings" className='text-black'>Settings</DropdownItem>
-                <DropdownItem key="logout" className='text-black'>Logout</DropdownItem>
+                <DropdownItem onPress={handleLogout} key="logout" className='text-black'>Logout</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>

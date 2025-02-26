@@ -68,9 +68,6 @@ const LoginPage = () => {
         setIsValidEmail(true);
         toast.success('Login successful');
 
-        // Save necessary info to localStorage
-        localStorage.setItem('accessToken', response.data.accessToken);
-        localStorage.setItem('refreshToken', response.data.refreshToken);
         localStorage.setItem('user', JSON.stringify(response.data.user));
 
         router.push('/'); // Redirect to home page after successful login
@@ -88,9 +85,6 @@ const LoginPage = () => {
         try {
           const userInfo = await getUserAuthInfoAPI();
           localStorage.setItem('user', JSON.stringify(userInfo.data));
-          toast.success('Login with Google successful!', {
-            autoClose: 1000,
-          });
           router.push('/'); // Navigate to home page after successful login
         } catch (error) {
           toast.error('Login with Google failed!', {

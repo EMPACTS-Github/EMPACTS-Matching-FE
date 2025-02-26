@@ -26,19 +26,19 @@ export default function Home() {
     try {
       let response = await startup_list(12, page, selectedTabs);
       const data = response.data;
-      
+
       setStartups(prev => (page === 1 ? data.startups : [...prev, ...data.startups]));
       setHasMore(data.hasMore);
     } catch (error) {
       console.error('Failed to fetch startups:', error);
     }
   }, [page, selectedTabs]);
-  
+
   useEffect(() => {
-    setStartups([]); 
-    setPage(1);      
+    setStartups([]);
+    setPage(1);
   }, [selectedTabs]);
-  
+
   useEffect(() => {
     fetchStartups();
   }, [page, fetchStartups]);
