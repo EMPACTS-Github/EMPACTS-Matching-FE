@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { refresh_token } from "./auth";
+import { AUTH_RESPONSE_CODE } from "@/constants/response";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:3001/api",
@@ -14,8 +15,15 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
+axiosInstance.interceptors.response.use((response) => {
+  if (response.data.code === AUTH_RESPONSE_CODE.LOGOUT) {
+    localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+
+  return response;
+},
   async (error) => {
     const originalRequest = error.config;
 
