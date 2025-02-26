@@ -6,22 +6,22 @@ export const loginWithGoogleAPI = () => {
 }
 
 export const email_signup = async (email: string) => {
-  const response = await axiosInstance.post('/auth/verify-email', { email })
+  const response = await axiosInstance.post('/base-auth/email-verification', { email })
   return response.data
 }
 
 export const verify_OTP = async (email: string, otpCode: string) => {
-  const response = await axiosInstance.post('/auth/verify-otp', { email, otpCode })
+  const response = await axiosInstance.post('/base-auth/otp-verification', { email, otpCode })
   return response.data
 }
 
 export const create_new_password = async (email: string, password: string) => {
-  const response = await axiosInstance.post('/auth/create-password', { email, password })
+  const response = await axiosInstance.post('/base-auth/new-password', { email, password })
   return response.data
 }
 
 export const create_new_profile = async (email: string, avtUrl: string, name: string) => {
-  const response = await axiosInstance.post('/auth/create-profile', { email, avtUrl, name })
+  const response = await axiosInstance.post('/base-auth/new-profile', { email, avtUrl, name })
   return response.data
 }
 
@@ -31,17 +31,17 @@ export const email_signin = async (email: string, password: string) => {
 }
 
 export const send_forgot_password_otp = async (email: string) => {
-  const response = await axiosInstance.post('/auth/password/otp', { email })
+  const response = await axiosInstance.post('/password/otp-email', { email })
   return response.data
 }
 
 export const verify_forgot_password_otp = async (email: string, otpCode: string) => {
-  const response = await axiosInstance.post('/auth/password/otp-verify', { email, otpCode })
+  const response = await axiosInstance.post('/password/otp-verification', { email, otpCode })
   return response.data
 }
 
 export const reset_password = async (email: string, password: string) => {
-  const response = await axiosInstance.post('/auth/password/reset', { email, password })
+  const response = await axiosInstance.post('/password/reset', { email, password })
   return response.data
 }
 
