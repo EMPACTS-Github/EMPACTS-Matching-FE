@@ -5,7 +5,6 @@ import { HeroUIProvider } from "@heroui/react";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import HomepageBackground from '../../public/homepage-bg.png';
-import ClientLayout from './layout-client';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +23,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-cover bg-center bg-no-repeat`} style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
         <ToastContainer />
         <HeroUIProvider>
-          <ClientLayout>{children}</ClientLayout>
+          <div className="min-h-screen flex flex-col">{children}</div>
         </HeroUIProvider>
       </body>
     </html>

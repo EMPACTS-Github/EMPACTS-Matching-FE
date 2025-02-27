@@ -11,6 +11,7 @@ import ActionButtons from '../../../../components/CreateProfile/ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup'; // Import the API
 import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import ProtectedRoute from '@/app/ProtectedRoute';
 
 interface Member {
   email: string;
@@ -57,28 +58,30 @@ const CreateStartupProfile: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center min-h-screen relative">
-      {loading && (
-        <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
-          <div className="loader"></div>
+    <ProtectedRoute>
+      <div className="w-full flex justify-center items-center min-h-screen relative">
+        {loading && (
+          <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+            <div className="loader"></div>
+          </div>
+        )}
+        <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
+          <HeaderSection />
+          <ProfilePictureUpload onImageUpload={(file) => setProfilePicture(file)} />
+          <StartupNameSection
+            companyName={companyName}
+            onCompanyNameChange={setCompanyName}
+          />
+          <LocationBasedSection selectedLocation={location} onChange={setLocation} />
+          <SDGGoalSection
+            selectedGoal={selectedGoal}
+            onGoalChange={setSelectedGoal}
+          />
+          <AddMemberSection members={members} setMembers={setMembers} /> {/* Pass members and setMembers as props */}
+          <ActionButtons onCreate={handleCreateProfile} />
         </div>
-      )}
-      <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
-        <HeaderSection />
-        <ProfilePictureUpload onImageUpload={(file) => setProfilePicture(file)} />
-        <StartupNameSection
-          companyName={companyName}
-          onCompanyNameChange={setCompanyName}
-        />
-        <LocationBasedSection selectedLocation={location} onChange={setLocation} />
-        <SDGGoalSection
-          selectedGoal={selectedGoal}
-          onGoalChange={setSelectedGoal}
-        />
-        <AddMemberSection members={members} setMembers={setMembers} /> {/* Pass members and setMembers as props */}
-        <ActionButtons onCreate={handleCreateProfile} />
       </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 
