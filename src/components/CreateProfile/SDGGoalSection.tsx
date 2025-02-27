@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select, SelectItem } from "@heroui/react";
-import sdgGoals from '../../../(utils)/(data)/sdgGoals.json';
+import sdgGoals from '../../app/(utils)/(data)/sdgGoals.json';
 
 interface SDGGoalSectionProps {
   selectedGoal?: string;
@@ -9,7 +9,7 @@ interface SDGGoalSectionProps {
 
 const SDGGoalSection: React.FC<SDGGoalSectionProps> = ({
   selectedGoal = 'ZERO_HUNGER',
-  onGoalChange = () => {},
+  onGoalChange = () => { },
 }) => {
   const isValidGoal = sdgGoals.some(goal => goal.value === selectedGoal);
 
@@ -36,11 +36,10 @@ const SDGGoalSection: React.FC<SDGGoalSectionProps> = ({
           <SelectItem
             key={goal.value}
             value={goal.value}
-            className={`text-[14px] font-semibold ${
-              selectedGoal === goal.value
+            className={`text-[14px] font-semibold ${selectedGoal === goal.value
                 ? "text-empacts"
                 : "text-gray-700 hover:text-gray-900"
-            }`}
+              }`}
           >
             {goal.label}
           </SelectItem>
