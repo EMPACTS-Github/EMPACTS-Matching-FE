@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import GroupIcon from '../../../public/assets/group.png';
-import LabelIcon from '../../../public/assets/label.png';
-import AvatarPlaceholder from '../../../public/assets/avatar-placeholder.png';
+import GroupIcon from '../../public/assets/group.png';
+import LabelIcon from '../../public/assets/label.png';
+import AvatarPlaceholder from '../../public/assets/avatar-placeholder.png';
 
 interface StartupCardProps {
   id: number;

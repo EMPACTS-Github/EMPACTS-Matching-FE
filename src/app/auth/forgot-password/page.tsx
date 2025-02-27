@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { useRouter } from 'next/navigation'
 import { send_forgot_password_otp } from '@/apis/auth';
+import ProtectedRoute from '@/app/ProtectedRoute';
 
 const ForgotPasswordPage = () => {
     const router = useRouter();
@@ -61,7 +62,7 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <>            
+        <ProtectedRoute>
             <div className="grid grid-cols-3 min-h-screen">
                 {/* Left Panel */}
                 <div className="col-span-1 bg-white flex items-center justify-center">
@@ -70,11 +71,11 @@ const ForgotPasswordPage = () => {
                             <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
                         </div>
                         {isEmailScreen ? (
-                            <EnterEmailScreen 
+                            <EnterEmailScreen
                                 email={email}
                                 setEmailSent={setIsEmailScreen}
-                                setResetPasswordScreen={setIsResetPasswordScreen} 
-                                title="Verification code" 
+                                setResetPasswordScreen={setIsResetPasswordScreen}
+                                title="Verification code"
                                 description={`A verification code has been sent to <strong>${email}</strong>. Please input your OTP code to finish reset password.`}
                             />
                         ) : isResetPasswordScreen ? (
@@ -83,15 +84,15 @@ const ForgotPasswordPage = () => {
                             <div>
                                 {/* Logo and Title */}
                                 <div className="flex flex-col items-center text-center">
-                                <Image 
-                                    src={EmpactsLogo} 
-                                    alt="Background image" 
-                                    width={0}
-                                    height={0}
-                                    sizes="100vw"
-                                    style={{ width: '50%', height: 'auto' }} 
-                                    priority 
-                                />
+                                    <Image
+                                        src={EmpactsLogo}
+                                        alt="Background image"
+                                        width={0}
+                                        height={0}
+                                        sizes="100vw"
+                                        style={{ width: '50%', height: 'auto' }}
+                                        priority
+                                    />
                                     <h2 className="text-2xl font-bold mt-6 mb-6 text-black">
                                         Forgot password
                                     </h2>
@@ -140,7 +141,7 @@ const ForgotPasswordPage = () => {
                     />
                 </div>
             </div>
-        </>
+        </ProtectedRoute>
     );
 };
 

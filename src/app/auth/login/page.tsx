@@ -11,6 +11,7 @@ import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
+import ProtectedRoute from '@/app/ProtectedRoute';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -101,109 +102,111 @@ const LoginPage = () => {
   }, [searchParams, router]);
 
   return (
-    <div className="grid grid-cols-3 min-h-screen">
-      {/* Left Side: Login Form */}
-      <div className="col-span-1 bg-white flex items-center justify-center">
-        <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
-          <div className="flex flex-col items-center text-center">
-            <Image
-              src={EmpactsLogo}
-              alt="EMPACTS Logo Image"
-              priority
-              width={120}
-              height={120}
-            />
-            <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign in</h2>
-          </div>
+    <ProtectedRoute>
+      <div className="grid grid-cols-3 min-h-screen">
+        {/* Left Side: Login Form */}
+        <div className="col-span-1 bg-white flex items-center justify-center">
+          <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
+            <div className="flex flex-col items-center text-center">
+              <Image
+                src={EmpactsLogo}
+                alt="EMPACTS Logo Image"
+                priority
+                width={120}
+                height={120}
+              />
+              <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign in</h2>
+            </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            {/* Email Input */}
-            <Input
-              variant="underlined"
+            <form onSubmit={handleLogin} className="space-y-4">
+              {/* Email Input */}
+              <Input
+                variant="underlined"
+                size="lg"
+                label="Email"
+                value={email}
+                radius='none'
+                isInvalid={!isValidEmail}
+                color={emailColor}
+                errorMessage={emailError}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {/* Password Input */}
+              <Input
+                variant="underlined"
+                radius='none'
+                size="lg"
+                type="password"
+                label="Password"
+                value={password}
+                isInvalid={!isValidPassword}
+                color={passwordColor}
+                errorMessage={passwordError}
+                onChange={(e) => setPassword(e.target.value)}
+                style={{ borderRadius: '0px' }}
+              />
+              {/* Forgot Password */}
+              <div className="text-right !mt-1">
+                <Link href="/auth/forgot-password" className="text-sm text-[#1A1D1F] font-bold">
+                  Forgot your password?
+                </Link>
+              </div>
+              {/* Sign In Button */}
+              <Button
+                type="submit"
+                color="primary"
+                size="lg"
+                className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+              >
+                Sign in
+              </Button>
+            </form>
+
+            {/* Divider */}
+            <div className="my-6 text-gray-500 flex items-center">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-4 text-black text-sm">Or</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            {/* Google Sign In Button */}
+            <Button
+              onClick={loginWithGoogleAPI}
               size="lg"
-              label="Email"
-              value={email}
-              radius='none'
-              isInvalid={!isValidEmail}
-              color={emailColor}
-              errorMessage={emailError}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {/* Password Input */}
-            <Input
-              variant="underlined"
-              radius='none'
-              size="lg"
-              type="password"
-              label="Password"
-              value={password}
-              isInvalid={!isValidPassword}
-              color={passwordColor}
-              errorMessage={passwordError}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ borderRadius: '0px' }}
-            />
-            {/* Forgot Password */}
-            <div className="text-right !mt-1">
-              <Link href="/auth/forgot-password" className="text-sm text-[#1A1D1F] font-bold">
-                Forgot your password?
+              className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
+            >
+              <Image
+                src="/google-icon.svg"
+                alt="Google icon"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Sign in with Google
+            </Button>
+
+            {/* Sign Up Link */}
+            <div className="text-center mt-4">
+              <span className="text-gray-500">Don&apos;t have an account? </span>
+              <Link href="/auth/signup" color="secondary" className="text-empacts">
+                Sign Up
               </Link>
             </div>
-            {/* Sign In Button */}
-            <Button
-              type="submit"
-              color="primary"
-              size="lg"
-              className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
-            >
-              Sign in
-            </Button>
-          </form>
-
-          {/* Divider */}
-          <div className="my-6 text-gray-500 flex items-center">
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="mx-4 text-black text-sm">Or</span>
-            <div className="flex-grow border-t border-gray-300"></div>
-          </div>
-
-          {/* Google Sign In Button */}
-          <Button
-            onClick={loginWithGoogleAPI}
-            size="lg"
-            className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
-          >
-            <Image
-              src="/google-icon.svg"
-              alt="Google icon"
-              width={20}
-              height={20}
-              className="mr-2"
-            />
-            Sign in with Google
-          </Button>
-
-          {/* Sign Up Link */}
-          <div className="text-center mt-4">
-            <span className="text-gray-500">Don&apos;t have an account? </span>
-            <Link href="/auth/signup" color="secondary" className="text-empacts">
-              Sign Up
-            </Link>
           </div>
         </div>
-      </div>
 
-      {/* Right Side: Background with Content */}
-      <div className="col-span-2 h-screen overflow-hidden relative bg-[#1A1D1F]">
-        <Image
-          src={EmpactsBg}
-          alt="EMPACTS Background Image"
-          fill
-          priority
-          style={{ objectFit: 'cover' }}
-        />
+        {/* Right Side: Background with Content */}
+        <div className="col-span-2 h-screen overflow-hidden relative bg-[#1A1D1F]">
+          <Image
+            src={EmpactsBg}
+            alt="EMPACTS Background Image"
+            fill
+            priority
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 
