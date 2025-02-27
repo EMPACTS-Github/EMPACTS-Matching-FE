@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useState, useCallback } from 'react';
-import StartupCard from './(components)/StartupCard';
-import Tabs from './(components)/Tabs';
-import SearchBar from './(components)/SearchBar';
-import { HeroSection } from './(components)/HeroSection';
+import StartupCard from '../components/StartupCard';
+import Tabs from '../components/Tabs';
+import SearchBar from '../components/SearchBar';
+import { HeroSection } from '../components/HeroSection';
 import { startup_list } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 interface Startup {

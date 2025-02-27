@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
-import HeaderSection from '../(components)/HeaderSection';
-import ProfilePictureUpload from '../(components)/ProfilePictureUpload';
-import StartupNameSection from '../(components)/StartupNameSection';
-import LocationBasedSection from '../(components)/LocationBasedSection';
-import SDGGoalSection from '../(components)/SDGGoalSection';
-import AddMemberSection from '../(components)/AddMemberSection';
-import ActionButtons from '../(components)/ActionButtons';
+import HeaderSection from '../../../../components/CreateProfile/HeaderSection';
+import ProfilePictureUpload from '../../../../components/CreateProfile/ProfilePictureUpload';
+import StartupNameSection from '../../../../components/CreateProfile/StartupNameSection';
+import LocationBasedSection from '../../../../components/CreateProfile/LocationBasedSection';
+import SDGGoalSection from '../../../../components/CreateProfile/SDGGoalSection';
+import AddMemberSection from '../../../../components/CreateProfile/AddMemberSection';
+import ActionButtons from '../../../../components/CreateProfile/ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup'; // Import the API
 import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles

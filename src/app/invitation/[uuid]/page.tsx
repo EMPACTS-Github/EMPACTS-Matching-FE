@@ -1,5 +1,5 @@
 import React from 'react';
-import InviteCard from '../(components)/InviteCard';
+import InviteCard from '../../../components/Invitation/InviteCard';
 
 const InvitationPage: React.FC = () => {
   return (
