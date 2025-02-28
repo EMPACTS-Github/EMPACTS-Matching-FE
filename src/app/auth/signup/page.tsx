@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import EmpactsBg from '/public/empacts-bg.png';
 import { Input, Button } from "@heroui/react";
@@ -60,6 +60,12 @@ const SignupPage = () => {
             toast.error('An error occurred while signing up');
         }
     };
+
+    useEffect(() => {
+        if (hasSubmitted && !isValidEmail) {
+          validateEmailFormat(email);
+        }
+      }, [email, hasSubmitted, isValidEmail]);
 
     const renderForm = () => (
         <form onSubmit={handleSignup} className="space-y-4">

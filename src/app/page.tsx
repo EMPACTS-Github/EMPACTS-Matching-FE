@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, useState, useCallback } from 'react';
-import StartupCard from '../components/StartupCard';
-import Tabs from '../components/Tabs';
-import SearchBar from '../components/SearchBar';
-import { HeroSection } from '../components/HeroSection';
+import { Spinner } from "@heroui/spinner";
+import StartupCard from '@/components/StartupCard';
+import Tabs from '@/components/Tabs';
+import SearchBar from '@/components/SearchBar';
+import { HeroSection } from '@/components/HeroSection';
 import { startup_list } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
@@ -22,9 +23,11 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
   const [selectedTabs, setSelectedTabs] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
   const fetchStartups = useCallback(async () => {
     try {
+      setLoading(true);
       let response = await startup_list(12, page, selectedTabs);
       const data = response.data;
 
@@ -32,6 +35,8 @@ export default function Home() {
       setHasMore(data.hasMore);
     } catch (error) {
       console.error('Failed to fetch startups:', error);
+    } finally {
+      setLoading(false);
     }
   }, [page, selectedTabs]);
 
@@ -70,10 +75,17 @@ export default function Home() {
           <SearchBar className="mb-8 w-full max-w-2xl shadow-md" />
           <Tabs setSelectedTabs={setSelectedTabs} selectedTabs={selectedTabs} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-            {startups.map((card, index) => (
-              <StartupCard key={index} {...card} onClick={handleStartupDetail} />
-            ))}
+            {startups.length > 0 ? (
+              startups.map((card, index) => (
+                <StartupCard key={index} {...card} onClick={handleStartupDetail} />
+              ))
+            ) : (
+              !loading && <div className="text-center mt-8 text-black md:col-span-2 lg:col-span-4">No result found</div>
+            )}
           </div>
+          {loading && hasMore && (
+            <Spinner color="secondary" className="flex justify-center items-center mt-8 mb-8" size="lg"/>
+          )}
         </div>
       </main>
     </>

@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
-import EmpactsBg from '../../../../public/empacts-bg.png';
+import EmpactsBg from '/public/empacts-bg.png';
 import { toast } from 'react-toastify';
 import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/app/ProtectedRoute';
-import LogoAndTitle from '../../../components/Auth/LogoAndTitle';
+import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -83,10 +83,10 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (hasSubmitted) {
+    if (hasSubmitted && !isValidEmail) {
       validateEmailFormat(email);
     }
-  }, [email, hasSubmitted]);
+  }, [email, hasSubmitted, isValidEmail]);
 
   useEffect(() => {
     async function getUserAuthInfo() {
