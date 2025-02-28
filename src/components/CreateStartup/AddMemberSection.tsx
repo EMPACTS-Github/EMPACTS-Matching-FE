@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Input, Button } from "@heroui/react";
 import Image from 'next/image';
+import { Member } from '@/utils/interfaces/startup';
 
-interface Member {
-  email: string;
-  title: string;
-}
 
 interface AddMemberSectionProps {
   accentColor?: string;

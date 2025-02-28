@@ -1,6 +1,6 @@
 import React from 'react';
 import { Select, SelectItem } from "@heroui/react";
-import sdgGoals from '../../app/(utils)/(data)/sdgGoals.json';
+import sdgGoals from '@/utils/data/sdgGoals.json';
 
 interface SDGGoalSectionProps {
   selectedGoal?: string;
