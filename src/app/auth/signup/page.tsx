@@ -10,11 +10,17 @@ import { email_signup } from '@/apis/auth';
 import VerificationScreen from './VerificationSreen';
 import CreatePasswordScreen from './CreatePasswordScreen';
 import ProtectedRoute from '@/app/ProtectedRoute';
+import RegisterInfoScreen from './RegisterInfoScreen';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const SignupPage = () => {
+    const router = useRouter()
+    const searchParams = useSearchParams();
+    const currentScreen = searchParams.get('stage');
     const [email, setEmail] = useState('');
     const [isVerifiedScreen, setIsVerifiedScreen] = useState(false);
     const [isCreatePasswordScreen, setIsCreatePasswordScreen] = useState(false);
+    const [isRegisterInfoScreen, setIsRegisterInfoScreen] = useState(true);
 
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [emailError, setEmailError] = useState('');
@@ -45,14 +51,14 @@ const SignupPage = () => {
             const response = await email_signup(email);
             if (response.code == "VERIFICATION_EMAIL_SENT") {
                 toast.success('Verification code sent to your email');
-                setIsVerifiedScreen(true);
+                localStorage.setItem('email', email)
+                router.push('/auth/signup?stage=verification')
             } else {
-                toast.error(response.message);
+                toast.error('User already exist', { autoClose: 2000 });
             }
         } catch (error) {
             toast.error('An error occurred while signing up');
         }
-        // setIsVerifiedScreen(true);
     };
 
     return (
@@ -60,16 +66,16 @@ const SignupPage = () => {
             <div className="grid grid-cols-3 min-h-screen">
                 {/* Left Side: Signup Form */}
                 <div className="col-span-1 bg-white flex items-center justify-center">
-                    <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
-                        {isVerifiedScreen ? (
+                    <div className="p-8 rounded-lg w-full max-w-lg h-3/4">
+                        {currentScreen == 'verification' ? (
                             <VerificationScreen
                                 email={email}
-                                setIsVerifiedScreen={setIsVerifiedScreen}
-                                setIsCreatePasswordScreen={setIsCreatePasswordScreen}
                             />
-                        ) : isCreatePasswordScreen ? (
+                        ) : currentScreen == 'password' ? (
                             <CreatePasswordScreen email={email} />
-                        ) : (
+                        ) : currentScreen == 'registerinfo' ? (
+                            <RegisterInfoScreen />
+                        ) :
                             <div>
                                 <div className="flex flex-col items-center text-center">
                                     <Image
@@ -112,7 +118,7 @@ const SignupPage = () => {
                                     </Link>
                                 </div>
                             </div>
-                        )}
+                        }
                     </div>
                 </div>
 
