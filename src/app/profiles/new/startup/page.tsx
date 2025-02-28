@@ -1,33 +1,29 @@
 "use client";
 
 import React, { useState } from 'react';
-import HeaderSection from '../../../../components/CreateProfile/HeaderSection';
-import ProfilePictureUpload from '../../../../components/CreateProfile/ProfilePictureUpload';
-import StartupNameSection from '../../../../components/CreateProfile/StartupNameSection';
-import LocationBasedSection from '../../../../components/CreateProfile/LocationBasedSection';
-import SDGGoalSection from '../../../../components/CreateProfile/SDGGoalSection';
-import AddMemberSection from '../../../../components/CreateProfile/AddMemberSection';
-import ActionButtons from '../../../../components/CreateProfile/ActionButtons';
+import HeaderSection from '../../../../components/CreateStartup/HeaderSection';
+import ProfilePictureUpload from '../../../../components/CreateStartup/ProfilePictureUpload';
+import StartupNameSection from '../../../../components/CreateStartup/StartupNameSection';
+import LocationBasedSection from '../../../../components/CreateStartup/LocationBasedSection';
+import SDGGoalSection from '../../../../components/CreateStartup/SDGGoalSection';
+import AddMemberSection from '../../../../components/CreateStartup/AddMemberSection';
+import ActionButtons from '../../../../components/CreateStartup/ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup'; // Import the API
 import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 import ProtectedRoute from '@/app/ProtectedRoute';
-
-interface Member {
-  email: string;
-  title: string;
-}
+import { Member } from '@/utils/interfaces/startup';
 
 const CreateStartupProfile: React.FC = () => {
   const [companyName, setCompanyName] = useState('');
   const [selectedGoal, setSelectedGoal] = useState('');
   const [location, setLocation] = useState('HA_NOI');
   const [profilePicture, setProfilePicture] = useState('');
-  const [members, setMembers] = useState<Member[]>([]); // Add state for members
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleCreateProfile = async () => {
-    setLoading(true); // Set loading to true
+    setLoading(true);
     const requestBody = {
       name: companyName,
       location_based: location,

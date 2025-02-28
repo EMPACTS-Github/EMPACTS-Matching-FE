@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Input, Button } from "@heroui/react";
-import EmpactsLogo from '../../../../public/empacts-logo.png';
+import EmpactsLogo from '/public/empacts-logo.png';
 import Link from 'next/link';
 
 const CreatePasswordScreen = (props: { email: string }) => {

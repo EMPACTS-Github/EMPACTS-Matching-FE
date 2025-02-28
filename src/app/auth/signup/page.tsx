@@ -1,30 +1,29 @@
-'use client'
+'use client';
 import { useState } from 'react';
 import Image from 'next/image';
 import EmpactsBg from '/public/empacts-bg.png';
-import EmpactsLogo from '/public/empacts-logo.png';
 import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { email_signup } from '@/apis/auth';
-import VerificationScreen from './VerificationSreen';
-import CreatePasswordScreen from './CreatePasswordScreen';
+import VerificationScreen from '@/components/Auth/VerificationSreen';
+import CreatePasswordScreen from '@/components/Auth/CreatePasswordScreen';
 import ProtectedRoute from '@/app/ProtectedRoute';
 import RegisterInfoScreen from './RegisterInfoScreen';
 import { useRouter, useSearchParams } from 'next/navigation';
+import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
 const SignupPage = () => {
-    const router = useRouter()
+    const router = useRouter();
     const searchParams = useSearchParams();
     const currentScreen = searchParams.get('stage');
     const [email, setEmail] = useState('');
-    const [isVerifiedScreen, setIsVerifiedScreen] = useState(false);
-    const [isCreatePasswordScreen, setIsCreatePasswordScreen] = useState(false);
-    const [isRegisterInfoScreen, setIsRegisterInfoScreen] = useState(true);
 
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [emailError, setEmailError] = useState('');
     const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+
     // Function to validate email format
     const validateEmailFormat = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,6 +41,7 @@ const SignupPage = () => {
 
     const handleSignup = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
+        setHasSubmitted(true);
         const isEmailValid = validateEmailFormat(email);
         if (!isEmailValid) {
             toast.error('Invalid email format');
@@ -51,8 +51,8 @@ const SignupPage = () => {
             const response = await email_signup(email);
             if (response.code == "VERIFICATION_EMAIL_SENT") {
                 toast.success('Verification code sent to your email');
-                localStorage.setItem('email', email)
-                router.push('/auth/signup?stage=verification')
+                localStorage.setItem('email', email);
+                router.push('/auth/signup?stage=verification');
             } else {
                 toast.error('User already exist', { autoClose: 2000 });
             }
@@ -61,55 +61,50 @@ const SignupPage = () => {
         }
     };
 
+    const renderForm = () => (
+        <form onSubmit={handleSignup} className="space-y-4">
+            <Input
+                variant="underlined"
+                size="lg"
+                radius='none'
+                label="Email"
+                value={email}
+                isInvalid={!isValidEmail}
+                color={emailColor}
+                errorMessage={emailError}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+            />
+            <Button
+                type="submit"
+                color="primary"
+                size="lg"
+                className="w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+            >
+                Sign up
+            </Button>
+        </form>
+    );
+
     return (
         <ProtectedRoute>
             <div className="grid grid-cols-3 min-h-screen">
                 {/* Left Side: Signup Form */}
                 <div className="col-span-1 bg-white flex items-center justify-center">
-                    <div className="p-8 rounded-lg w-full max-w-lg h-3/4">
+                    <div className="p-8 rounded-lg w-full max-w-sm h-3/4">
                         {currentScreen == 'verification' ? (
-                            <VerificationScreen
-                                email={email}
-                            />
+                            <VerificationScreen email={email} />
                         ) : currentScreen == 'password' ? (
                             <CreatePasswordScreen email={email} />
                         ) : currentScreen == 'registerinfo' ? (
                             <RegisterInfoScreen />
-                        ) :
+                        ) : (
                             <div>
-                                <div className="flex flex-col items-center text-center">
-                                    <Image
-                                        src={EmpactsLogo}
-                                        alt="EMPACTS Logo Image"
-                                        priority
-                                        width={120}
-                                        height={120}
-                                    />
-                                    <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign up</h2>
-                                </div>
-                                <form onSubmit={handleSignup} className="space-y-4">
-                                    <Input
-                                        variant="underlined"
-                                        size="lg"
-                                        radius='none'
-                                        label="Email"
-                                        value={email}
-                                        isInvalid={!isValidEmail}
-                                        color={emailColor}
-                                        errorMessage={emailError}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        size="lg"
-                                        className="w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
-                                    >
-                                        Sign up
-                                    </Button>
-                                </form>
-
+                                <LogoAndTitle 
+                                    title="Sign up" 
+                                    description=""
+                                />
+                                {renderForm()}
                                 {/* Sign In Link */}
                                 <div className="text-center mt-8">
                                     <span className="text-gray-500">Already have an account? </span>
@@ -118,7 +113,7 @@ const SignupPage = () => {
                                     </Link>
                                 </div>
                             </div>
-                        }
+                        )}
                     </div>
                 </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Select, SelectItem } from "@heroui/react";
-import provinces from '@/app/(utils)/(data)/provinces.json';
+import provinces from '@/utils/data/provinces.json';
 
 interface LocationBasedSectionProps {
   selectedLocation?: string;

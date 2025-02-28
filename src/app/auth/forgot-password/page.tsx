@@ -1,16 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Input, Button } from "@heroui/react";
 import EmpactsBg from '/public/empacts-bg.png';
-import EmpactsLogo from '/public/empacts-logo.png';
-import EnterEmailScreen from './EnterEmailScreen';
-import ResetPasswordScreen from './ResetPasswordScreen';
+import EnterEmailScreen from '../../../components/Auth/EnterEmailScreen';
+import ResetPasswordScreen from '../../../components/Auth/ResetPasswordScreen';
 import { toast } from 'react-toastify';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { useRouter } from 'next/navigation'
 import { send_forgot_password_otp } from '@/apis/auth';
 import ProtectedRoute from '@/app/ProtectedRoute';
+import LogoAndTitle from '../../../components/Auth/LogoAndTitle';
 
 const ForgotPasswordPage = () => {
     const router = useRouter();
@@ -22,6 +22,7 @@ const ForgotPasswordPage = () => {
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [emailError, setEmailError] = useState('');
     const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     // Function to validate email format
     const validateEmailFormat = (email: string): boolean => {
@@ -40,6 +41,7 @@ const ForgotPasswordPage = () => {
 
     const handleSentCode = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
+        setHasSubmitted(true);
         const isEmailValid = validateEmailFormat(email);
         if (isEmailValid) {
             try {
@@ -60,6 +62,38 @@ const ForgotPasswordPage = () => {
             toast.error('Invalid email format');
         }
     };
+
+    useEffect(() => {
+        if (hasSubmitted) {
+            validateEmailFormat(email);
+        }
+    }, [email, hasSubmitted]);
+
+    const renderForm = () => (
+        <form onSubmit={handleSentCode} className="space-y-4">
+            <Input
+                variant='underlined'
+                fullWidth
+                radius='none'
+                size="lg"
+                label="Email"
+                value={email}
+                isInvalid={!isValidEmail}
+                color={emailColor}
+                errorMessage={emailError}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+            />
+            <Button
+                type="submit"
+                color="primary"
+                size="lg"
+                className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+            >
+                Continue
+            </Button>
+        </form>
+    );
 
     return (
         <ProtectedRoute>
@@ -82,49 +116,11 @@ const ForgotPasswordPage = () => {
                             <ResetPasswordScreen email={email} setOpenResetPasswordScreen={setIsResetPasswordScreen} />
                         ) : (
                             <div>
-                                {/* Logo and Title */}
-                                <div className="flex flex-col items-center text-center">
-                                    <Image
-                                        src={EmpactsLogo}
-                                        alt="Background image"
-                                        width={0}
-                                        height={0}
-                                        sizes="100vw"
-                                        style={{ width: '50%', height: 'auto' }}
-                                        priority
-                                    />
-                                    <h2 className="text-2xl font-bold mt-6 mb-6 text-black">
-                                        Forgot password
-                                    </h2>
-                                    <p className="text-sm text-gray-500 mb-6">
-                                        Enter your email address and we will send you instructions to reset your password.
-                                    </p>
-                                </div>
-
-                                {/* Form */}
-                                <form onSubmit={handleSentCode} className="space-y-4">
-                                    <Input
-                                        variant='underlined'
-                                        fullWidth
-                                        radius='none'
-                                        size="lg"
-                                        label="Email"
-                                        value={email}
-                                        isInvalid={!isValidEmail}
-                                        color={emailColor}
-                                        errorMessage={emailError}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        size="lg"
-                                        className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
-                                    >
-                                        Continue
-                                    </Button>
-                                </form>
+                                <LogoAndTitle 
+                                    title="Forgot password"
+                                    description="Enter your email address and we will send you instructions to reset your password."
+                                />
+                                {renderForm()}
                             </div>
                         )}
                     </div>
