@@ -3,6 +3,7 @@
 import axios from "axios";
 import { refresh_token } from "./auth";
 import { AUTH_RESPONSE_CODE } from "@/constants/response";
+import { interceptorLoadingElements } from "@/utils/formatter";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:3001/api",
@@ -11,6 +12,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   // Ensure credentials are always included
+  interceptorLoadingElements(true);
   config.withCredentials = true;
   return config;
 });
@@ -21,7 +23,7 @@ axiosInstance.interceptors.response.use((response) => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }
-
+  interceptorLoadingElements(false);
   return response;
 },
   async (error) => {
