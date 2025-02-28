@@ -1,23 +1,22 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Input, Button } from "@heroui/react";
 import EmpactsBg from '/public/empacts-bg.png';
-import EnterEmailScreen from '../../../components/Auth/EnterEmailScreen';
-import ResetPasswordScreen from '../../../components/Auth/ResetPasswordScreen';
+import EnterEmailScreen from '@/components/Auth/EnterEmailScreen';
+import ResetPasswordScreen from '@/components/Auth/ResetPasswordScreen';
 import { toast } from 'react-toastify';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation';
 import { send_forgot_password_otp } from '@/apis/auth';
 import ProtectedRoute from '@/app/ProtectedRoute';
-import LogoAndTitle from '../../../components/Auth/LogoAndTitle';
+import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
 const ForgotPasswordPage = () => {
     const router = useRouter();
-
+    const searchParams = useSearchParams();
+    const currentScreen = searchParams.get('stage');
     const [email, setEmail] = useState('');
-    const [isEmailScreen, setIsEmailScreen] = useState(false);
-    const [isResetPasswordScreen, setIsResetPasswordScreen] = useState(false);
 
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [emailError, setEmailError] = useState('');
@@ -48,7 +47,7 @@ const ForgotPasswordPage = () => {
                 const response = await send_forgot_password_otp(email);
                 if (response.code === "VERIFICATION_CODE_SENT") {
                     toast.success('Verification code sent to your email');
-                    setIsEmailScreen(true);
+                    router.push('/auth/forgot-password?stage=verification');
                 } else if (response.code === "EMAIL_ALREADY_SENT") {
                     toast.error('Email already sent. Please wait before requesting again.');
                 } else {
@@ -64,10 +63,10 @@ const ForgotPasswordPage = () => {
     };
 
     useEffect(() => {
-        if (hasSubmitted) {
+        if (hasSubmitted && !isValidEmail) {
             validateEmailFormat(email);
         }
-    }, [email, hasSubmitted]);
+    }, [email, hasSubmitted, isValidEmail]);
 
     const renderForm = () => (
         <form onSubmit={handleSentCode} className="space-y-4">
@@ -104,16 +103,16 @@ const ForgotPasswordPage = () => {
                         <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => router.back()}>
                             <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
                         </div>
-                        {isEmailScreen ? (
+                        {currentScreen == 'verification' ? (
                             <EnterEmailScreen
                                 email={email}
-                                setEmailSent={setIsEmailScreen}
-                                setResetPasswordScreen={setIsResetPasswordScreen}
+                                setEmailSent={() => {}}
+                                setResetPasswordScreen={() => router.push('/auth/forgot-password?stage=reset')}
                                 title="Verification code"
                                 description={`A verification code has been sent to <strong>${email}</strong>. Please input your OTP code to finish reset password.`}
                             />
-                        ) : isResetPasswordScreen ? (
-                            <ResetPasswordScreen email={email} setOpenResetPasswordScreen={setIsResetPasswordScreen} />
+                        ) : currentScreen == 'reset' ? (
+                            <ResetPasswordScreen email={email} setOpenResetPasswordScreen={() => {}} />
                         ) : (
                             <div>
                                 <LogoAndTitle 
