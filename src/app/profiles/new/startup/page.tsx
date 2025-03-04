@@ -1,32 +1,29 @@
 "use client";
 
 import React, { useState } from 'react';
-import HeaderSection from '../(components)/HeaderSection';
-import ProfilePictureUpload from '../(components)/ProfilePictureUpload';
-import StartupNameSection from '../(components)/StartupNameSection';
-import LocationBasedSection from '../(components)/LocationBasedSection';
-import SDGGoalSection from '../(components)/SDGGoalSection';
-import AddMemberSection from '../(components)/AddMemberSection';
-import ActionButtons from '../(components)/ActionButtons';
+import HeaderSection from '../../../../components/CreateStartup/HeaderSection';
+import ProfilePictureUpload from '../../../../components/CreateStartup/ProfilePictureUpload';
+import StartupNameSection from '../../../../components/CreateStartup/StartupNameSection';
+import LocationBasedSection from '../../../../components/CreateStartup/LocationBasedSection';
+import SDGGoalSection from '../../../../components/CreateStartup/SDGGoalSection';
+import AddMemberSection from '../../../../components/CreateStartup/AddMemberSection';
+import ActionButtons from '../../../../components/CreateStartup/ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup'; // Import the API
 import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
-
-interface Member {
-  email: string;
-  title: string;
-}
+import ProtectedRoute from '@/app/ProtectedRoute';
+import { Member } from '@/utils/interfaces/startup';
 
 const CreateStartupProfile: React.FC = () => {
   const [companyName, setCompanyName] = useState('');
   const [selectedGoal, setSelectedGoal] = useState('');
   const [location, setLocation] = useState('HA_NOI');
   const [profilePicture, setProfilePicture] = useState('');
-  const [members, setMembers] = useState<Member[]>([]); // Add state for members
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleCreateProfile = async () => {
-    setLoading(true); // Set loading to true
+    setLoading(true);
     const requestBody = {
       name: companyName,
       location_based: location,
@@ -57,28 +54,30 @@ const CreateStartupProfile: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center min-h-screen relative">
-      {loading && (
-        <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
-          <div className="loader"></div>
+    <ProtectedRoute>
+      <div className="w-full flex justify-center items-center min-h-screen relative">
+        {loading && (
+          <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+            <div className="loader"></div>
+          </div>
+        )}
+        <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
+          <HeaderSection />
+          <ProfilePictureUpload onImageUpload={(file) => setProfilePicture(file)} />
+          <StartupNameSection
+            companyName={companyName}
+            onCompanyNameChange={setCompanyName}
+          />
+          <LocationBasedSection selectedLocation={location} onChange={setLocation} />
+          <SDGGoalSection
+            selectedGoal={selectedGoal}
+            onGoalChange={setSelectedGoal}
+          />
+          <AddMemberSection members={members} setMembers={setMembers} /> {/* Pass members and setMembers as props */}
+          <ActionButtons onCreate={handleCreateProfile} />
         </div>
-      )}
-      <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
-        <HeaderSection />
-        <ProfilePictureUpload onImageUpload={(file) => setProfilePicture(file)} />
-        <StartupNameSection
-          companyName={companyName}
-          onCompanyNameChange={setCompanyName}
-        />
-        <LocationBasedSection selectedLocation={location} onChange={setLocation} />
-        <SDGGoalSection
-          selectedGoal={selectedGoal}
-          onGoalChange={setSelectedGoal}
-        />
-        <AddMemberSection members={members} setMembers={setMembers} /> {/* Pass members and setMembers as props */}
-        <ActionButtons onCreate={handleCreateProfile} />
       </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 

@@ -5,10 +5,11 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Input, Button } from "@heroui/react";
-import EmpactsLogo from '../../../../public/empacts-logo.png';
+import EmpactsLogo from '/public/empacts-logo.png';
 import Link from 'next/link';
 
 const CreatePasswordScreen = (props: { email: string }) => {
+    const email = localStorage.getItem('email');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const router = useRouter();
@@ -18,17 +19,19 @@ const CreatePasswordScreen = (props: { email: string }) => {
             toast.error("Passwords do not match");
             return;
         }
-        try {
-            const response = await create_new_password(props.email, password);
-            if (response.code === "PASSWORD_CREATED") {
-                toast.success("Password created successfully");
-                router.push('/login'); // Redirect to login screen
-            } else {
-                toast.error(response.message);
+        if (password && email) {
+            try {
+                const response = await create_new_password(email, password);
+                if (response.code === "PASSWORD_CREATED") {
+                    toast.success("Password created successfully");
+                    router.push('/auth/signup?stage=registerinfo')
+                } else {
+                    toast.error(response.message);
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error("An error occurred while creating the password");
             }
-        } catch (error) {
-            console.error(error);
-            toast.error("An error occurred while creating the password");
         }
     };
 

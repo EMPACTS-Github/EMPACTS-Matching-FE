@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Input, Button, extendVariants } from "@heroui/react";
+import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
-import EmpactsBg from '../../../../public/empacts-bg.png';
-import EmpactsLogo from '../../../../public/empacts-logo.png';
+import EmpactsBg from '/public/empacts-bg.png';
 import { toast } from 'react-toastify';
 import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
+import ProtectedRoute from '@/app/ProtectedRoute';
+import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -26,6 +27,8 @@ const LoginPage = () => {
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [passwordError, setPasswordError] = useState('');
   const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
+
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   // Function to validate email format
   const validateEmailFormat = (email: string): boolean => {
@@ -45,6 +48,7 @@ const LoginPage = () => {
   // Handle form submission
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     const isEmailValid = validateEmailFormat(email);
     if (!isEmailValid) return;
@@ -79,13 +83,19 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
+    if (hasSubmitted && !isValidEmail) {
+      validateEmailFormat(email);
+    }
+  }, [email, hasSubmitted, isValidEmail]);
+
+  useEffect(() => {
     async function getUserAuthInfo() {
       const success = searchParams.get('success');
       if (success === 'true') {
         try {
           const userInfo = await getUserAuthInfoAPI();
           localStorage.setItem('user', JSON.stringify(userInfo.data));
-          router.push('/'); // Navigate to home page after successful login
+          router.push('/');
         } catch (error) {
           toast.error('Login with Google failed!', {
             autoClose: 1000,
@@ -100,110 +110,105 @@ const LoginPage = () => {
     getUserAuthInfo()
   }, [searchParams, router]);
 
-  return (
-    <div className="grid grid-cols-3 min-h-screen">
-      {/* Left Side: Login Form */}
-      <div className="col-span-1 bg-white flex items-center justify-center">
-        <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
-          <div className="flex flex-col items-center text-center">
-            <Image
-              src={EmpactsLogo}
-              alt="EMPACTS Logo Image"
-              priority
-              width={120}
-              height={120}
-            />
-            <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign in</h2>
-          </div>
+  const renderForm = () => (
+    <form onSubmit={handleLogin} className="space-y-4">
+      {/* Email Input */}
+      <Input
+        variant="underlined"
+        size="lg"
+        label="Email"
+        value={email}
+        radius='none'
+        isInvalid={!isValidEmail}
+        color={emailColor}
+        errorMessage={emailError}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      {/* Password Input */}
+      <Input
+        variant="underlined"
+        radius='none'
+        size="lg"
+        type="password"
+        label="Password"
+        value={password}
+        isInvalid={!isValidPassword}
+        color={passwordColor}
+        errorMessage={passwordError}
+        onChange={(e) => setPassword(e.target.value)}
+        style={{ borderRadius: '0px' }}
+      />
+      {/* Forgot Password */}
+      <div className="text-right !mt-1">
+        <Link href="/auth/forgot-password" className="text-sm text-[#1A1D1F] font-bold">
+          Forgot your password?
+        </Link>
+      </div>
+      {/* Sign In Button */}
+      <Button
+        type="submit"
+        color="primary"
+        size="lg"
+        className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+      >
+        Sign in
+      </Button>
+    </form>
+  );
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            {/* Email Input */}
-            <Input
-              variant="underlined"
-              size="lg"
-              label="Email"
-              value={email}
-              radius='none'
-              isInvalid={!isValidEmail}
-              color={emailColor}
-              errorMessage={emailError}
-              onChange={(e) => setEmail(e.target.value)}
+  return (
+    <ProtectedRoute>
+      <div className="grid grid-cols-3 min-h-screen">
+        {/* Left Side: Login Form */}
+        <div className="col-span-1 bg-white flex items-center justify-center">
+          <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
+            <LogoAndTitle 
+              title="Sign in"
+              description=""
             />
-            {/* Password Input */}
-            <Input
-              variant="underlined"
-              radius='none'
+            {renderForm()}
+            {/* Divider */}
+            <div className="my-6 text-gray-500 flex items-center">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="mx-4 text-black text-sm">Or</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+            {/* Google Sign In Button */}
+            <Button
+              onClick={loginWithGoogleAPI}
               size="lg"
-              type="password"
-              label="Password"
-              value={password}
-              isInvalid={!isValidPassword}
-              color={passwordColor}
-              errorMessage={passwordError}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ borderRadius: '0px' }}
-            />
-            {/* Forgot Password */}
-            <div className="text-right !mt-1">
-              <Link href="/auth/forgot-password" className="text-sm text-[#1A1D1F] font-bold">
-                Forgot your password?
+              className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
+            >
+              <Image
+                src="/google-icon.svg"
+                alt="Google icon"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Sign in with Google
+            </Button>
+            {/* Sign Up Link */}
+            <div className="text-center mt-4">
+              <span className="text-gray-500">Don&apos;t have an account? </span>
+              <Link href="/auth/signup" color="secondary" className="text-empacts">
+                Sign Up
               </Link>
             </div>
-            {/* Sign In Button */}
-            <Button
-              type="submit"
-              color="primary"
-              size="lg"
-              className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
-            >
-              Sign in
-            </Button>
-          </form>
-
-          {/* Divider */}
-          <div className="my-6 text-gray-500 flex items-center">
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="mx-4 text-black text-sm">Or</span>
-            <div className="flex-grow border-t border-gray-300"></div>
-          </div>
-
-          {/* Google Sign In Button */}
-          <Button
-            onClick={loginWithGoogleAPI}
-            size="lg"
-            className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
-          >
-            <Image
-              src="/google-icon.svg"
-              alt="Google icon"
-              width={20}
-              height={20}
-              className="mr-2"
-            />
-            Sign in with Google
-          </Button>
-
-          {/* Sign Up Link */}
-          <div className="text-center mt-4">
-            <span className="text-gray-500">Don&apos;t have an account? </span>
-            <Link href="/auth/signup" color="secondary" className="text-empacts">
-              Sign Up
-            </Link>
           </div>
         </div>
+        {/* Right Side: Background with Content */}
+        <div className="col-span-2 h-screen overflow-hidden relative bg-[#1A1D1F]">
+          <Image
+            src={EmpactsBg}
+            alt="EMPACTS Background Image"
+            fill
+            priority
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
       </div>
-
-      {/* Right Side: Background with Content */}
-      <div className="col-span-2 h-screen overflow-hidden relative bg-[#1A1D1F]">
-        <Image
-          src={EmpactsBg}
-          alt="EMPACTS Background Image"
-          fill
-          priority
-          style={{ objectFit: 'cover' }}
-        />
-      </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 

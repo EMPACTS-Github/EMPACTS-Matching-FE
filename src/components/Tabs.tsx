@@ -51,6 +51,8 @@ const Tabs: React.FC<TabsProps> = ({
             variant={selectedTabs.includes(tab.id) ? "flat" : "ghost"}
             style={{
               border: selectedTabs.includes(tab.id) ? "2px solid #EBEBEC" : "",
+              whiteSpace: "normal", // Ensure full text is displayed
+              wordBreak: "break-word", // Break long words
             }}
             radius="full"
           >
@@ -68,7 +70,7 @@ const Tabs: React.FC<TabsProps> = ({
       </div>
       {showMore && (
         <div className="flex flex-col items-center">
-          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap w-3/4">
+          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap">
             {moreTabs1.map((tab) => (
               <Button
                 key={tab.id}
@@ -78,6 +80,8 @@ const Tabs: React.FC<TabsProps> = ({
                 className="w-min"
                 style={{
                   border: selectedTabs.includes(tab.id) ? "2px solid #EBEBEC" : "",
+                  whiteSpace: "normal", // Ensure full text is displayed
+                  wordBreak: "break-word", // Break long words
                 }}
                 radius="full"
               >
@@ -85,7 +89,7 @@ const Tabs: React.FC<TabsProps> = ({
               </Button>
             ))}
           </div>
-          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap w-3/4">
+          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap">
             {moreTabs2.map((tab) => (
               <Button
                 key={tab.id}
@@ -95,6 +99,8 @@ const Tabs: React.FC<TabsProps> = ({
                 className="w-min"
                 style={{
                   border: selectedTabs.includes(tab.id) ? "2px solid #EBEBEC" : "",
+                  whiteSpace: "normal", // Ensure full text is displayed
+                  wordBreak: "break-word", // Break long words
                 }}
                 radius="full"
               >
