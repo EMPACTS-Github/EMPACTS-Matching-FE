@@ -6,12 +6,14 @@ import TabSelection from '@/components/Tabs/TabSelection';
 import React from 'react';
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import ProfileInfoCard from '@/components/Card/ProfileInfoCard';
+import ConnectModal from '@/components/Modal/ConnectModal';
 
 const ExploreContainer: React.FC = () => {
 
   const [searchValue, setSearchValue] = React.useState('');
   const [location, setLocation] = React.useState('');
   const [isFavorite, setIsFavorite] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   const tabs = ["For you", "Search", "Matching Activity"];
   const [mentor, setMentor] = React.useState([{
     name: "Mentor 1",
@@ -92,7 +94,17 @@ const ExploreContainer: React.FC = () => {
                 sdg="Profile SDG"
                 onFavoriteClick={() => setIsFavorite(!isFavorite)}
                 isFavorite={isFavorite}
+                onClickButton={() => {
+                  console.log('Connect button clicked');
+                  setIsOpen(true)
+                  console.log("value of isOpen", isOpen)
+                }}
             />
+            <ConnectModal
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                mentorName='Do Chi Thanh'
+             />
         </div>
     </div>
   );

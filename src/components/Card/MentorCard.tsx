@@ -26,7 +26,6 @@ const MentorCard: React.FC<MentorCardProps> = ({
 }) => {
     const matchLabel = matchScore >= 70 ? "Strong match" : matchScore >= 50 ? "Normal match" : "Weak match";
     const matchColor = matchScore >= 70 ? "success" : matchScore >= 50 ? "warning" : "danger";
-    const labelClass = matchScore >= 70 ? "text-success" : matchScore >= 50 ? "text-warning" : "text-danger";
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 flex items-center w-full">

@@ -21,6 +21,7 @@ interface ProfileInfoCardProps {
     onFavoriteClick: () => void;
     isFavorite: boolean;
     className?: string;
+    onClickButton?: () => void;
 };
 
 const FlashIcon = () => {
@@ -41,6 +42,7 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
     onFavoriteClick,
     isFavorite,
     className = '',
+    onClickButton,
 }) => {
     return (
         <div className={`bg-white rounded-lg shadow-md p-6 gap-y-6 flex flex-col ${className}`}>
@@ -80,6 +82,7 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                             size="lg"
                             className="rounded-lg bg-[#7f00ff] border-[#7f00ff] text-[18px]"
                             startContent={<FlashIcon />}
+                            onPress={onClickButton}
                         >
                             Connect 
                         </Button>
