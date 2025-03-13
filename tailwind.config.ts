@@ -18,7 +18,7 @@ const config: Config = {
       },
       textColor: {
         empacts: "#9200FE",
-      }
+      },
     },
   },
   plugins: [
@@ -33,6 +33,9 @@ const config: Config = {
             red: "#E50045",
             green: "#70A75C",
             blue: "#1171FF",
+            success: "#70A75C",
+            warning: "#FFC107",
+            danger: "#E50045",
           },
           backgroundColor: {
             white: "#ffffff",
@@ -54,6 +57,9 @@ const config: Config = {
             red: "#E50045",
             green: "#70A75C",
             blue: "#1171FF",
+            success: "#70A75C",
+            warning: "#FFC107",
+            danger: "#E50045",
           },
           backgroundColor: {
             white: "#ffffff",

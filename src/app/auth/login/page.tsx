@@ -74,7 +74,7 @@ const LoginPage = () => {
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
 
-        router.push('/'); // Redirect to home page after successful login
+        router.push('/explore'); // Redirect to home page after successful login
       }
     } catch (error) {
       console.error(error);
