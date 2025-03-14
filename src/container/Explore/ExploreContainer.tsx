@@ -49,63 +49,63 @@ const ExploreContainer: React.FC = () => {
     const newMentor = [...mentor];
     newMentor[index].isFavorite = !newMentor[index].isFavorite;
     setMentor(newMentor);
-};
+  };
 
   return (
     <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-        <Header />
-        <SearchWithLocation
-            placeholder="Search for anything"
-            className="w-96"
-            value={searchValue}
-            location={location}
-            onChange={setSearchValue}
-            onLocationChange={setLocation}
-        />
-        <TabSelection
-            tabs={tabs}
-            tabsTitle="Explore"
-        />
-        <div className='flex justify-between w-2/3 gap-4 p-4 '>
-            <div className='flex flex-col gap-4 w-1/3'>
-                {mentor.map((mentor, index) => {
-                    return (
-                        <MentorCard
-                            key={index}
-                            name={mentor.name}
-                            location={mentor.location}
-                            description={mentor.description}
-                            avatarUrl={mentor.avatarUrl}
-                            matchScore={mentor.matchScore}
-                            isFavorite={mentor.isFavorite}
-                            onFavoriteClick={() => handleFavoriteClick(index)}
-                        />
-                    );
-                })}
-            </div>
-            <ProfileInfoCard 
-                className="w-2/3 flex-grow"
-                title="Do Chi Thanh"
-                location="Hanoi, Vietnam"
-                description="As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. 
-                You will design detailed UI layouts, create benchmarks, and develop high-fidelity prototypes while documenting UX and UI strategies. Collaborating with technical teams, you will transform designs into impactful, industry-leading products. This role combines creativity and problem-solving to create meaningful user experiences. Your journey with us is an opportunity to drive innovation and make a significant impact."
-                bio="Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience."
-                rating={4.5}
-                sdg="Profile SDG"
-                onFavoriteClick={() => setIsFavorite(!isFavorite)}
-                isFavorite={isFavorite}
-                onClickButton={() => {
-                  console.log('Connect button clicked');
-                  setIsOpen(true)
-                  console.log("value of isOpen", isOpen)
-                }}
-            />
-            <ConnectModal
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                mentorName='Do Chi Thanh'
-             />
+      <Header />
+      <SearchWithLocation
+        placeholder="Search for anything"
+        className="w-96"
+        value={searchValue}
+        location={location}
+        onChange={setSearchValue}
+        onLocationChange={setLocation}
+      />
+      <TabSelection
+        tabs={tabs}
+        tabsTitle="Explore"
+      />
+      <div className='flex justify-between w-4/5 gap-4 p-4 '>
+        <div className='flex flex-col gap-4 w-1/3'>
+          {mentor.map((mentor, index) => {
+            return (
+              <MentorCard
+                key={index}
+                name={mentor.name}
+                location={mentor.location}
+                description={mentor.description}
+                avatarUrl={mentor.avatarUrl}
+                matchScore={mentor.matchScore}
+                isFavorite={mentor.isFavorite}
+                onFavoriteClick={() => handleFavoriteClick(index)}
+              />
+            );
+          })}
         </div>
+        <ProfileInfoCard
+          className="w-2/3 flex-grow"
+          title="Do Chi Thanh"
+          location="Hanoi, Vietnam"
+          description="As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. 
+                You will design detailed UI layouts, create benchmarks, and develop high-fidelity prototypes while documenting UX and UI strategies. Collaborating with technical teams, you will transform designs into impactful, industry-leading products. This role combines creativity and problem-solving to create meaningful user experiences. Your journey with us is an opportunity to drive innovation and make a significant impact."
+          bio="Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience."
+          rating={4.5}
+          sdg="Profile SDG"
+          onFavoriteClick={() => setIsFavorite(!isFavorite)}
+          isFavorite={isFavorite}
+          onClickButton={() => {
+            console.log('Connect button clicked');
+            setIsOpen(true)
+            console.log("value of isOpen", isOpen)
+          }}
+        />
+        <ConnectModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          mentorName='Do Chi Thanh'
+        />
+      </div>
     </div>
   );
 };

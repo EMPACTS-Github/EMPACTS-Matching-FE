@@ -18,7 +18,7 @@ const VerificationScreen = (props: {
         if (email && otp) {
             try {
                 const response = await verify_OTP(email, otp);
-                if (response.code === "EMAIL_SUCCESSFULLY_VERIFIED") {
+                if (response.code === "EMAIL_VERIFIED") {
                     toast.success("OTP code verified successfully");
                     router.replace('/auth/signup?stage=password');
                 } else if (response.code === "OTP_EXPIRED") {
@@ -34,36 +34,36 @@ const VerificationScreen = (props: {
             }
         }
     }
-    
+
     return (
         <div className="text-center">
             <div className="flex flex-col items-center text-center h-3/4">
                 <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => router.push('/signup')}>
                     <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
                 </div>
-                <Image 
-                    src="/empacts-logo.png" 
-                    alt="Background image" 
+                <Image
+                    src="/empacts-logo.png"
+                    alt="Background image"
                     width={0}
                     height={0}
                     sizes="100vw"
-                    style={{ width: '50%', height: 'auto' }} 
-                    priority 
+                    style={{ width: '50%', height: 'auto' }}
+                    priority
                 />
                 <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Verification code</h2>
             </div>
             <p className="text-gray-600">
-                A verification code has been sent to <strong>{email}</strong>. 
+                A verification code has been sent to <strong>{email}</strong>.
                 Please input your OTP code to finish the registration process.
             </p>
             <div className="flex justify-center space-x-2 mt-6">
-            <InputOtp 
-                length={6} 
-                value={otp} 
-                onValueChange={setOtp} 
-                onComplete={handleSubmitOtp}
-                variant='underlined'
-            />
+                <InputOtp
+                    length={6}
+                    value={otp}
+                    onValueChange={setOtp}
+                    onComplete={handleSubmitOtp}
+                    variant='underlined'
+                />
             </div>
             <div className="text-gray-500 mt-4">
                 Did not receive code? <span className="text-purple-600 cursor-pointer">Resend code</span>

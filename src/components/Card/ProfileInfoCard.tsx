@@ -27,7 +27,7 @@ interface ProfileInfoCardProps {
 const FlashIcon = () => {
     return (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.9105 10.7199H14.8205V3.5199C14.8205 1.8399 13.9105 1.4999 12.8005 2.7599L12.0005 3.6699L5.2305 11.3699C4.3005 12.4199 4.6905 13.2799 6.0905 13.2799H9.1805V20.4799C9.1805 22.1599 10.0905 22.4999 11.2005 21.2399L12.0005 20.3299L18.7705 12.6299C19.7005 11.5799 19.3105 10.7199 17.9105 10.7199Z" fill="white"/>
+            <path d="M17.9105 10.7199H14.8205V3.5199C14.8205 1.8399 13.9105 1.4999 12.8005 2.7599L12.0005 3.6699L5.2305 11.3699C4.3005 12.4199 4.6905 13.2799 6.0905 13.2799H9.1805V20.4799C9.1805 22.1599 10.0905 22.4999 11.2005 21.2399L12.0005 20.3299L18.7705 12.6299C19.7005 11.5799 19.3105 10.7199 17.9105 10.7199Z" fill="white" />
         </svg>
     );
 }
@@ -47,10 +47,10 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
     return (
         <div className={`bg-white rounded-lg shadow-md p-6 gap-y-6 flex flex-col ${className}`}>
             <div className="flex justify-between">
-                <Image 
-                    src={AvatarPlaceholder} 
-                    alt={title} 
-                    width={80} 
+                <Image
+                    src={AvatarPlaceholder}
+                    alt={title}
+                    width={80}
                     height={80}
                     className="mr-4 h-20 w-20 rounded-full"
                 />
@@ -66,8 +66,8 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                                 height={24}
                                 className="cursor-pointer"
                             />
-                            <Image 
-                                src={ExternalIcon} 
+                            <Image
+                                src={ExternalIcon}
                                 alt="External"
                                 width={24}
                                 height={24}
@@ -80,11 +80,11 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                             type="submit"
                             color="primary"
                             size="lg"
-                            className="rounded-lg bg-[#7f00ff] border-[#7f00ff] text-[18px]"
+                            className="rounded-lg bg-[#7f00ff] border-[#7f00ff] text-[18px] text-white"
                             startContent={<FlashIcon />}
                             onPress={onClickButton}
                         >
-                            Connect 
+                            Connect
                         </Button>
                     </div>
                 </div>
