@@ -49,3 +49,8 @@ export const invite_list_member = async (data: {
     const response = await axiosInstance.post("/startup-invitation/invite", data);
     return response.data;
 };
+
+export const getStartupInfo = async (startupId: string) => {
+  const response = await axiosInstance.get(`/startup-profile/${startupId}`);
+  return response.data;
+};
