@@ -18,6 +18,8 @@ export default function ProtectedRoute({ children }: { children: ReactNode }): J
         } else {
           setIsLoading(false)
         }
+      } else {
+        setIsLoading(false)
       }
     })
   
@@ -28,8 +30,8 @@ export default function ProtectedRoute({ children }: { children: ReactNode }): J
         setIsLoading(false)
       }
     }
+    
   }, [pathname, router])
-
 
   return (
     <>
