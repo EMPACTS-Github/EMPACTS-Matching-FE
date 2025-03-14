@@ -18,7 +18,7 @@ const VerificationScreen = (props: {
         if (email && otp) {
             try {
                 const response = await verify_OTP(email, otp);
-                if (response.code === "EMAIL_VERIFIED") {
+                if (response.code === "EMAIL_SUCCESSFULLY_VERIFIED") {
                     toast.success("OTP code verified successfully");
                     router.replace('/auth/signup?stage=password');
                 } else if (response.code === "OTP_EXPIRED") {
