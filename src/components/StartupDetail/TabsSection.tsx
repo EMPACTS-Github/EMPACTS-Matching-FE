@@ -1,6 +1,7 @@
 import { Startup } from "@/utils/interfaces/startup";
 import { Tab, Tabs } from "@heroui/react";
 import OverviewBody from "./OverviewBody";
+import MediaBody from "./MediaBody";
 
 const TabsSection = ({ startup }: { startup: Startup | null }) => {
     return (
@@ -10,9 +11,10 @@ const TabsSection = ({ startup }: { startup: Startup | null }) => {
                     <OverviewBody startup={startup} />
                 </Tab>
                 <Tab key="media" title="Media">
-                    <div className="p-4 h-full flex items-center justify-center">
+                    {/* <div className="p-4 h-full flex items-center justify-center">
                         <p className="text-sm text-gray-500">Not available yet.</p>
-                    </div>
+                    </div> */}
+                    <MediaBody />
                 </Tab>
                 <Tab key="documentation" title="Documentation">
                     <div className="p-4 h-full flex items-center justify-center">

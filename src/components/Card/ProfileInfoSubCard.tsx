@@ -4,7 +4,7 @@ import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 
 const ProfileInfoSubCard = () => {
     return (
-        <Card className="max-w-sm bg-white shadow-lg rounded-lg px-4 py-2 mx-auto">
+        <Card className="bg-white shadow-lg rounded-lg px-4 py-2 mx-auto">
             <CardHeader className="flex flex-col gap-3">
                 <Image
                     alt="heroui logo"
@@ -15,7 +15,7 @@ const ProfileInfoSubCard = () => {
                 />
                 <div className="flex flex-col justify-center items-center">
                     <p className="font-semibold text-xl text-gray-800">Startup name</p>
-                    <p className="text-gray-500 text-xs">@startup_name</p>
+                    <p className="text-gray-400 text-xs">@startup_name</p>
                 </div>
             </CardHeader>
             <CardBody>
@@ -23,19 +23,19 @@ const ProfileInfoSubCard = () => {
                 <div className="flex gap-6 justify-center items-center p-2">
                     <div className="flex flex-col justify-center items-center">
                         <p className="font-semibold text-lg text-gray-800 py-1">2</p>
-                        <p className="text-gray-500 text-xs">Members</p>
+                        <p className="text-gray-400 text-xs">Members</p>
                     </div>
                     <Divider orientation="vertical" className="h-14" />
                     <div className="flex flex-col justify-center items-center">
                         <p className="font-semibold text-lg text-gray-800 py-1">2</p>
-                        <p className="text-gray-500 text-xs">Matches</p>
+                        <p className="text-gray-400 text-xs">Matches</p>
                     </div>
                 </div>
                 <Divider />
             </CardBody>
 
             <CardFooter>
-                <Button className="w-full bg-white text-gray-100" variant="ghost">
+                <Button className="w-full bg-white text-gray-400" variant="ghost">
                     SETTINGS
                 </Button>
             </CardFooter>
