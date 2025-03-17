@@ -36,6 +36,7 @@ const config: Config = {
             success: "#70A75C",
             warning: "#FFC107",
             danger: "#E50045",
+            gray: "#D4D4D8",
           },
           backgroundColor: {
             white: "#ffffff",
@@ -60,6 +61,7 @@ const config: Config = {
             success: "#70A75C",
             warning: "#FFC107",
             danger: "#E50045",
+            gray: "#D4D4D8",
           },
           backgroundColor: {
             white: "#ffffff",

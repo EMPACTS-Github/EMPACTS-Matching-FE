@@ -1,25 +1,13 @@
 import { Startup } from "@/utils/interfaces/startup";
 import { Tab, Tabs } from "@heroui/react";
+import OverviewBody from "./OverviewBody";
 
 const TabsSection = ({ startup }: { startup: Startup | null }) => {
     return (
         <div className="flex-1 overflow-y-scroll">
             <Tabs aria-label="Startup Tabs" variant="underlined">
                 <Tab key="overview" title="Overview">
-                    <div className="space-y-4">
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800">Description</h4>
-                            <p className="text-gray-500 text-sm whitespace-pre-line">
-                                {startup?.description}
-                            </p>
-                        </div>
-                        <div>
-                            <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
-                            <p className="text-gray-500 text-sm whitespace-pre-line">
-                                <a href={startup?.startup_link}>{startup?.startup_link}</a>
-                            </p>
-                        </div>
-                    </div>
+                    <OverviewBody startup={startup} />
                 </Tab>
                 <Tab key="media" title="Media">
                     <div className="p-4 h-full flex items-center justify-center">
