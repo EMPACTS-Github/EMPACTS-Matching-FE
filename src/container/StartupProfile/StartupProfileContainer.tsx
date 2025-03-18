@@ -22,12 +22,12 @@ const StartupProfileContainer: React.FC = () => {
     const [startup, setStartup] = useState<Startup | null>(sampleStartup);
 
     return (
-        <div className="flex justify-center w-full max-w-5xl h-screen relative z-10 gap-8">
+        <div className="flex justify-center w-full max-w-5xl relative z-10 gap-8">
             <div className="flex-grow mx-auto p-8 rounded-lg shadow-lg bg-white flex flex-col h-min">
                 <ProfileHeader startup={startup} />
                 <TabsSection startup={startup} />
             </div>
-            <div className='w-1/4'>
+            <div className=''>
                 <ProfileInfoSubCard />
             </div>
         </div>
