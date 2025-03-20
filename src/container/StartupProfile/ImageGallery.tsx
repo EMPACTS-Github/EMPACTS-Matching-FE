@@ -26,10 +26,12 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
             {selectedImage ? (
                 <div>
                     <div className="w-full h-auto mb-4">
-                        <img
+                        <Image
                             src={selectedImage}
                             alt="Selected"
-                            className="w-full h-auto object-cover rounded-lg shadow-lg"
+                            width={800} // Chiều rộng của ảnh chính
+                            height={400} // Chiều cao của ảnh chính
+                            className="object-cover shadow-lg"
                         />
                     </div>
 
@@ -38,13 +40,15 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                             <div
                                 key={index}
                                 onClick={() => setSelectedImage(image)}
-                                className={`cursor-pointer border-2 ${selectedImage === image ? 'border-black' : 'border-transparent'
-                                    } rounded-xl`}
+                                className={`cursor-pointer rounded-lg border-2 ${selectedImage != image ? 'border-transparent' : 'border-black'
+                                    }`}
                             >
-                                <img
+                                <Image
                                     src={image}
                                     alt={`Thumbnail ${index}`}
-                                    className="w-16 h-16 object-cover rounded-lg"
+                                    width={64} // Chiều rộng của thumbnail
+                                    height={64} // Chiều cao của thumbnail
+                                    className="object-cover rounded-lg"
                                 />
                             </div>
                         ))}

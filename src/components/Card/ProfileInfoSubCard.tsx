@@ -4,7 +4,7 @@ import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 
 const ProfileInfoSubCard = () => {
     return (
-        <Card className="bg-white shadow-lg rounded-lg px-4 py-2 mx-auto">
+        <Card className="bg-white shadow-lg rounded-lg px-4 py-2 ml-20">
             <CardHeader className="flex flex-col gap-3">
                 <Image
                     alt="heroui logo"

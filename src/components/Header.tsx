@@ -61,7 +61,7 @@ const Header: React.FC<HeaderProps> = () => {
   return (
     <header className="w-full bg-white flex justify-center py-3">
       <div className='flex-col gap-3 w-full max-w-5xl'>
-        <nav className="w-full max-w-5xl flex justify-between items-center px-10">
+        <nav className="w-full max-w-5xl flex justify-between items-center">
           <div className="flex items-center gap-3">
             <Image
               className='cursor-pointer'
