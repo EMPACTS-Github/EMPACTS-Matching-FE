@@ -6,7 +6,7 @@ import StartupCard from '@/components/StartupCard';
 import Tabs from '@/components/Tabs';
 import SearchBar from '@/components/SearchBar';
 import { HeroSection } from '@/components/HeroSection';
-import { startup_list } from '@/apis/startup';
+import { startup_list, search_startup } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 interface Startup {
@@ -23,6 +23,7 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
   const [selectedTabs, setSelectedTabs] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<Startup[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchStartups = useCallback(async () => {
@@ -39,6 +40,18 @@ export default function Home() {
       setLoading(false);
     }
   }, [page, selectedTabs]);
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      const response = await search_startup(searchQuery);
+      setSearchResults(response.startups);
+    } catch (error) {
+      console.error('Failed to search startups:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     setStartups([]);
@@ -72,15 +85,29 @@ export default function Home() {
         {/* Content Section */}
         <div className="relative z-10 w-full flex flex-col items-center">
           <HeroSection />
-          <SearchBar className="mb-8 w-full max-w-2xl shadow-md" />
+          <SearchBar 
+            value={searchQuery}
+            onChange={setSearchQuery}
+            onSearch={handleSearch} // Trigger search on Enter or icon click
+            className="mb-8 w-full max-w-2xl shadow-md" />
           <Tabs setSelectedTabs={setSelectedTabs} selectedTabs={selectedTabs} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-            {startups.length > 0 ? (
-              startups.map((card, index) => (
-                <StartupCard key={index} {...card} onClick={handleStartupDetail} />
-              ))
+            {searchResults ? (
+              searchResults.length > 0 ? (
+                searchResults.map((card, index) => (
+                  <StartupCard key={index} {...card} onClick={handleStartupDetail} />
+                ))
+              ) : (
+                <div className="text-center mt-8 text-black md:col-span-2 lg:col-span-4">No result found</div>
+              )
             ) : (
-              !loading && <div className="text-center mt-8 text-black md:col-span-2 lg:col-span-4">No result found</div>
+              startups.length > 0 ? (
+                startups.map((card, index) => (
+                  <StartupCard key={index} {...card} onClick={handleStartupDetail} />
+                ))
+              ) : (
+                !loading && <div className="text-center mt-8 text-black md:col-span-2 lg:col-span-4">No result found</div>
+              )
             )}
           </div>
           {loading && hasMore && (

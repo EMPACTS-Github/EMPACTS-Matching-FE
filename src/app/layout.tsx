@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-cover bg-center bg-no-repeat`} style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
+      <body className={`${inter.className} bg-cover`} style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
         <ToastContainer />
         <HeroUIProvider>
           <div className="min-h-screen flex flex-col">{children}</div>
