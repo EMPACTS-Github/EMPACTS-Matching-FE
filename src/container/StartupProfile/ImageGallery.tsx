@@ -16,22 +16,23 @@ const PlusSquareIcon = () => (
 );
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
-    const [selectedImage, setSelectedImage] = useState(images[0] || null);
+    const [selectedIndex, setSelectedIndex] = useState(0); // Lưu trữ chỉ số của hình ảnh được chọn
     const onClickButton = () => {
         console.log('Add new media');
     };
+    console.log('selectedIndex:', selectedIndex);
     return (
         <div className="flex flex-col w-full">
             {/* Hiển thị ảnh chính */}
-            {selectedImage ? (
+            {images.length > 0 ? (
                 <div>
                     <div className="w-full h-auto mb-4">
                         <Image
-                            src={selectedImage}
+                            src={images[selectedIndex]}
                             alt="Selected"
                             width={800} // Chiều rộng của ảnh chính
                             height={400} // Chiều cao của ảnh chính
-                            className="object-cover shadow-lg"
+                            className="object-cover shadow-lg rounded-lg"
                         />
                     </div>
 
@@ -39,28 +40,27 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                         {images.map((image, index) => (
                             <div
                                 key={index}
-                                onClick={() => setSelectedImage(image)}
-                                className={`cursor-pointer rounded-lg border-2 ${selectedImage != image ? 'border-transparent' : 'border-black'
-                                    }`}
+                                onClick={() => setSelectedIndex(index)}
                             >
                                 <Image
                                     src={image}
                                     alt={`Thumbnail ${index}`}
-                                    width={64} // Chiều rộng của thumbnail
-                                    height={64} // Chiều cao của thumbnail
-                                    className="object-cover rounded-lg"
+                                    width={56} // Chiều rộng của thumbnail
+                                    height={56} // Chiều cao của thumbnail
+                                    className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${console.log('selectedIndex:', selectedIndex, 'index:', index)} ${selectedIndex == index ? 'border-[#7f00ff]' : 'border-transparent'
+                                        } rounded-lg`}
                                 />
                             </div>
                         ))}
                     </div>
                 </div>) : (
-                <div className="flex flex-col items-center justify-center mb-4">
+                <div className="flex flex-col items-center justify-center mt-4">
                     <Image
                         src={MediaEmptyStateLogo}
                         alt="Media Empty State Logo"
                         className='w-40 h-auto'
                     />
-                    <div className='flex flex-col items-center justify-center my-4'>
+                    <div className='flex flex-col items-center justify-center mb-4'>
                         <p className="text-md text-gray-500 mb-2">No Result</p>
                         <p className="text-sm text-gray-400">This is a mistake? Please refresh your page to see updates</p>
                     </div>

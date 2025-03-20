@@ -78,7 +78,7 @@ const StartupProfileContainer: React.FC = () => {
     const [startup_profile, setStartupProfile] = useState<StartupProfileResponse | null>(startup_profile_response);
 
     return (
-        <div className="grid grid-cols-4 w-full max-w-5xl relative z-10 gap-0">
+        <div className="grid grid-cols-3 w-full max-w-5xl relative z-10 gap-0">
             <div className="col-span-2 w-full mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col">
                 {startup_profile?.startup ? (
                     <div>
