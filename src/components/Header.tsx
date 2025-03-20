@@ -20,6 +20,7 @@ import PlusSquareIcon from '/public/assets/plus-square.svg';
 import SoleLogoEmpacts from '/public/assets/sole-logo-empacts.svg';
 import BellIcon from '/public/assets/bell_icon.svg';
 import { logout } from '@/apis/auth';
+import Link from 'next/link';
 
 interface HeaderProps {
   onLogin?: () => void;
@@ -28,11 +29,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const tabs = [
-    { title: "Explore", href: "/explore" },
-    { title: "Profile", href: "/startup-profile" },
-    { title: "Member", href: "/member" },
-  ]
+  // const tabs = [
+  //   { title: "Explore", href: "/explore" },
+  //   { title: "Profile", href: "/startup-profile" },
+  //   { title: "Member", href: "/member" },
+  // ]
   const pathname = usePathname();
 
   useEffect(() => {
@@ -71,7 +72,7 @@ const Header: React.FC<HeaderProps> = () => {
               height={120}
               onClick={handleBackToHome}
             />
-            <Dropdown>
+            {isLoggedIn && (<Dropdown>
               <DropdownTrigger className="p-1 rounded-full hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400">
                 <Image src={DropdownIcon} alt="Dropdown Icon" width={30} height={30} />
               </DropdownTrigger>
@@ -84,19 +85,23 @@ const Header: React.FC<HeaderProps> = () => {
                 ]
               }}>
                 <DropdownItem key="new-profile">
-                  <div className="flex items-center gap-2">
-                    <Image src={PlusSquareIcon} alt="Plus Icon" width={20} height={20} />
-                    <div className='text-sm'>Create New Profile </div>
-                  </div>
+                <Link href="/profiles/new">
+                    <div className="flex items-center gap-2">
+                      <Image src={PlusSquareIcon} alt="Plus Icon" width={20} height={20} />
+                      <div className='text-sm'>Create New Profile </div>
+                    </div>
+                </Link>
                 </DropdownItem>
                 <DropdownItem key="discover-sdgs">
-                  <div className="flex items-center gap-2">
-                    <Image src={SoleLogoEmpacts} alt="Sole Logo" width={20} height={20} />
-                    <div className='text-sm'>Discover SDGs Startups</div>
-                  </div>
+                <Link href="/">
+                    <div className="flex items-center gap-2">
+                      <Image src={SoleLogoEmpacts} alt="Sole Logo" width={20} height={20} />
+                      <div className='text-sm'>Discover SDGs Startups</div>
+                    </div>
+                </Link>
                 </DropdownItem>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown>)}
           </div>
           {isLoggedIn ? (
             <div>
@@ -119,8 +124,20 @@ const Header: React.FC<HeaderProps> = () => {
                     />
                   </DropdownTrigger>
                   <DropdownMenu>
-                    <DropdownItem key="profile" className='text-black'>Profile</DropdownItem>
-                    <DropdownItem key="settings" className='text-black'>Settings</DropdownItem>
+                    <DropdownItem key="profile" className='text-black'>
+                  <Link href="/startup-profile">
+                    <div>
+                      Profile
+                    </div>
+                  </Link>
+                </DropdownItem>
+                    <DropdownItem key="settings" className='text-black'>
+                  <Link href="/settings">
+                    <div>
+                      Settings
+                    </div>
+                  </Link>
+                </DropdownItem>
                     <DropdownItem onPress={handleLogout} key="logout" className='text-black'>Logout</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
@@ -135,12 +152,12 @@ const Header: React.FC<HeaderProps> = () => {
             </button>
           )}
         </nav>
-        {isLoggedIn && (<div className='px-6'>
+        {/* {isLoggedIn && (<div className='px-6'>
           <HeaderTabSelection
             tabs={tabs}
             tabsTitle="Explore"
           />
-        </div>)}
+        </div>)} */}
       </div>
     </header>
   );
