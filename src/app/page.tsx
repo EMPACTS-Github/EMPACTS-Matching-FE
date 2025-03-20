@@ -84,7 +84,7 @@ export default function Home() {
             )}
           </div>
           {loading && hasMore && (
-            <Spinner color="secondary" className="flex justify-center items-center mt-8 mb-8" size="lg"/>
+            <Spinner color="secondary" className="flex justify-center items-center mt-8 mb-8" size="lg" />
           )}
         </div>
       </main>
