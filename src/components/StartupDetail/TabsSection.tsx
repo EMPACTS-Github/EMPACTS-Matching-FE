@@ -1,5 +1,6 @@
 import { Startup } from "@/utils/interfaces/startup";
 import { Tab, Tabs } from "@heroui/react";
+import { Link } from "@heroui/react";
 
 const TabsSection = ({ startup }: { startup: Startup | null }) => {
     return (
@@ -16,7 +17,7 @@ const TabsSection = ({ startup }: { startup: Startup | null }) => {
                         <div>
                             <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
                             <p className="text-gray-500 text-sm whitespace-pre-line">
-                                <a href={startup?.startup_link}>{startup?.startup_link}</a>
+                                <Link isExternal showAnchorIcon href={startup?.startup_link}>{startup?.startup_link}</Link>
                             </p>
                         </div>
                     </div>
