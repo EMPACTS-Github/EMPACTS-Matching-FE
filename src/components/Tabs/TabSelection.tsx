@@ -14,7 +14,7 @@ const TabSelection: React.FC<TabSelectionProps> = ({
     setSelectedTab,
 }) => {
     return (
-        
+
         <div className="flex flex-wrap gap-4">
             <Tabs aria-label="Tabs variants" variant="underlined">
                 {tabs.map((tab, index) => {

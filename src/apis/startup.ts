@@ -49,3 +49,8 @@ export const invite_list_member = async (data: {
     const response = await axiosInstance.post("/startup-invitation/invite", data);
     return response.data;
 };
+
+export const search_startup = async (query: string) => {
+  const response = await axiosInstance.get(`/search/startups?query=${query}`);
+  return response.data;
+}
