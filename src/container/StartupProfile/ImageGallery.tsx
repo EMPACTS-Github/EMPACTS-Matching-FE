@@ -20,7 +20,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
     const onClickButton = () => {
         console.log('Add new media');
     };
-    console.log('selectedIndex:', selectedIndex);
     return (
         <div className="flex flex-col w-full">
             {/* Hiển thị ảnh chính */}
@@ -47,7 +46,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                                     alt={`Thumbnail ${index}`}
                                     width={56} // Chiều rộng của thumbnail
                                     height={56} // Chiều cao của thumbnail
-                                    className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${console.log('selectedIndex:', selectedIndex, 'index:', index)} ${selectedIndex == index ? 'border-[#7f00ff]' : 'border-transparent'
+                                    className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${selectedIndex == index ? 'border-[#7f00ff]' : 'border-transparent'
                                         } rounded-lg`}
                                 />
                             </div>

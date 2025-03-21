@@ -18,7 +18,7 @@ const startup_profile_response: StartupProfileResponse = {
         accept_email_marketing: null,
         description: "This is a super startup",
         category: 2,
-        startup_link: null,
+        startup_link: "empacts.org",
         credential: null,
         location_based: "HO_CHI_MINH",
         market_focus: null,
