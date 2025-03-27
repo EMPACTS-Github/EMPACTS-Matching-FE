@@ -6,34 +6,33 @@ import { Startup } from "@/utils/interfaces/startup";
 
 interface ProfileHeaderProps {
     startup: Startup | null;
+    locationLabel?: string;
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup, locationLabel }) => {
     return (
-        <div className="mb-2">
+        <div className="flex items-start justify-between mb-6 border-b pb-6">
             <div className="flex items-center">
-                <Avatar src="https://via.placeholder.com/150" size="lg" />
-                <div className="flex flex-col ml-4">
-                    <h3 className="text-xl font-bold text-gray-800">{startup?.name}</h3>
-                    <p className="text-gray-500 text-md">{startup?.location_based}</p>
+                <div className="h-20 w-20 bg-gray-200 rounded-full mr-6 relative overflow-hidden">
+                    {startup?.avt_url ? (
+                        <Image
+                            src={startup.avt_url}
+                            alt={startup.name || "Startup"}
+                            fill
+                            className="object-cover"
+                        />
+                    ) : (
+                        <div className="flex items-center justify-center h-full w-full bg-gray-300 text-gray-600">
+                            {startup?.name?.charAt(0) || "S"}
+                        </div>
+                    )}
                 </div>
-            </div>
-            <div className="flex w-full gap-x-3 mt-4 p-2">
-                <div className="flex items-center gap-1 overflow-hidden">
-                    <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
-                    <span className="font-inter font-semibold text-base text-black text-center truncate">
-                        {startup?.category}
-                    </span>
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-800">{startup?.name}</h1>
+                    <p className="text-gray-600">
+                        {locationLabel || "Location not specified"}
+                    </p>
                 </div>
-                <div className="flex items-center gap-1">
-                    <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
-                    <span className="font-inter font-semibold text-base text-black text-center">
-                        3 Members
-                    </span>
-                </div>
-            </div>
-            <div className="mt-4">
-                <p className="text-gray-500 text-xs">Startup Bio...</p>
             </div>
         </div>
     );
