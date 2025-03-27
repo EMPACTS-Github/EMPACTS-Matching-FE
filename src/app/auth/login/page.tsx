@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Image from 'next/image';
 import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
@@ -13,7 +13,20 @@ import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/app/ProtectedRoute';
 import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
-const LoginPage = () => {
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="grid grid-cols-3 min-h-screen">
+    <div className="col-span-1 bg-white flex items-center justify-center">
+      <div className="p-8 rounded-lg w-full max-w-sm">
+        <p>Loading...</p>
+      </div>
+    </div>
+    <div className="col-span-2 h-screen bg-[#1A1D1F]"></div>
+  </div>
+);
+
+// Component that uses useSearchParams
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -157,57 +170,66 @@ const LoginPage = () => {
   );
 
   return (
-    <ProtectedRoute>
-      <div className="grid grid-cols-3 min-h-screen">
-        {/* Left Side: Login Form */}
-        <div className="col-span-1 bg-white flex items-center justify-center">
-          <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
-            <LogoAndTitle 
-              title="Sign in"
-              description=""
+    <div className="grid grid-cols-3 min-h-screen">
+      {/* Left Side: Login Form */}
+      <div className="col-span-1 bg-white flex items-center justify-center">
+        <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
+          <LogoAndTitle 
+            title="Sign in"
+            description=""
+          />
+          {renderForm()}
+          {/* Divider */}
+          <div className="my-6 text-gray-500 flex items-center">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="mx-4 text-black text-sm">Or</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
+          {/* Google Sign In Button */}
+          <Button
+            onClick={loginWithGoogleAPI}
+            size="lg"
+            className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
+          >
+            <Image
+              src="/google-icon.svg"
+              alt="Google icon"
+              width={20}
+              height={20}
+              className="mr-2"
             />
-            {renderForm()}
-            {/* Divider */}
-            <div className="my-6 text-gray-500 flex items-center">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <span className="mx-4 text-black text-sm">Or</span>
-              <div className="flex-grow border-t border-gray-300"></div>
-            </div>
-            {/* Google Sign In Button */}
-            <Button
-              onClick={loginWithGoogleAPI}
-              size="lg"
-              className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
-            >
-              <Image
-                src="/google-icon.svg"
-                alt="Google icon"
-                width={20}
-                height={20}
-                className="mr-2"
-              />
-              Sign in with Google
-            </Button>
-            {/* Sign Up Link */}
-            <div className="text-center mt-4">
-              <span className="text-gray-500">Don&apos;t have an account? </span>
-              <Link href="/auth/signup" color="secondary" className="text-empacts">
-                Sign Up
-              </Link>
-            </div>
+            Sign in with Google
+          </Button>
+          {/* Sign Up Link */}
+          <div className="text-center mt-4">
+            <span className="text-gray-500">Don&apos;t have an account? </span>
+            <Link href="/auth/signup" color="secondary" className="text-empacts">
+              Sign Up
+            </Link>
           </div>
         </div>
-        {/* Right Side: Background with Content */}
-        <div className="col-span-2 h-screen overflow-hidden relative bg-[#1A1D1F]">
-          <Image
-            src={EmpactsBg}
-            alt="EMPACTS Background Image"
-            fill
-            priority
-            style={{ objectFit: 'cover' }}
-          />
-        </div>
       </div>
+      {/* Right Side: Background with Content */}
+      <div className="col-span-2 h-screen overflow-hidden relative bg-[#1A1D1F]">
+        <Image
+          src={EmpactsBg}
+          alt="EMPACTS Background Image"
+          fill
+          priority
+          style={{ objectFit: 'cover' }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// Main page component with Suspense
+const LoginPage = () => {
+  return (
+    <ProtectedRoute>
+      <Suspense fallback={<LoadingFallback />}>
+        <LoginContent />
+      </Suspense>
     </ProtectedRoute>
   );
 };
