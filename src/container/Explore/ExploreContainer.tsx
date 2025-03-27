@@ -56,7 +56,7 @@ const ExploreContainer: React.FC = () => {
       <Header />
       <SearchWithLocation
         placeholder="Search for anything"
-        className="w-96"
+        className="w-3/5 max-w-4xl"
         value={searchValue}
         location={location}
         onChange={setSearchValue}
@@ -95,9 +95,7 @@ const ExploreContainer: React.FC = () => {
           onFavoriteClick={() => setIsFavorite(!isFavorite)}
           isFavorite={isFavorite}
           onClickButton={() => {
-            console.log('Connect button clicked');
             setIsOpen(true)
-            console.log("value of isOpen", isOpen)
           }}
         />
         <ConnectModal
