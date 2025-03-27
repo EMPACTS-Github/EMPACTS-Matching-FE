@@ -4,10 +4,10 @@ import { Link } from "@heroui/react";
 
 const TabsSection = ({ startup }: { startup: Startup | null }) => {
     return (
-        <div className="flex-1 overflow-y-scroll">
+        <div className="flex-1 overflow-hidden">
             <Tabs aria-label="Startup Tabs" variant="underlined">
                 <Tab key="overview" title="Overview">
-                    <div className="space-y-4">
+                    <div className="space-y-4 overflow-auto h-[60vh] pr-2 hide-scrollbar">
                         <div>
                             <h4 className="text-lg font-semibold text-gray-800">Description</h4>
                             <p className="text-gray-500 text-sm whitespace-pre-line">

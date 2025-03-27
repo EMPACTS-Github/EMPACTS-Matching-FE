@@ -26,8 +26,8 @@ const StartupDetailPage = () => {
     }
     
     return (
-        <div className="flex justify-center items-center w-full h-screen relative z-10">
-            <div className="w-[65vw] mx-auto p-8 rounded-lg shadow-lg bg-white flex flex-col h-min">
+        <div className="flex justify-center items-center w-full h-screen relative z-10 overflow-hidden">
+            <div className="w-[65vw] mx-auto p-8 rounded-lg shadow-lg bg-white flex flex-col h-[80vh] overflow-hidden">
                 <ProfileHeader startup={startup} />
                 <TabsSection startup={startup} />
             </div>
