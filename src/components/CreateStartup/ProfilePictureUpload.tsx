@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import UploadAvatar from "public/assets/upload_avatar.svg";
+import UploadAvatar from "/public/assets/upload_avatar.svg";
 import { upload_image } from "@/apis/upload"; // Import the upload_image API
 import { toast } from 'react-toastify'; // Import toast
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles

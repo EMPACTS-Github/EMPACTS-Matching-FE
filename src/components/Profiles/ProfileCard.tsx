@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Button, Avatar, Tabs, Tab } from "@heroui/react";
-import RightArrow from "public/assets/arrow-right.svg";
+import RightArrow from "/public/assets/arrow-right.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 // Fake Data
