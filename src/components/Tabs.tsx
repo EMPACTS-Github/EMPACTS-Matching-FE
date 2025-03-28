@@ -29,7 +29,7 @@ const Tabs: React.FC<TabsProps> = ({
   const moreTabs3 = allTabs.slice(14);
 
   const [showMore, setShowMore] = useState(false);
-  const [selectAll, setSelectAll] = useState(false);
+  const [selectAll, setSelectAll] = useState(true);
 
   const handleTabClick = (tabId: string) => {
     setSelectAll(false);
