@@ -21,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} relative`}>
+    <html lang="en" suppressHydrationWarning >
+      <body className={`${inter.className} relative`} suppressHydrationWarning>
         <ToastContainer />
         <HeroUIProvider>
           <div className="fixed bg-cover inset-0 -z-10" style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
