@@ -3,12 +3,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Spinner } from "@heroui/spinner";
 import StartupCard from '@/components/StartupCard';
-import Tabs from '@/components/Tabs';
+import Category from '@/components/Category/Category';
 import SearchBar from '@/components/SearchBar';
 import { HeroSection } from '@/components/HeroSection';
 import { startup_list, search_startup } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
+import { FETCH_STARTUP_LIMIT } from '@/constants';
 interface Startup {
   id: number;
   name: string;
@@ -21,15 +22,14 @@ export default function Home() {
   const [startups, setStartups] = useState<Startup[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [selectedTabs, setSelectedTabs] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<Startup[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchStartups = useCallback(async () => {
     try {
       setLoading(true);
-      let response = await startup_list(12, page, selectedTabs);
+      let response = await startup_list(FETCH_STARTUP_LIMIT, page, selectedCategory);
       const data = response.data;
 
       setStartups(prev => (page === 1 ? data.startups : [...prev, ...data.startups]));
@@ -39,13 +39,13 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [page, selectedTabs]);
+  }, [page, selectedCategory]);
 
   const handleSearch = async () => {
     try {
       setLoading(true);
       const response = await search_startup(searchQuery);
-      setSearchResults(response.startups);
+      setStartups(response.startups);
     } catch (error) {
       console.error('Failed to search startups:', error);
     } finally {
@@ -54,9 +54,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setStartups([]);
     setPage(1);
-  }, [selectedTabs]);
+  }, [selectedCategory]);
 
   useEffect(() => {
     fetchStartups();
@@ -82,33 +81,24 @@ export default function Home() {
     <>
       <Header />
       <main className="flex flex-col items-center min-h-screen">
-        {/* Content Section */}
         <div className="relative z-10 w-full flex flex-col items-center">
           <HeroSection />
           <SearchBar 
             value={searchQuery}
             onChange={setSearchQuery}
-            onSearch={handleSearch} // Trigger search on Enter or icon click
-            className="mb-8 w-full max-w-2xl shadow-md" />
-          <Tabs setSelectedTabs={setSelectedTabs} selectedTabs={selectedTabs} />
+            onSearch={handleSearch}
+            className="mb-8 w-full max-w-2xl shadow-md"
+          />
+          <Category setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-            {searchResults ? (
-              searchResults.length > 0 ? (
-                searchResults.map((card, index) => (
-                  <StartupCard key={index} {...card} onClick={handleStartupDetail} />
-                ))
-              ) : (
-                <div className="text-center mt-8 text-black md:col-span-2 lg:col-span-4">No result found</div>
-              )
-            ) : (
-              startups.length > 0 ? (
+            {startups.length > 0 ? (
                 startups.map((card, index) => (
                   <StartupCard key={index} {...card} onClick={handleStartupDetail} />
                 ))
               ) : (
                 !loading && <div className="text-center mt-8 text-black md:col-span-2 lg:col-span-4">No result found</div>
               )
-            )}
+            }
           </div>
           {loading && hasMore && (
             <Spinner color="secondary" className="flex justify-center items-center mt-8 mb-8" size="lg" />
