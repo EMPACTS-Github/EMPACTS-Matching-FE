@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import EmpactsLogo from '../../../../public/empacts-logo.svg'
+import EmpactsLogo from '/public/empacts-logo.svg'
 import FormTitle from '@/components/Form/FormTitle'
 import { Button, Form, Input } from '@heroui/react'
 import UserAvatar from '@/components/Form/UserAvatar'
@@ -45,9 +45,10 @@ function RegisterInfoScreen() {
       try {
         const response = await create_new_profile(email, userProfileImgUrl, username);
         localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.removeItem('email');
         router.replace('/');
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   }
