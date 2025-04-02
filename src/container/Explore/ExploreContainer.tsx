@@ -1,6 +1,5 @@
 "use client";
 import MentorCard from '@/components/Card/MentorCard';
-import Header from '@/components/Header';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
 import TabSelection from '@/components/Tabs/TabSelection';
 import React from 'react';
@@ -69,7 +68,7 @@ const ExploreContainer: React.FC = () => {
     <div className="flex flex-col items-center w-full h-screen overflow-hidden relative z-10 gap-y-8">
       <SearchWithLocation
         placeholder="Search for anything"
-        className="w-3/5 max-w-4xl"
+        className="w-3/5 max-w-4xl mt-4"
         value={searchValue}
         location={location}
         onChange={setSearchValue}
