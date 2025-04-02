@@ -14,13 +14,14 @@ import {
   DropdownItem,
   Button
 } from "@heroui/react";
-
 import DropdownIcon from '/public/assets/dropdown-icon.svg';
 import PlusSquareIcon from '/public/assets/plus-square.svg';
 import SoleLogoEmpacts from '/public/assets/sole-logo-empacts.svg';
 import BellIcon from '/public/assets/bell_icon.svg';
 import { logout } from '@/apis/auth';
 import Link from 'next/link';
+import { startup_list } from '@/apis/startup-profile';
+import { StartupOfUser } from '@/utils/interfaces/StartupOfUser'
 
 interface HeaderProps {
   onLogin?: () => void;
@@ -29,18 +30,27 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const tabs = [
-  //   { title: "Explore", href: "/explore" },
-  //   { title: "Profile", href: "/startup-profile" },
-  //   { title: "Member", href: "/member" },
-  // ]
+  const [startups, setStartups] = useState<StartupOfUser[]>([]);
   const pathname = usePathname();
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     const user = localStorage.getItem('user');
     setIsLoggedIn(!!user);
-  }, []);
+    //api for get list_startup for user
+    const fetchStartups = async () => {
+      try {
+        const data = await startup_list();
+        setStartups(data.data); // Lưu danh sách startup vào state
+      } catch (error) {
+        console.error('Failed to fetch startups:', error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchStartups();
+    }
+  }, [isLoggedIn]);
 
   const handleLogin = () => {
     // onLogin();
@@ -84,22 +94,34 @@ const Header: React.FC<HeaderProps> = () => {
                   "text-base",
                 ]
               }}>
-                <DropdownItem key="new-profile">
-                <Link href="/profiles/new">
-                    <div className="flex items-center gap-2">
-                      <Image src={PlusSquareIcon} alt="Plus Icon" width={20} height={20} />
-                      <div className='text-sm'>Create New Profile </div>
-                    </div>
-                </Link>
-                </DropdownItem>
-                <DropdownItem key="discover-sdgs">
-                <Link href="/">
-                    <div className="flex items-center gap-2">
-                      <Image src={SoleLogoEmpacts} alt="Sole Logo" width={20} height={20} />
-                      <div className='text-sm'>Discover SDGs Startups</div>
-                    </div>
-                </Link>
-                </DropdownItem>
+                <>
+                  <DropdownItem key="new-profile">
+                    <Link href="/profiles/new">
+                      <div className="flex items-center gap-2">
+                        <Image src={PlusSquareIcon} alt="Plus Icon" width={20} height={20} />
+                        <div className='text-sm'>Create New Profile </div>
+                      </div>
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem key="discover-sdgs">
+                    <Link href="/">
+                      <div className="flex items-center gap-2">
+                        <Image src={SoleLogoEmpacts} alt="Sole Logo" width={20} height={20} />
+                        <div className='text-sm'>Discover SDGs Startups</div>
+                      </div>
+                    </Link>
+                  </DropdownItem>
+                  {startups.map((startup) => (
+                    <DropdownItem key={startup.startup_id.id}>
+                      <Link href={`/startup-profile/${startup.startup_id.id}`}>
+                        <div className="flex items-center gap-2">
+                          <Image src={startup.startup_id.avt_url} alt="Sole Logo" width={20} height={20} />
+                          <div className="text-sm">{startup.startup_id.name}</div>
+                        </div>
+                      </Link>
+                    </DropdownItem>
+                  ))}
+                </>
               </DropdownMenu>
             </Dropdown>)}
           </div>
@@ -125,19 +147,19 @@ const Header: React.FC<HeaderProps> = () => {
                   </DropdownTrigger>
                   <DropdownMenu>
                     <DropdownItem key="profile" className='text-black'>
-                  <Link href="/startup-profile">
-                    <div>
-                      Profile
-                    </div>
-                  </Link>
-                </DropdownItem>
+                      <Link href="/startup-profile">
+                        <div>
+                          Profile
+                        </div>
+                      </Link>
+                    </DropdownItem>
                     <DropdownItem key="settings" className='text-black'>
-                  <Link href="/settings">
-                    <div>
-                      Settings
-                    </div>
-                  </Link>
-                </DropdownItem>
+                      <Link href="/settings">
+                        <div>
+                          Settings
+                        </div>
+                      </Link>
+                    </DropdownItem>
                     <DropdownItem onPress={handleLogout} key="logout" className='text-black'>Logout</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>

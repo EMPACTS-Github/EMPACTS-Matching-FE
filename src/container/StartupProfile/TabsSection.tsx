@@ -17,10 +17,10 @@ const TabsSection: React.FC<TabsSectionProps> = ({ startup }) => {
                     <OverviewBody startup={startup} />
                 </Tab>
                 <Tab key="media" title="Media">
-                    <MediaBody />
+                    <MediaBody startup={startup} />
                 </Tab>
                 <Tab key="documentation" title="Documentation">
-                    <DocumentBody />
+                    <DocumentBody startup={startup} />
                 </Tab>
                 <Tab key="advanced" title="Advanced">
                     <AdvancedBody startup={startup} />
