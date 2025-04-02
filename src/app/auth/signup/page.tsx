@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import { email_signup } from '@/apis/auth';
 import VerificationScreen from '@/container/Auth/VerificationSreen';
 import CreatePasswordScreen from '@/container/Auth/CreatePasswordScreen';
-import ProtectedRoute from '@/app/ProtectedRoute';
 import RegisterInfoScreen from '@/container/Auth/RegisterInfoScreen';
 import { useRouter } from 'next/navigation';
 import LogoAndTitle from '@/components/Auth/LogoAndTitle';
@@ -92,7 +91,7 @@ function SignupContent() {
         type="submit"
         color="primary"
         size="lg"
-        className="w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
       >
         Sign up
       </Button>
@@ -146,11 +145,9 @@ function SignupContent() {
 // Main page component that uses Suspense
 const SignupPage = () => {
   return (
-    <ProtectedRoute>
-      <Suspense fallback={<LoadingFallback />}>
-        <SignupContent />
-      </Suspense>
-    </ProtectedRoute>
+    <Suspense fallback={<LoadingFallback />}>
+      <SignupContent />
+    </Suspense>
   );
 };
 

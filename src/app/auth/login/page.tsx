@@ -10,7 +10,7 @@ import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
-import ProtectedRoute from '@/app/ProtectedRoute';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
 // Loading fallback component
@@ -57,6 +57,10 @@ function LoginContent() {
     setIsValidEmail(true);
     return true;
   };
+
+  const handleBackButton = () => {
+    router.back()
+  }
 
   // Handle form submission
   const handleLogin = async (e: React.FormEvent) => {
@@ -162,7 +166,7 @@ function LoginContent() {
         type="submit"
         color="primary"
         size="lg"
-        className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
       >
         Sign in
       </Button>
@@ -226,11 +230,9 @@ function LoginContent() {
 // Main page component with Suspense
 const LoginPage = () => {
   return (
-    <ProtectedRoute>
-      <Suspense fallback={<LoadingFallback />}>
-        <LoginContent />
-      </Suspense>
-    </ProtectedRoute>
+    <Suspense fallback={<LoadingFallback />}>
+      <LoginContent />
+    </Suspense>
   );
 };
 
