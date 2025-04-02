@@ -5,6 +5,8 @@ import { HeroUIProvider } from "@heroui/react";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import HomepageBackground from '/public/homepage-bg.png';
+import ProtectedRoute from './ProtectedRoute';
+import HeaderDisplayHandler from './HeaderDisplayHandler';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,7 +27,12 @@ export default function RootLayout({
         <HeroUIProvider>
           <div className="fixed bg-cover inset-0 -z-10" style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
           </div>
-          <div className="min-h-screen flex flex-col">{children}</div>
+          <ProtectedRoute>
+            <div className="min-h-screen flex flex-col">
+              <HeaderDisplayHandler />
+              {children}
+            </div>
+          </ProtectedRoute>
         </HeroUIProvider>
       </body>
     </html>
