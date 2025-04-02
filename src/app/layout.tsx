@@ -4,13 +4,13 @@ import './globals.css';
 import { HeroUIProvider } from "@heroui/react";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import HomepageBackground from '../../public/homepage-bg.png';
+import HomepageBackground from '/public/homepage-bg.png';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EMPACTs Matching',
-  description: 'EMPACTs matching platform',
+  title: 'EMPACTS Connect',
+  description: 'EMPACTS connect platform',
 };
 
 export default function RootLayout({
@@ -20,9 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-cover`} style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
+      <body className={`${inter.className} relative`}>
         <ToastContainer />
         <HeroUIProvider>
+          <div className="fixed bg-cover inset-0 -z-10" style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
+          </div>
           <div className="min-h-screen flex flex-col">{children}</div>
         </HeroUIProvider>
       </body>
