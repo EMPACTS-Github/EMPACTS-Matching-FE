@@ -1,19 +1,18 @@
 'use client';
-import { useEffect, useState, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import Image from 'next/image';
 import EmpactsBg from '/public/empacts-bg.png';
 import { Input, Button } from "@heroui/react";
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { email_signup } from '@/apis/auth';
-import VerificationScreen from '@/components/Auth/VerificationSreen';
-import CreatePasswordScreen from '@/components/Auth/CreatePasswordScreen';
+import VerificationScreen from '@/container/Auth/VerificationSreen';
+import CreatePasswordScreen from '@/container/Auth/CreatePasswordScreen';
 import ProtectedRoute from '@/app/ProtectedRoute';
-import RegisterInfoScreen from './RegisterInfoScreen';
+import RegisterInfoScreen from '@/container/Auth/RegisterInfoScreen';
 import { useRouter } from 'next/navigation';
 import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
-// Loading fallback component
 const LoadingFallback = () => (
   <div className="grid grid-cols-3 min-h-screen">
     <div className="col-span-1 bg-white flex items-center justify-center">
@@ -27,22 +26,21 @@ const LoadingFallback = () => (
 
 // Component that uses useSearchParams
 import { useSearchParams } from 'next/navigation';
+import { checkEmailFormat } from '@/utils/checkValid';
 
 function SignupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentScreen = searchParams.get('stage');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(localStorage.getItem('email') || '');
 
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [emailError, setEmailError] = useState('');
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  // Function to validate email format
   const validateEmailFormat = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!checkEmailFormat(email)) {
       setEmailError('Invalid email format');
       setEmailColor('danger');
       setIsValidEmail(false);
@@ -75,18 +73,6 @@ function SignupContent() {
       toast.error('An error occurred while signing up');
     }
   };
-
-  useEffect(() => {
-    // Get email from localStorage if available
-    const storedEmail = localStorage.getItem('email');
-    if (storedEmail) {
-      setEmail(storedEmail);
-    }
-
-    if (hasSubmitted && !isValidEmail) {
-      validateEmailFormat(email);
-    }
-  }, [email, hasSubmitted, isValidEmail]);
 
   const renderForm = () => (
     <form onSubmit={handleSignup} className="space-y-4">
