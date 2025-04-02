@@ -1,7 +1,8 @@
 'use client'
 import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
-import { ROUTES } from '@/constants/routes'
+import { ROUTES } from '@/constants/route'
+import { checkIsSameRoute } from '@/utils/checkRoute';
 
 export default function ProtectedRoute({ children }: { children: ReactNode }): JSX.Element {
   const router = useRouter();
@@ -11,16 +12,15 @@ export default function ProtectedRoute({ children }: { children: ReactNode }): J
   useEffect(() => {
     const isAuthRoute = pathname.startsWith('/auth');
     const userInfo = localStorage.getItem('user');
-    (Object.keys(ROUTES) as Array<keyof typeof ROUTES>).forEach((routeName) => {
-      if (ROUTES[routeName].PATHNAME === pathname && ROUTES[routeName].PRIVATE === true) {
+
+    ROUTES.forEach((route) => {
+      if (pathname !== '/' && checkIsSameRoute(pathname, route.pathname) && route.isPrivate) {
         if (!userInfo) {
           router.replace('/auth/login');
-        } else {
-          setIsLoading(false)
         }
       }
     })
-  
+
     if (isAuthRoute) {
       if (userInfo) {
         router.replace('/');
@@ -28,8 +28,8 @@ export default function ProtectedRoute({ children }: { children: ReactNode }): J
         setIsLoading(false)
       }
     }
+    setIsLoading(false)
   }, [pathname, router])
-
 
   return (
     <>
