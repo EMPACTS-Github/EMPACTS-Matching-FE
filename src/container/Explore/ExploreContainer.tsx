@@ -1,6 +1,5 @@
 "use client";
 import MentorCard from '@/components/Card/MentorCard';
-import Header from '@/components/Header';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
 import TabSelection from '@/components/Tabs/TabSelection';
 import React from 'react';
@@ -43,6 +42,20 @@ const ExploreContainer: React.FC = () => {
     avatarUrl: AvatarPlaceholder,
     matchScore: 70,
     isFavorite: false,
+  }, {
+    name: "Mentor 5",
+    location: "Location 5",
+    description: "Make beautiful websites regardless of your design experience. Make beautiful website...",
+    avatarUrl: AvatarPlaceholder,
+    matchScore: 100,
+    isFavorite: false,
+  }, {
+    name: "Mentor 6",
+    location: "Location 6",
+    description: "Make beautiful websites regardless of your design experience. Make beautiful website...",
+    avatarUrl: AvatarPlaceholder,
+    matchScore: 50,
+    isFavorite: false,
   }]);
 
   const handleFavoriteClick = (index: number) => {
@@ -52,11 +65,10 @@ const ExploreContainer: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-      <Header />
+    <div className="flex flex-col items-center w-full h-screen overflow-hidden relative z-10 gap-y-8">
       <SearchWithLocation
         placeholder="Search for anything"
-        className="w-96"
+        className="w-3/5 max-w-4xl mt-4"
         value={searchValue}
         location={location}
         onChange={setSearchValue}
@@ -66,8 +78,8 @@ const ExploreContainer: React.FC = () => {
         tabs={tabs}
         tabsTitle="Explore"
       />
-      <div className='flex justify-between w-4/5 gap-4 p-4 '>
-        <div className='flex flex-col gap-4 w-1/3'>
+      <div className='flex justify-between w-4/5 gap-4 p-4 flex-1 overflow-hidden'>
+        <div className='flex flex-col gap-4 w-1/3 overflow-y-auto h-full pr-2 custom-scrollbar'>
           {mentor.map((mentor, index) => {
             return (
               <MentorCard
@@ -95,9 +107,7 @@ const ExploreContainer: React.FC = () => {
           onFavoriteClick={() => setIsFavorite(!isFavorite)}
           isFavorite={isFavorite}
           onClickButton={() => {
-            console.log('Connect button clicked');
             setIsOpen(true)
-            console.log("value of isOpen", isOpen)
           }}
         />
         <ConnectModal

@@ -6,6 +6,8 @@ import SlidesIcon from '/public/assets/slides-icon.svg';
 import DocumentEmptyStateLogo from "/public/assets/document-empty-state-logo.svg";
 import Image from 'next/image';
 import { Button } from '@heroui/react';
+import { Startup } from "@/utils/interfaces/StartupProfile";
+
 
 const PlusSquareIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
@@ -78,7 +80,11 @@ const files: File[] = [
     }
 ];
 
-const DocumentBody = () => {
+interface DocumentBodyProps {
+    startup: Startup | null;
+}
+
+const DocumentBody: React.FC<DocumentBodyProps> = ({ startup }) => {
     const [fileList, setFileList] = useState(files);
     const onClickButton = () => {
         console.log('Add new media');

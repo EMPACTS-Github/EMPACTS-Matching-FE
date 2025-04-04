@@ -6,19 +6,20 @@ import { Startup } from "@/utils/interfaces/StartupProfile";
 
 interface ProfileHeaderProps {
     startup: Startup | null;
+    member_count: number;
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup, member_count }) => {
     return (
         <div className="mb-2">
             <div className="flex items-center">
-                <Avatar src="https://via.placeholder.com/150" size="lg" />
+                <Avatar src={startup?.avt_url} size="lg" radius="sm" />
                 <div className="flex flex-col ml-4">
                     <h3 className="text-xl font-bold text-gray-800">{startup?.name}</h3>
                     <p className="text-gray-500 text-md">{startup?.location_based}</p>
                 </div>
             </div>
-            <div className="flex w-full gap-x-3 mt-4 p-2">
+            <div className="flex w-full gap-x-3 mt-4">
                 <div className="flex items-center gap-1 overflow-hidden">
                     <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
                     <span className="font-inter font-semibold text-base text-black text-center truncate">
@@ -28,7 +29,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
                 <div className="flex items-center gap-1">
                     <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
                     <span className="font-inter font-semibold text-base text-black text-center">
-                        3 Members
+                        {member_count} Members
                     </span>
                 </div>
             </div>

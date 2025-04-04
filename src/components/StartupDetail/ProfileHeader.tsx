@@ -5,38 +5,40 @@ import LabelIcon from '/public/assets/label.png';
 import { Startup } from "@/utils/interfaces/startup";
 
 interface ProfileHeaderProps {
-    startup: Startup | null;
+  startup: Startup;
 }
 
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
-    return (
-        <div className="mb-2">
-            <div className="flex items-center">
-                <Avatar src="https://via.placeholder.com/150" size="lg" />
-                <div className="flex flex-col ml-4">
-                    <h3 className="text-xl font-bold text-gray-800">{startup?.name}</h3>
-                    <p className="text-gray-500 text-md">{startup?.location_based}</p>
-                </div>
-            </div>
-            <div className="flex w-full gap-x-3 mt-4 p-2">
-                <div className="flex items-center gap-1 overflow-hidden">
-                    <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
-                    <span className="font-inter font-semibold text-base text-black text-center truncate">
-                        {startup?.category}
-                    </span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
-                    <span className="font-inter font-semibold text-base text-black text-center">
-                        3 Members
-                    </span>
-                </div>
-            </div>
-            <div className="mt-4">
-                <p className="text-gray-500 text-xs">Startup Bio...</p>
-            </div>
+  return (
+    <div className="flex flex-col gap-7">
+      <div className="flex gap-3 items-center">
+        <Avatar className="w-[60px] h-[60px]" radius="md" src={startup.avt_url} />
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">{startup?.name}</h1>
+          <p className="text-gray-600">
+            {startup?.location_based || "Location not specified"}
+          </p>
         </div>
-    );
+      </div>
+      <div className="flex gap-7">
+        <div className="flex items-center gap-1 overflow-hidden">
+          <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
+          <span className="font-inter font-semibold text-base text-black text-center truncate">
+            {startup?.category}
+          </span>
+        </div>
+        <div className="flex items-center gap-1">
+          <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
+          <span className="font-inter font-semibold text-base text-black text-center">
+            {startup.member_qty} Members
+          </span>
+        </div>
+      </div>
+      <div>
+        <p className="text-gray-500 text-[14px]">Startup Bio...</p>
+      </div>
+    </div>
+  );
 };
 
 export default ProfileHeader;

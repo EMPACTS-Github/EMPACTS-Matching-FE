@@ -5,34 +5,53 @@ import { startup_detail } from "@/apis/startup";
 import ProfileHeader from "@/components/StartupDetail/ProfileHeader";
 import TabsSection from "@/components/StartupDetail/TabsSection";
 import { Startup } from "@/utils/interfaces/startup";
+import { provinces } from "@/constants/provinces";
 
 const StartupDetailPage = () => {
-    const { id } = useParams<{ id: string }>();
-    const [startup, setStartup] = useState<Startup | null>(null);
-    useEffect(() => {
-        console.log(id);
-        const fetchStartup = async () => {
-            const response = await startup_detail(parseInt(id));
-            console.log(response);
-            setStartup(response.data);
-        };
-        fetchStartup();
-    }, [id]);
+  const { id } = useParams<{ id: string }>();
+  const [startup, setStartup] = useState<Startup | null>(null);
 
-    const isLoading = false;
-    
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-    
+  useEffect(() => {
+    const fetchStartup = async () => {
+      try {
+        const response = await startup_detail(parseInt(id));
+
+        if (response.data && response.data.location_based) {
+          const province = provinces.find(
+            (p) => p.key === response.data.location_based
+          );
+
+          if (province) {
+            response.data.location_based = province.label;
+          }
+        }
+
+        setStartup(response.data);
+      } catch (error) {
+        console.error("Error fetching startup details:", error);
+      }
+    };
+
+    fetchStartup();
+  }, [id]);
+
+  const isLoading = !startup;
+  if (isLoading) {
     return (
-        <div className="flex justify-center items-center w-full h-screen relative z-10">
-            <div className="w-[65vw] mx-auto p-8 rounded-lg shadow-lg bg-white flex flex-col h-min">
-                <ProfileHeader startup={startup} />
-                <TabsSection startup={startup} />
-            </div>
-        </div>
+      <div className="flex justify-center items-center w-full h-screen">
+        <p>Loading startup details...</p>
+      </div>
     );
+  }
+
+  return (
+    <div className="flex justify-center items-center w-full relative z-10 overflow-hidden">
+      <div className="w-[65vw] mx-auto p-8 mt-10 rounded-lg shadow-lg bg-white flex flex-col gap-7 h-[80vh] overflow-hidden">
+        <ProfileHeader startup={startup} />
+        <TabsSection startup={startup} />
+      </div>
+    </div>
+  );
 };
 
 export default StartupDetailPage;
