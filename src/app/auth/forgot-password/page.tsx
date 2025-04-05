@@ -1,11 +1,10 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
-import { Input, Button } from "@heroui/react";
+import { Input, Button, addToast } from "@heroui/react";
 import EmpactsBg from '/public/empacts-bg.png';
 import EnterEmailScreen from '@/container/Auth/EnterEmailScreen';
 import ResetPasswordScreen from '@/container/Auth/ResetPasswordScreen';
-import { toast } from 'react-toastify';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { send_forgot_password_otp } from '@/apis/auth';
@@ -62,20 +61,40 @@ function ForgotPasswordContent() {
       try {
         const response = await send_forgot_password_otp(email);
         if (response.code === "VERIFICATION_CODE_SENT") {
-          toast.success('Verification code sent to your email');
+          addToast({
+            title: 'Verification code sent to your email',
+            color: 'success',
+            timeout: 3000,
+          });
           localStorage.setItem('email', email); // Store email in localStorage
           router.push('/auth/forgot-password?stage=verification');
         } else if (response.code === "EMAIL_ALREADY_SENT") {
-          toast.error('Email already sent. Please wait before requesting again.');
+          addToast({
+            title: 'Email already sent. Please wait before requesting again.',
+            color: 'danger',
+            timeout: 5000,
+          });
         } else {
-          toast.error(response.message);
+          addToast({
+            title: response.message,
+            color: 'danger',
+            timeout: 5000,
+          });
         }
       } catch (error) {
         console.error(error);
-        toast.error('An error occurred while sending the verification code');
+        addToast({
+          title: 'An error occurred while sending the verification code',
+          color: 'danger',
+          timeout: 5000,
+        });
       }
     } else {
-      toast.error('Invalid email format');
+      addToast({
+        title: 'Invalid email format',
+        color: 'danger',
+        timeout: 5000,
+      });
     }
   };
 

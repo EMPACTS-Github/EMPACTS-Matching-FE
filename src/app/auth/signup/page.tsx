@@ -2,9 +2,8 @@
 import { useState, Suspense } from 'react';
 import Image from 'next/image';
 import EmpactsBg from '/public/empacts-bg.png';
-import { Input, Button } from "@heroui/react";
+import { Input, Button, addToast } from "@heroui/react";
 import Link from 'next/link';
-import { toast } from 'react-toastify';
 import { email_signup } from '@/apis/auth';
 import VerificationScreen from '@/container/Auth/VerificationSreen';
 import CreatePasswordScreen from '@/container/Auth/CreatePasswordScreen';
@@ -56,20 +55,36 @@ function SignupContent() {
     setHasSubmitted(true);
     const isEmailValid = validateEmailFormat(email);
     if (!isEmailValid) {
-      toast.error('Invalid email format');
+      addToast({
+        title: 'Invalid email format',
+        color: 'danger',
+        timeout: 5000,
+      })
       return;
     }
     try {
       const response = await email_signup(email);
       if (response.code == "VERIFICATION_EMAIL_SENT") {
-        toast.success('Verification code sent to your email');
+        addToast({
+          title: 'Verification code sent to your email',
+          color: 'success',
+          timeout: 3000,
+        })
         localStorage.setItem('email', email);
         router.push('/auth/signup?stage=verification');
       } else {
-        toast.error('User already exist', { autoClose: 2000 });
+        addToast({
+          title: 'User already exist',
+          color: 'danger',
+          timeout: 5000,
+        })
       }
     } catch (error) {
-      toast.error('An error occurred while signing up');
+      addToast({
+        title: 'An error occurred while signing up',
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   };
 
