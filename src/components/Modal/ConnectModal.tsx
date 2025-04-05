@@ -1,9 +1,7 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea } from "@heroui/react";
 import Image from "next/image";
 import AvatarPlaceholder from "/public/assets/avatar-placeholder.png";
 import { useState } from "react";
-import { Textarea } from "@heroui/input";
-
 
 interface ConnectModalProps {
     isOpen: boolean;
