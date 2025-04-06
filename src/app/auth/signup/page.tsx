@@ -119,7 +119,7 @@ function SignupContent() {
       <div className="col-span-1 bg-white flex items-center justify-center">
         <div className="p-8 rounded-lg w-full max-w-sm h-3/4">
           {currentScreen == 'verification' ? (
-            <VerificationScreen email={email} />
+            <VerificationScreen />
           ) : currentScreen == 'password' ? (
             <CreatePasswordScreen email={email} />
           ) : currentScreen == 'registerinfo' ? (

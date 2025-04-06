@@ -3,12 +3,11 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import EmpactsLogo from '/public/empacts-logo.svg'
 import FormTitle from '@/components/Form/FormTitle'
-import { Button, Form, Input } from '@heroui/react'
+import { addToast, Button, Form, Input } from '@heroui/react'
 import UserAvatar from '@/components/Form/UserAvatar'
 import FormLabel from '@/components/Form/FormLabel'
 import Link from 'next/link'
 import { upload_image } from '@/apis/upload'
-import { toast } from 'react-toastify'
 import { create_new_profile } from '@/apis/auth'
 import { useRouter } from 'next/navigation'
 
@@ -19,16 +18,32 @@ function RegisterInfoScreen() {
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      toast.promise(
-        upload_image(e.target.files[0]),
-        { pending: 'Uploading your avatar. Please wait' }
-      ).then((response) => {
-        toast.success('Avatar uploaded')
-        setAvatarUrl(response.data.fileUrl);
-      }).catch((err) => {
-        console.log(err)
-      }).finally(() => {
-        e.target.files = null
+      addToast({
+        title: 'Uploading your avatar. Please wait',
+        promise: new Promise((resolve, reject) => {
+          if (e.target.files) {
+            upload_image(e.target.files[0])
+              .then(response => {
+                setAvatarUrl(response.data.fileUrl);
+                addToast({
+                  title: 'Avatar uploaded',
+                  timeout: 3000,
+                })
+                resolve(response);
+              })
+              .catch(err => {
+                console.log(err);
+                addToast({
+                  title: 'An error occured while uploading avatar. Please try again.',
+                  timeout: 3000,
+                })
+                reject(err);
+              })
+              .finally(() => {
+                e.target.files = null
+              });
+          }
+        })
       })
     }
   }
