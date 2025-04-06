@@ -13,6 +13,7 @@
       "@emotion/styled": "^11.13.5",
       "@heroui/react": "^2.7.5",
       "axios": "^1.7.9",
+      "change-case": "^5.4.4",
       "framer-motion": "^12.6.3",
       "next": "14.0.3",
       "react": "^18",
