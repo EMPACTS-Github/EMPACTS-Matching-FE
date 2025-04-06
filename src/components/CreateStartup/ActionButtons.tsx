@@ -2,14 +2,14 @@ import React from 'react';
 import { Button } from "@heroui/react";
 
 interface ActionButtonsProps {
-  onCancel?: () => void;
-  onCreate?: () => void;
+  onCancel: () => void;
+  onCreate: () => void;
   accentColor?: string;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({ 
-  onCancel = () => alert('Cancel clicked'),
-  onCreate = () => alert('Create New clicked'),
+  onCancel,
+  onCreate,
   accentColor = "#70a75c"
 }) => {
   return (
@@ -17,7 +17,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       <div className="flex-1">
         <Button
           className="w-full h-[48px] rounded-lg border border-secondary bg-white text-black"
-          onClick={onCancel}
+          onPress={onCancel}
         >
           <span className="text-base font-medium">Cancel</span>
         </Button>
@@ -25,7 +25,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       <div className="flex-1">
         <Button
           className="w-full h-[48px] rounded-lg bg-[#9200fe] text-white"
-          onClick={onCreate}
+          onPress={onCreate}
         >
           <span className="text-base font-medium">Create New</span>
         </Button>
@@ -35,4 +35,3 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 };
 
 export default ActionButtons;
-

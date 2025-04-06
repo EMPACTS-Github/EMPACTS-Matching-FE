@@ -3,13 +3,13 @@ import { Select, SelectItem } from "@heroui/react";
 import sdgGoals from '@/utils/data/sdgGoals.json';
 
 interface SDGGoalSectionProps {
-  selectedGoal?: string;
-  onGoalChange?: (value: string) => void;
+  selectedGoal: string;
+  onGoalChange: (value: string) => void;
 }
 
 const SDGGoalSection: React.FC<SDGGoalSectionProps> = ({
-  selectedGoal = 'ZERO_HUNGER',
-  onGoalChange = () => { },
+  selectedGoal,
+  onGoalChange,
 }) => {
   const isValidGoal = sdgGoals.some(goal => goal.value === selectedGoal);
 

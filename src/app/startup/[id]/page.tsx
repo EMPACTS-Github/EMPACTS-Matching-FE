@@ -5,7 +5,7 @@ import { startup_detail } from "@/apis/startup";
 import ProfileHeader from "@/components/StartupDetail/ProfileHeader";
 import TabsSection from "@/components/StartupDetail/TabsSection";
 import { Startup } from "@/utils/interfaces/startup";
-import { provinces } from "@/constants/provinces";
+import { PROVINCES } from "@/constants/provinces";
 
 const StartupDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +17,7 @@ const StartupDetailPage = () => {
         const response = await startup_detail(parseInt(id));
 
         if (response.data && response.data.location_based) {
-          const province = provinces.find(
+          const province = PROVINCES.find(
             (p) => p.key === response.data.location_based
           );
 
