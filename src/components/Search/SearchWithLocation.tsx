@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Select, SelectItem } from '@heroui/react';
-import { provinces } from '@/constants/provinces';
+import { PROVINCES } from '@/constants/provinces';
 
 interface SearchWithLocationProps {
   placeholder?: string;
@@ -85,7 +85,7 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
               }}
               isVirtualized={false}
             >
-              {provinces.map((province) => (
+              {PROVINCES.map((province) => (
                 <SelectItem key={province.key} value={province.key}>
                   {province.label}
                 </SelectItem>

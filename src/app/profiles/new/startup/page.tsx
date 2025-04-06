@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from 'react';
 import HeaderSection from '@/components/CreateStartup/HeaderSection';
 import ProfilePictureUpload from '@/components/CreateStartup/ProfilePictureUpload';
@@ -13,15 +12,28 @@ import ProtectedRoute from '@/app/ProtectedRoute';
 import { Member } from '@/utils/interfaces/startup';
 import { addToast } from '@heroui/react';
 import * as changeCase from "change-case";
+import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
+import { PROVINCES } from '@/constants/provinces';
+import { useRouter } from 'next/navigation';
 
 const CreateStartupProfile: React.FC = () => {
   const [companyName, setCompanyName] = useState('');
   const [startupUsername, setStartupUsername] = useState('');
-  const [selectedGoal, setSelectedGoal] = useState('');
-  const [location, setLocation] = useState('HA_NOI');
+  const [selectedGoal, setSelectedGoal] = useState(STARTUP_SDG_GOALS.NO_POVERTY.textValue);
+  const [location, setLocation] = useState(PROVINCES[0].key);
   const [profilePicture, setProfilePicture] = useState('');
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  const handleCancelCreateProfile = () => {
+    router.back();
+  }
+
+  const handleGoalChange = (newGoal: string) => {
+    setSelectedGoal(newGoal);
+  }
 
   const handleCreateProfile = async () => {
     setLoading(true);
@@ -91,10 +103,10 @@ const CreateStartupProfile: React.FC = () => {
           <LocationBasedSection selectedLocation={location} onChange={setLocation} />
           <SDGGoalSection
             selectedGoal={selectedGoal}
-            onGoalChange={setSelectedGoal}
+            onGoalChange={handleGoalChange}
           />
           <AddMemberSection members={members} setMembers={setMembers} /> {/* Pass members and setMembers as props */}
-          <ActionButtons onCreate={handleCreateProfile} />
+          <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
         </div>
       </div>
     </ProtectedRoute>
