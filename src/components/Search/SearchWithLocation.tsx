@@ -86,7 +86,7 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
               isVirtualized={false}
             >
               {PROVINCES.map((province) => (
-                <SelectItem key={province.key} value={province.key}>
+                <SelectItem key={province.key}>
                   {province.label}
                 </SelectItem>
               ))}
