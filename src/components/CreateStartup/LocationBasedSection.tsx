@@ -30,6 +30,7 @@ const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
             selectorIcon: "text-empacts",
           }}
           placeholder="Select a location"
+          isVirtualized={false}
         >
           {provinces.map((province) => (
             <SelectItem

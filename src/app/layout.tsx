@@ -1,16 +1,16 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { HeroUIProvider } from "@heroui/react";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
-import HomepageBackground from '../../public/homepage-bg.png';
+import HomepageBackground from '/public/homepage-bg.png';
+import ProtectedRoute from './ProtectedRoute';
+import HeaderDisplayHandler from './HeaderDisplayHandler';
+import Providers from './Providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EMPACTs Matching',
-  description: 'EMPACTs matching platform',
+  title: 'EMPACTS Connect',
+  description: 'EMPACTS Connect platform',
 };
 
 export default function RootLayout({
@@ -19,12 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-cover`} style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
-        <ToastContainer />
-        <HeroUIProvider>
-          <div className="min-h-screen flex flex-col">{children}</div>
-        </HeroUIProvider>
+    <html lang="en" suppressHydrationWarning >
+      <body className={`${inter.className}`} suppressHydrationWarning>
+          <Providers>
+            <div className="fixed bg-cover inset-0 -z-10" style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
+            </div>
+            <ProtectedRoute>
+              <div className="min-h-screen flex flex-col">
+                <HeaderDisplayHandler />
+                {children}
+              </div>
+            </ProtectedRoute>
+          </Providers>
       </body>
     </html>
   );

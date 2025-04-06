@@ -1,26 +1,39 @@
 "use client";
-
 import React, { useState } from 'react';
-import HeaderSection from '../../../../components/CreateStartup/HeaderSection';
-import ProfilePictureUpload from '../../../../components/CreateStartup/ProfilePictureUpload';
-import StartupNameSection from '../../../../components/CreateStartup/StartupNameSection';
-import LocationBasedSection from '../../../../components/CreateStartup/LocationBasedSection';
-import SDGGoalSection from '../../../../components/CreateStartup/SDGGoalSection';
-import AddMemberSection from '../../../../components/CreateStartup/AddMemberSection';
-import ActionButtons from '../../../../components/CreateStartup/ActionButtons';
-import { create_startup_profile, invite_list_member } from '@/apis/startup'; // Import the API
-import { toast } from 'react-toastify'; // Import toast
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import HeaderSection from '@/components/CreateStartup/HeaderSection';
+import ProfilePictureUpload from '@/components/CreateStartup/ProfilePictureUpload';
+import StartupNameSection from '@/components/CreateStartup/StartupNameSection';
+import LocationBasedSection from '@/components/CreateStartup/LocationBasedSection';
+import SDGGoalSection from '@/components/CreateStartup/SDGGoalSection';
+import AddMemberSection from '@/components/CreateStartup/AddMemberSection';
+import ActionButtons from '@/components/CreateStartup/ActionButtons';
+import { create_startup_profile, invite_list_member } from '@/apis/startup';
 import ProtectedRoute from '@/app/ProtectedRoute';
 import { Member } from '@/utils/interfaces/startup';
+import { addToast } from '@heroui/react';
+import * as changeCase from "change-case";
+import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
+import { PROVINCES } from '@/constants/provinces';
+import { useRouter } from 'next/navigation';
 
 const CreateStartupProfile: React.FC = () => {
   const [companyName, setCompanyName] = useState('');
-  const [selectedGoal, setSelectedGoal] = useState('');
-  const [location, setLocation] = useState('HA_NOI');
+  const [startupUsername, setStartupUsername] = useState('');
+  const [selectedGoal, setSelectedGoal] = useState(STARTUP_SDG_GOALS.NO_POVERTY.textValue);
+  const [location, setLocation] = useState(PROVINCES[0].key);
   const [profilePicture, setProfilePicture] = useState('');
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  const handleCancelCreateProfile = () => {
+    router.back();
+  }
+
+  const handleGoalChange = (newGoal: string) => {
+    setSelectedGoal(newGoal);
+  }
 
   const handleCreateProfile = async () => {
     setLoading(true);
@@ -33,25 +46,42 @@ const CreateStartupProfile: React.FC = () => {
 
     try {
       const response = await create_startup_profile(requestBody);
-      toast.success('Profile created successfully');
+      addToast({
+        title: 'Profile created successfully',
+        color: 'success',
+        timeout: 3000,
+      });
       const user = localStorage.getItem('user');
       const userObj = user ? JSON.parse(user) : {};
       const inviterEmail = userObj.email;
 
-      const inviteResponse = await invite_list_member({
+      await invite_list_member({
         invitee: members,
         inviterEmail: inviterEmail,
         startupId: response.data.newStartup.id,
       });
 
-      toast.success('Members invited successfully');
+      addToast({
+        title: 'Members invited successfully',
+        color: 'success',
+        timeout: 3000,
+      });
     } catch (error) {
-      toast.error('Error creating profile or inviting members');
+      addToast({
+        title: 'Error creating profile or inviting members',
+        color: 'danger',
+        timeout: 5000,
+      });
       console.error('Error creating profile or inviting members:', error);
     } finally {
-      setLoading(false); // Set loading to false
+      setLoading(false);
     }
   };
+
+  const handleChangeStartupUsername = (startupName: string) => {
+    const username = changeCase.snakeCase(startupName);
+    setStartupUsername('@' + username);
+  }
 
   return (
     <ProtectedRoute>
@@ -66,15 +96,17 @@ const CreateStartupProfile: React.FC = () => {
           <ProfilePictureUpload onImageUpload={(file) => setProfilePicture(file)} />
           <StartupNameSection
             companyName={companyName}
+            startupUsername={startupUsername}
             onCompanyNameChange={setCompanyName}
+            onChangeStartupUsername={handleChangeStartupUsername}
           />
           <LocationBasedSection selectedLocation={location} onChange={setLocation} />
           <SDGGoalSection
             selectedGoal={selectedGoal}
-            onGoalChange={setSelectedGoal}
+            onGoalChange={handleGoalChange}
           />
           <AddMemberSection members={members} setMembers={setMembers} /> {/* Pass members and setMembers as props */}
-          <ActionButtons onCreate={handleCreateProfile} />
+          <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
         </div>
       </div>
     </ProtectedRoute>

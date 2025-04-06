@@ -2,15 +2,13 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import Image from 'next/image';
-import { Input, Button } from "@heroui/react";
+import { Input, Button, addToast } from "@heroui/react";
 import Link from 'next/link';
 import EmpactsBg from '/public/empacts-bg.png';
-import { toast } from 'react-toastify';
 import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
-import ProtectedRoute from '@/app/ProtectedRoute';
 import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
 // Loading fallback component
@@ -58,6 +56,10 @@ function LoginContent() {
     return true;
   };
 
+  const handleBackButton = () => {
+    router.back()
+  }
+
   // Handle form submission
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,14 +78,21 @@ function LoginContent() {
         setIsValidPassword(false);
         setEmailColor('danger');
         setIsValidEmail(false);
-        toast.error(response.message || 'Invalid credentials');
+        addToast({
+          title: response.message || 'Invalid credentials',
+          color: 'danger',
+          timeout: 5000,
+        });
       } else {
         setPasswordError('');
         setPasswordColor('default');
         setIsValidPassword(true);
         setEmailColor('default');
         setIsValidEmail(true);
-        toast.success('Login successful');
+        addToast({
+          title: 'Login successful',
+          color: 'success',
+        });
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
 
@@ -91,7 +100,11 @@ function LoginContent() {
       }
     } catch (error) {
       console.error(error);
-      toast.error('An error occurred while logging in');
+      addToast({
+        title: 'An error occurred while logging in',
+        color: 'danger',
+        timeout: 5000,
+      });
     }
   };
 
@@ -110,13 +123,17 @@ function LoginContent() {
           localStorage.setItem('user', JSON.stringify(userInfo.data));
           router.push('/');
         } catch (error) {
-          toast.error('Login with Google failed!', {
-            autoClose: 1000,
+          addToast({
+            title: 'Login with Google failed!',
+            color: 'danger',
+            timeout: 5000,
           });
         }
       } else if (success == 'false') {
-        toast.error('Login with Google failed!', {
-          autoClose: 1000,
+        addToast({
+          title: 'Login with Google failed!',
+          color: 'danger',
+          timeout: 5000,
         });
       }
     }
@@ -162,7 +179,7 @@ function LoginContent() {
         type="submit"
         color="primary"
         size="lg"
-        className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
       >
         Sign in
       </Button>
@@ -174,7 +191,7 @@ function LoginContent() {
       {/* Left Side: Login Form */}
       <div className="col-span-1 bg-white flex items-center justify-center">
         <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
-          <LogoAndTitle 
+          <LogoAndTitle
             title="Sign in"
             description=""
           />
@@ -226,11 +243,9 @@ function LoginContent() {
 // Main page component with Suspense
 const LoginPage = () => {
   return (
-    <ProtectedRoute>
-      <Suspense fallback={<LoadingFallback />}>
-        <LoginContent />
-      </Suspense>
-    </ProtectedRoute>
+    <Suspense fallback={<LoadingFallback />}>
+      <LoginContent />
+    </Suspense>
   );
 };
 

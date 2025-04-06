@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import UploadAvatar from "/public/assets/upload_avatar.svg";
-import { upload_image } from "@/apis/upload"; // Import the upload_image API
-import { toast } from 'react-toastify'; // Import toast
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import { upload_image } from "@/apis/upload";
+import { addToast } from "@heroui/react";
 
 interface ProfilePictureUploadProps {
   onImageUpload?: (fileUrl: string) => void;
@@ -23,19 +22,30 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
       try {
         const response = await upload_image(file);
         setImage(response.fileUrl);
-        console.log("Uploaded image:", response.fileUrl);
         setError(null);
         onImageUpload?.(response.fileUrl);
-        toast.success('Image uploaded successfully');
+        addToast({
+          title: 'Image uploaded successfully',
+          color: 'success',
+          timeout: 3000,
+        });
       } catch (err) {
         setError("Failed to upload the image. Please try again.");
-        toast.error('Failed to upload the image');
+        addToast({
+          title: 'Failed to upload the image',
+          color: 'danger',
+          timeout: 3000,
+        });
       } finally {
         setLoading(false); // Set loading to false
       }
     } else {
       setError("No file selected. Please choose an image file.");
-      toast.error('No file selected');
+      addToast({
+        title: 'No file selected. Please choose an image file.',
+        color: 'danger',
+        timeout: 3000,
+      });
     }
   };
 

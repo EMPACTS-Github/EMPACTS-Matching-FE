@@ -1,6 +1,6 @@
 import React from 'react';
 import { Input, Select, SelectItem } from '@heroui/react';
-import { provinces } from '@/constants/provinces';
+import { PROVINCES } from '@/constants/provinces';
 
 interface SearchWithLocationProps {
   placeholder?: string;
@@ -19,6 +19,10 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
   onLocationChange,
   className = '',
 }) => {
+  const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onLocationChange(e.target.value);
+  }
+
   return (
     <div className={`${className}`}>
       {/* Outer container only gets the hover effect */}
@@ -57,19 +61,18 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
             <Select
               placeholder="Location"
               value={location}
-              onChange={(e) => onLocationChange(e.target.value)}
-              disallowEmptySelection={false}
+              onChange={handleLocationChange}
+              variant="flat"
+              size="md"
               classNames={{
                 base: "min-w-0 w-full",
                 trigger: "h-[40px] min-h-[40px] border-0 bg-transparent shadow-none p-0 cursor-pointer",
                 value: "text-sm font-normal",
                 listbox: "text-base bg-white py-2 px-2"
               }}
-              variant="flat"
-              size="sm"
               popoverProps={{
                 classNames: {
-                  content: "bg-white shadow-sm border border-gray-200 rounded-lg max-h-[300px] overflow-y-auto z-50"
+                  content: "bg-white w-[220px] shadow-lg border border-gray-200 rounded-lg max-h-[300px] overflow-y-auto z-50"
                 },
                 placement: "bottom-end",
                 offset: 5,
@@ -80,13 +83,11 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
                   base: "text-gray-800 py-2 px-3 hover:bg-gray-100 rounded cursor-pointer"
                 }
               }}
+              isVirtualized={false}
             >
-              <SelectItem key="all" value="" textValue="All Locations">
-                <span className="text-base font-normal">All Locations</span>
-              </SelectItem>
-              {provinces.map((province) => (
-                <SelectItem key={province.key} value={province.key} textValue={province.label}>
-                  <span className="text-base font-normal">{province.label}</span>
+              {PROVINCES.map((province) => (
+                <SelectItem key={province.key} value={province.key}>
+                  {province.label}
                 </SelectItem>
               ))}
             </Select>

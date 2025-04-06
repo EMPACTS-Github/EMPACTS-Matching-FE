@@ -1,15 +1,12 @@
 'use client'
 import { useState } from 'react';
 import Image from 'next/image';
-import { InputOtp, Button } from '@heroui/react';
+import { addToast, InputOtp } from '@heroui/react';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { verify_OTP } from '@/apis/auth';
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
-const VerificationScreen = (props: {
-  email: string;
-}) => {
+const VerificationScreen = () => {
   const router = useRouter();
   const [otp, setOtp] = useState("");
   const email = localStorage.getItem('email')
@@ -19,18 +16,38 @@ const VerificationScreen = (props: {
       try {
         const response = await verify_OTP(email, otp);
         if (response.code === "EMAIL_SUCCESSFULLY_VERIFIED") {
-          toast.success("OTP code verified successfully");
+          addToast({
+            title: 'OTP code verified successfully',
+            color: 'success',
+            timeout: 5000,
+          })
           router.replace('/auth/signup?stage=password');
         } else if (response.code === "OTP_EXPIRED") {
-          toast.error("OTP code has expired. Please request a new one.");
+          addToast({
+            title: 'OTP code has expired. Please request a new one.',
+            color: 'danger',
+            timeout: 5000,
+          })
         } else if (response.code === "OTP_INCORRECT") {
-          toast.error("Incorrect OTP code. Please try again.");
+          addToast({
+            title: 'Incorrect OTP code. Please try again.',
+            color: 'danger',
+            timeout: 5000,
+          })
         } else {
-          toast.error(response.message);
+          addToast({
+            title: response.message,
+            color: 'danger',
+            timeout: 5000,
+          })
         }
       } catch (error) {
         console.error(error);
-        toast.error("An error occurred while verifying the OTP");
+        addToast({
+          title: 'An error occurred while verifying the OTP',
+          color: 'danger',
+          timeout: 5000,
+        })
       }
     }
   }

@@ -2,13 +2,11 @@
 import { useState, Suspense } from 'react';
 import Image from 'next/image';
 import EmpactsBg from '/public/empacts-bg.png';
-import { Input, Button } from "@heroui/react";
+import { Input, Button, addToast } from "@heroui/react";
 import Link from 'next/link';
-import { toast } from 'react-toastify';
 import { email_signup } from '@/apis/auth';
 import VerificationScreen from '@/container/Auth/VerificationSreen';
 import CreatePasswordScreen from '@/container/Auth/CreatePasswordScreen';
-import ProtectedRoute from '@/app/ProtectedRoute';
 import RegisterInfoScreen from '@/container/Auth/RegisterInfoScreen';
 import { useRouter } from 'next/navigation';
 import LogoAndTitle from '@/components/Auth/LogoAndTitle';
@@ -57,20 +55,36 @@ function SignupContent() {
     setHasSubmitted(true);
     const isEmailValid = validateEmailFormat(email);
     if (!isEmailValid) {
-      toast.error('Invalid email format');
+      addToast({
+        title: 'Invalid email format',
+        color: 'danger',
+        timeout: 5000,
+      })
       return;
     }
     try {
       const response = await email_signup(email);
       if (response.code == "VERIFICATION_EMAIL_SENT") {
-        toast.success('Verification code sent to your email');
+        addToast({
+          title: 'Verification code sent to your email',
+          color: 'success',
+          timeout: 3000,
+        })
         localStorage.setItem('email', email);
         router.push('/auth/signup?stage=verification');
       } else {
-        toast.error('User already exist', { autoClose: 2000 });
+        addToast({
+          title: 'User already exist',
+          color: 'danger',
+          timeout: 5000,
+        })
       }
     } catch (error) {
-      toast.error('An error occurred while signing up');
+      addToast({
+        title: 'An error occurred while signing up',
+        color: 'danger',
+        timeout: 5000,
+      })
     }
   };
 
@@ -92,7 +106,7 @@ function SignupContent() {
         type="submit"
         color="primary"
         size="lg"
-        className="w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
       >
         Sign up
       </Button>
@@ -105,7 +119,7 @@ function SignupContent() {
       <div className="col-span-1 bg-white flex items-center justify-center">
         <div className="p-8 rounded-lg w-full max-w-sm h-3/4">
           {currentScreen == 'verification' ? (
-            <VerificationScreen email={email} />
+            <VerificationScreen />
           ) : currentScreen == 'password' ? (
             <CreatePasswordScreen email={email} />
           ) : currentScreen == 'registerinfo' ? (
@@ -146,11 +160,9 @@ function SignupContent() {
 // Main page component that uses Suspense
 const SignupPage = () => {
   return (
-    <ProtectedRoute>
-      <Suspense fallback={<LoadingFallback />}>
-        <SignupContent />
-      </Suspense>
-    </ProtectedRoute>
+    <Suspense fallback={<LoadingFallback />}>
+      <SignupContent />
+    </Suspense>
   );
 };
 
