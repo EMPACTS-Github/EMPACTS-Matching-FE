@@ -6,7 +6,7 @@ interface AdvancedBodyProps {
 
 const AdvancedBody: React.FC<AdvancedBodyProps> = ({ startup }) => {
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-4">
             <div className="grid grid-cols-3 gap-10 w-1/2">
                 <div className="col-span-2 text-lg font-semibold text-gray-800">Active User</div>
                 <p className="text-gray-500 text-sm">

@@ -13,7 +13,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup, member_count }) 
     return (
         <div className="mb-2">
             <div className="flex items-center">
-                <Avatar src={startup?.avt_url} size="lg" radius="sm" />
+                <Avatar showFallback isBordered src={startup?.avt_url} size="lg" radius="sm" />
                 <div className="flex flex-col ml-4">
                     <h3 className="text-xl font-bold text-gray-800">{startup?.name}</h3>
                     <p className="text-gray-500 text-md">{startup?.location_based}</p>

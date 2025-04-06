@@ -12,7 +12,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button
+  DropdownSection,
 } from "@heroui/react";
 import DropdownIcon from '/public/assets/dropdown-icon.svg';
 import PlusSquareIcon from '/public/assets/plus-square.svg';
@@ -82,11 +82,11 @@ const Header: React.FC<HeaderProps> = () => {
               height={120}
               onClick={handleBackToHome}
             />
-            {isLoggedIn && (<Dropdown>
+            {isLoggedIn && (<Dropdown className='h-50vw overflow-y-auto'>
               <DropdownTrigger className="p-1 rounded-full hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400">
                 <Image src={DropdownIcon} alt="Dropdown Icon" width={30} height={30} />
               </DropdownTrigger>
-              <DropdownMenu itemClasses={{
+              <DropdownMenu aria-label="Dynamic Actions" items={startups} itemClasses={{
                 base: [
                   "h-10",
                   "text-black",
@@ -94,7 +94,7 @@ const Header: React.FC<HeaderProps> = () => {
                   "text-base",
                 ]
               }}>
-                <>
+                <DropdownSection showDivider title="Actions">
                   <DropdownItem key="new-profile">
                     <Link href="/profiles/new">
                       <div className="flex items-center gap-2">
@@ -111,6 +111,18 @@ const Header: React.FC<HeaderProps> = () => {
                       </div>
                     </Link>
                   </DropdownItem>
+                </DropdownSection>
+                <DropdownSection title="Mentor">
+                  <DropdownItem key="discover-sdgs">
+                    <Link href="/">
+                      <div className="flex items-center gap-2">
+                        <Image src={SoleLogoEmpacts} alt="Mentor Logo" width={20} height={20} />
+                        <div className='text-sm'>Mentor A</div>
+                      </div>
+                    </Link>
+                  </DropdownItem>
+                </DropdownSection>
+                <DropdownSection title="Startup">
                   {startups.map((startup) => (
                     <DropdownItem key={startup.startup_id.id}>
                       <Link href={`/startup-profile/${startup.startup_id.id}`}>
@@ -121,7 +133,7 @@ const Header: React.FC<HeaderProps> = () => {
                       </Link>
                     </DropdownItem>
                   ))}
-                </>
+                </DropdownSection>
               </DropdownMenu>
             </Dropdown>)}
           </div>
@@ -180,8 +192,8 @@ const Header: React.FC<HeaderProps> = () => {
             tabsTitle="Explore"
           />
         </div>)} */}
-      </div>
-    </header>
+      </div >
+    </header >
   );
 };
 
