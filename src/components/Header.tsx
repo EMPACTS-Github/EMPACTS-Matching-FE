@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Image from 'next/image';
 import EmpactsLogo from '/public/empacts-logo.svg';
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
   PopoverContent
 } from "@heroui/react";
+import { Divider } from "@heroui/react";
 import DropdownIcon from '/public/assets/dropdown-icon.svg';
 import PlusSquareIcon from '/public/assets/plus-square.svg';
 import SoleLogoEmpacts from '/public/assets/sole-logo-empacts.svg';
@@ -31,6 +32,8 @@ const Header = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [startups, setStartups] = useState<StartupOfUser[]>([]);
+  //example test (have to change MentorOfUser)
+  const [mentors, setMentors] = useState<StartupOfUser[]>([])
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -40,6 +43,7 @@ const Header = () => {
       try {
         const data = await startup_list();
         setStartups(data.data); // Lưu danh sách startup vào state
+        setMentors(data.data);
       } catch (error) {
         console.error('Failed to fetch startups:', error);
       }
@@ -116,16 +120,35 @@ const Header = () => {
                         </div>
                       </Link>
                     </PopoverContentItem>
-                    {startups.map((startup) => (
-                      <PopoverContentItem key={startup.startup_id.id}>
-                        <Link href={`/startup-profile/${startup.startup_id.id}`}>
-                          <div className="flex items-center gap-2">
-                            <Image src={startup.startup_id.avt_url} alt="Sole Logo" width={20} height={20} />
-                            <div className="text-sm">{startup.startup_id.name}</div>
-                          </div>
-                        </Link>
-                      </PopoverContentItem>
-                    ))}
+                    <Divider />
+                    <p className="text-small text-default-500">Mentor</p>
+                    <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
+                      {/* //example only (have to change to real mentor attributes) */}
+                      {mentors.map((mentor) => (
+                        <PopoverContentItem key={mentor.startup_id.id}>
+                          <Link href={`/startup-profile/${mentor.startup_id.id}`}>
+                            <div className="flex items-center gap-2">
+                              <Image src={mentor.startup_id.avt_url} alt="Logo" width={20} height={20} />
+                              <div className="text-sm">{mentor.startup_id.name}</div>
+                            </div>
+                          </Link>
+                        </PopoverContentItem>
+                      ))}
+                    </div>
+                    <Divider />
+                    <p className="text-small text-default-500">Startup</p>
+                    <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
+                      {startups.map((startup) => ( // Giới hạn tổng mentors + startups tối đa 10 mục
+                        <PopoverContentItem key={startup.startup_id.id}>
+                          <Link href={`/startup-profile/${startup.startup_id.id}`}>
+                            <div className="flex items-center gap-2">
+                              <Image src={startup.startup_id.avt_url} alt="Logo" width={20} height={20} />
+                              <div className="text-sm">{startup.startup_id.name}</div>
+                            </div>
+                          </Link>
+                        </PopoverContentItem>
+                      ))}
+                    </div>
                   </div>
                 </PopoverContent>
               </Popover>)}
