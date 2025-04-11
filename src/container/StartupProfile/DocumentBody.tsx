@@ -86,9 +86,28 @@ interface DocumentBodyProps {
 
 const DocumentBody: React.FC<DocumentBodyProps> = ({ startup }) => {
     const [fileList, setFileList] = useState(files);
+    
     const onClickButton = () => {
         console.log('Add new media');
     };
+    
+    const handleDocumentDownload = (fileUrl: string, fileName: string) => {
+        // Create a hidden anchor element
+        const element = document.createElement('a');
+        element.setAttribute('href', fileUrl);
+        element.setAttribute('download', fileName);
+        element.style.display = 'none';
+        
+        // Add to the DOM
+        document.body.appendChild(element);
+        
+        // Trigger download
+        element.click();
+        
+        // Clean up
+        document.body.removeChild(element);
+    };
+
     return (
         <div className="space-y-4">
             {fileList.length > 0 ? (
@@ -97,19 +116,27 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({ startup }) => {
                         <div className="space-y-4">
                             {files.map((file, index) => (
                                 <div key={index} className="flex items-center gap-4">
-                                    <a href={file.attachment_url} download>
+                                    <button 
+                                        type="button"
+                                        onClick={() => handleDocumentDownload(file.attachment_url, file.attachment_title)}
+                                        className="cursor-pointer bg-transparent border-none p-0 flex items-center"
+                                    >
                                         <Image
                                             alt={`${file.type} icon`}
                                             height={40}
-                                            src={fileIcons[file.type] || DocumentEmptyStateLogo} // Hiển thị icon tương ứng hoặc logo mặc định
+                                            src={fileIcons[file.type] || DocumentEmptyStateLogo}
                                             width={40}
                                             className="cursor-pointer"
                                         />
-                                    </a>
-                                    <a href={file.attachment_url} download className="grid justify-items-start">
+                                    </button>
+                                    <button 
+                                        type="button"
+                                        onClick={() => handleDocumentDownload(file.attachment_url, file.attachment_title)}
+                                        className="grid justify-items-start text-left cursor-pointer bg-transparent border-none p-0"
+                                    >
                                         <div className="font-semibold text-gray-800">{fileNames[file.type]}</div>
                                         <div className="text-sm text-gray-500">{file.attachment_title}</div>
-                                    </a>
+                                    </button>
                                 </div>
                             ))}
                         </div>
