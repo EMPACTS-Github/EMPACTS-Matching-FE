@@ -37,7 +37,7 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
               base: "w-full",
               mainWrapper: "w-full",
               input: "text-base pl-2 focus:outline-none bg-transparent hover:bg-transparent focus:bg-transparent",
-              inputWrapper: "h-[40px] min-h-[40px] border-0 bg-transparent shadow-none rounded-none focus:shadow-none hover:shadow-none data-[focus=true]:bg-transparent focus:outline-none focus:bg-transparent hover:bg-transparent data-[hover=true]:bg-transparent",
+              inputWrapper: "h-[40px] min-h-[40px] border-0 bg-transparent shadow-none rounded-none focus:shadow-none hover:shadow-none hover:bg-transparent data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent",
               innerWrapper: "bg-transparent"
             }}
             aria-label="Search input"
