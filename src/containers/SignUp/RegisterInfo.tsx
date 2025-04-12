@@ -11,7 +11,7 @@ import { upload_image } from '@/apis/upload'
 import { create_new_profile } from '@/apis/auth'
 import { useRouter } from 'next/navigation'
 
-function RegisterInfoScreen() {
+function RegisterInfo() {
   const router = useRouter()
   const [username, setUsername] = useState('')
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
@@ -121,4 +121,4 @@ function RegisterInfoScreen() {
   )
 }
 
-export default RegisterInfoScreen
+export default RegisterInfo

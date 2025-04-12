@@ -6,7 +6,7 @@ import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { verify_OTP } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 
-const VerificationScreen = () => {
+const EmailVerification = () => {
   const router = useRouter();
   const [otp, setOtp] = useState("");
   const email = localStorage.getItem('email')
@@ -89,4 +89,4 @@ const VerificationScreen = () => {
   )
 }
 
-export default VerificationScreen;
+export default EmailVerification;

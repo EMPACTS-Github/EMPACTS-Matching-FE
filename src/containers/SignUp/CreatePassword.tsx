@@ -7,7 +7,7 @@ import { Input, Button, addToast } from "@heroui/react";
 import EmpactsLogo from '/public/empacts-logo.png';
 import Link from 'next/link';
 
-const CreatePasswordScreen = (props: { email: string }) => {
+const CreatePassword = (props: { email: string }) => {
   const email = localStorage.getItem('email');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -105,4 +105,4 @@ const CreatePasswordScreen = (props: { email: string }) => {
   );
 };
 
-export default CreatePasswordScreen;
+export default CreatePassword;
