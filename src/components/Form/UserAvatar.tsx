@@ -1,4 +1,4 @@
-import UserAvatarPlaceholder from '../../../public/user-avatar-placeholder.svg';
+import UserAvatarPlaceholder from '/public/user-avatar-placeholder.svg';
 import { Input, Avatar } from "@heroui/react";
 import Image from 'next/image';
 import React, { useRef } from "react";

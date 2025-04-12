@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { startup_detail } from "@/apis/startup";
 import ProfileHeader from "@/components/StartupDetail/ProfileHeader";
 import TabsSection from "@/components/StartupDetail/TabsSection";
-import { Startup } from "@/utils/interfaces/startup";
+import { Startup } from "@/interfaces/startup";
 import { PROVINCES } from "@/constants/provinces";
 
 const StartupDetailPage = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileCard from '../../components/Profiles/ProfileCard';
+import ProfileCard from '@/components/Profiles/ProfileCard';
 import ProtectedRoute from '@/app/ProtectedRoute';
 
 const ProfileList: React.FC = () => {

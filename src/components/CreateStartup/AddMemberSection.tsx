@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Button } from "@heroui/react";
 import Image from 'next/image';
-import { Member } from '@/utils/interfaces/startup';
+import { Member } from '@/interfaces/startup';
 
 
 interface AddMemberSectionProps {

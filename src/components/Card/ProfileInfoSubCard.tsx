@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Button } from "@heroui/react";
 import Image from "next/image";
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
-import { Startup } from "@/utils/interfaces/StartupProfile";
+import { Startup } from "@/interfaces/StartupProfile";
 
 interface ProfileInfoSubCardProps {
     startup: Startup | undefined;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Image from 'next/image';
 import { Input, Button, addToast } from "@heroui/react";
 import Link from 'next/link';
@@ -56,6 +56,7 @@ function LoginContent() {
     return true;
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleBackButton = () => {
     router.back()
   }

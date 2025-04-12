@@ -8,7 +8,6 @@ import SearchBar from '@/components/SearchBar';
 import { HeroSection } from '@/components/HeroSection';
 import { startup_list, search_startup } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
-import Header from '@/components/Header';
 import { FETCH_STARTUP_LIMIT } from '@/constants';
 interface Startup {
   id: number;

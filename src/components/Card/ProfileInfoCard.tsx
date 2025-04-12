@@ -7,9 +7,9 @@ import { Button } from "@heroui/react";
 import AvatarPlaceholder from "/public/assets/avatar-placeholder.png";
 import Label from "/public/assets/label.svg";
 import Star from "/public/assets/star.svg";
-import IconText from "../common/IconText";
-import TitleWithDescription from "../common/TitleWithDescription";
-import TextLine from "../common/TextLine";
+import IconText from "@/components/common/IconText";
+import TitleWithDescription from "@/components/common/TitleWithDescription";
+import TextLine from "@/components/common/TextLine";
 
 interface ProfileInfoCardProps {
     title: string;

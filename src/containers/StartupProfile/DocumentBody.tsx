@@ -6,8 +6,7 @@ import SlidesIcon from '/public/assets/slides-icon.svg';
 import DocumentEmptyStateLogo from "/public/assets/document-empty-state-logo.svg";
 import Image from 'next/image';
 import { Button } from '@heroui/react';
-import { Startup } from "@/utils/interfaces/StartupProfile";
-
+import { Startup } from "@/interfaces/StartupProfile";
 
 const PlusSquareIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
@@ -86,24 +85,24 @@ interface DocumentBodyProps {
 
 const DocumentBody: React.FC<DocumentBodyProps> = ({ startup }) => {
     const [fileList, setFileList] = useState(files);
-    
+
     const onClickButton = () => {
         console.log('Add new media');
     };
-    
+
     const handleDocumentDownload = (fileUrl: string, fileName: string) => {
         // Create a hidden anchor element
         const element = document.createElement('a');
         element.setAttribute('href', fileUrl);
         element.setAttribute('download', fileName);
         element.style.display = 'none';
-        
+
         // Add to the DOM
         document.body.appendChild(element);
-        
+
         // Trigger download
         element.click();
-        
+
         // Clean up
         document.body.removeChild(element);
     };
@@ -116,7 +115,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({ startup }) => {
                         <div className="space-y-4">
                             {files.map((file, index) => (
                                 <div key={index} className="flex items-center gap-4">
-                                    <button 
+                                    <button
                                         type="button"
                                         onClick={() => handleDocumentDownload(file.attachment_url, file.attachment_title)}
                                         className="cursor-pointer bg-transparent border-none p-0 flex items-center"
@@ -129,7 +128,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({ startup }) => {
                                             className="cursor-pointer"
                                         />
                                     </button>
-                                    <button 
+                                    <button
                                         type="button"
                                         onClick={() => handleDocumentDownload(file.attachment_url, file.attachment_title)}
                                         className="grid justify-items-start text-left cursor-pointer bg-transparent border-none p-0"

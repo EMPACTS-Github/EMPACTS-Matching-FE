@@ -1,6 +1,6 @@
 import ImageGallery from './ImageGallery';
 import Image from 'next/image';
-import { Startup } from "@/utils/interfaces/StartupProfile";
+import { Startup } from "@/interfaces/StartupProfile";
 
 
 interface MediaBodyProps {
