@@ -2,7 +2,7 @@ import { Avatar } from "@heroui/react";
 import Image from 'next/image';
 import GroupIcon from '/public/assets/group.png';
 import LabelIcon from '/public/assets/label.png';
-import { Startup } from "@/utils/interfaces/StartupProfile";
+import { Startup } from "@/interfaces/StartupProfile";
 
 interface ProfileHeaderProps {
     startup: Startup | null;

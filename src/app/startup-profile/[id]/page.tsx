@@ -1,5 +1,5 @@
 "use client";
-import StartupProfileContainer from '@/container/StartupProfile/StartupProfileContainer';
+import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
 import React from 'react';
 import { useParams } from "next/navigation";
 

@@ -5,9 +5,9 @@ import EmpactsBg from '/public/empacts-bg.png';
 import { Input, Button, addToast } from "@heroui/react";
 import Link from 'next/link';
 import { email_signup } from '@/apis/auth';
-import VerificationScreen from '@/container/Auth/VerificationSreen';
-import CreatePasswordScreen from '@/container/Auth/CreatePasswordScreen';
-import RegisterInfoScreen from '@/container/Auth/RegisterInfoScreen';
+import VerificationScreen from '@/containers/Auth/VerificationSreen';
+import CreatePasswordScreen from '@/containers/Auth/CreatePasswordScreen';
+import RegisterInfoScreen from '@/containers/Auth/RegisterInfoScreen';
 import { useRouter } from 'next/navigation';
 import LogoAndTitle from '@/components/Auth/LogoAndTitle';
 
@@ -35,6 +35,7 @@ function SignupContent() {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [emailError, setEmailError] = useState('');
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
+  // eslint-disable-next-line no-unused-vars
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const validateEmailFormat = (email: string): boolean => {

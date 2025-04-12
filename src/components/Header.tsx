@@ -17,7 +17,7 @@ import BellIcon from '/public/assets/bell_icon.svg';
 import { logout } from '@/apis/auth';
 import Link from 'next/link';
 import { startup_list } from '@/apis/startup-profile';
-import { StartupOfUser } from '@/utils/interfaces/StartupOfUser'
+import { StartupOfUser } from '@/interfaces/StartupOfUser'
 
 const PopoverContentItem = ({ children }: { children: React.ReactNode }) => {
   return (

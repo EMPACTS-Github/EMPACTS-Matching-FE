@@ -1,4 +1,4 @@
-import ExploreContainer from '@/container/Explore/ExploreContainer';
+import ExploreContainer from '@/containers/Explore/ExploreContainer';
 import React from 'react';
 
 const ExplorePage: React.FC = () => {

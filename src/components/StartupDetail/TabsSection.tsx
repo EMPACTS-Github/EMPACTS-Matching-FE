@@ -1,4 +1,4 @@
-import { Startup } from "@/utils/interfaces/startup";
+import { Startup } from "@/interfaces/startup";
 import { Tab, Tabs } from "@heroui/react";
 import { Link } from "@heroui/react";
 

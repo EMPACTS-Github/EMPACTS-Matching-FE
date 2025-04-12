@@ -6,7 +6,7 @@ import { startup_profile_detail } from "@/apis/startup-profile"
 import ProfileHeader from "./ProfileHeader";
 import TabsSection from "./TabsSection";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
-import { StartupProfileResponse } from "@/utils/interfaces/StartupProfile";
+import { StartupProfileResponse } from "@/interfaces/StartupProfile";
 
 interface StartupProfileContainerProps {
     id: string;

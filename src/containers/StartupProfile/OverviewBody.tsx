@@ -1,4 +1,4 @@
-import { Startup } from "@/utils/interfaces/StartupProfile";
+import { Startup } from "@/interfaces/StartupProfile";
 import { Link } from "@heroui/link";
 
 interface OverviewBodyProps {

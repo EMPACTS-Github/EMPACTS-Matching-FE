@@ -1,4 +1,4 @@
-import { Startup } from "@/utils/interfaces/StartupProfile";
+import { Startup } from "@/interfaces/StartupProfile";
 import { Tab, Tabs } from "@heroui/react";
 import OverviewBody from "./OverviewBody";
 import MediaBody from "./MediaBody";
