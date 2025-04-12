@@ -25,7 +25,7 @@ export default function RootLayout({
             <div className="fixed bg-cover inset-0 -z-10" style={{ backgroundImage: `url(${HomepageBackground.src})` }}>
             </div>
             <ProtectedRoute>
-              <div className="min-h-screen flex flex-col">
+              <div className="min-h-screen">
                 <HeaderDisplayHandler />
                 {children}
               </div>

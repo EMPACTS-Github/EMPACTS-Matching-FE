@@ -1,21 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@heroui/react";
 import { STARTUP_SDG_GOALS } from "@/constants/sdgs";
 import CategoryItem from "./CategoryItem";
+import { Category } from "@/interfaces/startup";
 
-interface Category {
-  id: string;
-  label: string;
-}
 
 interface CategoryProps {
   selectedCategory?: string[];
   setSelectedCategory: (categories: string[]) => void;
 }
 
-const Category: React.FC<CategoryProps> = ({
+const CategoryList: React.FC<CategoryProps> = ({
   selectedCategory = [],
   setSelectedCategory,
 }) => {
@@ -137,4 +134,4 @@ const Category: React.FC<CategoryProps> = ({
   );
 };
 
-export default Category;
+export default CategoryList;
