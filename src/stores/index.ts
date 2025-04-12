@@ -1,0 +1,1 @@
+// For react state management library: Zustand or Redux --> For future use :v
