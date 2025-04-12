@@ -5,7 +5,7 @@ import { send_forgot_password_otp, verify_forgot_password_otp } from '@/apis/aut
 import { addToast, InputOtp } from '@heroui/react';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
-const EnterEmailScreen = (props: {
+const EnterEmail = (props: {
   email: string,
   setEmailSent: (arg0: boolean) => void,
   setResetPasswordScreen: (arg0: boolean) => void,
@@ -152,4 +152,4 @@ const EnterEmailScreen = (props: {
   );
 };
 
-export default EnterEmailScreen;
+export default EnterEmail;

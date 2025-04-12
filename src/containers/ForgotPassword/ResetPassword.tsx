@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { reset_password } from '@/apis/auth';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
-const ResetPasswordScreen = (props: { email: string, setOpenResetPasswordScreen: (arg0: boolean) => void }) => {
+const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0: boolean) => void }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isValidPassword, setIsValidPassword] = useState(true);
@@ -128,4 +128,4 @@ const ResetPasswordScreen = (props: { email: string, setOpenResetPasswordScreen:
   );
 };
 
-export default ResetPasswordScreen;
+export default ResetPassword;
