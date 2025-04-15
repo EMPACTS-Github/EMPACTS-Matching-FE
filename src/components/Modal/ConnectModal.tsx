@@ -2,6 +2,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input
 import Image from "next/image";
 import AvatarPlaceholder from "/public/assets/avatar-placeholder.png";
 import { useState } from "react";
+import LabelWithTextarea from '@/components/FormInput/LabelWithTextarea';
 
 interface ConnectModalProps {
     isOpen: boolean;
@@ -13,10 +14,10 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ isOpen, onClose, mentorName
     const [note, setNote] = useState("");
 
     return (
-        <Modal 
-            isDismissable={false} 
-            isKeyboardDismissDisabled={true} 
-            isOpen={isOpen} 
+        <Modal
+            isDismissable={false}
+            isKeyboardDismissDisabled={true}
+            isOpen={isOpen}
             onOpenChange={onClose}
             classNames={{
                 body: "h-6",
@@ -38,19 +39,13 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ isOpen, onClose, mentorName
                                     <label className="block text-sm font-medium text-gray-700">Time</label>
                                     <Input type="text" value="10:00 - 11:00 Thursday" readOnly />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Note</label>
-                                    <Textarea 
-                                        classNames={{
-                                            input: "min-h-[40px]",
-                                        }} 
-                                        radius='none'
-                                        variant="underlined" 
-                                        placeholder="Leave a note for mentor"
-                                        onHeightChange={(height) => console.log(height)}
-                                        value={note}
-                                     />;
-                                </div>
+                                <LabelWithTextarea
+                                    label="Note"
+                                    content={note}
+                                    setContent={setNote}
+                                    minRows={2}
+                                    placeholder="Leave a note for mentor"
+                                />
                             </div>
                         </ModalBody>
                         <ModalFooter className="flex justify-between mt-20">
