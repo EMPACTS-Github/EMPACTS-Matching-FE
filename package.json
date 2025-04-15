@@ -11,6 +11,7 @@
    "dependencies": {
       "@emotion/react": "^11.13.5",
       "@emotion/styled": "^11.13.5",
+      "@heroui/input": "^2.4.17",
       "@heroui/react": "^2.7.5",
       "axios": "^1.7.9",
       "change-case": "^5.4.4",

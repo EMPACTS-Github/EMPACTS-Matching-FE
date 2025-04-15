@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { Spinner } from "@heroui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { startup_profile_detail } from "@/apis/startup-profile"
@@ -30,14 +31,14 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ id })
 
     return (
         <div className="grid grid-cols-3 w-full max-w-5xl relative z-10 gap-0">
-            <div className="col-span-2 w-full mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col">
+            <div className="col-span-2 w-full mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">
                 {startup_profile?.startup ? (
                     <div>
                         <ProfileHeader startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
                         <TabsSection startup={startup_profile?.startup} />
                     </div>
                 ) : (
-                    <p className="text-sm text-gray-500">Loading startup data...</p>
+                    <Spinner size="lg" label="Loading..." className="m-auto" />
                 )}
             </div>
             <div className="col-span-1">

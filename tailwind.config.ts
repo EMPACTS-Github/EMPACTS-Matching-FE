@@ -15,6 +15,12 @@ const config: Config = {
       textColor: {
         empacts: "#9200FE",
       },
+      backgroundColor: {
+        empacts: "#9200FE",
+      },
+      borderColor: {
+        empacts: "#9200FE",
+      },
     },
   },
   plugins: [
