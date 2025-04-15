@@ -5,8 +5,9 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import { upload_image } from "@/apis/upload";
-import { Startup } from "@/utils/interfaces/StartupProfile";
+import { Startup } from "@/interfaces/StartupProfile";
 import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
+import ImageGallery from "@/containers/StartupProfile/ImageGallery";
 import { getProvince } from "@/utils/getProvince";
 import { getSDGGoal } from "@/utils/getSDGGoal";
 import sdgGoals from "@/utils/data/sdgGoals.json";
@@ -35,6 +36,12 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [description, setDescription] = useState<string>(startup?.description || "");
     const [sdgGoal, setSdgGoal] = useState<string>(startup?.category || "");
     const [bio, setBio] = useState<string>("");
+
+    const images: string[] = [
+        // "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
+        // "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
+        // "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
+    ];
 
     // Đồng bộ state với props khi startup thay đổi
     useEffect(() => {
@@ -196,6 +203,15 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
 
                                 <div className="font-semibold text-lg text-empacts">Media</div>
                                 <Divider />
+                                <ImageGallery images={images} />
+
+                                <div className="font-semibold text-lg text-empacts">Documentation</div>
+                                <Divider />
+
+                                <div className="font-semibold text-lg text-empacts">Advanced Information</div>
+                                <Divider />
+
+
                             </Tab>
                             <Tab key="advanced" title="Advanced" className="w-full flex flex-col gap-2 py-3">
                                 <div className="flex justify-between">

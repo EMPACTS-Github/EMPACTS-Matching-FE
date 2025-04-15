@@ -21,7 +21,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
         console.log('Add new media');
     };
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full my-4">
             {/* Hiển thị ảnh chính */}
             {images.length > 0 ? (
                 <div>
@@ -46,7 +46,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                                     alt={`Thumbnail ${index}`}
                                     width={56} // Chiều rộng của thumbnail
                                     height={56} // Chiều cao của thumbnail
-                                    className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${selectedIndex == index ? 'border-[#7f00ff]' : 'border-transparent'
+                                    className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${selectedIndex == index ? 'border-empacts' : 'border-transparent'
                                         } rounded-lg`}
                                 />
                             </div>
@@ -67,7 +67,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                         type="submit"
                         color="primary"
                         size="lg"
-                        className="rounded-lg bg-[#7f00ff] border-[#7f00ff] text-md text-white"
+                        className="rounded-lg bg-empacts border-empacts text-md text-white"
                         startContent={<PlusSquareIcon />}
                         onPress={onClickButton}
                     >
