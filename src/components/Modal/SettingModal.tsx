@@ -8,6 +8,7 @@ import { upload_image } from "@/apis/upload";
 import { Startup } from "@/interfaces/StartupProfile";
 import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
 import ImageGallery from "@/containers/StartupProfile/ImageGallery";
+import LabelStartAndSwitchEnd from "@/components/Switch/LabelStartAndSwitchEnd";
 import { getProvince } from "@/utils/getProvince";
 import { getSDGGoal } from "@/utils/getSDGGoal";
 import sdgGoals from "@/utils/data/sdgGoals.json";
@@ -27,6 +28,13 @@ interface SettingModalProps {
     startup: Startup | undefined;
 }
 
+const PlusSquareIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+        <path d="M8.5 4.58984L8.5 12.5898" stroke="white" stroke-width="2" stroke-linecap="round" />
+        <path d="M12.5 8.58984L4.5 8.58984" stroke="white" stroke-width="2" stroke-linecap="round" />
+    </svg>
+);
+
 const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false); // Add loading state
@@ -38,9 +46,9 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [bio, setBio] = useState<string>("");
 
     const images: string[] = [
-        // "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
-        // "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
-        // "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
+        "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
+        "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
+        "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
     ];
 
     // Đồng bộ state với props khi startup thay đổi
@@ -207,11 +215,42 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
 
                                 <div className="font-semibold text-lg text-empacts">Documentation</div>
                                 <Divider />
+                                <Button
+                                    size="sm"
+                                    className="rounded-lg bg-empacts w-36 text-xs text-white"
+                                    startContent={<PlusSquareIcon />}
+                                    onPress={() => { }}
+                                >
+                                    Add new file
+                                </Button>
 
                                 <div className="font-semibold text-lg text-empacts">Advanced Information</div>
                                 <Divider />
-
-
+                                <LabelStartAndSwitchEnd
+                                    label="Active user"
+                                    checked={startup?.have_active_use ? true : false}
+                                    onChange={() => { }}
+                                />
+                                <LabelStartAndSwitchEnd
+                                    label="Lastest Revenue"
+                                    checked={startup?.revenue ? true : false}
+                                    onChange={() => { }}
+                                />
+                                <LabelStartAndSwitchEnd
+                                    label="Legal Equity"
+                                    checked={startup?.legal_equity_detail ? true : false}
+                                    onChange={() => { }}
+                                />
+                                <LabelStartAndSwitchEnd
+                                    label="Investment"
+                                    checked={startup?.investment_detail ? true : false}
+                                    onChange={() => { }}
+                                />
+                                <LabelStartAndSwitchEnd
+                                    label="Fundraising"
+                                    checked={startup?.fundraising_detail ? true : false}
+                                    onChange={() => { }}
+                                />
                             </Tab>
                             <Tab key="advanced" title="Advanced" className="w-full flex flex-col gap-2 py-3">
                                 <div className="flex justify-between">
