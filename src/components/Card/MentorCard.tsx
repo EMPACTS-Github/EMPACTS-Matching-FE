@@ -2,7 +2,7 @@ import Image, { StaticImageData } from "next/image";
 import React from "react";
 import FavoriteIcon from "/public/assets/favorite-icon.svg";
 import FavoriteFilledIcon from "/public/assets/favorite-filled-icon.svg";
-import TextLine from "../common/TextLine";
+import TextLine from "@/components/common/TextLine";
 import {Progress} from "@heroui/react";
 
 interface MentorCardProps {

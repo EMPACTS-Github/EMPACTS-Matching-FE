@@ -35,7 +35,6 @@ const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
           {provinces.map((province) => (
             <SelectItem
               key={province.value}
-              value={province.value}
               className={`text-[14px] font-semibold ${
                 selectedLocation === province.value
                   ? "text-empacts"

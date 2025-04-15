@@ -25,8 +25,8 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
 
   return (
     <div className={`${className}`}>
-      {/* Outer container only gets the hover effect */}
-      <div className="flex items-center justify-between bg-white rounded-[64px] border border-gray-200 h-[52px] w-[808px] transition-shadow duration-200 hover:shadow-[0_0_0_2px_rgba(229,231,235,0.5)]">
+      {/* Outer container with better hover/focus styling */}
+      <div className="flex items-center justify-between bg-white rounded-[64px] border border-gray-200 h-[52px] w-[808px] transition-all duration-200 hover:border-primary focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/30">
         {/* Search Input – full width with no internal focus/hover highlighting */}
         <div className="flex flex-grow items-center pl-8">
           <Input
@@ -36,8 +36,8 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
             classNames={{
               base: "w-full",
               mainWrapper: "w-full",
-              input: "text-base pl-2 focus:outline-none",
-              inputWrapper: "h-[40px] min-h-[40px] border-0 bg-transparent shadow-none rounded-none focus:outline-none",
+              input: "text-base pl-2 focus:outline-none bg-transparent hover:bg-transparent focus:bg-transparent",
+              inputWrapper: "h-[40px] min-h-[40px] border-0 bg-transparent shadow-none rounded-none focus:shadow-none hover:shadow-none hover:bg-transparent data-[hover=true]:bg-transparent group-data-[focus=true]:bg-transparent",
               innerWrapper: "bg-transparent"
             }}
             aria-label="Search input"
@@ -86,7 +86,7 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
               isVirtualized={false}
             >
               {PROVINCES.map((province) => (
-                <SelectItem key={province.key} value={province.key}>
+                <SelectItem key={province.key}>
                   {province.label}
                 </SelectItem>
               ))}
