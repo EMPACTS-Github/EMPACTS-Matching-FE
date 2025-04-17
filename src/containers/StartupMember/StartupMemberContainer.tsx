@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { Spacer } from "@heroui/spacer";
 import { useEffect, useState } from "react";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
@@ -27,11 +28,12 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ id }) =
     }, [id]);
 
     return (
-        <div className="grid grid-cols-3 w-full max-w-5xl relative z-10 gap-0 mt-6">
-            <div className="col-span-2 w-full mx-0 flex flex-col">
+        <div className="flex w-full max-w-5xl relative z-10 gap-0 mt-6">
+            <div className="w-full mx-0 flex flex-col">
                 <MemberListContainer members={startup_profile?.members} />
             </div>
-            <div className="col-span-1">
+            <Spacer x={10} />
+            <div className="max-w-lg">
                 <ProfileInfoSubCard startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
             </div>
         </div>

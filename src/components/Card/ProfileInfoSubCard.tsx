@@ -11,7 +11,7 @@ interface ProfileInfoSubCardProps {
 const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, member_count }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
-        <Card className="bg-white shadow-lg rounded-lg px-4 py-2 ml-20">
+        <Card className="bg-white min-w-lg shadow-lg rounded-lg px-4 py-2">
             {startup ? (
                 <CardHeader className="flex flex-col gap-3" >
                     <Avatar

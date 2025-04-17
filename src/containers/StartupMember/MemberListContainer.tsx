@@ -38,7 +38,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
         }
     }, [members]);
     return (
-        <div>
+        <div className="w-full">
             <div className="flex justify-between items-center mb-4" >
                 <div className="space-x-2">
                     <Button size="sm" variant="solid" radius="full">All</Button>
@@ -72,7 +72,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
                             <DropdownTrigger>
                                 <Button variant="light">:</Button>
                             </DropdownTrigger>
-                            <DropdownMenu aria-label="Static Actions" variant="faded">
+                            <DropdownMenu variant="faded">
                                 <DropdownItem
                                     key="edit"
                                     startContent={<EditIcon className={iconClasses} />}
