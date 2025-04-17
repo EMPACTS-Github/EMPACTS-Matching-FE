@@ -1,8 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button } from "@heroui/react";
+import { Button, cn } from "@heroui/react";
 import { Chip } from "@heroui/chip";
+import {
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem
+} from "@heroui/dropdown";
 import Image from "next/image";
+import DeleteIcon from "@/components/Icons/DeleteIcon";
+import EditIcon from "@/components/Icons/EditIcon";
 import { Member } from "@/interfaces/StartupProfile";
 
 interface MemberListContainerProps {
@@ -22,6 +30,8 @@ const RoleChip = ({ role }: { role: string }) => (
 
 const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) => {
     const [memberList, setMembers] = useState<Member[]>([]);
+
+    const iconClasses = "text-xl text-default-500 hover:text-white pointer-events-none flex-shrink-0";
     useEffect(() => {
         if (members) {
             setMembers(members);
@@ -48,7 +58,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
                                 alt="User Avatar"
                                 width={48}
                                 height={48}
-                                className="rounded-full"
+                                className="rounded-lg"
                             />
                             <div>
                                 <div className="font-semibold flex items-center gap-2">
@@ -58,7 +68,33 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
                                 <div className="text-sm text-gray-500">{member.position_title}</div>
                             </div>
                         </div>
-                        <div className="text-gray-400 text-xl font-bold cursor-pointer">⋯</div>
+                        <Dropdown>
+                            <DropdownTrigger>
+                                <Button variant="light">:</Button>
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Static Actions" variant="faded">
+                                <DropdownItem
+                                    key="edit"
+                                    startContent={<EditIcon className={iconClasses} />}
+                                >
+                                    Edit title
+                                </DropdownItem>
+                                <DropdownItem
+                                    key="change-permission"
+                                    startContent={<EditIcon className={iconClasses} />}
+                                >
+                                    Change permission
+                                </DropdownItem>
+                                <DropdownItem
+                                    key="delete"
+                                    className="text-danger"
+                                    color="danger"
+                                    startContent={<DeleteIcon className={cn(iconClasses, "text-danger")} />}
+                                >
+                                    Delete file
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                     </div>
                 ))}
             </div>
