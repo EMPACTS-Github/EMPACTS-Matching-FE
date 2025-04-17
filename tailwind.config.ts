@@ -21,10 +21,20 @@ const config: Config = {
       borderColor: {
         empacts: "#9200FE",
       },
+      colors: {
+        primary: "#9200FE",
+        empacts: "#9200FE",
+        "empacts-light": "#E8D9FF",
+        "empacts-dark": "#5B00A3",
+        "empacts-lighter": "#F2E9FF",
+        "empacts-darker": "#7B3FFF",
+      },
     },
   },
   plugins: [
-    heroui(),
+    heroui({
+      addCommonColors: true,
+    }),
   ],
 };
 export default config;

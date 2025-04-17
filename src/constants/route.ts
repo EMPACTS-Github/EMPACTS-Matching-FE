@@ -71,5 +71,11 @@ export const ROUTES: Route[] = [
     pathname: '/startup-profile/:param',
     isPrivate: true,
     hasHeader: true,
+  },
+  {
+    name: 'StartupMember',
+    pathname: '/startup-member/:param',
+    isPrivate: true,
+    hasHeader: true,
   }
 ];
