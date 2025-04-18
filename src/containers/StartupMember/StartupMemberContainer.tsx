@@ -1,20 +1,17 @@
 "use client";
 import React from 'react';
-import { Spinner } from "@heroui/react";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Spacer } from "@heroui/spacer";
-import { startup_profile_detail } from "@/apis/startup-profile"
-import ProfileHeader from "./ProfileHeader";
-import TabsSection from "./TabsSection";
+import { useEffect, useState } from "react";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
+import { startup_profile_detail } from "@/apis/startup-profile"
+import MemberListContainer from './MemberListContainer';
 
-interface StartupProfileContainerProps {
+interface StartupMemberContainerProps {
     id: string;
 }
 
-const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ id }) => {
+const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ id }) => {
     const [startup_profile, setStartupProfile] = useState<StartupProfileResponse | null>();
     useEffect(() => {
         const fetchStartupProfile = async () => {
@@ -32,21 +29,14 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ id })
 
     return (
         <div className="flex w-full max-w-5xl relative z-10 gap-0 mt-6">
-            <div className="w-full mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">
-                {startup_profile?.startup ? (
-                    <div>
-                        <ProfileHeader startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
-                        <TabsSection startup={startup_profile?.startup} />
-                    </div>
-                ) : (
-                    <Spinner size="lg" label="Loading..." className="m-auto" />
-                )}
+            <div className="w-full mx-0 flex flex-col">
+                <MemberListContainer members={startup_profile?.members} />
             </div>
             <Spacer x={10} />
             <div className="max-w-lg">
                 <ProfileInfoSubCard startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
             </div>
         </div>
-    );
+    )
 }
-export default StartupProfileContainer;
+export default StartupMemberContainer;
