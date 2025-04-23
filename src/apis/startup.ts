@@ -1,11 +1,9 @@
 "use client";
-
 import axiosInstance from ".";
-import axios from "axios";
 
 interface Member {
-    email: string;
-    title: string;
+  email: string;
+  title: string;
 }
 
 export const startup_list = async (
