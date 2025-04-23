@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import UploadAvatar from "/public/assets/upload_avatar.svg";
-import { upload_image } from "@/apis/upload";
+import { uploadAttachemt } from "@/apis/upload";
 import { addToast } from "@heroui/react";
+import { UPLOAD_OWNER_TYPE } from "@/constants/upload";
 
 interface ProfilePictureUploadProps {
-  onImageUpload?: (fileUrl: string) => void;
+  onImageUpload: (fileUrl: string, fileId: number) => void;
 }
 
 const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
@@ -13,17 +14,17 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
 }) => {
   const [image, setImage] = useState<string>(UploadAvatar);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setLoading(true); // Set loading to true
+      setLoading(true);
       try {
-        const response = await upload_image(file);
-        setImage(response.fileUrl);
+        const response = await uploadAttachemt({ file, owner_type: UPLOAD_OWNER_TYPE.STARTUP });
+        setImage(response.data.attachment_url);
         setError(null);
-        onImageUpload?.(response.fileUrl);
+        onImageUpload(response.data.attachment_url, response.data.id);
         addToast({
           title: 'Image uploaded successfully',
           color: 'success',
@@ -37,7 +38,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
           timeout: 3000,
         });
       } finally {
-        setLoading(false); // Set loading to false
+        setLoading(false);
       }
     } else {
       setError("No file selected. Please choose an image file.");

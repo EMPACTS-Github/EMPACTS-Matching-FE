@@ -3,7 +3,6 @@ import { Input, Button } from "@heroui/react";
 import Image from 'next/image';
 import { Member } from '@/interfaces/startup';
 
-
 interface AddMemberSectionProps {
   accentColor?: string;
   members: Member[];
@@ -56,7 +55,7 @@ const AddMemberSection: React.FC<AddMemberSectionProps> = ({
           }}
         />
         <Button
-          onClick={handleAddMember}
+          onPress={handleAddMember}
           className="w-full md:w-[100px] h-[40px] bg-[#09090b] text-white rounded-lg text-base font-medium"
         >
           Add
