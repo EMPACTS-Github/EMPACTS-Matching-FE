@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import RightArrow from "/public/assets/arrow-right.svg";
 import Image from "next/image";
@@ -11,8 +12,13 @@ interface ProfileOptionProps {
 
 const ProfileOption: React.FC<ProfileOptionProps> = ({ title, description, link }) => {
   const router = useRouter();
+
+  const handleChooseOption = () => {
+    router.push(link)
+  }
+
   return (
-    <div className="flex items-center justify-between p-4 border-b cursor-pointer" onClick={() => router.push(link)}>
+    <div className="flex items-center justify-between p-4 border-b cursor-pointer" onClick={handleChooseOption}>
       <div className="flex items-center">
         <div className="ml-4">
           <p className="font-bold text-gray-800">{title}</p>
