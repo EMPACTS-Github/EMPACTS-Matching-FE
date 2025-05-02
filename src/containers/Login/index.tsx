@@ -10,7 +10,6 @@ import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
 
-// Component that uses useSearchParams
 function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,12 +41,6 @@ function Login() {
     return true;
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const handleBackButton = () => {
-    router.back()
-  }
-
-  // Handle form submission
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
@@ -55,7 +48,6 @@ function Login() {
     const isEmailValid = validateEmailFormat(email);
     if (!isEmailValid) return;
 
-    // Step 2: Send request and validate credentials
     try {
       const response = await email_signin(email, password);
 
@@ -82,8 +74,11 @@ function Login() {
         });
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
-
-        router.push('/explore'); // Redirect to home page after successful login
+        if (response.data.user.has_profile) {
+          router.push('/profiles');
+        } else {
+          router.push('/profiles/new');
+        }
       }
     } catch (error) {
       console.error(error);
