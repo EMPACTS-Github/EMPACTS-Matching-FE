@@ -44,7 +44,12 @@ export const invite_list_member = async (data: {
     inviterEmail: string;
     startupId: number;
 }) => {
-    const response = await axiosInstance.post("/startup-invitation/invite", data);
+    const transformedData = {
+      startupId: data.startupId,
+      inviterEmail: data.inviterEmail,
+      invitee: data.invitee.map((i) => ({ email: i.email, position_title: i.title })),
+    };
+    const response = await axiosInstance.post("/startup-invitation/invite", transformedData);
     return response.data;
 };
 
