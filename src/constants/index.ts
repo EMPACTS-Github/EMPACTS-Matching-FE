@@ -1,1 +1,3 @@
 export const FETCH_STARTUP_LIMIT = 12;
+
+export const INVITATION_PENDING_STATUS = 'INVITE_PENDING';

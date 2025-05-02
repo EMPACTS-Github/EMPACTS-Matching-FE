@@ -37,12 +37,6 @@ export const ROUTES: Route[] = [
     hasHeader: true,
   },
   {
-    name: 'StartupInvitation',
-    pathname: '/invitation/:param',
-    isPrivate: true,
-    hasHeader: false,
-  },
-  {
     name: 'ChooseProfile',
     pathname: '/profiles',
     isPrivate: true,
@@ -75,6 +69,12 @@ export const ROUTES: Route[] = [
   {
     name: 'StartupMember',
     pathname: '/startup-member/:param',
+    isPrivate: true,
+    hasHeader: true,
+  },
+  {
+    name: 'StartupInvitation',
+    pathname: '/startup-invitation',
     isPrivate: true,
     hasHeader: true,
   }

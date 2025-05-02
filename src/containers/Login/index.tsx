@@ -74,10 +74,18 @@ function Login() {
         });
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        if (response.data.user.has_profile) {
-          router.push('/profiles');
+        
+        const hasInvitationStatus = localStorage.getItem('status');
+        if (hasInvitationStatus) {
+          const invitationCode = localStorage.getItem('invitationCode');
+          const inviteeEmail = localStorage.getItem('inviteeEmail');
+          router.push(`/startup-invitation?code=${invitationCode}&email=${inviteeEmail}`);
         } else {
-          router.push('/profiles/new');
+          if (response.data.user.has_profile) {
+            router.push('/profiles');
+          } else {
+            router.push('/profiles/new');
+          }
         }
       }
     } catch (error) {
@@ -101,9 +109,21 @@ function Login() {
       const success = searchParams.get('success');
       if (success === 'true') {
         try {
-          const userInfo = await getUserAuthInfoAPI();
-          localStorage.setItem('user', JSON.stringify(userInfo.data));
-          router.push('/');
+          const response = await getUserAuthInfoAPI();
+          localStorage.setItem('user', JSON.stringify(response.data));
+
+          const hasInvitationStatus = localStorage.getItem('status');
+          if (hasInvitationStatus) {
+            const invitationCode = localStorage.getItem('invitationCode');
+            const inviteeEmail = localStorage.getItem('inviteeEmail');
+            router.push(`/startup-invitation?code=${invitationCode}&email=${inviteeEmail}`);
+          } else {
+            if (response.data.user.has_profile) {
+              router.push('/profiles');
+            } else {
+              router.push('/profiles/new');
+            }
+          }
         } catch (error) {
           addToast({
             title: 'Login with Google failed!',
