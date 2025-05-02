@@ -7,14 +7,16 @@ import { addToast, Button, Form, Input } from '@heroui/react'
 import UserAvatar from '@/components/Form/UserAvatar'
 import FormLabel from '@/components/Form/FormLabel'
 import Link from 'next/link'
-import { upload_image } from '@/apis/upload'
+import { updateAttachment, uploadAttachemt } from '@/apis/upload'
 import { create_new_profile } from '@/apis/auth'
 import { useRouter } from 'next/navigation'
+import { UPLOAD_OWNER_TYPE } from '@/constants/upload'
 
 function RegisterInfo() {
   const router = useRouter()
   const [username, setUsername] = useState('')
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
+  const [uploadAvatarId, setUploadAvatarId] = useState(0);
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -22,9 +24,13 @@ function RegisterInfo() {
         title: 'Uploading your avatar. Please wait',
         promise: new Promise((resolve, reject) => {
           if (e.target.files) {
-            upload_image(e.target.files[0])
+            uploadAttachemt({
+              file: e.target.files[0],
+              owner_type: UPLOAD_OWNER_TYPE.USER,
+            })
               .then(response => {
-                setAvatarUrl(response.data.fileUrl);
+                setAvatarUrl(response.data.attachment_url);
+                setUploadAvatarId(response.data.id)
                 addToast({
                   title: 'Avatar uploaded',
                   timeout: 3000,
@@ -55,13 +61,18 @@ function RegisterInfo() {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const email = localStorage.getItem('email')
-    const userProfileImgUrl = avatarUrl || 'https://www.svgrepo.com/show/452030/avatar-default.svg'
+    const userProfileImgUrl = avatarUrl || 'https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/avatar_placeholder.png'
     if (email && username) {
       try {
         const response = await create_new_profile(email, userProfileImgUrl, username);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.removeItem('email');
-        router.replace('/');
+        router.replace('/profiles/new');
+        updateAttachment({
+          id: uploadAvatarId,
+          owner_type: UPLOAD_OWNER_TYPE.USER,
+          owner_id: response.data.user.id
+        })
       } catch (error) {
         console.log(error);
       }

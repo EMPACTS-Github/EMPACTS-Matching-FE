@@ -1,4 +1,5 @@
 export const UPLOAD_OWNER_TYPE = {
   STARTUP: 'STARTUP',
   MENTOR: 'MENTOR',
+  USER: 'USER',
 };

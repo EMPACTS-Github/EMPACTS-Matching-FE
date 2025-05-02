@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Input, Button, addToast } from "@heroui/react";
 import Link from 'next/link';
 import { email_signup } from '@/apis/auth';
@@ -21,8 +21,6 @@ function SignUp() {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [emailError, setEmailError] = useState('');
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
-  // eslint-disable-next-line no-unused-vars
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const validateEmailFormat = (email: string): boolean => {
     if (!checkEmailFormat(email)) {
@@ -37,18 +35,10 @@ function SignUp() {
     return true;
   };
 
-  const handleSignup = async (e: { preventDefault: () => void; }) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setHasSubmitted(true);
     const isEmailValid = validateEmailFormat(email);
-    if (!isEmailValid) {
-      addToast({
-        title: 'Invalid email format',
-        color: 'danger',
-        timeout: 5000,
-      })
-      return;
-    }
+    if (!isEmailValid) return;
     try {
       const response = await email_signup(email);
       if (response.code == "VERIFICATION_EMAIL_SENT") {
