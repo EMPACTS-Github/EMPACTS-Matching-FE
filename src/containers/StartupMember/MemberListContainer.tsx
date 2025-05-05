@@ -14,6 +14,8 @@ import EditIcon from "@/components/Icons/EditIcon";
 import { Member } from "@/interfaces/StartupProfile";
 import EditMemberTitleModal from "@/components/Modal/EditMemberTitleModal";
 import MenuIcon from '/public/assets/three-dot-menu-icon.svg';
+import DeleteMemberModal from "@/components/Modal/DeleteMemberModal";
+import ChangePermissionModal from "@/components/Modal/ChangeMemberPermissionModal";
 
 interface MemberListContainerProps {
     members: Member[] | undefined;
@@ -92,10 +94,10 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
                                 <DropdownItem
                                     key="change-permission"
                                     startContent={<EditIcon className={iconClasses} />}
-                                // onPress={() => {
-                                //     setSelectedMember(member); // Lưu thành viên được chọn
-                                //     onChangePermissionOpen(); // Mở modal Change Permission
-                                // }}
+                                    onPress={() => {
+                                        setSelectedMember(member); // Lưu thành viên được chọn
+                                        onChangePermissionOpen(); // Mở modal Change Permission
+                                    }}
                                 >
                                     Change permission
                                 </DropdownItem>
@@ -104,10 +106,10 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
                                     className="text-danger"
                                     color="danger"
                                     startContent={<DeleteIcon className={cn(iconClasses, "text-danger")} />}
-                                // onPress={() => {
-                                //     setSelectedMember(member); // Lưu thành viên được chọn
-                                //     onDeleteOpen(); // Mở modal Delete
-                                // }}
+                                    onPress={() => {
+                                        setSelectedMember(member); // Lưu thành viên được chọn
+                                        onDeleteOpen(); // Mở modal Delete
+                                    }}
                                 >
                                     Delete member
                                 </DropdownItem>
@@ -116,6 +118,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
                     </div>
                 ))}
                 <EditMemberTitleModal isOpen={isEditTitleOpen} onOpenChange={onEditTitleOpenChange} member={selectedMember} />
+                <DeleteMemberModal isOpen={isDeleteOpen} onOpenChange={onDeleteOpenChange} member={selectedMember} />
+                <ChangePermissionModal isOpen={isChangePermissionOpen} onOpenChange={onChangePermissionOpenChange} member={selectedMember} />
             </div>
         </div>
     );
