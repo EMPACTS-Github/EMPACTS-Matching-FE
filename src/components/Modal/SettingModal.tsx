@@ -2,8 +2,6 @@
 import { Tabs, Tab, Button, Input, Divider, Avatar, addToast } from "@heroui/react";
 import { Autocomplete, AutocompleteSection, AutocompleteItem } from "@heroui/autocomplete";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import { upload_image } from "@/apis/upload";
 import { Startup } from "@/interfaces/StartupProfile";
 import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";

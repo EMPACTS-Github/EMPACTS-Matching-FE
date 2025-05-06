@@ -1,7 +1,5 @@
 "use client";
 import React from 'react';
-import { Spinner } from "@heroui/react";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Spacer } from "@heroui/spacer";
 import { startup_profile_detail } from "@/apis/startup-profile"
@@ -9,6 +7,7 @@ import ProfileHeader from "./ProfileHeader";
 import TabsSection from "./TabsSection";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
+import { Skeleton } from "@heroui/skeleton";
 
 interface StartupProfileContainerProps {
     id: string;
@@ -39,7 +38,22 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ id })
                         <TabsSection startup={startup_profile?.startup} />
                     </div>
                 ) : (
-                    <Spinner size="lg" label="Loading..." className="m-auto" />
+                    <div>
+                        <Skeleton className="rounded-lg mb-4">
+                            <div className="h-24 rounded-lg bg-default-300" />
+                        </Skeleton>
+                        <div className="space-y-3">
+                            <Skeleton className="w-3/5 rounded-lg">
+                                <div className="h-3 w-3/5 rounded-lg bg-default-200" />
+                            </Skeleton>
+                            <Skeleton className="w-4/5 rounded-lg">
+                                <div className="h-3 w-4/5 rounded-lg bg-default-200" />
+                            </Skeleton>
+                            <Skeleton className="w-2/5 rounded-lg">
+                                <div className="h-3 w-2/5 rounded-lg bg-default-300" />
+                            </Skeleton>
+                        </div>
+                    </div>
                 )}
             </div>
             <Spacer x={10} />
