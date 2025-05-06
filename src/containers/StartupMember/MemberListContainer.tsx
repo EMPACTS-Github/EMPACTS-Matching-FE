@@ -19,6 +19,7 @@ import ChangePermissionModal from "@/components/Modal/ChangeMemberPermissionModa
 
 interface MemberListContainerProps {
     members: Member[] | undefined;
+    startupId: number;
 }
 
 const RoleChip = ({ role }: { role: string }) => (
@@ -32,7 +33,7 @@ const RoleChip = ({ role }: { role: string }) => (
     </Chip>
 );
 
-const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) => {
+const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, startupId }) => {
     const [memberList, setMembers] = useState<Member[]>([]);
     const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
@@ -45,7 +46,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
         if (members) {
             setMembers(members);
         }
-    }, [members]);
+    }, [members, startupId]);
     return (
         <div className="w-full">
             <div className="flex justify-between items-center mb-4" >
@@ -117,7 +118,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members }) =>
                         </Dropdown>
                     </div>
                 ))}
-                <EditMemberTitleModal isOpen={isEditTitleOpen} onOpenChange={onEditTitleOpenChange} member={selectedMember} />
+                <EditMemberTitleModal isOpen={isEditTitleOpen} onOpenChange={onEditTitleOpenChange} member={selectedMember} startupId={startupId} />
                 <DeleteMemberModal isOpen={isDeleteOpen} onOpenChange={onDeleteOpenChange} member={selectedMember} />
                 <ChangePermissionModal isOpen={isChangePermissionOpen} onOpenChange={onChangePermissionOpenChange} member={selectedMember} />
             </div>

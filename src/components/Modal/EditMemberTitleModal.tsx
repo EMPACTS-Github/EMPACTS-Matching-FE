@@ -1,6 +1,5 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea } from "@heroui/react";
-import Image from "next/image";
-import AvatarPlaceholder from "/public/assets/avatar-placeholder.png";
+import { startup_member_edit_title } from "@/apis/startup-member"
 import { useState, useEffect } from "react";
 import LabelWithTextarea from '@/components/FormInput/LabelWithTextarea';
 import { Member } from "@/interfaces/StartupProfile";
@@ -9,13 +8,33 @@ interface EditMemberTitleModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
     member: Member | null;
+    startupId: number | undefined;
 }
 
-const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onOpenChange, member }) => {
+const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onOpenChange, member, startupId }) => {
     const [titleField, setTitleField] = useState("");
+    const [oldTitle, setOldTitle] = useState("");
+    const editTitle = async () => {
+        if (titleField != oldTitle) {
+            const data = {
+                startup_id: startupId,
+                position_title: titleField,
+            }
+            console.log("data", data);
+            try {
+                const res = await startup_member_edit_title(member?.id, data);
+                console.log("res", res);
+            } catch (err) {
+                console.error('Failed to edit position title:', err);
+            }
+        }
+        onOpenChange();
+    };
+
     useEffect(() => {
         if (member) {
             setTitleField(member.position_title);
+            setOldTitle(member.position_title);
         }
     }, [member]);
 
@@ -49,7 +68,7 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onO
                         </ModalBody>
                         <ModalFooter className="flex justify-between mt-20">
                             <Button className="w-1/2 border-2" variant="light" onPress={onOpenChange}>Cancel</Button>
-                            <Button className="bg-[#9200FE] text-white w-1/2" onPress={onOpenChange}>Save</Button>
+                            <Button className="bg-[#9200FE] text-white w-1/2" onPress={editTitle}>Save</Button>
                         </ModalFooter>
                     </>
                 )}
