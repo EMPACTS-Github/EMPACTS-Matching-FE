@@ -24,7 +24,6 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ id }) =
                 console.error('Failed to fetch startup profile:', err);
             }
         };
-
         fetchStartupProfile();
     }, [id]);
 
@@ -33,7 +32,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ id }) =
             {startup_profile?.startup ? (
 
                 <div className="w-full mx-0 flex flex-col">
-                    <MemberListContainer members={startup_profile?.members} />
+                    <MemberListContainer members={startup_profile?.members} startupId={startup_profile.startup.id} />
                 </div>) : (
                 <div className='w-full mx-0 flex flex-col'>
                     <div className="flex justify-between items-center mb-4" >
