@@ -37,9 +37,9 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ id }) =
                 <div className='w-full mx-0 flex flex-col'>
                     <div className="flex justify-between items-center mb-4" >
                         <div className="space-x-2">
-                            <Button size="sm" variant="solid" radius="full">All</Button>
-                            <Button size="sm" variant="bordered" radius="full">Owner</Button>
-                            <Button size="sm" variant="bordered" radius="full">Member</Button>
+                            <Button size="sm" variant="solid" radius="full" isDisabled={false}>All</Button>
+                            <Button size="sm" variant="bordered" radius="full" isDisabled={false}>Owner</Button>
+                            <Button size="sm" variant="bordered" radius="full" isDisabled={false}>Member</Button>
                         </div>
                         <Button className="bg-empacts text-white px-4" size="sm">INVITE</Button>
                     </div>

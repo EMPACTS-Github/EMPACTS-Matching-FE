@@ -37,6 +37,8 @@ const RoleChip = ({ role }: { role: string }) => (
 const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, startupId }) => {
     const [memberList, setMembers] = useState<Member[]>([]);
     const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+    const [filterMode, setFilterMode] = useState<"ALL" | "OWNER" | "MEMBER">("ALL");
+    const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
 
     const { isOpen: isEditTitleOpen, onOpen: onEditTitleOpen, onOpenChange: onEditTitleOpenChange } = useDisclosure();
     const { isOpen: isChangePermissionOpen, onOpen: onChangePermissionOpen, onOpenChange: onChangePermissionOpenChange } = useDisclosure();
@@ -46,8 +48,16 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
     useEffect(() => {
         if (members) {
             setMembers(members);
+            setFilteredMembers(members);
         }
     }, [members, startupId]);
+    useEffect(() => {
+        if (filterMode === "ALL") {
+            setFilteredMembers(memberList);
+        } else {
+            setFilteredMembers(memberList.filter((member) => member.role === filterMode));
+        }
+    }, [filterMode, memberList]);
 
     const updateMemberTitle = async (memberId: number | undefined, newTitle: string) => {
         const member = memberList.find((member) => member.id === memberId);
@@ -148,15 +158,36 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
         <div className="w-full">
             <div className="flex justify-between items-center mb-4" >
                 <div className="space-x-2">
-                    <Button size="sm" variant="solid" radius="full">All</Button>
-                    <Button size="sm" variant="bordered" radius="full">Owner</Button>
-                    <Button size="sm" variant="bordered" radius="full">Member</Button>
+                    <Button
+                        size="sm"
+                        variant={filterMode === "ALL" ? "solid" : "bordered"}
+                        radius="full"
+                        onPress={() => setFilterMode("ALL")}
+                    >
+                        All
+                    </Button>
+                    <Button
+                        size="sm"
+                        variant={filterMode === "OWNER" ? "solid" : "bordered"}
+                        radius="full"
+                        onPress={() => setFilterMode("OWNER")}
+                    >
+                        Owner
+                    </Button>
+                    <Button
+                        size="sm"
+                        variant={filterMode === "MEMBER" ? "solid" : "bordered"}
+                        radius="full"
+                        onPress={() => setFilterMode("MEMBER")}
+                    >
+                        Member
+                    </Button>
                 </div>
                 <Button className="bg-empacts text-white px-4" size="sm">INVITE</Button>
             </div>
             {/* Member List */}
             <div className="space-y-2">
-                {memberList.map((member, idx) => (
+                {filteredMembers.map((member, idx) => (
                     <div key={idx} className="flex justify-between p-4 bg-white shadow-lg rounded-lg w-full">
                         <div className="flex items-center gap-3">
                             <Image
