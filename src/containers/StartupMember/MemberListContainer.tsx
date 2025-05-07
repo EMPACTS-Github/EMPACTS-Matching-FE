@@ -17,6 +17,9 @@ import MenuIcon from '/public/assets/three-dot-menu-icon.svg';
 import DeleteMemberModal from "@/components/Modal/DeleteMemberModal";
 import ChangePermissionModal from "@/components/Modal/ChangeMemberPermissionModal";
 import { startup_member_edit_title, startup_member_change_permission, startup_member_delete } from "@/apis/startup-member";
+import { invite_list_member } from '@/apis/startup';
+import { MemberForInvite } from "@/interfaces/startup";
+import InviteMemberModal from "@/components/Modal/InviteMemberModal";
 
 interface MemberListContainerProps {
     members: Member[] | undefined;
@@ -39,10 +42,12 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
     const [selectedMember, setSelectedMember] = useState<Member | null>(null);
     const [filterMode, setFilterMode] = useState<"ALL" | "OWNER" | "MEMBER">("ALL");
     const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
+    const [newMemberList, setNewMemberList] = useState<MemberForInvite[]>([]);
 
     const { isOpen: isEditTitleOpen, onOpen: onEditTitleOpen, onOpenChange: onEditTitleOpenChange } = useDisclosure();
     const { isOpen: isChangePermissionOpen, onOpen: onChangePermissionOpen, onOpenChange: onChangePermissionOpenChange } = useDisclosure();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange } = useDisclosure();
+    const { isOpen: isInviteOpen, onOpen: onInviteOpen, onOpenChange: onInviteOpenChange } = useDisclosure();
 
     const iconClasses = "text-xl text-default-500 hover:text-white pointer-events-none flex-shrink-0";
     useEffect(() => {
@@ -58,6 +63,31 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
             setFilteredMembers(memberList.filter((member) => member.role === filterMode));
         }
     }, [filterMode, memberList]);
+
+    const inviteMembers = async () => {
+        if (newMemberList.length !== 0) {
+            const user = localStorage.getItem('user');
+            const userObj = user ? JSON.parse(user) : {};
+            const inviterEmail = userObj.email;
+            invite_list_member({
+                invitee: newMemberList,
+                inviterEmail: inviterEmail,
+                startupId: startupId,
+            }).then(() => {
+                addToast({
+                    title: 'Members invited successfully',
+                    color: 'success',
+                    timeout: 3000,
+                });
+            }).catch(() => {
+                addToast({
+                    title: 'Error inviting members',
+                    color: 'danger',
+                    timeout: 5000,
+                });
+            });
+        }
+    }
 
     const updateMemberTitle = async (memberId: number | undefined, newTitle: string) => {
         const member = memberList.find((member) => member.id === memberId);
@@ -183,7 +213,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                         Member
                     </Button>
                 </div>
-                <Button className="bg-empacts text-white px-4" size="sm">INVITE</Button>
+                <Button className="bg-empacts text-white px-4" size="sm" onPress={onInviteOpen}>INVITE</Button>
             </div>
             {/* Member List */}
             <div className="space-y-2">
@@ -249,6 +279,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                 <EditMemberTitleModal isOpen={isEditTitleOpen} onOpenChange={onEditTitleOpenChange} member={selectedMember} onSave={updateMemberTitle} />
                 <DeleteMemberModal isOpen={isDeleteOpen} onOpenChange={onDeleteOpenChange} member={selectedMember} onSave={deleteMember} />
                 <ChangePermissionModal isOpen={isChangePermissionOpen} onOpenChange={onChangePermissionOpenChange} member={selectedMember} onSave={changeMemberPermission} />
+                <InviteMemberModal isOpen={isInviteOpen} onOpenChange={onInviteOpenChange} members={newMemberList} setMembers={setNewMemberList} onInvite={inviteMembers} />
+
             </div>
         </div>
     );

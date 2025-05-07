@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Button } from "@heroui/react";
 import Image from 'next/image';
-import { Member } from '@/interfaces/startup';
+import { MemberForInvite } from '@/interfaces/startup';
 import CloseXIcon from '/public/assets/icons/close-x-icon.svg';
 
 interface AddMemberSectionProps {
   accentColor?: string;
-  members: Member[];
-  setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
+  members: MemberForInvite[];
+  setMembers: React.Dispatch<React.SetStateAction<MemberForInvite[]>>;
 }
 
 const AddMemberSection: React.FC<AddMemberSectionProps> = ({
@@ -37,7 +37,7 @@ const AddMemberSection: React.FC<AddMemberSectionProps> = ({
         setError('This email is already in a startup');
         return;
       }
-      
+
       // Check this user already invited
       const invitedEmails = members.map((member) => member.email);
       if (invitedEmails.includes(email)) {
@@ -68,9 +68,10 @@ const AddMemberSection: React.FC<AddMemberSectionProps> = ({
           onChange={handleChangeEmail}
           placeholder="Enter E-mail"
           className="flex-1"
+          variant='bordered'
           classNames={{
             input: "text-sm font-normal",
-            inputWrapper: "border-[#e4e4e7] bg-white rounded-lg h-10",
+            inputWrapper: "h-10",
           }}
         />
         <Input
@@ -78,9 +79,10 @@ const AddMemberSection: React.FC<AddMemberSectionProps> = ({
           onChange={handleChangeTitle}
           placeholder="Enter Title"
           className="flex-1"
+          variant='bordered'
           classNames={{
             input: "text-sm font-normal",
-            inputWrapper: "border-[#e4e4e7] bg-white rounded-lg h-10",
+            inputWrapper: "h-10",
           }}
         />
         <Button
@@ -100,15 +102,13 @@ const AddMemberSection: React.FC<AddMemberSectionProps> = ({
         {members.map((member, index) => (
           <div
             key={index}
-            className={`flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto ${
-              'bg-[#9200fe1c]'
-            }`}
+            className={`flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto ${'bg-[#9200fe1c]'
+              }`}
           >
             <div className="flex flex-col gap-1">
               <div
-                className={`text-sm font-medium ${
-                  'text-empacts'
-                }`}
+                className={`text-sm font-medium ${'text-empacts'
+                  }`}
               >
                 {member.title}
               </div>
