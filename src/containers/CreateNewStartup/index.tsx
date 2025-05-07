@@ -8,7 +8,7 @@ import SDGGoalSection from './SDGGoalSection';
 import AddMemberSection from './AddMemberSection';
 import ActionButtons from './ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup';
-import { Member } from '@/interfaces/startup';
+import { MemberForInvite } from '@/interfaces/startup';
 import { addToast } from '@heroui/react';
 import * as changeCase from "change-case";
 import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
@@ -24,7 +24,7 @@ function CreateNewStartup() {
   const [location, setLocation] = useState(PROVINCES[0].key);
   const [profilePicture, setProfilePicture] = useState('');
   const [uploadedPictureId, setUploadedPictureId] = useState(0);
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members, setMembers] = useState<MemberForInvite[]>([]);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -92,7 +92,7 @@ function CreateNewStartup() {
             timeout: 5000,
           });
         });
-      } 
+      }
     } catch (error) {
       addToast({
         title: 'Error creating profile',
@@ -106,29 +106,29 @@ function CreateNewStartup() {
 
   return (
     <div className="w-full flex justify-center items-center min-h-screen relative">
-        {loading && (
-          <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
-            <div className="loader"></div>
-          </div>
-        )}
-        <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
-          <HeaderSection />
-          <ProfilePictureUpload onImageUpload={handleChangeImage} />
-          <StartupNameSection
-            companyName={companyName}
-            startupUsername={startupUsername}
-            onCompanyNameChange={setCompanyName}
-            onChangeStartupUsername={handleChangeStartupUsername}
-          />
-          <LocationBasedSection selectedLocation={location} onChange={setLocation} />
-          <SDGGoalSection
-            selectedGoal={selectedGoal}
-            onGoalChange={handleGoalChange}
-          />
-          <AddMemberSection members={members} setMembers={setMembers} />
-          <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
+      {loading && (
+        <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+          <div className="loader"></div>
         </div>
+      )}
+      <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
+        <HeaderSection />
+        <ProfilePictureUpload onImageUpload={handleChangeImage} />
+        <StartupNameSection
+          companyName={companyName}
+          startupUsername={startupUsername}
+          onCompanyNameChange={setCompanyName}
+          onChangeStartupUsername={handleChangeStartupUsername}
+        />
+        <LocationBasedSection selectedLocation={location} onChange={setLocation} />
+        <SDGGoalSection
+          selectedGoal={selectedGoal}
+          onGoalChange={handleGoalChange}
+        />
+        <AddMemberSection members={members} setMembers={setMembers} />
+        <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
       </div>
+    </div>
   )
 }
 

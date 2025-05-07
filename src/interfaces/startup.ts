@@ -23,7 +23,7 @@ export interface Category {
   label: string;
 }
 
-export interface Member {
+export interface MemberForInvite {
   email: string;
   title: string;
 }
