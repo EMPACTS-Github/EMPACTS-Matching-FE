@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button, cn, useDisclosure } from "@heroui/react";
+import { Button, cn, useDisclosure, addToast } from "@heroui/react";
 import { Chip } from "@heroui/chip";
 import {
     Dropdown,
@@ -16,6 +16,7 @@ import EditMemberTitleModal from "@/components/Modal/EditMemberTitleModal";
 import MenuIcon from '/public/assets/three-dot-menu-icon.svg';
 import DeleteMemberModal from "@/components/Modal/DeleteMemberModal";
 import ChangePermissionModal from "@/components/Modal/ChangeMemberPermissionModal";
+import { startup_member_edit_title, startup_member_change_permission, startup_member_delete } from "@/apis/startup-member";
 
 interface MemberListContainerProps {
     members: Member[] | undefined;
@@ -47,6 +48,102 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
             setMembers(members);
         }
     }, [members, startupId]);
+
+    const updateMemberTitle = async (memberId: number | undefined, newTitle: string) => {
+        const member = memberList.find((member) => member.id === memberId);
+        if (member && member.position_title != newTitle) {
+            const data = {
+                startup_id: startupId,
+                position_title: newTitle,
+            }
+            try {
+                const res = await startup_member_edit_title(memberId, data);
+                console.log(res);
+                if (res.code == "STARTUP_MEMBER_UPDATED") {
+                    setMembers((prevMembers) =>
+                        prevMembers.map((member) =>
+                            member.id === memberId ? { ...member, position_title: res.data.position_title } : member
+                        )
+                    );
+                    addToast({
+                        title: 'Update member position title successfully',
+                        color: 'success',
+                        timeout: 3000,
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to edit position title:', err);
+                addToast({
+                    title: 'Update member position title failed',
+                    color: 'danger',
+                    timeout: 3000,
+                });
+            }
+        };
+    }
+
+    const changeMemberPermission = async (memberId: number | undefined, newRole: string) => {
+        const member = memberList.find((member) => member.id === memberId);
+        if (member && member.role != newRole) {
+            const data = {
+                startup_id: startupId,
+                role: newRole,
+            }
+            try {
+                const res = await startup_member_change_permission(memberId, data);
+                console.log(res);
+                if (res.code == "STARTUP_MEMBER_UPDATED") {
+                    setMembers((prevMembers) =>
+                        prevMembers.map((member) =>
+                            member.id === memberId ? { ...member, role: res.data.role } : member
+                        )
+                    );
+                    addToast({
+                        title: 'Change member permission successfully',
+                        color: 'success',
+                        timeout: 3000,
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to change permission:', err);
+                addToast({
+                    title: 'Change member permission failed',
+                    color: 'danger',
+                    timeout: 3000,
+                });
+            }
+        };
+    }
+
+    const deleteMember = async (memberId: number | undefined) => {
+        const member = memberList.find((member) => member.id === memberId);
+        if (member) {
+            const data = {
+                startupId: startupId,
+            }
+            try {
+                const res = await startup_member_delete(memberId, data);
+                console.log(res);
+                if (res.code == "STARTUP_MEMBER_DELETED") {
+                    setMembers((prevMembers) =>
+                        prevMembers.filter((member) => member.id !== memberId)
+                    );
+                }
+                addToast({
+                    title: 'Delete member successfully',
+                    color: 'success',
+                    timeout: 3000,
+                });
+            } catch (err) {
+                console.error('Failed to delete member:', err);
+                addToast({
+                    title: 'Delete member failed',
+                    color: 'danger',
+                    timeout: 3000,
+                });
+            }
+        };
+    }
     return (
         <div className="w-full">
             <div className="flex justify-between items-center mb-4" >
@@ -63,7 +160,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     <div key={idx} className="flex justify-between p-4 bg-white shadow-lg rounded-lg w-full">
                         <div className="flex items-center gap-3">
                             <Image
-                                src={member.user_id.avt_url} // Replace with actual image or use avatar component
+                                src={member.user_id.avt_url}
                                 alt="User Avatar"
                                 width={48}
                                 height={48}
@@ -118,9 +215,9 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                         </Dropdown>
                     </div>
                 ))}
-                <EditMemberTitleModal isOpen={isEditTitleOpen} onOpenChange={onEditTitleOpenChange} member={selectedMember} startupId={startupId} />
-                <DeleteMemberModal isOpen={isDeleteOpen} onOpenChange={onDeleteOpenChange} member={selectedMember} />
-                <ChangePermissionModal isOpen={isChangePermissionOpen} onOpenChange={onChangePermissionOpenChange} member={selectedMember} />
+                <EditMemberTitleModal isOpen={isEditTitleOpen} onOpenChange={onEditTitleOpenChange} member={selectedMember} onSave={updateMemberTitle} />
+                <DeleteMemberModal isOpen={isDeleteOpen} onOpenChange={onDeleteOpenChange} member={selectedMember} onSave={deleteMember} />
+                <ChangePermissionModal isOpen={isChangePermissionOpen} onOpenChange={onChangePermissionOpenChange} member={selectedMember} onSave={changeMemberPermission} />
             </div>
         </div>
     );
