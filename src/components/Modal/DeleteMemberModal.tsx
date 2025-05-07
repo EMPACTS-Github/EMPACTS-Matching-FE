@@ -1,14 +1,25 @@
 import { Modal, ModalContent, ModalHeader, ModalFooter, Button } from "@heroui/react";
 import DeleteIcon from "@/components/Icons/DeleteIcon";
 import { Member } from "@/interfaces/StartupProfile";
+import { useState } from "react";
+import { Spinner } from "@heroui/spinner";
 
 interface DeleteMemberModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
     member: Member | null;
+    onSave: (memberId: number | undefined) => void;
 }
 
-const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ isOpen, onOpenChange, member }) => {
+const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ isOpen, onOpenChange, member, onSave }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const deleteMember = async () => {
+        setIsLoading(true);
+        await onSave(member?.id);
+        setIsLoading(false);
+        onOpenChange();
+    }
     return (
         <Modal
             isDismissable={false}
@@ -30,8 +41,10 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ isOpen, onOpenCha
                             </div>
                         </ModalHeader>
                         <ModalFooter className="flex justify-between">
-                            <Button className="w-1/2 border-2" variant="light" onPress={onOpenChange}>Cancel</Button>
-                            <Button className="bg-[#9200FE] text-white w-1/2" onPress={onOpenChange}>Accept</Button>
+                            <Button className="w-1/2 border-2" variant="light" onPress={onOpenChange} isDisabled={isLoading}>Cancel</Button>
+                            <Button className="bg-[#9200FE] text-white w-1/2" onPress={deleteMember} isDisabled={isLoading}>
+                                {isLoading ? <Spinner size="sm" color="white" /> : "Accept"}
+                            </Button>
                         </ModalFooter>
                     </>
                 )}

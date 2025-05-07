@@ -16,12 +16,12 @@ export const startup_member_edit_title = async (id: number | undefined, data: IE
     return response.data;
 };
 
-export const startup_member_change_permission = async (id: number, data: IEditStartupMember) => {
+export const startup_member_change_permission = async (id: number | undefined, data: IEditStartupMember) => {
     const response = await axiosInstance.put(`/startup-members/${id}`, data);
     return response.data;
 };
 
-export const startup_member_delete = async (id: number, data: IDeleteStartupMember) => {
+export const startup_member_delete = async (id: number | undefined, data: IDeleteStartupMember) => {
     const response = await axiosInstance.delete(`/startup-members/${id}`, { data });
     return response.data;
 }
