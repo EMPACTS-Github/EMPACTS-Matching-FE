@@ -11,14 +11,10 @@ import StartupMemberContainer from '@/containers/StartupMember/StartupMemberCont
 import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
 
 interface StartupProfileNavigationProps {
-  startupName: string;
-  startupLogo?: string;
   startupId?: string;
 }
 
 const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
-  startupName,
-  startupLogo = '/assets/avatar-placeholder.png',
   startupId = '',
 }) => {
   const [selected, setSelected] = useState("explore");
@@ -38,18 +34,19 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
 
   return (
     <div className="w-full border-b border-gray-200 flex justify-center">
-      <div className="flex-col w-full max-w-5xl">
+      <div className="flex-col w-full">
         <Tabs
           aria-label="Startup profile tabs"
           color="primary"
           variant="underlined"
           selectedKey={selected}
           onSelectionChange={setSelected as any}
+          className="w-full bg-white pl-56"
         >
           <Tab
             key="explore"
             title="Explore"
-            className="pt-0"
+            className="pt-0 flex items-center justify-center"
           >
             <ExploreContainer />
           </Tab>

@@ -13,10 +13,10 @@ const AlertLoginAs = ({ email, inviteeEmail, onLoginAsDifferentAccount, onCancel
     <div className="w-full flex justify-center items-center mt-10">
       <div className="rounded-xl p-8 bg-white flex flex-col gap-2 justify-center items-center">
         <p className="text-xl text-center font-[600] text-[#09090B]">
-          {"You're login as"} <span className="text-xl text-center font-[600] text-[#9200FE]">{email}</span>
+          {"You're login as"} <span className="text-xl text-center font-[600] text-empacts">{email}</span>
         </p>
         <p className="text-medium text-center font-[600] text-[#09090B]">
-          {"Please login as"} <span className="text-medium text-center font-[600] text-[#9200FE]">{inviteeEmail}</span> {"to continue"}
+          {"Please login as"} <span className="text-medium text-center font-[600] text-empacts">{inviteeEmail}</span> {"to continue"}
         </p>
         <div>
           <Button
@@ -29,7 +29,7 @@ const AlertLoginAs = ({ email, inviteeEmail, onLoginAsDifferentAccount, onCancel
           <Button
             onPress={onLoginAsDifferentAccount}
             variant="solid"
-            className="bg-[#9200FE] rounded-lg pl-6 pr-6 text-white"
+            className="bg-empacts rounded-lg pl-6 pr-6 text-white"
           >
             {`Login in as ${inviteeEmail}`}
           </Button>

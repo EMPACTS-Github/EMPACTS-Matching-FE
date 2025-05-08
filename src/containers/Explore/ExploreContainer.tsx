@@ -66,7 +66,7 @@ const ExploreContainer: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-screen overflow-hidden relative z-10 gap-y-2">
+    <div className="flex flex-col items-center w-full h-screen max-w-5xl overflow-hidden relative z-10 gap-y-2">
       <SearchWithLocation
         placeholder="Search for anything"
         className="w-3/5 mt-4"

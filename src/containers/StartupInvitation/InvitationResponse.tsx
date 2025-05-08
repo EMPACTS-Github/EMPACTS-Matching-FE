@@ -79,13 +79,13 @@ const InvitationResponse = ({
       <div className="rounded-xl p-8 bg-white flex flex-col gap-8 justify-center items-center">
         <div>
           <p className="text-2xl text-center font-[600] text-[#09090B] mb-2">{"You're invited as"}</p>
-          <p className="text-2xl text-center font-[600] text-[#9200FE]">{invitationInfo.positionTitle}</p>
+          <p className="text-2xl text-center font-[600] text-empacts">{invitationInfo.positionTitle}</p>
         </div>
         <div className="flex flex-col gap-4 justify-center items-center">
           <Avatar
             size="lg"
             src={invitationInfo.startupAvt}
-            className="w-[148px] h-[148px]"  
+            className="w-[148px] h-[148px]"
           />
           <div>
             <p className="text-xl text-center font-[600] text-[#09090B] mb-2">{invitationInfo.startupName}</p>

@@ -8,7 +8,7 @@ const StartupDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
     return (
-        <StartupProfileNavigation startupName="Startup name" startupId={id} />
+        <StartupProfileNavigation startupId={id} />
     );
 };
 

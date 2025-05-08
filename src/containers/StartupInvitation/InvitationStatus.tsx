@@ -24,7 +24,7 @@ const InvitationStatus = ({ message }: Props) => {
         <Button
           onPress={handleReturnToHome}
           variant="solid"
-          className="bg-[#9200FE] rounded-lg pl-6 pr-6 text-white"
+          className="bg-empacts rounded-lg pl-6 pr-6 text-white"
         >
           Return to home
         </Button>

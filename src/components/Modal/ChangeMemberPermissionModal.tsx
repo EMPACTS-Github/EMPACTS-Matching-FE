@@ -37,7 +37,7 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({ isOpen, o
                     <>
                         <ModalHeader className="items-center pb-0">
                             <div>
-                                <h3 className="text-lg text-black mb-1">Choose new role for <span className="text-[#9200FE]">{member?.user_id.name}</span></h3>
+                                <h3 className="text-lg text-black mb-1">Choose new role for <span className="text-empacts">{member?.user_id.name}</span></h3>
                             </div>
                         </ModalHeader>
                         <ModalBody>
@@ -52,7 +52,7 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({ isOpen, o
                         </ModalBody>
                         <ModalFooter className="flex justify-between">
                             <Button className="w-1/2 border-2" variant="light" onPress={onOpenChange} isDisabled={isLoading}>Cancel</Button>
-                            <Button className="bg-[#9200FE] text-white w-1/2" onPress={changeRole} isDisabled={isLoading}>
+                            <Button className="bg-empacts text-white w-1/2" onPress={changeRole} isDisabled={isLoading}>
                                 {isLoading ? <Spinner size="sm" color="white" /> : "Save"}
                             </Button>
                         </ModalFooter>

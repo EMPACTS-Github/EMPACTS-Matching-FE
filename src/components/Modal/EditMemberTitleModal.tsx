@@ -42,7 +42,7 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onO
                     <>
                         <ModalHeader className="items-center ">
                             <div>
-                                <h3 className="text-lg text-black mb-1">Edit position title for <span className="text-[#9200FE]">{member?.user_id.name}</span></h3>
+                                <h3 className="text-lg text-black mb-1">Edit position title for <span className="text-empacts">{member?.user_id.name}</span></h3>
                                 <div className="font-normal text-gray-400 text-xs">We take certain actions for the safety of our users</div>
                             </div>
                         </ModalHeader>
@@ -57,7 +57,7 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onO
                         </ModalBody>
                         <ModalFooter className="flex justify-between mt-20">
                             <Button className="w-1/2 border-2" variant="light" onPress={onOpenChange} isDisabled={isLoading}>Cancel</Button>
-                            <Button className="bg-[#9200FE] text-white w-1/2" onPress={editTitle} isDisabled={isLoading}>
+                            <Button className="bg-empacts text-white w-1/2" onPress={editTitle} isDisabled={isLoading}>
                                 {isLoading ? <Spinner size="sm" color="white" /> : "Save"}
                             </Button>
                         </ModalFooter>

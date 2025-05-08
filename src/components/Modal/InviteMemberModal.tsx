@@ -4,6 +4,7 @@ import { MemberForInvite } from '@/interfaces/startup';
 import Image from 'next/image';
 import CloseXIcon from '/public/assets/icons/close-x-icon.svg';
 import { Spinner } from "@heroui/spinner";
+import InfoInCircleIcon from '@/components/Icons/InfoInCircleIcon';
 
 interface InviteMemberModalProps {
     isOpen: boolean;
@@ -119,6 +120,10 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ isOpen, onOpenCha
                                         Add
                                     </Button>
                                 </div>
+                                <div className="flex flex-row gap-1 items-center mt-2">
+                                    <InfoInCircleIcon />
+                                    <span className='text-xs font-light'>Please note that member is invited with member permission as default!</span>
+                                </div>
                                 {
                                     error && (
                                         <div className="text-[#EA4335] text-xs">{error}</div>
@@ -129,17 +134,15 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ isOpen, onOpenCha
                                     {members.map((member, index) => (
                                         <div
                                             key={index}
-                                            className={`flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto ${'bg-[#9200fe1c]'
-                                                }`}
+                                            className="flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto bg-empacts-light"
                                         >
                                             <div className="flex flex-col gap-1">
                                                 <div
-                                                    className={`text-sm font-medium ${'text-empacts'
-                                                        }`}
+                                                    className="text-sm font-medium text-empacts"
                                                 >
                                                     {member.title}
                                                 </div>
-                                                <div className="text-sm text-[#71717a]">{member.email}</div>
+                                                <div className="text-sm text-gray-500">{member.email}</div>
                                             </div>
                                             <button
                                                 onClick={() => handleRemoveMember(index)}
@@ -159,7 +162,7 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ isOpen, onOpenCha
                         </ModalBody>
                         <ModalFooter className="flex justify-between">
                             <Button className="w-1/2 border-2" variant="light" onPress={onOpenChange} isDisabled={isLoading}>Cancel</Button>
-                            <Button className="bg-[#9200FE] text-white w-1/2" onPress={handleSaveButton} isDisabled={isLoading}>
+                            <Button className="bg-empacts text-white w-1/2" onPress={handleSaveButton} isDisabled={isLoading}>
                                 {isLoading ? <Spinner size="sm" color="white" /> : "Save"}
                             </Button>
                         </ModalFooter>

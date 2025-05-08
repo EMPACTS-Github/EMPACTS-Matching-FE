@@ -7,7 +7,7 @@ interface ActionButtonsProps {
   accentColor?: string;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({ 
+const ActionButtons: React.FC<ActionButtonsProps> = ({
   onCancel,
   onCreate,
   accentColor = "#70a75c"
@@ -24,7 +24,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       </div>
       <div className="flex-1">
         <Button
-          className="w-full h-[48px] rounded-lg bg-[#9200fe] text-white"
+          className="w-full h-[48px] rounded-lg bg-empacts text-white"
           onPress={onCreate}
         >
           <span className="text-base font-medium">Create New</span>
