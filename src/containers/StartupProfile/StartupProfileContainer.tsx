@@ -10,25 +10,10 @@ import { StartupProfileResponse } from "@/interfaces/StartupProfile";
 import { Skeleton } from "@heroui/skeleton";
 
 interface StartupProfileContainerProps {
-    id: string;
+    startup_profile: StartupProfileResponse | null | undefined;
 }
 
-const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ id }) => {
-    const [startup_profile, setStartupProfile] = useState<StartupProfileResponse | null>();
-    useEffect(() => {
-        const fetchStartupProfile = async () => {
-            try {
-                const data = await startup_profile_detail(id);
-                setStartupProfile(data.data);
-                console.log(data.data);
-            } catch (err) {
-                console.error('Failed to fetch startup profile:', err);
-            }
-        };
-
-        fetchStartupProfile();
-    }, [id]);
-
+const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ startup_profile }) => {
     return (
         <div className="flex w-full max-w-5xl relative z-10 gap-0 mt-6">
             <div className="w-full mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">

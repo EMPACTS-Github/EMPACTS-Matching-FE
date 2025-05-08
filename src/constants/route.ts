@@ -31,12 +31,6 @@ export const ROUTES: Route[] = [
     hasHeader: false,
   },
   {
-    name: 'Explore',
-    pathname: '/explore',
-    isPrivate: true,
-    hasHeader: true,
-  },
-  {
     name: 'ChooseProfile',
     pathname: '/profiles',
     isPrivate: true,
@@ -62,13 +56,7 @@ export const ROUTES: Route[] = [
   },
   {
     name: 'StartupProfileDetail',
-    pathname: '/startup-profile/:param',
-    isPrivate: true,
-    hasHeader: true,
-  },
-  {
-    name: 'StartupMember',
-    pathname: '/startup-member/:param',
+    pathname: '/startup-detail/:param',
     isPrivate: true,
     hasHeader: true,
   },

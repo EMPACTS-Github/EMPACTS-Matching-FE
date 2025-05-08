@@ -108,7 +108,7 @@ const StartupInvitation = () => {
         route.replace('/');
       } else {
         const startupId = response.data.startup_id.id;
-        route.replace(`/startup-profile/${startupId}`);
+        route.replace(`/startup-detail/${startupId}`);
       }
     } catch (error) {
       addToast({

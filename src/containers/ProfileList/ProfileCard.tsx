@@ -12,9 +12,9 @@ type Props = {
 
 const ProfileCard = ({ startup }: Props) => {
   const router = useRouter();
-  
+
   const handleNavigateToStartupProfile = () => {
-    router.push(`/startup-profile/${startup.id}`);
+    router.push(`/startup-detail/${startup.id}`);
   }
 
   return (

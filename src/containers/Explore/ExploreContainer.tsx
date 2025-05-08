@@ -1,12 +1,12 @@
 "use client";
 import MentorCard from '@/components/Card/MentorCard';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
-import TabSelection from '@/components/Tabs/TabSelection';
 import React from 'react';
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import ProfileInfoCard from '@/components/Card/ProfileInfoCard';
 import ConnectModal from '@/components/Modal/ConnectModal';
-import StartupProfileNavigation from '@/components/Navigation/StartupProfileNavigation';
+import { Tabs, Tab } from "@heroui/react";
+import FlashIcon from '@/components/Icons/FlashIcon';
 
 const ExploreContainer: React.FC = () => {
 
@@ -66,61 +66,74 @@ const ExploreContainer: React.FC = () => {
   };
 
   return (
-    <>
-      <StartupProfileNavigation startupName="Startup name" />
-      <div className="flex flex-col items-center w-full h-screen overflow-hidden relative z-10 gap-y-8">
-        <SearchWithLocation
-          placeholder="Search for anything"
-          className="w-3/5 max-w-4xl mt-4"
-          value={searchValue}
-          location={location}
-          onChange={setSearchValue}
-          onLocationChange={setLocation}
+    <div className="flex flex-col items-center w-full h-screen overflow-hidden relative z-10 gap-y-2">
+      <SearchWithLocation
+        placeholder="Search for anything"
+        className="w-3/5 mt-4"
+        value={searchValue}
+        location={location}
+        onChange={setSearchValue}
+        onLocationChange={setLocation}
+      />
+      <Tabs
+        aria-label="Explore" color="primary" variant="underlined">
+        <Tab
+          key="for-you"
+          title={
+            <div className="flex items-center space-x-2">
+              <FlashIcon className="color-empacts" />
+              <span>For you</span>
+            </div>
+          }
         />
-        <TabSelection
-          tabs={tabs}
-          tabsTitle="Explore"
+        <Tab
+          key="search"
+          title="Search"
         />
-        <div className='flex justify-between w-4/5 gap-4 p-4 flex-1 overflow-hidden'>
-          <div className='flex flex-col gap-4 w-1/3 overflow-y-auto h-full pr-2 custom-scrollbar'>
-            {mentor.map((mentor, index) => {
-              return (
-                <MentorCard
-                  key={index}
-                  name={mentor.name}
-                  location={mentor.location}
-                  description={mentor.description}
-                  avatarUrl={mentor.avatarUrl}
-                  matchScore={mentor.matchScore}
-                  isFavorite={mentor.isFavorite}
-                  onFavoriteClick={() => handleFavoriteClick(index)}
-                />
-              );
-            })}
-          </div>
-          <ProfileInfoCard
-            className="w-2/3 flex-grow"
-            title="Do Chi Thanh"
-            location="Hanoi, Vietnam"
-            description="As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. 
-                  You will design detailed UI layouts, create benchmarks, and develop high-fidelity prototypes while documenting UX and UI strategies. Collaborating with technical teams, you will transform designs into impactful, industry-leading products. This role combines creativity and problem-solving to create meaningful user experiences. Your journey with us is an opportunity to drive innovation and make a significant impact."
-            bio="Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience."
-            rating={4.5}
-            sdg="Profile SDG"
-            onFavoriteClick={() => setIsFavorite(!isFavorite)}
-            isFavorite={isFavorite}
-            onClickButton={() => {
-              setIsOpen(true)
-            }}
-          />
-          <ConnectModal
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
-            mentorName='Do Chi Thanh'
-          />
+        <Tab
+          key="matching-activity"
+          title="Matching Activity"
+        />
+      </Tabs>
+      <div className='flex justify-between gap-4 p-4 flex-1 overflow-hidden'>
+        <div className='flex flex-col gap-4 w-1/3 overflow-y-auto h-full pr-2 custom-scrollbar'>
+          {mentor.map((mentor, index) => {
+            return (
+              <MentorCard
+                key={index}
+                name={mentor.name}
+                location={mentor.location}
+                description={mentor.description}
+                avatarUrl={mentor.avatarUrl}
+                matchScore={mentor.matchScore}
+                isFavorite={mentor.isFavorite}
+                onFavoriteClick={() => handleFavoriteClick(index)}
+              />
+            );
+          })}
         </div>
+        <ProfileInfoCard
+          className="w-2/3 flex-grow"
+          title="Do Chi Thanh"
+          location="Hanoi, Vietnam"
+          description="As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. 
+                  You will design detailed UI layouts, create benchmarks, and develop high-fidelity prototypes while documenting UX and UI strategies. Collaborating with technical teams, you will transform designs into impactful, industry-leading products. This role combines creativity and problem-solving to create meaningful user experiences. Your journey with us is an opportunity to drive innovation and make a significant impact."
+          bio="Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience."
+          rating={4.5}
+          sdg="Profile SDG"
+          onFavoriteClick={() => setIsFavorite(!isFavorite)}
+          isFavorite={isFavorite}
+          onClickButton={() => {
+            setIsOpen(true)
+          }}
+        />
+        <ConnectModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          mentorName='Do Chi Thanh'
+        />
       </div>
-    </>
+    </div >
   );
 };
 

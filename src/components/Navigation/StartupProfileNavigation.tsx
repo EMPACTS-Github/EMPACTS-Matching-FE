@@ -1,9 +1,14 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from "@heroui/react";
 import Image from 'next/image';
 import Link from 'next/link';
+import { startup_profile_detail } from "@/apis/startup-profile"
+import { StartupProfileResponse } from "@/interfaces/StartupProfile";
+import ExploreContainer from '@/containers/Explore/ExploreContainer';
+import StartupMemberContainer from '@/containers/StartupMember/StartupMemberContainer';
+import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
 
 interface StartupProfileNavigationProps {
   startupName: string;
@@ -17,47 +22,55 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
   startupId = '',
 }) => {
   const [selected, setSelected] = useState("explore");
+  const [startup_profile, setStartupProfile] = useState<StartupProfileResponse | null>();
+
+  useEffect(() => {
+    const fetchStartupProfile = async () => {
+      try {
+        const data = await startup_profile_detail(startupId);
+        setStartupProfile(data.data);
+      } catch (err) {
+        console.error('Failed to fetch startup profile:', err);
+      }
+    };
+    fetchStartupProfile();
+  }, [startupId]);
 
   return (
-    <div className="w-full bg-white border-b border-gray-200 flex justify-center">
+    <div className="w-full border-b border-gray-200 flex justify-center">
       <div className="flex-col w-full max-w-5xl">
-        <Tabs 
-          aria-label="Startup profile tabs" 
+        <Tabs
+          aria-label="Startup profile tabs"
           color="primary"
           variant="underlined"
-          classNames={{
-            tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-            cursor: "w-full bg-primary",
-            tab: "max-w-fit px-0 h-12",
-            tabContent: "group-data-[selected=true]:text-primary"
-          }}
           selectedKey={selected}
           onSelectionChange={setSelected as any}
         >
-          <Tab 
-            key="explore" 
-            title={
-              <div className="flex items-center gap-2">
-                <span>Explore</span>
-              </div>
-            }
-          />
-          <Tab 
-            key="profile" 
-            title={
-              <div className="flex items-center gap-2">
-                <span>Profile</span>
-              </div>
-            } 
-          />
-          <Tab 
-            key="member" 
-            title={
-              <div className="flex items-center gap-2">
-                <span>Member</span>
-              </div>
-            }
-          />
+          <Tab
+            key="explore"
+            title="Explore"
+            className="pt-0"
+          >
+            <ExploreContainer />
+          </Tab>
+          <Tab
+            key="profile"
+            title="Profile"
+            className="pt-0"
+          >
+            <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
+              <StartupProfileContainer startup_profile={startup_profile} />
+            </div>
+          </Tab>
+          <Tab
+            key="member"
+            title="Member"
+            className="pt-0"
+          >
+            <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
+              <StartupMemberContainer startup_profile={startup_profile} />
+            </div>
+          </Tab>
         </Tabs>
       </div>
     </div>
