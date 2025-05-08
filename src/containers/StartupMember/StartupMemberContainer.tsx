@@ -10,23 +10,10 @@ import { Skeleton } from "@heroui/skeleton";
 import { Button, Card } from "@heroui/react";
 
 interface StartupMemberContainerProps {
-    id: string;
+    startup_profile: StartupProfileResponse | null | undefined;
 }
 
-const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ id }) => {
-    const [startup_profile, setStartupProfile] = useState<StartupProfileResponse | null>();
-    useEffect(() => {
-        const fetchStartupProfile = async () => {
-            try {
-                const data = await startup_profile_detail(id);
-                setStartupProfile(data.data);
-            } catch (err) {
-                console.error('Failed to fetch startup profile:', err);
-            }
-        };
-        fetchStartupProfile();
-    }, [id]);
-
+const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ startup_profile }) => {
     return (
         <div className="flex w-full max-w-5xl relative z-10 gap-0 mt-6">
             {startup_profile?.startup ? (

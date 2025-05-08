@@ -63,7 +63,7 @@ function CreateNewStartup() {
         color: 'success',
         timeout: 3000,
       });
-      router.push(`/startup-profile/${response.data.newStartup.id}`);
+      router.push(`/startup-detail/${response.data.newStartup.id}`);
       const user = localStorage.getItem('user');
       const userObj = user ? JSON.parse(user) : {};
       const inviterEmail = userObj.email;

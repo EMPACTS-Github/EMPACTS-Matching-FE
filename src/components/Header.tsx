@@ -126,7 +126,7 @@ const Header = () => {
                       {/* //example only (have to change to real mentor attributes) */}
                       {mentors.map((mentor) => (
                         <PopoverContentItem key={mentor.startup_id.id}>
-                          <Link href={`/startup-profile/${mentor.startup_id.id}`}>
+                          <Link href={`/startup-detail/${mentor.startup_id.id}`}>
                             <div className="flex items-center gap-2">
                               <Image src={mentor.startup_id.avt_url} alt="Logo" width={20} height={20} />
                               <div className="text-sm">{mentor.startup_id.name}</div>
@@ -140,7 +140,7 @@ const Header = () => {
                     <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
                       {startups.map((startup) => ( // Giới hạn tổng mentors + startups tối đa 10 mục
                         <PopoverContentItem key={startup.startup_id.id}>
-                          <Link href={`/startup-profile/${startup.startup_id.id}`}>
+                          <Link href={`/startup-detail/${startup.startup_id.id}`}>
                             <div className="flex items-center gap-2">
                               <Image src={startup.startup_id.avt_url} alt="Logo" width={20} height={20} />
                               <div className="text-sm">{startup.startup_id.name}</div>
