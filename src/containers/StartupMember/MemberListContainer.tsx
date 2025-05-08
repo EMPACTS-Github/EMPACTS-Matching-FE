@@ -49,6 +49,14 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange } = useDisclosure();
     const { isOpen: isInviteOpen, onOpen: onInviteOpen, onOpenChange: onInviteOpenChange } = useDisclosure();
 
+    const user = localStorage.getItem('user');
+    const userObj = user ? JSON.parse(user) : {};
+    const userId = userObj.id;
+    const [acessAction, setAccessAction] = useState({
+        canEdit: false,
+        canInvite: false,
+    });
+
     const iconClasses = "text-xl text-default-500 hover:text-white pointer-events-none flex-shrink-0";
     useEffect(() => {
         if (members) {
@@ -63,11 +71,17 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
             setFilteredMembers(memberList.filter((member) => member.role === filterMode));
         }
     }, [filterMode, memberList]);
+    useEffect(() => {
+        if (!userId || !memberList) return;
+        const isOwner = memberList.some((member) => member.user_id.id === userId && member.role === "OWNER");
+        setAccessAction({
+            canEdit: isOwner,
+            canInvite: isOwner,
+        });
+    }, [memberList, userId]);
 
     const inviteMembers = async () => {
         if (newMemberList.length !== 0) {
-            const user = localStorage.getItem('user');
-            const userObj = user ? JSON.parse(user) : {};
             const inviterEmail = userObj.email;
             invite_list_member({
                 invitee: newMemberList,
@@ -213,7 +227,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                         Member
                     </Button>
                 </div>
-                <Button className="bg-empacts text-white px-4" size="sm" onPress={onInviteOpen}>INVITE</Button>
+                {acessAction.canInvite && <Button className="bg-empacts text-white px-4" size="sm" onPress={onInviteOpen}>INVITE</Button>}
             </div>
             {/* Member List */}
             <div className="space-y-2">
@@ -235,7 +249,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                                 <div className="text-sm text-gray-500">{member.position_title}</div>
                             </div>
                         </div>
-                        <Dropdown placement="bottom-end">
+                        {acessAction.canEdit && <Dropdown placement="bottom-end">
                             <DropdownTrigger>
                                 <Image src={MenuIcon} alt="Menu Icon" width={30} height={30} />
                             </DropdownTrigger>
@@ -274,6 +288,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
+                        }
                     </div>
                 ))}
                 <EditMemberTitleModal isOpen={isEditTitleOpen} onOpenChange={onEditTitleOpenChange} member={selectedMember} onSave={updateMemberTitle} />

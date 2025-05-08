@@ -19,6 +19,7 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ isOpen, onOpenCha
         title: '',
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSaveButton = async () => {
         setIsLoading(true);
@@ -26,8 +27,6 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ isOpen, onOpenCha
         setIsLoading(false);
         onOpenChange();
     }
-
-    const [error, setError] = useState<string | null>(null);
 
     const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewMemberInfo({ ...newMemberInfo, email: e.target.value });
