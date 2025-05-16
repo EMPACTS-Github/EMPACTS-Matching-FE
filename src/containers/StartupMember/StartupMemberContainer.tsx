@@ -1,10 +1,8 @@
 "use client";
 import React from 'react';
 import { Spacer } from "@heroui/spacer";
-import { useEffect, useState } from "react";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
-import { startup_profile_detail } from "@/apis/startup-profile"
 import MemberListContainer from './MemberListContainer';
 import { Skeleton } from "@heroui/skeleton";
 import { Button, Card } from "@heroui/react";

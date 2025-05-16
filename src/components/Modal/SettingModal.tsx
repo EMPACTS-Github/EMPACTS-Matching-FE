@@ -1,16 +1,16 @@
 "use client";
 import { Tabs, Tab, Button, Input, Divider, Avatar, addToast } from "@heroui/react";
-import { Autocomplete, AutocompleteSection, AutocompleteItem } from "@heroui/autocomplete";
+import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import React, { useState, useEffect } from "react";
-import { upload_image } from "@/apis/upload";
+import { uploadAttachemt, updateAttachment } from "@/apis/upload";
+import { startup_profile_update } from "@/apis/startup-profile";
 import { Startup } from "@/interfaces/StartupProfile";
 import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
 import ImageGallery from "@/containers/StartupProfile/ImageGallery";
 import LabelStartAndSwitchEnd from "@/components/Switch/LabelStartAndSwitchEnd";
-import { getProvince } from "@/utils/getProvince";
-import { getSDGGoal } from "@/utils/getSDGGoal";
 import sdgGoals from "@/utils/data/sdgGoals.json";
 import provinces from "@/utils/data/provinces.json";
+import { UPLOAD_OWNER_TYPE } from "@/constants/upload";
 
 import {
     Modal,
@@ -42,6 +42,8 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [description, setDescription] = useState<string>(startup?.description || "");
     const [sdgGoal, setSdgGoal] = useState<string>(startup?.category || "");
     const [bio, setBio] = useState<string>("");
+    const [profilePicture, setProfilePicture] = useState('');
+    const [uploadedPictureId, setUploadedPictureId] = useState(0);
 
     const images: string[] = [
         "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
@@ -70,7 +72,54 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         //     setBio(startup.bio);
         // }
     }, [startup]);
-
+    const onUpdateProfileClick = async () => {
+        if (startup?.id) {
+            setLoading(true);
+            const requestBody = {
+                name: startupName,
+                location_based: location,
+                description: description,
+                sdgGoal: sdgGoal,
+                isHide: false,
+            };
+            try {
+                const updateImageResponse = await updateAttachment({
+                    id: uploadedPictureId,
+                    owner_id: startup.id,
+                    owner_type: UPLOAD_OWNER_TYPE.STARTUP,
+                });
+                try {
+                    const updateProfileResponse = await startup_profile_update(
+                        startup.id, requestBody
+                    );
+                    addToast({
+                        title: 'Profile updated successfully',
+                        color: 'success',
+                        timeout: 3000,
+                    });
+                } catch (err) {
+                    setError("Failed to upload the image. Please try again.");
+                    addToast({
+                        title: 'Failed to upload the image',
+                        color: 'danger',
+                        timeout: 3000,
+                    });
+                } finally {
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error("Error updating profile:", error);
+                addToast({
+                    title: "Failed to update profile",
+                    color: "danger",
+                    timeout: 3000,
+                });
+            } finally {
+                setLoading(false);
+                onOpenChange();
+            }
+        }
+    }
     const handleHideProfileClick = () => {
         console.log(sdgGoal)
         console.log("1")
@@ -78,14 +127,19 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const handleDeleteProfileClick = () => {
         console.log("2")
     }
+    const onImageUpload = (fileUrl: string, fileId: number) => {
+        setProfilePicture(fileUrl);
+        setUploadedPictureId(fileId);
+    }
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            setLoading(true); // Set loading to true
+            setLoading(true);
             try {
-                const response = await upload_image(file);
-                setImage(response.fileUrl);
+                const response = await uploadAttachemt({ file, owner_type: UPLOAD_OWNER_TYPE.STARTUP });
+                setImage(response.data.attachment_url);
                 setError(null);
+                onImageUpload(response.data.attachment_url, response.data.id);
                 addToast({
                     title: 'Image uploaded successfully',
                     color: 'success',
@@ -99,7 +153,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                     timeout: 3000,
                 });
             } finally {
-                setLoading(false); // Set loading to false
+                setLoading(false);
             }
         } else {
             setError("No file selected. Please choose an image file.");
@@ -271,7 +325,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                     <Divider />
                     <ModalFooter className="flex justify-end">
                         <Button className="border-2" variant="light" onPress={onOpenChange}>Cancel</Button>
-                        <Button className="bg-success text-white" onPress={onOpenChange}>Update profile</Button>
+                        <Button className="bg-success text-white" onPress={onUpdateProfileClick}>Update profile</Button>
                     </ModalFooter>
                 </>
             )}

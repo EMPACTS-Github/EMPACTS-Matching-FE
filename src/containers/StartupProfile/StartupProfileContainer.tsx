@@ -1,8 +1,6 @@
 "use client";
 import React from 'react';
-import { useEffect, useState } from "react";
 import { Spacer } from "@heroui/spacer";
-import { startup_profile_detail } from "@/apis/startup-profile"
 import ProfileHeader from "./ProfileHeader";
 import TabsSection from "./TabsSection";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
