@@ -11,15 +11,15 @@
    "dependencies": {
       "@emotion/react": "^11.13.5",
       "@emotion/styled": "^11.13.5",
-      "@heroui/react": "^2.6.14",
-      "@heroui/theme": "2.4.6",
+      "@heroui/input": "^2.4.17",
+      "@heroui/react": "^2.7.5",
       "axios": "^1.7.9",
+      "change-case": "^5.4.4",
+      "framer-motion": "^12.6.3",
       "next": "14.0.3",
       "react": "^18",
       "react-dom": "^18",
-      "react-toastify": "^10.0.6",
-      "sharp": "^0.33.5",
-      "toastify": "^2.0.1"
+      "sharp": "^0.33.5"
    },
    "devDependencies": {
       "@types/node": "^20",

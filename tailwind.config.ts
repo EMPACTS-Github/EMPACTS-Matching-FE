@@ -5,6 +5,7 @@ const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/containers/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
@@ -14,60 +15,25 @@ const config: Config = {
       textColor: {
         empacts: "#9200FE",
       },
+      backgroundColor: {
+        empacts: "#9200FE",
+      },
+      borderColor: {
+        empacts: "#9200FE",
+      },
+      colors: {
+        primary: "#9200FE",
+        empacts: "#9200FE",
+        "empacts-light": "#E8D9FF",
+        "empacts-dark": "#5B00A3",
+        "empacts-lighter": "#F2E9FF",
+        "empacts-darker": "#7B3FFF",
+      },
     },
   },
   plugins: [
     heroui({
-      themes: {
-        light: {
-          layout: {},
-          colors: {
-            primary: "#ffffff",
-            secondary: "#B8BBC0",
-            dark: "#141E2E",
-            red: "#E50045",
-            green: "#70A75C",
-            blue: "#1171FF",
-            success: "#70A75C",
-            warning: "#FFC107",
-            danger: "#E50045",
-          },
-          backgroundColor: {
-            white: "#ffffff",
-            dark: "#141E2E",
-            secondary: "#37404D",
-            red: "#E50045",
-            darkLight: "#1B273A",
-            darkLighter: "#243042",
-            green: "#70A75C",
-            blue: "#1171FF",
-          },
-        },
-        dark: {
-          layout: {},
-          colors: {
-            primary: "#ffffff",
-            secondary: "#B8BBC0",
-            dark: "#141E2E",
-            red: "#E50045",
-            green: "#70A75C",
-            blue: "#1171FF",
-            success: "#70A75C",
-            warning: "#FFC107",
-            danger: "#E50045",
-          },
-          backgroundColor: {
-            white: "#ffffff",
-            dark: "#141E2E",
-            secondary: "#37404D",
-            red: "#E50045",
-            darkLight: "#1B273A",
-            darkLighter: "#243042",
-            green: "#70A75C",
-            blue: "#1171FF",
-          },
-        },
-      },
+      addCommonColors: true,
     }),
   ],
 };

@@ -1,4 +1,4 @@
-export const provinces = [
+export const PROVINCES = [
   { key: "AN_GIANG", label: "An Giang" },
   { key: "BA_RIA_VUNG_TAU", label: "Bà Rịa - Vũng Tàu" },
   { key: "BAC_GIANG", label: "Bắc Giang" },

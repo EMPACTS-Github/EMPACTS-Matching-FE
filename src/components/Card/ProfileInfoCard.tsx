@@ -7,9 +7,10 @@ import { Button } from "@heroui/react";
 import AvatarPlaceholder from "/public/assets/avatar-placeholder.png";
 import Label from "/public/assets/label.svg";
 import Star from "/public/assets/star.svg";
-import IconText from "../common/IconText";
-import TitleWithDescription from "../common/TitleWithDescription";
-import TextLine from "../common/TextLine";
+import IconText from "@/components/common/IconText";
+import TitleWithDescription from "@/components/common/TitleWithDescription";
+import TextLine from "@/components/common/TextLine";
+import FlashIcon from "@/components/Icons/FlashIcon";
 
 interface ProfileInfoCardProps {
     title: string;
@@ -23,14 +24,6 @@ interface ProfileInfoCardProps {
     className?: string;
     onClickButton?: () => void;
 };
-
-const FlashIcon = () => {
-    return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.9105 10.7199H14.8205V3.5199C14.8205 1.8399 13.9105 1.4999 12.8005 2.7599L12.0005 3.6699L5.2305 11.3699C4.3005 12.4199 4.6905 13.2799 6.0905 13.2799H9.1805V20.4799C9.1805 22.1599 10.0905 22.4999 11.2005 21.2399L12.0005 20.3299L18.7705 12.6299C19.7005 11.5799 19.3105 10.7199 17.9105 10.7199Z" fill="white" />
-        </svg>
-    );
-}
 
 const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
     title,
@@ -80,8 +73,8 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                             type="submit"
                             color="primary"
                             size="lg"
-                            className="rounded-lg bg-[#7f00ff] border-[#7f00ff] text-[18px] text-white"
-                            startContent={<FlashIcon />}
+                            className="rounded-lg bg-empacts border-empacts text-lg text-white"
+                            startContent={<FlashIcon className="text-white" />}
                             onPress={onClickButton}
                         >
                             Connect
