@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import MediaEmptyStateLogo from "/public/assets/media-empty-state-logo.svg";
-// import PlusSquareIcon from '/public/assets/plus-square.svg';
 import { Button } from '@heroui/react';
 
 interface ImageGalleryProps {

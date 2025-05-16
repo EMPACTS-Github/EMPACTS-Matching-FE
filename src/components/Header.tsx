@@ -86,8 +86,8 @@ const Header = () => {
 
   return (
     <header className="w-full bg-white flex justify-center py-3">
-      <div className='flex-col gap-3 w-full max-w-5xl'>
-        <nav className="w-full flex justify-between items-center">
+      <div className='flex-col gap-3 w-full'>
+        <nav className="w-full flex justify-between items-center xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4">
           <div className="flex items-center gap-3">
             <Image
               className='cursor-pointer'

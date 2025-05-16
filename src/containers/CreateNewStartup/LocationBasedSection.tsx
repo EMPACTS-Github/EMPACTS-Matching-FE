@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Select, SelectItem } from "@heroui/react";
 import provinces from '@/utils/data/provinces.json';
 
@@ -9,7 +9,7 @@ interface LocationBasedSectionProps {
 
 const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
   selectedLocation = 'HA_NOI',
-  onChange = () => {},
+  onChange = () => { },
 }) => {
 
   return (
@@ -35,11 +35,10 @@ const LocationBasedSection: React.FC<LocationBasedSectionProps> = ({
           {provinces.map((province) => (
             <SelectItem
               key={province.value}
-              className={`text-[14px] font-semibold ${
-                selectedLocation === province.value
+              className={`text-[14px] font-semibold ${selectedLocation === province.value
                   ? "text-empacts"
                   : "text-gray-700 hover:text-gray-900"
-              }`}
+                }`}
             >
               {province.label}
             </SelectItem>
