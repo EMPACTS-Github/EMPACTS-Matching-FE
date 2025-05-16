@@ -1,5 +1,4 @@
-import { Switch, cn } from "@heroui/react";
-import { div } from "framer-motion/client";
+import { Switch } from "@heroui/react";
 
 interface LabelStartAndSwitchEndProps {
     label: string;

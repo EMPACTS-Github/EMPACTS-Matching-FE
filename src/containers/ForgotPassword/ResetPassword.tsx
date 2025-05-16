@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Input, Button, addToast } from "@heroui/react"; // Replacing Ant Design components
+import { Input, Button, addToast } from "@heroui/react";
 import Image from 'next/image';
 import { reset_password } from '@/apis/auth';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';

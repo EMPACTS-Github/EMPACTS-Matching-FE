@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardBody, Tab, Tabs, Link } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 import DocsIcon from '/public/assets/docs-icon.svg';
 import SheetsIcon from '/public/assets/sheets-icon.svg';
 import SlidesIcon from '/public/assets/slides-icon.svg';

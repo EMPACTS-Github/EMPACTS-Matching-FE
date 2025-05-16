@@ -1,5 +1,4 @@
 import ImageGallery from './ImageGallery';
-import Image from 'next/image';
 import { Startup } from "@/interfaces/StartupProfile";
 
 

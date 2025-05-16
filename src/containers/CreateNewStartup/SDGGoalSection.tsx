@@ -36,8 +36,8 @@ const SDGGoalSection: React.FC<SDGGoalSectionProps> = ({
           <SelectItem
             key={goal.value}
             className={`text-[14px] font-semibold ${selectedGoal === goal.value
-                ? "text-empacts"
-                : "text-gray-700 hover:text-gray-900"
+              ? "text-empacts"
+              : "text-gray-700 hover:text-gray-900"
               }`}
           >
             {goal.label}

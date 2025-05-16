@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from "@heroui/react";
-import Image from 'next/image';
-import Link from 'next/link';
 import { startup_profile_detail } from "@/apis/startup-profile"
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
 import ExploreContainer from '@/containers/Explore/ExploreContainer';
@@ -41,19 +39,19 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
           variant="underlined"
           selectedKey={selected}
           onSelectionChange={setSelected as any}
-          className="w-full bg-white pl-56"
+          className="w-full bg-white xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
         >
           <Tab
             key="explore"
             title="Explore"
-            className="pt-0 flex items-center justify-center"
+            className="pt-0 flex items-center justify-center px-2"
           >
             <ExploreContainer />
           </Tab>
           <Tab
             key="profile"
             title="Profile"
-            className="pt-0"
+            className="pt-0 px-2"
           >
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
               <StartupProfileContainer startup_profile={startup_profile} />
@@ -62,15 +60,15 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
           <Tab
             key="member"
             title="Member"
-            className="pt-0"
+            className="pt-0 px-2"
           >
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
               <StartupMemberContainer startup_profile={startup_profile} />
             </div>
           </Tab>
-        </Tabs>
-      </div>
-    </div>
+        </Tabs >
+      </div >
+    </div >
   );
 };
 

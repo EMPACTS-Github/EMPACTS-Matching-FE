@@ -1,6 +1,5 @@
 import { STARTUP_INVITATION_RESPONSE } from '@/constants'
 import { Avatar, Button } from '@heroui/react'
-import Image from 'next/image'
 import React from 'react'
 
 type Props = {
