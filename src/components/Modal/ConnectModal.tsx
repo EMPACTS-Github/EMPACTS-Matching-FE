@@ -19,9 +19,7 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ isOpen, onClose, mentorName
             isKeyboardDismissDisabled={true}
             isOpen={isOpen}
             onOpenChange={onClose}
-            classNames={{
-                body: "h-6",
-            }}
+            size="2xl"
         >
             <ModalContent>
                 {(onClose) => (
@@ -34,19 +32,13 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ isOpen, onClose, mentorName
                             </div>
                         </ModalHeader>
                         <ModalBody>
-                            <div className="flex flex-col gap-8">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Time</label>
-                                    <Input type="text" value="10:00 - 11:00 Thursday" readOnly />
-                                </div>
-                                <LabelWithTextarea
-                                    label="Note"
-                                    content={note}
-                                    setContent={setNote}
-                                    minRows={2}
-                                    placeholder="Leave a note for mentor"
-                                />
-                            </div>
+                            <LabelWithTextarea
+                                label="Note"
+                                content={note}
+                                setContent={setNote}
+                                minRows={3}
+                                placeholder="Leave a note for mentor"
+                            />
                         </ModalBody>
                         <ModalFooter className="flex justify-between mt-20">
                             <Button className="w-1/2 border-2" variant="light" onPress={onClose}>Cancel</Button>

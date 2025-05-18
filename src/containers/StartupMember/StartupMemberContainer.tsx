@@ -13,13 +13,13 @@ interface StartupMemberContainerProps {
 
 const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ startup_profile }) => {
     return (
-        <div className="flex w-full max-w-5xl relative z-10 gap-0 mt-6">
+        <div className="flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-0 mt-6">
             {startup_profile?.startup ? (
 
-                <div className="w-full mx-0 flex flex-col">
+                <div className="w-[75%] mx-0 flex flex-col">
                     <MemberListContainer members={startup_profile?.members} startupId={startup_profile.startup.id} />
                 </div>) : (
-                <div className='w-full mx-0 flex flex-col'>
+                <div className='w-[75%] mx-0 flex flex-col'>
                     <div className="flex justify-between items-center mb-4" >
                         <div className="space-x-2">
                             <Button size="sm" variant="solid" radius="full" isDisabled={false}>All</Button>
@@ -41,8 +41,8 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ startup
                     </Card>
                 </div>
             )}
-            <Spacer x={10} />
-            <div className="max-w-lg">
+            <Spacer x={4} />
+            <div className="w-[25%]">
                 <ProfileInfoSubCard startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
             </div>
         </div>

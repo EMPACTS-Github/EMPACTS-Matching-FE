@@ -10,7 +10,7 @@ import Star from "/public/assets/star.svg";
 import IconText from "@/components/common/IconText";
 import TitleWithDescription from "@/components/common/TitleWithDescription";
 import TextLine from "@/components/common/TextLine";
-import FlashIcon from "@/components/Icons/FlashIcon";
+import UserPlusIcon from "@/components/Icons/UserPlusIcon";
 
 interface ProfileInfoCardProps {
     title: string;
@@ -39,7 +39,7 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
 }) => {
     return (
         <div className={`bg-white rounded-lg shadow-md p-6 gap-y-6 flex flex-col ${className}`}>
-            <div className="flex justify-between">
+            <div className="flex justify-start">
                 <Image
                     src={AvatarPlaceholder}
                     alt={title}
@@ -73,8 +73,9 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                             type="submit"
                             color="primary"
                             size="lg"
-                            className="rounded-lg bg-empacts border-empacts text-lg text-white"
-                            startContent={<FlashIcon className="text-white" />}
+                            variant="solid"
+                            radius="md"
+                            startContent={<UserPlusIcon className="text-white" />}
                             onPress={onClickButton}
                         >
                             Connect
@@ -86,7 +87,7 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                 <IconText icon={Label} text={sdg} alt="SDG" />
                 <IconText icon={Star} text={rating} alt="Rating" />
             </div>
-            <div className="flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-3">
                 <TitleWithDescription title="Bio" description={bio} />
                 <TitleWithDescription title="Description" description={description} />
             </div>
