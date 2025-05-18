@@ -5,7 +5,8 @@ import { Button } from "@heroui/react";
 import { STARTUP_SDG_GOALS } from "@/constants/sdgs";
 import CategoryItem from "./CategoryItem";
 import { Category } from "@/interfaces/startup";
-
+import ChevronDownIcon from '@/components/Icons/ChevronDownIcon';
+import ChevronUpIcon from "@/components/Icons/ChevronUpIcon";
 
 interface CategoryProps {
   selectedCategory?: string[];
@@ -54,10 +55,10 @@ const CategoryList: React.FC<CategoryProps> = ({
         <Button
           onPress={() => handleSelectAll()}
           size="md"
-          variant={selectAll ? "flat" : "ghost"}
+          variant={selectAll ? "solid" : "ghost"}
           radius="full"
+          color="primary"
           style={{
-            border: selectAll ? "2px solid #EBEBEC" : "",
             whiteSpace: "normal", // Ensure full text is displayed
             wordBreak: "break-word", // Break long words
           }}
@@ -79,6 +80,8 @@ const CategoryList: React.FC<CategoryProps> = ({
           size="md"
           variant="ghost"
           radius="full"
+          color="primary"
+          endContent={<ChevronDownIcon className="color-empacts" />}
         >
           <div className="text-[16px]">
             More
@@ -122,6 +125,8 @@ const CategoryList: React.FC<CategoryProps> = ({
               size="md"
               variant="ghost"
               radius="full"
+              color="primary"
+              endContent={<ChevronUpIcon className="color-empacts" />}
             >
               <div className="text-[16px]">
                 Less
