@@ -33,7 +33,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, member
             <CardBody>
                 <Divider />
                 {member_count ? (
-                    <div className="flex gap-6 justify-center items-center p-2">
+                    <div className="flex justify-around items-center p-2">
                         <div className="flex flex-col justify-center items-center">
                             <p className="font-semibold text-lg text-gray-800 py-1">{member_count}</p>
                             <p className="text-gray-400 text-xs">Members</p>

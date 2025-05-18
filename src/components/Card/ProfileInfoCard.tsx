@@ -38,14 +38,14 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
     onClickButton,
 }) => {
     return (
-        <div className={`bg-white rounded-lg shadow-md p-6 gap-y-6 flex flex-col ${className}`}>
+        <div className={`bg-white rounded-lg shadow-md p-6 gap-y-6 flex flex-col h-fit ${className}`}>
             <div className="flex justify-start">
                 <Image
                     src={AvatarPlaceholder}
                     alt={title}
                     width={80}
                     height={80}
-                    className="mr-4 h-20 w-20 rounded-full"
+                    className="mr-6 h-20 w-20 rounded-full"
                 />
                 <div className="items-center justify-between flex-grow">
                     <div className="flex items-center justify-between">

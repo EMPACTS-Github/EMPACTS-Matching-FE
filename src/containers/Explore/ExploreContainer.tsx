@@ -123,11 +123,11 @@ const ExploreContainer: React.FC = () => {
           title={selectedMentor.name}
           location={selectedMentor.location}
           description={selectedMentor.description}
-          bio="Make beautiful websites regardless of your design experience."
+          bio={selectedMentor.bio}
           rating={4.5}
           sdg="Profile SDG"
           onFavoriteClick={() => setIsFavorite(!isFavorite)}
-          isFavorite={isFavorite}
+          isFavorite={selectedMentor.isFavorite}
           onClickButton={() => {
             setIsOpen(true);
           }}
