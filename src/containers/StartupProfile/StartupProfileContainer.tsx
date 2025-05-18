@@ -13,8 +13,8 @@ interface StartupProfileContainerProps {
 
 const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ startup_profile }) => {
     return (
-        <div className="flex w-full max-w-5xl relative z-10 gap-0 mt-6">
-            <div className="w-full mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">
+        <div className="flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-0 mt-6">
+            <div className="w-[75%] mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">
                 {startup_profile?.startup ? (
                     <div>
                         <ProfileHeader startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
@@ -39,8 +39,8 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
                     </div>
                 )}
             </div>
-            <Spacer x={10} />
-            <div className="max-w-lg">
+            <Spacer x={4} />
+            <div className="w-[25%]">
                 <ProfileInfoSubCard startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
             </div>
         </div>

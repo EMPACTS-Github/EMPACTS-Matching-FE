@@ -11,7 +11,7 @@ interface TabsSectionProps {
 
 const TabsSection: React.FC<TabsSectionProps> = ({ startup }) => {
     return (
-        <div className="flex-1 overflow-y-scroll">
+        <div className="flex-1">
             <Tabs aria-label="Startup Tabs" variant="underlined">
                 <Tab key="overview" title="Overview">
                     <OverviewBody startup={startup} />

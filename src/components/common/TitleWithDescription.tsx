@@ -8,9 +8,9 @@ interface TitleWithDescriptionProps {
 
 const TitleWithDescription: React.FC<TitleWithDescriptionProps> = ({ title, description }) => {
     return (
-        <div>
-            <TextLine text={title} className="text-black text-[16px] font-semibold" />
-            <TextLine text={description} className="text-black text-[16px]" />
+        <div className="flex-col">
+            <TextLine text={title} className="text-black text-[16px] font-semibold text-justify grow-0" />
+            <TextLine text={description} className="text-black text-[16px] text-justify grow-0" />
         </div>
     );
 }
