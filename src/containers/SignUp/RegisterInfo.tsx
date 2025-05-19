@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import EmpactsLogo from '/public/empacts-logo.svg'
+import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon'
 import FormTitle from '@/components/Form/FormTitle'
 import { addToast, Button, Form, Input } from '@heroui/react'
 import UserAvatar from '@/components/Form/UserAvatar'
@@ -82,13 +82,14 @@ function RegisterInfo() {
   return (
     <div className='flex flex-col items-center justify-center gap-12 w-full'>
       <div>
-        <Image
-          src={EmpactsLogo}
-          alt="EMPACTS Logo Image"
-          priority
-          width={200}
-          height={200}
-        />
+        <Button
+          isIconOnly
+          aria-label="EMPACTS Logo Image"
+          className='w-48 p-1 bg-transparent'
+          radius='md'
+        >
+          <EmpactsLogoIcon />
+        </Button>
       </div>
       <div>
         <FormTitle className='font-bold text-2xl text-black' text='Complete your profile' />

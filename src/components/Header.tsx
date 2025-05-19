@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import EmpactsLogo from '/public/empacts-logo.svg';
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import { useRouter } from 'next/navigation';
 import {
@@ -12,7 +11,6 @@ import {
 } from "@heroui/react";
 import { Divider } from "@heroui/react";
 import { Button } from "@heroui/button";
-import DropdownIcon from '/public/assets/dropdown-icon.svg';
 import PlusSquareIcon from '/public/assets/plus-square.svg';
 import SoleLogoEmpacts from '/public/assets/sole-logo-empacts.svg';
 import BellIcon from '/public/assets/bell_icon.svg';
@@ -20,6 +18,8 @@ import { logout } from '@/apis/auth';
 import Link from 'next/link';
 import { startup_list } from '@/apis/startup-profile';
 import { StartupOfUser } from '@/interfaces/StartupOfUser'
+import ChevronSelectorVerticalIcon from '@/components/Icons/ChevronSelectorVerticalIcon';
+import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
 
 const PopoverContentItem = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -90,21 +90,31 @@ const Header = () => {
       <div className='flex-col gap-3 w-full'>
         <nav className="w-full flex justify-between items-center xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4">
           <div className="flex items-center gap-3">
-            <Image
-              className='cursor-pointer'
-              src={EmpactsLogo}
-              alt="Logo"
-              width={120}
-              height={120}
-              onClick={handleBackToHome}
-            />
+            <Button
+              isIconOnly
+              aria-label="LogoEmpactsIcon"
+              onPress={handleBackToHome}
+              className='w-36 p-1 bg-transparent'
+              radius='md'
+            >
+              <EmpactsLogoIcon />
+            </Button>
           </div>
           {isLoggedIn ? (
             <>
               <div className="flex items-center gap-3">
+                <Image
+                  src={BellIcon}
+                  alt="Notifications"
+                  width={28}
+                  height={28}
+                  className="cursor-pointer"
+                />
                 <Popover placement="bottom-end">
-                  <PopoverTrigger className="p-1 rounded-full hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400">
-                    <Image src={DropdownIcon} alt="Dropdown Icon" width={30} height={30} />
+                  <PopoverTrigger className="p-1 rounded-full">
+                    <Button isIconOnly aria-label="Dropdown" variant="light">
+                      <ChevronSelectorVerticalIcon className='text-empacts' />
+                    </Button>
                   </PopoverTrigger>
                   <PopoverContent className='w-[380px] block'>
                     <div className='px-1 py-2 flex flex-col gap-1 items-start'>
@@ -156,13 +166,6 @@ const Header = () => {
                     </div>
                   </PopoverContent>
                 </Popover>
-                <Image
-                  src={BellIcon}
-                  alt="Notifications"
-                  width={28}
-                  height={28}
-                  className="cursor-pointer"
-                />
                 <Popover>
                   <PopoverTrigger>
                     <Image

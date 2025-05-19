@@ -39,7 +39,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
           variant="underlined"
           selectedKey={selected}
           onSelectionChange={setSelected as any}
-          className="w-full bg-white xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
+          className="w-full font-bold bg-white xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
         >
           <Tab
             key="explore"

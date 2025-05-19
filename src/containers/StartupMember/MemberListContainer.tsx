@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import DeleteIcon from "@/components/Icons/DeleteIcon";
 import EditIcon from "@/components/Icons/EditIcon";
+import UsersIcon from "@/components/Icons/UsersIcon";
 import { Member } from "@/interfaces/StartupProfile";
 import EditMemberTitleModal from "@/components/Modal/EditMemberTitleModal";
 import MenuIcon from '/public/assets/three-dot-menu-icon.svg';
@@ -29,11 +30,11 @@ interface MemberListContainerProps {
 const RoleChip = ({ role }: { role: string }) => (
     <Chip
         size="sm"
-        color={role === "OWNER" ? "primary" : "default"}
-        variant="faded"
-        className={role === "OWNER" ? "border-empacts" : ""}
+        color="primary"
+        variant={role === "OWNER" ? "faded" : "bordered"}
+        className={role === "OWNER" ? "border-empacts border-1 bg-empacts-lighter capitalize" : "border-1"}
     >
-        {role}
+        {role === "OWNER" ? "Owner" : role === "MEMBER" ? "Member" : role}
     </Chip>
 );
 
@@ -204,6 +205,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                 <div className="space-x-2">
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "ALL" ? "font-bold" : "border-empacts-grey-50 border-1 font-bold"}
                         variant={filterMode === "ALL" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("ALL")}
@@ -212,6 +215,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     </Button>
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "OWNER" ? "font-bold" : "border-empacts-grey-50 border-1 font-bold"}
                         variant={filterMode === "OWNER" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("OWNER")}
@@ -220,6 +225,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     </Button>
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "MEMBER" ? "font-bold" : "border-empacts-grey-50 border-1 font-bold"}
                         variant={filterMode === "MEMBER" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("MEMBER")}
@@ -266,7 +273,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                                 </DropdownItem>
                                 <DropdownItem
                                     key="change-permission"
-                                    startContent={<EditIcon className={iconClasses} />}
+                                    startContent={<UsersIcon className={iconClasses} />}
                                     onPress={() => {
                                         setSelectedMember(member); // Lưu thành viên được chọn
                                         onChangePermissionOpen(); // Mở modal Change Permission
