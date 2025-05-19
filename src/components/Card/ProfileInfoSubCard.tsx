@@ -54,7 +54,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, member
             </CardBody>
 
             <CardFooter>
-                <Button onPress={onOpen} className="w-full bg-white text-gray-400" variant="ghost">
+                <Button onPress={onOpen} className="w-full font-bold" variant="ghost" color="primary">
                     SETTINGS
                 </Button>
                 <SettingModal isOpen={isOpen} onOpenChange={onOpenChange} startup={startup} />

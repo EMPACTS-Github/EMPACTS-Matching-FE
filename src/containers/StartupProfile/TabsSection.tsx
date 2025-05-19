@@ -12,7 +12,7 @@ interface TabsSectionProps {
 const TabsSection: React.FC<TabsSectionProps> = ({ startup }) => {
     return (
         <div className="flex-1">
-            <Tabs aria-label="Startup Tabs" variant="underlined" color="primary">
+            <Tabs aria-label="Startup Tabs" variant="underlined" color="primary" className="font-bold">
                 <Tab key="overview" title="Overview">
                     <OverviewBody startup={startup} />
                 </Tab>

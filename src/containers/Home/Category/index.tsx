@@ -62,7 +62,7 @@ const CategoryList: React.FC<CategoryProps> = ({
             whiteSpace: "normal", // Ensure full text is displayed
             wordBreak: "break-word", // Break long words
           }}
-          className={!selectAll ? "border-empacts-dark border-1" : ""}
+          className={!selectAll ? "border-empacts-grey-50 border-1" : ""}
         >
           <div className="text-[16px]">
             All
@@ -82,7 +82,7 @@ const CategoryList: React.FC<CategoryProps> = ({
           variant="ghost"
           radius="full"
           color="primary"
-          className="border-empacts-dark border-1"
+          className="border-empacts-grey-50 border-1"
           endContent={<ChevronDownIcon className="color-empacts" />}
         >
           <div className="text-[16px]">
@@ -128,7 +128,7 @@ const CategoryList: React.FC<CategoryProps> = ({
               variant="ghost"
               radius="full"
               color="primary"
-              className="border-empacts-dark border-1"
+              className="border-empacts-grey-50 border-1"
               endContent={<ChevronUpIcon className="color-empacts" />}
             >
               <div className="text-[16px]">

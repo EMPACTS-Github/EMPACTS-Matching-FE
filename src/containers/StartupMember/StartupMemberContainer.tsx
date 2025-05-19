@@ -23,8 +23,8 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ startup
                     <div className="flex justify-between items-center mb-4" >
                         <div className="space-x-2">
                             <Button size="sm" variant="solid" color="primary" radius="full" isDisabled={false}>All</Button>
-                            <Button size="sm" variant="bordered" color="primary" radius="full" isDisabled={false} className='border-empacts-dark border-1'>Owner</Button>
-                            <Button size="sm" variant="bordered" color="primary" radius="full" isDisabled={false} className='border-empacts-dark border-1'>Member</Button>
+                            <Button size="sm" variant="bordered" color="primary" radius="full" isDisabled={false} className='border-empacts-grey-50 border-1'>Owner</Button>
+                            <Button size="sm" variant="bordered" color="primary" radius="full" isDisabled={false} className='border-empacts-grey-50 border-1'>Member</Button>
                         </div>
                         <Button className="bg-empacts text-white px-4" size="sm">INVITE</Button>
                     </div>

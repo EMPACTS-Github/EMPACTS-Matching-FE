@@ -81,7 +81,7 @@ const ExploreContainer: React.FC = () => {
         onLocationChange={setLocation}
       />
       <Tabs
-        aria-label="Explore" color="primary" variant="underlined">
+        aria-label="Explore" color="primary" variant="underlined" className='font-bold'>
         <Tab
           key="for-you"
           title={

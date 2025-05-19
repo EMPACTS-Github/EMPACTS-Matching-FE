@@ -1,7 +1,7 @@
 'use client';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import EmpactsLogo from '/public/empacts-logo.svg';
+import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
+import { Button } from "@heroui/button";
 
 const LogoAndTitle = ({ title, description }: { title: string, description: string }) => {
   const router = useRouter();
@@ -12,17 +12,15 @@ const LogoAndTitle = ({ title, description }: { title: string, description: stri
 
   return (
     <div className="flex flex-col items-center text-center">
-      <Image
-        onClick={handleOnClickLogo}
-        className='cursor-pointer'
-        src={EmpactsLogo}
-        alt="Background image"
-        width={0}
-        height={0}
-        sizes="100vw"
-        style={{ width: '50%', height: 'auto' }}
-        priority
-      />
+      <Button
+        isIconOnly
+        aria-label="LogoEmpactsIcon"
+        onPress={handleOnClickLogo}
+        className='w-48 p-1 bg-transparent'
+        radius='md'
+      >
+        <EmpactsLogoIcon />
+      </Button>
       <h2 className="text-2xl font-bold mt-6 mb-6 text-black">
         {title}
       </h2>
