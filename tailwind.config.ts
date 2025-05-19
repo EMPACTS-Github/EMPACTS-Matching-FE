@@ -27,7 +27,7 @@ const config: Config = {
         tertiary: "#FF00D6",
         empacts: "#9200FE",
         "empacts-light": "#E8D9FF",
-        "empacts-dark": "#5B00A3",
+        "empacts-dark": "#6300AC",
         "empacts-lighter": "#F2E9FF",
         "empacts-darker": "#7B3FFF",
       },

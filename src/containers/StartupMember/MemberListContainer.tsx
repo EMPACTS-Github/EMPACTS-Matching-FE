@@ -204,6 +204,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                 <div className="space-x-2">
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "ALL" ? "" : "border-empacts-dark border-1"}
                         variant={filterMode === "ALL" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("ALL")}
@@ -212,6 +214,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     </Button>
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "OWNER" ? "" : "border-empacts-dark border-1"}
                         variant={filterMode === "OWNER" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("OWNER")}
@@ -220,6 +224,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     </Button>
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "MEMBER" ? "" : "border-empacts-dark border-1"}
                         variant={filterMode === "MEMBER" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("MEMBER")}
