@@ -6,7 +6,7 @@ export interface IUploadData {
 
 export interface IUpdateAttachmentData {
   id: number;
-  owner_id?: number;
+  owner_id?: string;
   owner_type: string;
   attachment_title?: string;
   is_deleted?: number;

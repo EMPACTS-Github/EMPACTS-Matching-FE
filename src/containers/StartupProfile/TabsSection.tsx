@@ -6,7 +6,7 @@ import AdvancedBody from "./AdvancedBody";
 import DocumentBody from "./DocumentBody";
 
 interface TabsSectionProps {
-    startup: Startup | null;
+    startup: Startup;
 }
 
 const TabsSection: React.FC<TabsSectionProps> = ({ startup }) => {

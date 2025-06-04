@@ -25,13 +25,13 @@ const ProfileCard = ({ startup }: Props) => {
     >
       <div className="flex items-center">
         <Avatar
-          src={startup.avt_url}
+          src={startup.avtUrl}
           alt={`${startup.name} Avatar`}
           size="lg"
         />
         <div className="ml-4">
           <p className="font-bold text-gray-800">{startup.name}</p>
-          <p className="text-sm text-gray-500">{getSDGGoal(startup.category as string)}</p>
+          <p className="text-sm text-gray-500">{getSDGGoal(startup.sdgGoal as string)}</p>
         </div>
       </div>
       <Image src={RightArrow} className="text-gray-400 text-lg" alt={""} width={24} height={24} />

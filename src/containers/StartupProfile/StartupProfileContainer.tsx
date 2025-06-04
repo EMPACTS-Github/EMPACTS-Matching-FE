@@ -6,9 +6,10 @@ import TabsSection from "./TabsSection";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
 import { Skeleton } from "@heroui/skeleton";
+import { Card, CardBody, Divider } from "@heroui/react";
 
 interface StartupProfileContainerProps {
-    startup_profile: StartupProfileResponse | null | undefined;
+    startup_profile: StartupProfileResponse | undefined;
 }
 
 const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ startup_profile }) => {
@@ -17,7 +18,7 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
             <div className="w-[75%] mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">
                 {startup_profile?.startup ? (
                     <div>
-                        <ProfileHeader startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
+                        <ProfileHeader startup={startup_profile?.startup} />
                         <TabsSection startup={startup_profile?.startup} />
                     </div>
                 ) : (
@@ -40,9 +41,30 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
                 )}
             </div>
             <Spacer x={4} />
-            <div className="w-[25%]">
-                <ProfileInfoSubCard startup={startup_profile?.startup} member_count={startup_profile?.members.length} />
-            </div>
+            {
+                startup_profile?.startup ? (
+                    <div className="w-[25%]">
+                        <ProfileInfoSubCard startup={startup_profile.startup} />
+                    </div>
+                ) : (
+                    <div className="w-[25%]">
+                        <Card className="bg-white min-w-lg shadow-lg rounded-lg px-4 py-2">
+                            <div className="rounded-full flex items-center justify-center">
+                                <Skeleton className="h-20 w-20 rounded-full bg-default-300" />
+                            </div>
+                            <CardBody>
+                                <Divider />
+                                <div className="flex gap-6 justify-center items-center p-2">
+                                    <Skeleton className="h-8 w-20 rounded-full bg-default-300" />
+                                    <Divider orientation="vertical" className="h-14" />
+                                    <Skeleton className="h-8 w-20 rounded-full bg-default-300" />
+                                </div>
+                                <Divider />
+                            </CardBody>
+                        </Card>
+                    </div>
+                )
+            }
         </div>
     );
 }

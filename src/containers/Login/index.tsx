@@ -81,7 +81,7 @@ function Login() {
           const inviteeEmail = localStorage.getItem('inviteeEmail');
           router.push(`/startup-invitation?code=${invitationCode}&email=${inviteeEmail}`);
         } else {
-          if (response.data.user.has_profile) {
+          if (response.data.user.hasProfile) {
             router.push('/profiles');
           } else {
             router.push('/profiles/new');
@@ -118,7 +118,7 @@ function Login() {
             const inviteeEmail = localStorage.getItem('inviteeEmail');
             router.push(`/startup-invitation?code=${invitationCode}&email=${inviteeEmail}`);
           } else {
-            if (response.data.user.has_profile) {
+            if (response.data.user.hasProfile) {
               router.push('/profiles');
             } else {
               router.push('/profiles/new');

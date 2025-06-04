@@ -13,7 +13,7 @@ export const startup_list = async (
   category?: string[]
 ) => {
   if (category?.length) {
-    const queryStr = category.map((cat) => `&category=${cat}`).join("");
+    const queryStr = category.map((cat) => `&sdgGoals=${cat}`).join("");
     const response = await axiosInstance.get(
       `/startups?limit=${limit}&page=${page}${queryStr}`
     );

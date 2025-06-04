@@ -7,8 +7,8 @@ import { Spinner } from "@heroui/spinner";
 interface EditMemberTitleModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
-    member: Member | null;
-    onSave: (memberId: number | undefined, newTitle: string) => void;
+    member: Member;
+    onSave: (memberId: string, newTitle: string) => void;
 }
 
 const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onOpenChange, member, onSave }) => {
@@ -16,14 +16,14 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onO
     const [isLoading, setIsLoading] = useState(false);
     const editTitle = async () => {
         setIsLoading(true);
-        await onSave(member?.id, titleField);
+        await onSave(member.id, titleField);
         setIsLoading(false);
         onOpenChange();
     };
 
     useEffect(() => {
         if (member) {
-            setTitleField(member.position_title);
+            setTitleField(member.positionTitle);
         }
     }, [member]);
 
@@ -42,7 +42,7 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onO
                     <>
                         <ModalHeader className="items-center ">
                             <div>
-                                <h3 className="text-lg text-black mb-1">Edit position title for <span className="text-empacts">{member?.user_id.name}</span></h3>
+                                <h3 className="text-lg text-black mb-1">Edit position title for <span className="text-empacts">{member?.user.name}</span></h3>
                                 <div className="font-normal text-gray-400 text-xs">We take certain actions for the safety of our users</div>
                             </div>
                         </ModalHeader>

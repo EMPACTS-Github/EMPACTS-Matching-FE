@@ -63,8 +63,7 @@ const StartupInvitation = () => {
   const getCheckInvitationStatus = async () => {
     try {
       const response = await checkInvitationStatus({
-        invited_email: inviteeEmail as string,
-        invite_code: invitationCode as string,
+        inviteCode: invitationCode as string,
       });
 
       if (response.code === STARTUP_INVITATION_RESPONSE_CODE.INVITATION_EXPIRED ||
@@ -95,8 +94,8 @@ const StartupInvitation = () => {
   const responseInvitation = async (invitationResponse: string) => {
     try {
       const response = await responseStartupInvitation({
-        invite_code: invitationCode as string,
-        invited_email: inviteeEmail as string,
+        inviteCode: invitationCode as string,
+        invitedEmail: inviteeEmail as string,
         response: invitationResponse,
       })
 
