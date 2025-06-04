@@ -118,7 +118,7 @@ function RegisterInfo() {
         <Button
           type="submit"
           color="primary"
-          className="interceptor-loading w-4/5 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+          className="interceptor-loading w-4/5 rounded-lg bg-empacts border-empacts"
         >
           Sign up
         </Button>

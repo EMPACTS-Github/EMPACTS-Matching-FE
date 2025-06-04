@@ -118,7 +118,7 @@ const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0
             type="submit"
             color="primary"
             size="lg"
-            className="w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+            className="w-full mt-4 rounded-lg bg-empacts border-empacts"
           >
             Reset Password
           </Button>

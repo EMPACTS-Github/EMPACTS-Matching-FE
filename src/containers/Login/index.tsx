@@ -74,7 +74,7 @@ function Login() {
         });
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        
+
         const hasInvitationStatus = localStorage.getItem('status');
         if (hasInvitationStatus) {
           const invitationCode = localStorage.getItem('invitationCode');
@@ -169,7 +169,7 @@ function Login() {
         style={{ borderRadius: '0px' }}
       />
       <div className="text-right !mt-1">
-        <Link href="/auth/forgot-password" className="text-sm text-[#1A1D1F] font-bold">
+        <Link href="/auth/forgot-password" className="text-sm text-secondary font-bold">
           Forgot your password?
         </Link>
       </div>
@@ -177,7 +177,7 @@ function Login() {
         type="submit"
         color="primary"
         size="lg"
-        className="!text-white w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full mt-4 rounded-lg bg-empacts border-empacts"
       >
         Sign in
       </Button>
