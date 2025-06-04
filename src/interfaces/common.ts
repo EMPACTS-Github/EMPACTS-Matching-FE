@@ -1,0 +1,36 @@
+export const LANGUAGE_SPOKEN = {
+    EN: 'English',
+    VI: 'Vietnamese',
+    JA: 'Japanese',
+    ZH: 'Chinese',
+    KO: 'Korean',
+    FR: 'French',
+    DE: 'German',
+    ES: 'Spanish',
+    PT: 'Portuguese',
+    RU: 'Russian',
+    IT: 'Italian',
+    AR: 'Arabic',
+    HI: 'Hindi',
+    TH: 'Thai',
+    ID: 'Indonesian',
+    TR: 'Turkish',
+    NL: 'Dutch',
+    PL: 'Polish',
+    SV: 'Swedish',
+    EL: 'Greek',
+    HE: 'Hebrew',
+    MS: 'Malay',
+    BN: 'Bengali',
+    UK: 'Ukrainian',
+    RO: 'Romanian',
+    CS: 'Czech',
+    HU: 'Hungarian',
+    SK: 'Slovak',
+    FI: 'Finnish',
+    NO: 'Norwegian',
+    DA: 'Danish'
+} as const;
+
+export type LanguageSpokenCode = keyof typeof LANGUAGE_SPOKEN;
+export type LanguagesSpoken = LanguageSpokenCode[];

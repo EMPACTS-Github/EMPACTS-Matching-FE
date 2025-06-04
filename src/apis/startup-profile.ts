@@ -3,19 +3,18 @@ import axiosInstance from ".";
 
 interface IUpdateStartupProfile {
     name?: string,
-    location_based?: string,
-    category?: string,
-    avt_url?: string,
+    locationBased?: string,
+    avtUrl?: string,
     description?: string;
     sdgGoal?: string;
     isHide?: boolean;
-    startup_link?: string;
-    market_focus?: string;
-    have_active_use?: number;
-    revenue?: number;
-    legal_equity_detail?: string;
-    investment_detail?: string;
-    fundraising_detail?: string;
+    // startup_link?: string;
+    // market_focus?: string;
+    // have_active_use?: number;
+    // revenue?: number;
+    // legal_equity_detail?: string;
+    // investment_detail?: string;
+    // fundraising_detail?: string;
 };
 
 export const startup_profile_detail = async (id: string) => {
@@ -28,7 +27,7 @@ export const startup_list = async () => {
     return response.data;
 }
 
-export const startup_profile_update = async (id: number, data: IUpdateStartupProfile) => {
+export const startup_profile_update = async (id: string, data: IUpdateStartupProfile) => {
     const response = await axiosInstance.put(`/startup-profile/${id}`, data);
     return response.data;
 }
