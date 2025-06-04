@@ -83,7 +83,7 @@ function SignUp() {
         type="submit"
         color="primary"
         size="lg"
-        className="!text-white w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full rounded-lg bg-empacts border-empacts"
       >
         Sign up
       </Button>

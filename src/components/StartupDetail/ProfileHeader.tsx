@@ -12,11 +12,11 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
   return (
     <div className="flex flex-col gap-7">
       <div className="flex gap-3 items-center">
-        <Avatar className="w-[60px] h-[60px]" radius="md" src={startup.avt_url} />
+        <Avatar className="w-[60px] h-[60px]" radius="md" src={startup.avtUrl} />
         <div>
           <h1 className="text-2xl font-bold text-gray-800">{startup?.name}</h1>
           <p className="text-gray-600">
-            {startup?.location_based || "Location not specified"}
+            {startup?.locationBased || "Location not specified"}
           </p>
         </div>
       </div>
@@ -24,13 +24,13 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
         <div className="flex items-center gap-1 overflow-hidden">
           <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
           <span className="font-inter font-semibold text-base text-black text-center truncate">
-            {startup?.category}
+            {startup?.sdgGoal}
           </span>
         </div>
         <div className="flex items-center gap-1">
           <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
           <span className="font-inter font-semibold text-base text-black text-center">
-            {startup.member_qty} Members
+            {startup.memberQty} Members
           </span>
         </div>
       </div>

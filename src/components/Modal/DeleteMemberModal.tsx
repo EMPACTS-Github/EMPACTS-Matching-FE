@@ -7,8 +7,8 @@ import { Spinner } from "@heroui/spinner";
 interface DeleteMemberModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
-    member: Member | null;
-    onSave: (memberId: number | undefined) => void;
+    member: Member;
+    onSave: (memberId: string) => void;
 }
 
 const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ isOpen, onOpenChange, member, onSave }) => {
@@ -36,7 +36,7 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ isOpen, onOpenCha
                                 <DeleteIcon className="w-16 h-16 text-danger mr-6" />
                                 <div>
                                     <h3 className="text-lg text-black mb-1">Are you sure you want to delete?</h3>
-                                    <div className="font-normal text-gray-400 text-sm"><span className="text-empacts">{member?.user_id.name}</span> account will automatically be deleted and will not be able to access to this startup profile anymore.</div>
+                                    <div className="font-normal text-gray-400 text-sm"><span className="text-empacts">{member?.user.name}</span> account will automatically be deleted and will not be able to access to this startup profile anymore.</div>
                                 </div>
                             </div>
                         </ModalHeader>

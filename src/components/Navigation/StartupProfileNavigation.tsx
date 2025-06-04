@@ -9,14 +9,14 @@ import StartupMemberContainer from '@/containers/StartupMember/StartupMemberCont
 import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
 
 interface StartupProfileNavigationProps {
-  startupId?: string;
+  startupId: string;
 }
 
 const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
-  startupId = '',
+  startupId,
 }) => {
   const [selected, setSelected] = useState("explore");
-  const [startup_profile, setStartupProfile] = useState<StartupProfileResponse | null>();
+  const [startup_profile, setStartupProfile] = useState<StartupProfileResponse>();
 
   useEffect(() => {
     const fetchStartupProfile = async () => {

@@ -1,7 +1,7 @@
 import { Startup } from '@/interfaces/StartupProfile';
 
 interface AdvancedBodyProps {
-  startup: Startup | null;
+  startup: Startup;
 }
 
 const AdvancedBody: React.FC<AdvancedBodyProps> = ({ startup }) => {
@@ -12,9 +12,9 @@ const AdvancedBody: React.FC<AdvancedBodyProps> = ({ startup }) => {
           Active User
         </div>
         <p className="text-gray-500 text-sm">
-          {startup?.have_active_use == null
+          {startup.haveActiveUse == null
             ? 'No data'
-            : startup.have_active_use
+            : startup.haveActiveUse
               ? 'Yes'
               : 'Not yet'}
         </p>
@@ -32,23 +32,23 @@ const AdvancedBody: React.FC<AdvancedBodyProps> = ({ startup }) => {
           Startup State - State
         </h4>
         <p className="text-gray-500 text-sm">
-          {startup?.startup_state == null ? 'No data' : startup.startup_state}
+          {startup.startupState == null ? 'No data' : startup.startupState}
         </p>
       </div>
       <div>
         <h4 className="text-lg font-semibold text-gray-800">Investment</h4>
         <p className="text-gray-500 text-sm">
-          {startup?.investment_detail == null
+          {startup.investmentDetail == null
             ? 'No data'
-            : startup.investment_detail}
+            : startup.investmentDetail}
         </p>
       </div>
       <div>
         <h4 className="text-lg font-semibold text-gray-800">Fundraising</h4>
         <p className="text-gray-500 text-sm">
-          {startup?.fundraising_detail == null
+          {startup.fundraisingDetail == null
             ? 'No data'
-            : startup.fundraising_detail}
+            : startup.fundraisingDetail}
         </p>
       </div>
     </div>

@@ -6,6 +6,8 @@ import ProfileHeader from "@/components/StartupDetail/ProfileHeader";
 import TabsSection from "@/components/StartupDetail/TabsSection";
 import { Startup } from "@/interfaces/startup";
 import { PROVINCES } from "@/constants/provinces";
+import { Skeleton } from "@heroui/skeleton";
+import { Divider } from "@heroui/react";
 
 const StartupDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,15 +16,15 @@ const StartupDetailPage = () => {
   useEffect(() => {
     const fetchStartup = async () => {
       try {
-        const response = await startup_detail(parseInt(id));
+        const response = await startup_detail(id);
 
-        if (response.data && response.data.location_based) {
+        if (response.data && response.data.locationBased) {
           const province = PROVINCES.find(
-            (p) => p.key === response.data.location_based
+            (p) => p.key === response.data.locationBased
           );
 
           if (province) {
-            response.data.location_based = province.label;
+            response.data.locationBased = province.label;
           }
         }
 
@@ -38,8 +40,14 @@ const StartupDetailPage = () => {
   const isLoading = !startup;
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center w-full h-screen">
-        <p>Loading startup details...</p>
+      <div className="flex justify-center items-center w-full relative z-10 overflow-hidden">
+        <div className="w-[65vw] mx-auto p-8 mt-10 rounded-lg shadow-lg bg-white flex flex-col gap-7 h-[80vh] overflow-hidden">
+          <Skeleton className="h-8 w-full rounded-full bg-default-300" />
+          <Divider className="w-full" />
+          <Skeleton className="h-8 w-full rounded-full bg-default-300" />
+          <Skeleton className="h-8 w-full rounded-full bg-default-300" />
+          <Skeleton className="h-8 w-full rounded-full bg-default-300" />
+        </div>
       </div>
     );
   }

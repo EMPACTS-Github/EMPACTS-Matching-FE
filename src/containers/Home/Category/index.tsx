@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@heroui/react";
 import { STARTUP_SDG_GOALS } from "@/constants/sdgs";
 import CategoryItem from "./CategoryItem";
-import { Category } from "@/interfaces/startup";
+import { SdgGoal } from "@/interfaces/startup";
 import ChevronDownIcon from '@/components/Icons/ChevronDownIcon';
 import ChevronUpIcon from "@/components/Icons/ChevronUpIcon";
 
@@ -17,7 +17,7 @@ const CategoryList: React.FC<CategoryProps> = ({
   selectedCategory = [],
   setSelectedCategory,
 }) => {
-  const allCategories: Category[] = (Object.keys(STARTUP_SDG_GOALS) as Array<keyof typeof STARTUP_SDG_GOALS>).map((key) => ({
+  const allCategories: SdgGoal[] = (Object.keys(STARTUP_SDG_GOALS) as Array<keyof typeof STARTUP_SDG_GOALS>).map((key) => ({
     id: STARTUP_SDG_GOALS[key].textValue,
     label: STARTUP_SDG_GOALS[key].label,
   }));

@@ -68,7 +68,7 @@ function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  const handleStartupDetail = (id: number) => {
+  const handleStartupDetail = (id: string) => {
     router.push(`/startup/${id}`);
   }
 

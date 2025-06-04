@@ -17,7 +17,8 @@ import BellIcon from '/public/assets/bell_icon.svg';
 import { logout } from '@/apis/auth';
 import Link from 'next/link';
 import { startup_list } from '@/apis/startup-profile';
-import { StartupOfUser } from '@/interfaces/StartupOfUser'
+import { mentor_list } from '@/apis/mentor-profile';
+import { StartupOfUserResponse, MentorOfUserResponse } from '@/interfaces/StartupOfUser'
 import ChevronSelectorVerticalIcon from '@/components/Icons/ChevronSelectorVerticalIcon';
 import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
 
@@ -32,9 +33,9 @@ const PopoverContentItem = ({ children }: { children: React.ReactNode }) => {
 const Header = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [startups, setStartups] = useState<StartupOfUser[]>([]);
+  const [startups, setStartups] = useState<StartupOfUserResponse[]>([]);
   //example test (have to change MentorOfUser)
-  const [mentors, setMentors] = useState<StartupOfUser[]>([])
+  const [mentors, setMentors] = useState<MentorOfUserResponse[]>([])
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -42,9 +43,10 @@ const Header = () => {
     //api for get list_startup for user
     const fetchStartups = async () => {
       try {
-        const data = await startup_list();
-        setStartups(data.data); // Lưu danh sách startup vào state
-        setMentors(data.data);
+        const startupData = await startup_list();
+        setStartups(startupData.data); // Lưu danh sách startup vào state
+        const mentorData = await mentor_list();
+        setMentors(mentorData.data); // Lưu danh sách mentor vào state
       } catch (error) {
         console.error('Failed to fetch startups:', error);
       }
@@ -139,11 +141,11 @@ const Header = () => {
                       <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
                         {/* //example only (have to change to real mentor attributes) */}
                         {mentors.map((mentor) => (
-                          <PopoverContentItem key={mentor.startup_id.id}>
-                            <Link href={`/startup-detail/${mentor.startup_id.id}`}>
+                          <PopoverContentItem key={mentor.mentorId}>
+                            <Link href={`/startup-detail/${mentor.mentorId}`}>
                               <div className="flex items-center gap-2">
-                                <Image src={mentor.startup_id.avt_url} alt="Logo" width={20} height={20} />
-                                <div className="text-sm">{mentor.startup_id.name}</div>
+                                <Image src={mentor.avtUrl} alt="Logo" width={20} height={20} />
+                                <div className="text-sm">{mentor.name}</div>
                               </div>
                             </Link>
                           </PopoverContentItem>
@@ -153,11 +155,11 @@ const Header = () => {
                       <p className="text-small text-default-500">Startup</p>
                       <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
                         {startups.map((startup) => ( // Giới hạn tổng mentors + startups tối đa 10 mục
-                          <PopoverContentItem key={startup.startup_id.id}>
-                            <Link href={`/startup-detail/${startup.startup_id.id}`}>
+                          <PopoverContentItem key={startup.startupId}>
+                            <Link href={`/startup-detail/${startup.startupId}`}>
                               <div className="flex items-center gap-2">
-                                <Image src={startup.startup_id.avt_url} alt="Logo" width={20} height={20} />
-                                <div className="text-sm">{startup.startup_id.name}</div>
+                                <Image src={startup.avtUrl} alt="Logo" width={20} height={20} />
+                                <div className="text-sm">{startup.name}</div>
                               </div>
                             </Link>
                           </PopoverContentItem>

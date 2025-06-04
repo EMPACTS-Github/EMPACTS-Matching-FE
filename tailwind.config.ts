@@ -31,6 +31,7 @@ const config: Config = {
         "empacts-lighter": "#F4E5FF",
         "empacts-darker": "#7B3FFF",
         "empacts-grey-50": "#A3A3A3",
+        "empacts-grey-100": "#71717A",
       },
     },
   },

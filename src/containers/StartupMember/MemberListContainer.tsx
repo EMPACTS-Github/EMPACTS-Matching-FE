@@ -24,7 +24,7 @@ import InviteMemberModal from "@/components/Modal/InviteMemberModal";
 
 interface MemberListContainerProps {
     members: Member[] | undefined;
-    startupId: number;
+    startupId: string;
 }
 
 const RoleChip = ({ role }: { role: string }) => (
@@ -40,7 +40,7 @@ const RoleChip = ({ role }: { role: string }) => (
 
 const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, startupId }) => {
     const [memberList, setMembers] = useState<Member[]>([]);
-    const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+    const [selectedMember, setSelectedMember] = useState<Member>({} as Member);
     const [filterMode, setFilterMode] = useState<"ALL" | "OWNER" | "MEMBER">("ALL");
     const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
     const [newMemberList, setNewMemberList] = useState<MemberForInvite[]>([]);
@@ -74,7 +74,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
     }, [filterMode, memberList]);
     useEffect(() => {
         if (!userId || !memberList) return;
-        const isOwner = memberList.some((member) => member.user_id.id === userId && member.role === "OWNER");
+        const isOwner = memberList.some((member) => member.user.id === userId && member.role === "OWNER");
         setAccessAction({
             canEdit: isOwner,
             canInvite: isOwner,
@@ -104,12 +104,12 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
         }
     }
 
-    const updateMemberTitle = async (memberId: number | undefined, newTitle: string) => {
+    const updateMemberTitle = async (memberId: string, newTitle: string) => {
         const member = memberList.find((member) => member.id === memberId);
-        if (member && member.position_title != newTitle) {
+        if (member && member.positionTitle != newTitle) {
             const data = {
-                startup_id: startupId,
-                position_title: newTitle,
+                startupId: startupId,
+                positionTitle: newTitle,
             }
             try {
                 const res = await startup_member_edit_title(memberId, data);
@@ -137,11 +137,11 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
         };
     }
 
-    const changeMemberPermission = async (memberId: number | undefined, newRole: string) => {
+    const changeMemberPermission = async (memberId: string, newRole: string) => {
         const member = memberList.find((member) => member.id === memberId);
         if (member && member.role != newRole) {
             const data = {
-                startup_id: startupId,
+                startupId: startupId,
                 role: newRole,
             }
             try {
@@ -170,7 +170,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
         };
     }
 
-    const deleteMember = async (memberId: number | undefined) => {
+    const deleteMember = async (memberId: string) => {
         const member = memberList.find((member) => member.id === memberId);
         if (member) {
             const data = {
@@ -242,7 +242,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     <div key={idx} className="flex justify-between p-4 bg-white shadow-lg rounded-lg w-full">
                         <div className="flex items-center gap-3">
                             <Image
-                                src={member.user_id.avt_url}
+                                src={member.user.avtUrl}
                                 alt="User Avatar"
                                 width={48}
                                 height={48}
@@ -250,10 +250,10 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                             />
                             <div>
                                 <div className="font-semibold flex items-center gap-2">
-                                    {member.user_id.name}
+                                    {member.user.name}
                                     <RoleChip role={member.role} />
                                 </div>
-                                <div className="text-sm text-gray-500">{member.position_title}</div>
+                                <div className="text-sm text-gray-500">{member.positionTitle}</div>
                             </div>
                         </div>
                         {acessAction.canEdit && <Dropdown placement="bottom-end">

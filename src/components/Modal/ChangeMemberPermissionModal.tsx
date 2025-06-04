@@ -6,8 +6,8 @@ import { Spinner } from "@heroui/spinner";
 interface ChangePermissionModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
-    member: Member | null;
-    onSave: (memberId: number | undefined, newRole: string) => void;
+    member: Member;
+    onSave: (memberId: string, newRole: string) => void;
 }
 
 const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({ isOpen, onOpenChange, member, onSave }) => {
@@ -20,7 +20,7 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({ isOpen, o
     }, [member]);
     const changeRole = async () => {
         setIsLoading(true);
-        await onSave(member?.id, newRole);
+        await onSave(member.id, newRole);
         setIsLoading(false);
         onOpenChange();
     }
@@ -37,7 +37,7 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({ isOpen, o
                     <>
                         <ModalHeader className="items-center pb-0">
                             <div>
-                                <h3 className="text-lg text-black mb-1">Choose new role for <span className="text-empacts">{member?.user_id.name}</span></h3>
+                                <h3 className="text-lg text-black mb-1">Choose new role for <span className="text-empacts">{member?.user.name}</span></h3>
                             </div>
                         </ModalHeader>
                         <ModalBody>

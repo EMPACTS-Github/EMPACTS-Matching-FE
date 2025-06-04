@@ -1,13 +1,12 @@
 import axiosInstance from ".";
 
 interface ICheckInvitationStatus {
-  invited_email: string;
-  invite_code: string;
+  inviteCode: string;
 }
 
 interface IResponseStartupInvitation {
-  invited_email: string;
-  invite_code: string;
+  invitedEmail: string;
+  inviteCode: string;
   response: string;
 }
 

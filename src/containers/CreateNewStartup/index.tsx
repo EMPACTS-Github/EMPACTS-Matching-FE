@@ -9,6 +9,7 @@ import AddMemberSection from './AddMemberSection';
 import ActionButtons from './ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup';
 import { MemberForInvite } from '@/interfaces/startup';
+import { LanguagesSpoken } from '@/interfaces/common';
 import { addToast } from '@heroui/react';
 import * as changeCase from "change-case";
 import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
@@ -26,6 +27,9 @@ function CreateNewStartup() {
   const [uploadedPictureId, setUploadedPictureId] = useState(0);
   const [members, setMembers] = useState<MemberForInvite[]>([]);
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState('');
+  const [formedTime, setFormedTime] = useState<Date | null>(null);
+  const [languagesSpoken, setLanguagesSpoken] = useState<LanguagesSpoken>(['EN']);
 
   const router = useRouter();
 
@@ -47,13 +51,29 @@ function CreateNewStartup() {
     setStartupUsername('@' + username);
   }
 
+  const handleDescriptionChange = (newDescription: string) => {
+    setDescription(newDescription);
+  }
+
+  const handleFormedTimeChange = (newFormedTime: Date | null) => {
+    setFormedTime(newFormedTime);
+  }
+
+  const handleLanguagesSpokenChange = (newLanguages: LanguagesSpoken) => {
+    setLanguagesSpoken(newLanguages);
+  }
+
   const handleCreateProfile = async () => {
     setLoading(true);
     const requestBody = {
       name: companyName,
-      location_based: location,
-      category: selectedGoal,
-      avt_url: profilePicture,
+      startupUsername: startupUsername,
+      locationBased: location,
+      sdgGoal: selectedGoal,
+      avtUrl: profilePicture,
+      description: description,
+      formedTime: formedTime,
+      languagesSpoken: languagesSpoken,
     };
 
     try {

@@ -115,7 +115,7 @@ function ForgotPassword() {
         type="submit"
         color="primary"
         size="lg"
-        className="!text-white w-full mt-4 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full mt-4 rounded-lg bg-empacts border-empacts"
       >
         Continue
       </Button>

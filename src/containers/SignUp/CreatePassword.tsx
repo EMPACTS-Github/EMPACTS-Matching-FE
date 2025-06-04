@@ -87,7 +87,7 @@ const CreatePassword = (props: { email: string }) => {
           type="submit"
           color="primary"
           size="lg"
-          className="w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+          className="w-full rounded-lg bg-empacts border-empacts"
           onClick={handleCreatePassword}
         >
           Sign up
