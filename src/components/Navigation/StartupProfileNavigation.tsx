@@ -7,6 +7,10 @@ import { StartupProfileResponse } from "@/interfaces/StartupProfile";
 import ExploreContainer from '@/containers/Explore/ExploreContainer';
 import StartupMemberContainer from '@/containers/StartupMember/StartupMemberContainer';
 import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
+import { suggest_mentor_list } from "@/apis/suggest-mentor";
+import { mentor_profile_detail } from "@/apis/mentor-profile";
+import { SuggestMentor } from '@/interfaces/MentorProfile';
+import { SuggestMentors } from '@/interfaces/startup';
 
 interface StartupProfileNavigationProps {
   startupId: string;
@@ -17,6 +21,9 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
 }) => {
   const [selected, setSelected] = useState("explore");
   const [startup_profile, setStartupProfile] = useState<StartupProfileResponse>();
+  const [suggestedMentors, setSuggestedMentors] = useState<SuggestMentors[]>([{} as SuggestMentors]);
+  const [firstMentorId, setFirstMentorId] = useState<string>('');
+  const [firstMentor, setFirstMentor] = useState<SuggestMentor>({} as SuggestMentor);
 
   useEffect(() => {
     const fetchStartupProfile = async () => {
@@ -29,6 +36,19 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
     };
     fetchStartupProfile();
   }, [startupId]);
+
+  useEffect(() => {
+    const suggestMentorList = async () => {
+      try {
+        const suggestedMentorList = await suggest_mentor_list({ startupId: startupId });
+        setSuggestedMentors(suggestedMentorList.data);
+        setFirstMentorId(suggestedMentorList.data[0]?.mentor_key || '');
+      } catch (err) {
+        console.error('Failed to fetch suggested mentors:', err);
+      }
+    };
+    suggestMentorList();
+  }, [startup_profile]);
 
   return (
     <div className="w-full border-b border-gray-200 flex justify-center">
@@ -46,7 +66,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
             title="Explore"
             className="pt-0 flex items-center justify-center px-2"
           >
-            <ExploreContainer />
+            <ExploreContainer mentorList={suggestedMentors} />
           </Tab>
           <Tab
             key="profile"

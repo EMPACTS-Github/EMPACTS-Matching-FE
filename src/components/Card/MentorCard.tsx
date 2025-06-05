@@ -8,7 +8,7 @@ import { Card } from "@heroui/card";
 
 interface MentorCardProps {
     name: string;
-    location: string;
+    location: string | undefined;
     avatarUrl: string | StaticImageData;
     description: string;
     matchScore: number;
@@ -31,7 +31,7 @@ const MentorCard: React.FC<MentorCardProps> = ({
     const matchColor = matchScore >= 70 ? "success" : matchScore >= 50 ? "warning" : "danger";
 
     return (
-        <Card fullWidth isPressable className="flex flex-row bg-white rounded-md px-4 py-4 items-center" onPress={onCardClick}>
+        <Card fullWidth isPressable className="flex flex-row bg-white rounded-md px-4 py-4 items-center shadow-md" onPress={onCardClick}>
             <Image
                 src={avatarUrl}
                 alt={name}

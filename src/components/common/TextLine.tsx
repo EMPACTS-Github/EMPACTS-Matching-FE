@@ -1,7 +1,7 @@
 import React from "react";
 
 interface TextLineProps {
-    text: string;
+    text: string | undefined;
     className?: string;
 }
 
