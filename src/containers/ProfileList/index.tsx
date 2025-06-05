@@ -3,12 +3,15 @@ import React, { useEffect, useState } from "react";
 import { Button, Tabs, Tab } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { Startup } from "@/interfaces/startup";
+import { Mentor } from "@/interfaces/mentor";
 import ProfileCard from "./ProfileCard";
 import { startup_list } from "@/apis/startup-profile";
+import { mentor_list } from "@/apis/mentor-profile";
 
 const ProfileList = () => {
   const router = useRouter();
   const [startupProfileList, setStartupProfileList] = useState<Startup[]>([]);
+  const [mentorProfileList, setMentorProfileList] = useState<Mentor[]>([]);
 
   const handleNavigateToCreateProfile = () => {
     router.push('/profiles/new');
@@ -17,19 +20,32 @@ const ProfileList = () => {
   const fetchStartupProfileList = async () => {
     const response = await startup_list();
     const modifiedResponse = response.data.map((startupProfile: any) => {
-      const startupDetail = startupProfile.startup_id;
+      const startupDetail = startupProfile;
       return {
-        id: startupDetail.id,
+        id: startupDetail.startupId,
         name: startupDetail.name,
-        avt_url: startupDetail.avt_url,
-        category: startupDetail.category
+        avtUrl: startupDetail.avtUrl,
       }
     })
     setStartupProfileList(modifiedResponse);
   }
 
+  const fetchMentorProfileList = async () => {
+    const response = await mentor_list();
+    const modifiedResponse = response.data.map((mentorProfile: any) => {
+      const mentorDetail = mentorProfile;
+      return {
+        id: mentorDetail.mentorId,
+        name: mentorDetail.name,
+        avtUrl: mentorDetail.avtUrl,
+      }
+    })
+    setMentorProfileList(modifiedResponse);
+  }
+
   useEffect(() => {
     fetchStartupProfileList();
+    fetchMentorProfileList();
   }, [])
 
   return (
@@ -42,17 +58,31 @@ const ProfileList = () => {
       <div className="flex-1 overflow-y-scroll">
         <Tabs aria-label="Profile Tabs" variant="underlined">
           <Tab key="startups" title="Startups">
-            <div className="space-y-4">
-              {startupProfileList.map((startup) => (
-                <ProfileCard key={startup.id} startup={startup} />
-              ))}
-            </div>
+            {startupProfileList.length != 0 ? (
+              <div className="space-y-4">
+                {startupProfileList.map((startup) => (
+                  <ProfileCard key={startup.id} profile={startup} type="startup" />
+                ))}
+              </div>) : (
+              <div className="p-4 h-full flex items-center justify-center">
+                <p className="text-sm text-gray-500">No startup profiles available yet.</p>
+              </div>
+            )
+            }
           </Tab>
 
           <Tab key="mentors" title="Mentors">
-            <div className="p-4 h-full flex items-center justify-center">
-              <p className="text-sm text-gray-500">No mentor profiles available yet.</p>
-            </div>
+            {mentorProfileList.length != 0 ? (
+              <div className="space-y-4">
+                {mentorProfileList.map((mentor) => (
+                  <ProfileCard key={mentor.id} profile={mentor} type="startup" />
+                ))}
+              </div>) : (
+              <div className="p-4 h-full flex items-center justify-center">
+                <p className="text-sm text-gray-500">No mentor profiles available yet.</p>
+              </div>
+            )
+            }
           </Tab>
         </Tabs>
       </div>

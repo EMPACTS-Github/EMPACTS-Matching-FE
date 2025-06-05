@@ -1,68 +1,65 @@
 "use client";
 import MentorCard from '@/components/Card/MentorCard';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
-import React from 'react';
+import React, { useState, useEffect, use } from 'react';
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import ProfileInfoCard from '@/components/Card/ProfileInfoCard';
 import ConnectModal from '@/components/Modal/ConnectModal';
 import { Tabs, Tab } from "@heroui/react";
 import CompassIcon from '@/components/Icons/CompassIcon';
+import { SuggestMentors } from '@/interfaces/startup';
+import { SuggestMentor } from '@/interfaces/MentorProfile';
+import { mentor_profile_detail } from "@/apis/mentor-profile";
+import { Spinner } from "@heroui/react";
+import { getProvince } from '@/utils/getProvince'
 
-const ExploreContainer: React.FC = () => {
+interface ExploreContainerProps {
+  mentorList: SuggestMentors[] | undefined;
+}
 
-  const [searchValue, setSearchValue] = React.useState('');
-  const [location, setLocation] = React.useState('');
-  const [isFavorite, setIsFavorite] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const tabs = ["For you", "Search", "Matching Activity"];
+const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList }) => {
 
-  const [mentor, setMentor] = React.useState([{
-    name: "Mentor 1",
-    location: "Location 1",
-    description: "As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. You will design detailed UI layouts, create benchmarks, and develop high- fidelity prototypes while documenting UX and UI strategies.Collaborating with technical teams, you will transform designs into impactful, industry - leading products.This role combines creativity and problem - solving to create meaningful user experiences.Your journey with us is an opportunity to drive innovation and make a significant impact.",
-    bio: "Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience.",
-    avatarUrl: AvatarPlaceholder,
-    matchScore: 100,
-    isFavorite: false,
-  }, {
-    name: "Mentor 2",
-    location: "Location 2",
-    description: "As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. You will design detailed UI layouts, create benchmarks, and develop high- fidelity prototypes while documenting UX and UI strategies.Collaborating with technical teams, you will transform designs into impactful, industry - leading products.This role combines creativity and problem - solving to create meaningful user experiences.Your journey with us is an opportunity to drive innovation and make a significant impact.",
-    bio: "Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience.",
-    avatarUrl: AvatarPlaceholder,
-    matchScore: 100,
-    isFavorite: false,
-  }, {
-    name: "Mentor 3",
-    location: "Location 3",
-    description: "As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. You will design detailed UI layouts, create benchmarks, and develop high- fidelity prototypes while documenting UX and UI strategies.Collaborating with technical teams, you will transform designs into impactful, industry - leading products.This role combines creativity and problem - solving to create meaningful user experiences.Your journey with us is an opportunity to drive innovation and make a significant impact.",
-    bio: "Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience.",
-    avatarUrl: AvatarPlaceholder,
-    matchScore: 50,
-    isFavorite: false,
-  }, {
-    name: "Mentor 4",
-    location: "Location 4",
-    description: "As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. You will design detailed UI layouts, create benchmarks, and develop high- fidelity prototypes while documenting UX and UI strategies.Collaborating with technical teams, you will transform designs into impactful, industry - leading products.This role combines creativity and problem - solving to create meaningful user experiences.Your journey with us is an opportunity to drive innovation and make a significant impact.",
-    bio: "Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience.",
-    avatarUrl: AvatarPlaceholder,
-    matchScore: 30,
-    isFavorite: false,
-  }, {
-    name: "Mentor 5",
-    location: "Location 5",
-    description: "As a UX Designer on our team, you will shape user experiences by leading the design of key features and projects. Your responsibilities include defining user experience flows, developing new product concepts, and crafting user stories. You will design detailed UI layouts, create benchmarks, and develop high- fidelity prototypes while documenting UX and UI strategies.Collaborating with technical teams, you will transform designs into impactful, industry - leading products.This role combines creativity and problem - solving to create meaningful user experiences.Your journey with us is an opportunity to drive innovation and make a significant impact.",
-    bio: "Make beautiful websites regardless of your design experience. Make beautiful websites regardless of your design experience.",
-    avatarUrl: AvatarPlaceholder,
-    matchScore: 15,
-    isFavorite: false,
-  }]);
-
-  const [selectedMentor, setSelectedMentor] = React.useState(mentor[0]);
-
+  const [searchValue, setSearchValue] = useState('');
+  const [location, setLocation] = useState<string>('');
+  const [isFavourite, setIsFavourite] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [mentor, setMentor] = useState<SuggestMentor[]>([]);
+  const [selectedMentor, setSelectedMentor] = useState(mentor[0]);
+  useEffect(() => {
+    const fetchMentors = async () => {
+      if (!mentorList || mentorList.length === 0) return;
+      try {
+        const mentorDetails = await Promise.all(
+          mentorList.map(async (item) => {
+            const mentorData = await mentor_profile_detail(item.mentor_key);
+            return {
+              id: mentorData.data.mentor.id,
+              name: mentorData.data.mentor.name,
+              mentorUsername: mentorData.data.mentor.mentorUsername,
+              phone: mentorData.data.mentor.phone,
+              avtUrl: mentorData.data.mentor.avtUrl,
+              status: mentorData.data.mentor.status,
+              description: mentorData.data.mentor.description,
+              sdgFocusExpertises: mentorData.data.mentor.sdgFocusExpertises,
+              locationBased: mentorData.data.mentor.locationBased,
+              skillOffered: mentorData.data.mentor.skillOffered,
+              languagesSpoken: mentorData.data.mentor.languagesSpoken,
+              matchScore: item.similarity * 100,
+              isFavourite: false,
+            };
+          })
+        );
+        setMentor(mentorDetails);
+        setSelectedMentor(mentorDetails[0]);
+      } catch (err) {
+        console.error('Failed to fetch mentors profile:', err);
+      }
+    };
+    fetchMentors();
+  }, [mentorList]);
   const handleFavoriteClick = (index: number) => {
     const newMentor = [...mentor];
-    newMentor[index].isFavorite = !newMentor[index].isFavorite;
+    newMentor[index].isFavourite = !newMentor[index].isFavourite;
     setMentor(newMentor);
   };
 
@@ -84,13 +81,60 @@ const ExploreContainer: React.FC = () => {
         aria-label="Explore" color="primary" variant="underlined" className='font-bold'>
         <Tab
           key="for-you"
+          className='h-full'
           title={
             <div className="flex items-center space-x-2">
               <CompassIcon className="color-empacts" />
               <span>For you</span>
             </div>
           }
-        />
+        >
+          {mentor.length !== 0 ? (
+            <div className='flex justify-between gap-4 p-4 flex-1 overflow-hidden'>
+              <div className='flex flex-col gap-4 w-[30%] overflow-y-auto h-full pr-2 custom-scrollbar'>
+                {mentor.map((mentor, index) => {
+                  return (
+                    <MentorCard
+                      key={index}
+                      name={mentor.name}
+                      location={getProvince(mentor?.locationBased || '')}
+                      description={mentor.description}
+                      avatarUrl={mentor.avtUrl}
+                      matchScore={mentor.matchScore}
+                      isFavorite={mentor.isFavourite}
+                      onFavoriteClick={() => handleFavoriteClick(index)}
+                      onCardClick={() => handleMentorSelect(index)}
+                    />
+                  );
+                })}
+              </div>
+              <ProfileInfoCard
+                className="w-[70%]"
+                title={selectedMentor.name}
+                location={getProvince(selectedMentor?.locationBased || '')}
+                description={selectedMentor.description}
+                rating={4.5}
+                sdg="Profile SDG"
+                onFavoriteClick={() => setIsFavourite(!isFavourite)}
+                isFavorite={selectedMentor.isFavourite}
+                avtUrl={selectedMentor.avtUrl}
+                onClickButton={() => {
+                  setIsOpen(true);
+                }}
+              />
+              <ConnectModal
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                mentorName='Do Chi Thanh'
+              />
+            </div>
+          ) : (
+            <div className='flex justify-center items-center h-[50%]'>
+              <Spinner classNames={{ label: "text-foreground mt-4" }} label="The system is finding the best mentors for you. Please wait..." variant="wave" />
+            </div>
+          )
+          }
+        </Tab>
         <Tab
           key="search"
           title="Search"
@@ -100,44 +144,6 @@ const ExploreContainer: React.FC = () => {
           title="Matching Activity"
         />
       </Tabs>
-      <div className='flex justify-between gap-4 p-4 flex-1 overflow-hidden'>
-        <div className='flex flex-col gap-4 w-1/3 overflow-y-auto h-full pr-2 custom-scrollbar'>
-          {mentor.map((mentor, index) => {
-            return (
-              <MentorCard
-                key={index}
-                name={mentor.name}
-                location={mentor.location}
-                description={mentor.description}
-                avatarUrl={mentor.avatarUrl}
-                matchScore={mentor.matchScore}
-                isFavorite={mentor.isFavorite}
-                onFavoriteClick={() => handleFavoriteClick(index)}
-                onCardClick={() => handleMentorSelect(index)}
-              />
-            );
-          })}
-        </div>
-        <ProfileInfoCard
-          className="w-2/3"
-          title={selectedMentor.name}
-          location={selectedMentor.location}
-          description={selectedMentor.description}
-          bio={selectedMentor.bio}
-          rating={4.5}
-          sdg="Profile SDG"
-          onFavoriteClick={() => setIsFavorite(!isFavorite)}
-          isFavorite={selectedMentor.isFavorite}
-          onClickButton={() => {
-            setIsOpen(true);
-          }}
-        />
-        <ConnectModal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          mentorName='Do Chi Thanh'
-        />
-      </div>
     </div >
   );
 };

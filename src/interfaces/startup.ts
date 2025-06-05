@@ -28,3 +28,8 @@ export interface MemberForInvite {
   email: string;
   title: string;
 }
+
+export interface SuggestMentors {
+  mentor_key: string;
+  similarity: number;
+}

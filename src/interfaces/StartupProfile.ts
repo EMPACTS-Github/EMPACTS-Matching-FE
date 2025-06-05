@@ -26,9 +26,6 @@ export interface Startup {
     fundraisingDetail: string;
     pushState: number;
     memberQty: number;
-    isDeleted: boolean;
-    createdAt: string;
-    updatedAt: string;
 }
 
 export interface Member {
@@ -37,9 +34,6 @@ export interface Member {
     role: string;
     description: string | null;
     linkedinUrl: string | null;
-    isDeleted: boolean;
-    createdAt: string;
-    updatedAt: string;
     user: User;
 }
 

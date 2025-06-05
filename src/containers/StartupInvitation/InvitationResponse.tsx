@@ -5,7 +5,11 @@ import React from 'react'
 type Props = {
   onResponseInvitation: (response: string) => void,
   onChangeInvitationResponse: (response: string) => void,
-  inivtationResponse: string,
+  inivtationResponse: {
+    invitedEmail: string,
+    inviteCode: string,
+    response: string,
+  },
   invitationInfo: {
     positionTitle: string,
     startupAvt: string,
@@ -49,7 +53,7 @@ const InvitationResponse = ({
         </>
       )
     }
-    if (inivtationResponse === STARTUP_INVITATION_RESPONSE.ACCEPTED) {
+    if (inivtationResponse.response === STARTUP_INVITATION_RESPONSE.ACCEPTED) {
       return (
         <div>
           <p className="text-center">

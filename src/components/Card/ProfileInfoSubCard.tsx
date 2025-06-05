@@ -6,8 +6,9 @@ import { Skeleton } from "@heroui/skeleton";
 
 interface ProfileInfoSubCardProps {
     startup: Startup;
+    isOwner: boolean | undefined;
 }
-const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup }) => {
+const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwner }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <Card className="bg-white min-w-lg shadow-lg rounded-lg px-4 py-2">
@@ -42,7 +43,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup }) => {
             </CardBody>
 
             <CardFooter>
-                <Button onPress={onOpen} className="w-full font-bold" variant="ghost" color="primary">
+                <Button onPress={onOpen} className="w-full font-bold" variant="ghost" color="primary" isDisabled={!isOwner}>
                     SETTINGS
                 </Button>
                 <SettingModal isOpen={isOpen} onOpenChange={onOpenChange} startup={startup} />

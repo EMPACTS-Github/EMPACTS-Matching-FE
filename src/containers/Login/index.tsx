@@ -118,13 +118,14 @@ function Login() {
             const inviteeEmail = localStorage.getItem('inviteeEmail');
             router.push(`/startup-invitation?code=${invitationCode}&email=${inviteeEmail}`);
           } else {
-            if (response.data.user.hasProfile) {
+            if (response.data.hasProfile) {
               router.push('/profiles');
             } else {
               router.push('/profiles/new');
             }
           }
         } catch (error) {
+          console.error('Error fetching user auth info:', error);
           addToast({
             title: 'Login with Google failed!',
             color: 'danger',
@@ -185,8 +186,8 @@ function Login() {
   );
 
   return (
-    <div className="bg-white flex items-center justify-center h-full">
-      <div className="login-form p-8 rounded-lg w-full max-w-sm h-3/4">
+    <div className="bg-white flex justify-center items-center h-screen">
+      <div className="login-form p-8 rounded-lg w-full max-w-sm h-screen flex flex-col justify-center">
         <AuthHeader
           title="Sign in"
           description=""
