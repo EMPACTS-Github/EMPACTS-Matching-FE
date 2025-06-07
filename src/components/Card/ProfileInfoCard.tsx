@@ -9,13 +9,14 @@ import IconText from "@/components/common/IconText";
 import TitleWithDescription from "@/components/common/TitleWithDescription";
 import TextLine from "@/components/common/TextLine";
 import UserPlusIcon from "@/components/Icons/UserPlusIcon";
+import { getSDGGoal } from "@/utils/getSDGGoal";
 
 interface ProfileInfoCardProps {
     title: string;
     location: string | undefined;
     description: string;
     rating: number;
-    sdg: string;
+    sdg: string[];
     onFavoriteClick: () => void;
     isFavorite: boolean;
     avtUrl: string
@@ -49,6 +50,7 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                     <div className="flex items-center justify-between">
                         <h3 className="text-[28px] font-semibold text-black">{title}</h3>
                         <div className="flex items-center gap-2">
+                            <IconText icon={Star} text={rating} alt="Rating" />
                             <Image
                                 onClick={onFavoriteClick}
                                 src={isFavorite ? FavoriteFilledIcon : FavoriteIcon}
@@ -76,8 +78,14 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                 </div>
             </div>
             <div className="flex gap-x-4">
-                <IconText icon={Label} text={sdg} alt="SDG" />
-                <IconText icon={Star} text={rating} alt="Rating" />
+                <div>
+                    <div className="text-black text-md flex flex-wrap gap-1">
+                        <IconText icon={Label} alt="SDG" />
+                        {sdg.map((item, idx) => (
+                            <span key={idx}>{getSDGGoal(item)}</span>
+                        ))}
+                    </div>
+                </div>
             </div>
             <div className="flex flex-col gap-y-3">
                 <TitleWithDescription title="Description" description={description} />

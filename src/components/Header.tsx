@@ -101,6 +101,62 @@ const Header = () => {
             >
               <EmpactsLogoIcon />
             </Button>
+            <Popover placement="bottom-end">
+              <PopoverTrigger className="p-1 rounded-full">
+                <Button isIconOnly aria-label="Dropdown" variant="light">
+                  <ChevronSelectorVerticalIcon className='text-secondary' />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className='w-[380px] block'>
+                <div className='px-1 py-2 flex flex-col gap-1 items-start'>
+                  <PopoverContentItem>
+                    <Link href="/profiles/new">
+                      <div className="flex items-center gap-2">
+                        <Image src={PlusSquareIcon} alt="Plus Icon" width={20} height={20} />
+                        <div className='text-sm'>Create New Profile </div>
+                      </div>
+                    </Link>
+                  </PopoverContentItem>
+                  <PopoverContentItem>
+                    <Link href="/">
+                      <div className="flex items-center gap-2">
+                        <Image src={SoleLogoEmpacts} alt="Sole Logo" width={20} height={20} />
+                        <div className='text-sm'>Discover SDGs Startups</div>
+                      </div>
+                    </Link>
+                  </PopoverContentItem>
+                  <Divider />
+                  <p className="text-small text-default-500">Mentor</p>
+                  <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
+                    {/* //example only (have to change to real mentor attributes) */}
+                    {mentors.map((mentor) => (
+                      <PopoverContentItem key={mentor.mentorId}>
+                        <Link href={`/startup-detail/${mentor.mentorId}`}>
+                          <div className="flex items-center gap-2">
+                            <Image src={mentor.avtUrl} alt="Logo" width={20} height={20} />
+                            <div className="text-sm">{mentor.name}</div>
+                          </div>
+                        </Link>
+                      </PopoverContentItem>
+                    ))}
+                  </div>
+                  <Divider />
+                  <p className="text-small text-default-500">Startup</p>
+                  <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
+                    {startups.map((startup) => ( // Giới hạn tổng mentors + startups tối đa 10 mục
+                      <PopoverContentItem key={startup.startupId}>
+                        <Link href={`/startup-detail/${startup.startupId}`}>
+                          <div className="flex items-center gap-2">
+                            <Image src={startup.avtUrl} alt="Logo" width={20} height={20} />
+                            <div className="text-sm">{startup.name}</div>
+                          </div>
+                        </Link>
+                      </PopoverContentItem>
+                    ))}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
           {isLoggedIn ? (
             <>
@@ -112,62 +168,6 @@ const Header = () => {
                   height={28}
                   className="cursor-pointer"
                 />
-                <Popover placement="bottom-end">
-                  <PopoverTrigger className="p-1 rounded-full">
-                    <Button isIconOnly aria-label="Dropdown" variant="light">
-                      <ChevronSelectorVerticalIcon className='text-empacts' />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className='w-[380px] block'>
-                    <div className='px-1 py-2 flex flex-col gap-1 items-start'>
-                      <PopoverContentItem>
-                        <Link href="/profiles/new">
-                          <div className="flex items-center gap-2">
-                            <Image src={PlusSquareIcon} alt="Plus Icon" width={20} height={20} />
-                            <div className='text-sm'>Create New Profile </div>
-                          </div>
-                        </Link>
-                      </PopoverContentItem>
-                      <PopoverContentItem>
-                        <Link href="/">
-                          <div className="flex items-center gap-2">
-                            <Image src={SoleLogoEmpacts} alt="Sole Logo" width={20} height={20} />
-                            <div className='text-sm'>Discover SDGs Startups</div>
-                          </div>
-                        </Link>
-                      </PopoverContentItem>
-                      <Divider />
-                      <p className="text-small text-default-500">Mentor</p>
-                      <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
-                        {/* //example only (have to change to real mentor attributes) */}
-                        {mentors.map((mentor) => (
-                          <PopoverContentItem key={mentor.mentorId}>
-                            <Link href={`/startup-detail/${mentor.mentorId}`}>
-                              <div className="flex items-center gap-2">
-                                <Image src={mentor.avtUrl} alt="Logo" width={20} height={20} />
-                                <div className="text-sm">{mentor.name}</div>
-                              </div>
-                            </Link>
-                          </PopoverContentItem>
-                        ))}
-                      </div>
-                      <Divider />
-                      <p className="text-small text-default-500">Startup</p>
-                      <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
-                        {startups.map((startup) => ( // Giới hạn tổng mentors + startups tối đa 10 mục
-                          <PopoverContentItem key={startup.startupId}>
-                            <Link href={`/startup-detail/${startup.startupId}`}>
-                              <div className="flex items-center gap-2">
-                                <Image src={startup.avtUrl} alt="Logo" width={20} height={20} />
-                                <div className="text-sm">{startup.name}</div>
-                              </div>
-                            </Link>
-                          </PopoverContentItem>
-                        ))}
-                      </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
                 <Popover>
                   <PopoverTrigger>
                     <Image
