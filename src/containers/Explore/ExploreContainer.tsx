@@ -1,24 +1,21 @@
 "use client";
-import MentorCard from '@/components/Card/MentorCard';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
 import React, { useState, useEffect, use } from 'react';
-import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
-import ProfileInfoCard from '@/components/Card/ProfileInfoCard';
-import ConnectModal from '@/components/Modal/ConnectModal';
 import { Tabs, Tab } from "@heroui/react";
 import CompassIcon from '@/components/Icons/CompassIcon';
 import { SuggestMentors } from '@/interfaces/startup';
 import { SuggestMentor } from '@/interfaces/MentorProfile';
 import { mentor_profile_detail } from "@/apis/mentor-profile";
-import { Spinner } from "@heroui/react";
-import { getProvince } from '@/utils/getProvince'
+import ForyouSection from './Section/ForyouSection';
+import MatchingActivitySection from './Section/MatchingActivitySection';
 
 interface ExploreContainerProps {
+  startupId: string;
   mentorList: SuggestMentors[] | undefined;
+  error: string | null;
 }
 
-const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList }) => {
-
+const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error, startupId }) => {
   const [searchValue, setSearchValue] = useState('');
   const [location, setLocation] = useState<string>('');
   const [isFavourite, setIsFavourite] = useState(false);
@@ -81,7 +78,7 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList }) => {
         aria-label="Explore" color="primary" variant="underlined" className='font-bold'>
         <Tab
           key="for-you"
-          className='h-full'
+          className='h-full w-full'
           title={
             <div className="flex items-center space-x-2">
               <CompassIcon className="color-empacts" />
@@ -89,51 +86,17 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList }) => {
             </div>
           }
         >
-          {mentor.length !== 0 ? (
-            <div className='flex justify-between gap-4 p-4 flex-1 overflow-hidden'>
-              <div className='flex flex-col gap-4 w-[30%] overflow-y-auto h-full pr-2 custom-scrollbar'>
-                {mentor.map((mentor, index) => {
-                  return (
-                    <MentorCard
-                      key={index}
-                      name={mentor.name}
-                      location={getProvince(mentor?.locationBased || '')}
-                      description={mentor.description}
-                      avatarUrl={mentor.avtUrl}
-                      matchScore={mentor.matchScore}
-                      isFavorite={mentor.isFavourite}
-                      onFavoriteClick={() => handleFavoriteClick(index)}
-                      onCardClick={() => handleMentorSelect(index)}
-                    />
-                  );
-                })}
-              </div>
-              <ProfileInfoCard
-                className="w-[70%]"
-                title={selectedMentor.name}
-                location={getProvince(selectedMentor?.locationBased || '')}
-                description={selectedMentor.description}
-                rating={4.5}
-                sdg="Profile SDG"
-                onFavoriteClick={() => setIsFavourite(!isFavourite)}
-                isFavorite={selectedMentor.isFavourite}
-                avtUrl={selectedMentor.avtUrl}
-                onClickButton={() => {
-                  setIsOpen(true);
-                }}
-              />
-              <ConnectModal
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                mentorName='Do Chi Thanh'
-              />
-            </div>
-          ) : (
-            <div className='flex justify-center items-center h-[50%]'>
-              <Spinner classNames={{ label: "text-foreground mt-4" }} label="The system is finding the best mentors for you. Please wait..." variant="wave" />
-            </div>
-          )
-          }
+          <ForyouSection
+            mentor={mentor}
+            selectedMentor={selectedMentor}
+            isOpen={isOpen}
+            isFavourite={isFavourite}
+            handleFavoriteClick={handleFavoriteClick}
+            handleMentorSelect={handleMentorSelect}
+            setIsOpen={setIsOpen}
+            setIsFavourite={setIsFavourite}
+            error={error}
+          />
         </Tab>
         <Tab
           key="search"
@@ -142,7 +105,10 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList }) => {
         <Tab
           key="matching-activity"
           title="Matching Activity"
-        />
+          className='h-full w-full'
+        >
+          <MatchingActivitySection startupId={startupId} />
+        </Tab>
       </Tabs>
     </div >
   );

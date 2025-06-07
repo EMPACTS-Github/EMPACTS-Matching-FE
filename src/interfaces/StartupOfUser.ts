@@ -2,7 +2,7 @@ import { User, Startup } from "./StartupProfile"
 
 //use this interface to get startup of user at dropdown in header
 export interface StartupOfUser {
-    id: number;
+    id: string;
     positionTitle: string;
     role: string;
     description: string | null;

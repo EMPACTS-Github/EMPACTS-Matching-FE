@@ -40,14 +40,12 @@ const MentorCard: React.FC<MentorCardProps> = ({
                 className="w-20 h-20 rounded-full"
             />
             <div className="flex flex-col justify-start ml-4">
-                <div className="flex justify-between">
-                    <h3 className="text-lg font-semibold text-black">{name}</h3>
+                <div className="flex justify-between items-center w-full">
+                    <div className="text-md font-semibold text-black">{name}</div>
                     <button onClick={onFavoriteClick}>
                         <Image
                             src={isFavorite ? FavoriteFilledIcon : FavoriteIcon}
                             alt="Favorite"
-                            width={24}
-                            height={24}
                         />
                     </button>
                 </div>
