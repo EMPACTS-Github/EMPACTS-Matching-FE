@@ -1,6 +1,6 @@
 "use client";
 import axiosInstance from ".";
-import { LanguagesSpoken } from "@/interfaces/common";
+import { LanguagesSpoken } from "@/constants/common";
 
 interface Member {
   email: string;
