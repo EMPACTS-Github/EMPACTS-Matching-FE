@@ -52,7 +52,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
       }
     };
     suggestMentorList();
-  }, [startup_profile]);
+  }, [startup_profile, startupId]);
 
   return (
     <div className="w-full border-b border-gray-200 flex justify-center">

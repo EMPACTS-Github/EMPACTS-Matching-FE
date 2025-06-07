@@ -31,7 +31,7 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
     if (error === "No suggestion found") {
         return (
             <div className='flex justify-center items-center h-[50%]'>
-                <span className="text-gray-500 text-lg">Can't found mentor for you</span>
+                <span className="text-gray-500 text-lg">No mentor found for you</span>
             </div>
         )
     }

@@ -9,7 +9,7 @@ import AddMemberSection from './AddMemberSection';
 import ActionButtons from './ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup';
 import { MemberForInvite } from '@/interfaces/startup';
-import { LanguagesSpoken } from '@/interfaces/common';
+import { LanguagesSpoken } from '@/constants/common';
 import { addToast } from '@heroui/react';
 import * as changeCase from "change-case";
 import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
