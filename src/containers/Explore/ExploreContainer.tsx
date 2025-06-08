@@ -8,6 +8,7 @@ import { SuggestMentor } from '@/interfaces/MentorProfile';
 import { mentor_profile_detail } from "@/apis/mentor-profile";
 import ForyouSection from './Section/ForyouSection';
 import MatchingActivitySection from './Section/MatchingActivitySection';
+import SearchSection from './Section/SearchSection';
 
 interface ExploreContainerProps {
   startupId: string;
@@ -102,7 +103,9 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error, 
         <Tab
           key="search"
           title="Search"
-        />
+        >
+          <SearchSection />
+        </Tab>
         <Tab
           key="matching-activity"
           title="Matching Activity"
