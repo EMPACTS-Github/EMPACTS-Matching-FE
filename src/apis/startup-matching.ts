@@ -1,5 +1,4 @@
 "use-client";
-import { data } from "framer-motion/client";
 import axiosInstance from ".";
 import { MATCHING_STATUS } from "@/constants/matching";
 
@@ -16,5 +15,16 @@ export const cancel_matching_request = async (startupId: string, connectRequestC
         connectRequestCode: connectRequestCode,
     };
     const response = await axiosInstance.put(`/matching-for-startup/`, params);
+    return response.data;
+}
+
+export const request_matching_to_mentor = async (startupId: string, mentorId: string, note: string, requestSchedule: Date) => {
+    const params = {
+        startupId: startupId,
+        mentorId: mentorId,
+        note: note,
+        requestSchedule: requestSchedule,
+    };
+    const response = await axiosInstance.post(`/matching-for-startup/`, params);
     return response.data;
 }

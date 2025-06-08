@@ -109,7 +109,7 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
         mentorList.length > 0 ? (
             <div className="flex w-full px-4 relative z-10 gap-0 mt-6">
                 <div className="mx-0 w-[30%] flex flex-col justify-start">
-                    <div>
+                    <div className="flex flex-col gap-2 overflow-y-auto h-full pr-2 custom-scrollbar">
                         <div className="flex justify-between items-center mb-4" >
                             <div className="space-x-2">
                                 <Button

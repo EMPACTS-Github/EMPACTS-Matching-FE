@@ -6,6 +6,7 @@ import { Spinner } from "@heroui/react";
 import { getProvince } from '@/utils/getProvince';
 
 interface ForyouSectionProps {
+    startupId: string;
     mentor: any[];
     selectedMentor: any;
     isOpen: boolean;
@@ -18,6 +19,7 @@ interface ForyouSectionProps {
 }
 
 const ForyouSection: React.FC<ForyouSectionProps> = ({
+    startupId,
     mentor,
     selectedMentor,
     isOpen,
@@ -65,6 +67,8 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
                 onClickButton={() => setIsOpen(true)}
             />
             <ConnectModal
+                startupId={startupId}
+                mentorId={selectedMentor?.id || ''}
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 mentorName={selectedMentor?.name || ''}

@@ -87,6 +87,7 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error, 
           }
         >
           <ForyouSection
+            startupId={startupId}
             mentor={mentor}
             selectedMentor={selectedMentor}
             isOpen={isOpen}
