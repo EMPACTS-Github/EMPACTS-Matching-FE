@@ -70,7 +70,6 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({ isOpen, onOpenCha
 
     return (
         <Modal
-            isDismissable={false}
             isKeyboardDismissDisabled={true}
             size="xl"
             isOpen={isOpen}

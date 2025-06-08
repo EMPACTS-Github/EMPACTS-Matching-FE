@@ -26,7 +26,6 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({ isOpen, o
     }
     return (
         <Modal
-            isDismissable={false}
             isKeyboardDismissDisabled={true}
             size="xl"
             isOpen={isOpen}

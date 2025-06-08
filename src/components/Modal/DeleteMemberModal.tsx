@@ -22,7 +22,6 @@ const DeleteMemberModal: React.FC<DeleteMemberModalProps> = ({ isOpen, onOpenCha
     }
     return (
         <Modal
-            isDismissable={false}
             isKeyboardDismissDisabled={true}
             size="xl"
             isOpen={isOpen}

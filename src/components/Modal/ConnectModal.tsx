@@ -78,7 +78,6 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ startupId, mentorId, isOpen
     };
     return (
         <Modal
-            isDismissable={false}
             isKeyboardDismissDisabled={true}
             isOpen={isOpen}
             onOpenChange={onClose}
