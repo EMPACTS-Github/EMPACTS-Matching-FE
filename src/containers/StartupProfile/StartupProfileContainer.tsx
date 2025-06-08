@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spacer } from "@heroui/spacer";
 import ProfileHeader from "./ProfileHeader";
 import TabsSection from "./TabsSection";
@@ -7,6 +7,8 @@ import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
 import { Skeleton } from "@heroui/skeleton";
 import { Card, CardBody, Divider } from "@heroui/react";
+import { startup_matching_activity } from "@/apis/startup-matching";
+import { MATCHING_STATUS } from "@/constants/matching";
 
 interface StartupProfileContainerProps {
     startup_profile: StartupProfileResponse | undefined;
@@ -17,6 +19,22 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
     const userObj = user ? JSON.parse(user) : {};
     const userId = userObj.id;
     const isOwner = startup_profile?.members.some((member) => member.user.id === userId && member.role === "OWNER")
+    const [countMatches, setCountMatches] = useState<number>(0);
+
+    useEffect(() => {
+        if (!startup_profile?.startup?.id) return;
+        const fetchMatching = async () => {
+            try {
+                const data = await startup_matching_activity(startup_profile.startup.id);
+                const acceptedMatches = data.data.filter((match: any) => match.status === MATCHING_STATUS.ACCEPTED);
+                setCountMatches(acceptedMatches.length);
+            } catch (err: any) {
+                setCountMatches(0);
+            }
+        };
+        fetchMatching();
+    }, []);
+
     return (
         <div className="flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-0 mt-6">
             <div className="w-[75%] mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">
@@ -48,7 +66,7 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
             {
                 startup_profile?.startup ? (
                     <div className="w-[25%]">
-                        <ProfileInfoSubCard startup={startup_profile.startup} isOwner={isOwner} />
+                        <ProfileInfoSubCard startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
                     </div>
                 ) : (
                     <div className="w-[25%]">

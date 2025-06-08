@@ -117,7 +117,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                 if (res.code == "STARTUP_MEMBER_UPDATED") {
                     setMembers((prevMembers) =>
                         prevMembers.map((member) =>
-                            member.id === memberId ? { ...member, position_title: res.data.position_title } : member
+                            member.id === memberId ? { ...member, positionTitle: res.data.positionTitle } : member
                         )
                     );
                     addToast({
