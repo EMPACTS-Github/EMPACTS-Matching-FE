@@ -164,7 +164,6 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         }
     };
     return <Modal
-        isDismissable={false}
         size="5xl"
         isKeyboardDismissDisabled={true}
         isOpen={isOpen}

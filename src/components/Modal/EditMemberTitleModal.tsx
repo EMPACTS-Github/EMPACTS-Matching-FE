@@ -29,7 +29,6 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({ isOpen, onO
 
     return (
         <Modal
-            isDismissable={false}
             isKeyboardDismissDisabled={true}
             isOpen={isOpen}
             onOpenChange={onOpenChange}

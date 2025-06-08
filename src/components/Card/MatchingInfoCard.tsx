@@ -12,6 +12,7 @@ import ClockIcon from "@/components/Icons/ClockIcon";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { getCalendarDateAndTime } from "@/utils/convertDateToDateAndTime";
 import { Snippet } from "@heroui/react";
+import MentorInfoModal from "@/components/Modal/MentorInfoModal";
 
 interface MatchingInfoCardProps {
     startupId: string;
@@ -23,6 +24,10 @@ interface MatchingInfoCardProps {
     meetingLink: string;
     schedule: Date | string;
     note: string;
+    mentorDescription?: string;
+    mentorSdgFocusExpertises?: string[];
+    mentorSkillOffered?: string[];
+    mentorLanguagesSpoken?: string[];
 };
 
 const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
@@ -35,9 +40,14 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
     schedule,
     note,
     avtUrl,
+    mentorDescription,
+    mentorSdgFocusExpertises,
+    mentorSkillOffered,
+    mentorLanguagesSpoken,
 }) => {
     const { calendarDate, time } = getCalendarDateAndTime(schedule);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen: isCancelModalOpen, onOpen: onCancelModalOpen, onOpenChange: onCancelModalOpenChange } = useDisclosure();
+    const { isOpen: isMentorInfoModalOpen, onOpen: onMentorInfoModalOpen, onOpenChange: onMentorInfoModalOpenChange } = useDisclosure();
 
     const onMeetingButtonClick = () => {
         if (meetingLink) {
@@ -61,7 +71,17 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
                     />
                     <div className="items-center justify-between flex-grow">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-[28px] font-semibold text-black">{title}</h3>
+                            <h3
+                                className="text-[28px] font-semibold text-black hover:underline cursor-pointer"
+                                onClick={onMentorInfoModalOpen}
+                                tabIndex={0}
+                                role="button"
+                                onKeyDown={e => {
+                                    if (e.key === "Enter" || e.key === " ") onMentorInfoModalOpen();
+                                }}
+                            >
+                                {title}
+                            </h3>
                         </div>
                         <div className="flex items-center justify-between">
                             <TextLine text={location} className="text-black text-[20px]" />
@@ -76,7 +96,7 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
                         variant="bordered"
                         radius="md"
                         startContent={<UserRightIcon className="text-empacts" />}
-                        onPress={onOpen}
+                        onPress={onCancelModalOpen}
                     >
                         Cancel Request
                     </Button>
@@ -154,10 +174,22 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
             </div>
 
             <CancelRequestModal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
+                isOpen={isCancelModalOpen}
+                onOpenChange={onCancelModalOpenChange}
                 startupId={startupId}
                 connectRequestCode={connectRequestCode}
+            />
+
+            <MentorInfoModal
+                isOpen={isMentorInfoModalOpen}
+                onOpenChange={onMentorInfoModalOpenChange}
+                mentorName={title}
+                location={location}
+                avtUrl={avtUrl}
+                mentorDescription={mentorDescription}
+                mentorSdgFocusExpertises={mentorSdgFocusExpertises}
+                mentorSkillOffered={mentorSkillOffered}
+                mentorLanguagesSpoken={mentorLanguagesSpoken}
             />
         </div >
     );

@@ -41,7 +41,6 @@ const CancelRequestModal: React.FC<CancelRequestModalProps> = ({ isOpen, onOpenC
     }
     return (
         <Modal
-            isDismissable={false}
             isKeyboardDismissDisabled={true}
             size="xl"
             isOpen={isOpen}
