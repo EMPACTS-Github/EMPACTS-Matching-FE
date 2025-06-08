@@ -7,8 +7,9 @@ import { Skeleton } from "@heroui/skeleton";
 interface ProfileInfoSubCardProps {
     startup: Startup;
     isOwner: boolean | undefined;
+    countMatches: number;
 }
-const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwner }) => {
+const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwner, countMatches }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <Card className="bg-white min-w-lg shadow-lg rounded-lg px-4 py-2">
@@ -35,7 +36,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
                     </div>
                     <Divider orientation="vertical" className="h-14" />
                     <div className="flex flex-col justify-center items-center">
-                        <p className="font-semibold text-lg text-gray-800 py-1">2</p>
+                        <p className="font-semibold text-lg text-gray-800 py-1">{countMatches}</p>
                         <p className="text-gray-400 text-xs">Matches</p>
                     </div>
                 </div>
