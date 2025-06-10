@@ -38,6 +38,7 @@ const StartupInvitation = () => {
     inviteCode: '',
     response: '',
   });
+  const [currentStartupId, setCurrentStartupId] = useState('');
 
   const invitationCode = searchParams.get('code');
   const invitedEmail = searchParams.get('email');
@@ -81,7 +82,6 @@ const StartupInvitation = () => {
       }
 
       const data = response.data;
-      console.log(data);
       const startupInfo = {
         positionTitle: data.positionTitle as string,
         startupAvt: data.startup.avtUrl as string,
@@ -89,6 +89,7 @@ const StartupInvitation = () => {
         startupGoal: getSDGGoal(data.startup.sdgGoal) as string,
       }
       setInviteeStartupInfo(startupInfo);
+      setCurrentStartupId(data.startup.id);
     } catch (error) {
       addToast({
         title: 'Error in checking invitation status',
@@ -114,8 +115,7 @@ const StartupInvitation = () => {
       if (response.code === STARTUP_INVITATION_RESPONSE_CODE.INVITATION_REJECTED) {
         route.replace('/');
       } else {
-        const startupId = response.data.startup_id.id;
-        route.replace(`/startup-detail/${startupId}`);
+        route.replace(`/startup-detail/${currentStartupId}`);
       }
     } catch (error) {
       addToast({

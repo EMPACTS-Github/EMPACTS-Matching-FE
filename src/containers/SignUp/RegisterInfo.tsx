@@ -16,7 +16,7 @@ function RegisterInfo() {
   const router = useRouter()
   const [username, setUsername] = useState('')
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
-  const [uploadAvatarId, setUploadAvatarId] = useState(0);
+  const [uploadAvatarId, setUploadAvatarId] = useState('');
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -67,7 +67,19 @@ function RegisterInfo() {
         const response = await create_new_profile(email, userProfileImgUrl, username);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.removeItem('email');
-        router.replace('/profiles/new');
+
+        const hasInvitationStatus = localStorage.getItem('status');
+        if (hasInvitationStatus) {
+          const invitationCode = localStorage.getItem('invitationCode');
+          const invitedEmail = localStorage.getItem('invitedEmail');
+          if (invitedEmail === email) {
+            router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
+          } else {
+            router.replace('/profiles/new');
+          }
+        } else {
+          router.replace('/profiles/new');
+        }
         updateAttachment({
           id: uploadAvatarId,
           ownerType: UPLOAD_OWNER_TYPE.USER,
