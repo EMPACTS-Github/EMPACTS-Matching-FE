@@ -78,8 +78,12 @@ function Login() {
         const hasInvitationStatus = localStorage.getItem('status');
         if (hasInvitationStatus) {
           const invitationCode = localStorage.getItem('invitationCode');
-          const inviteeEmail = localStorage.getItem('inviteeEmail');
-          router.push(`/startup-invitation?code=${invitationCode}&email=${inviteeEmail}`);
+          const invitedEmail = localStorage.getItem('invitedEmail');
+          if (invitedEmail === response.data.email) {
+            router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
+          } else {
+            router.push('/profiles');
+          }
         } else {
           if (response.data.user.hasProfile) {
             router.push('/profiles');
@@ -115,8 +119,10 @@ function Login() {
           const hasInvitationStatus = localStorage.getItem('status');
           if (hasInvitationStatus) {
             const invitationCode = localStorage.getItem('invitationCode');
-            const inviteeEmail = localStorage.getItem('inviteeEmail');
-            router.push(`/startup-invitation?code=${invitationCode}&email=${inviteeEmail}`);
+            const invitedEmail = localStorage.getItem('invitedEmail');
+            if (invitedEmail === response.data.email) {
+              router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
+            }
           } else {
             if (response.data.hasProfile) {
               router.push('/profiles');
