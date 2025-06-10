@@ -5,7 +5,7 @@ import { LANGUAGE_SPOKEN } from "@/constants/common";
 import { MATCHING_STATUS } from "@/constants/matching";
 import ConnectModal from '@/components/Modal/ConnectModal';
 import UserPlusIcon from "@/components/Icons/UserPlusIcon";
-import { useStartupIdStore } from "@/stores/startupId-store";
+import { useStartupIdStore } from "@/stores/startup-store";
 
 interface MentorInfoModalProps {
     isOpen: boolean;

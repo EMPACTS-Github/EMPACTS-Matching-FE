@@ -131,7 +131,7 @@ const Header = () => {
                     {/* //example only (have to change to real mentor attributes) */}
                     {mentors.map((mentor) => (
                       <PopoverContentItem key={mentor.mentorId}>
-                        <Link href={`/startup-detail/${mentor.mentorId}`}>
+                        <Link href={`/mentor-detail/${mentor.mentorId}`}>
                           <div className="flex items-center gap-2">
                             <Image src={mentor.avtUrl} alt="Logo" width={20} height={20} />
                             <div className="text-sm">{mentor.name}</div>
@@ -183,7 +183,7 @@ const Header = () => {
               </div>
             </>
           ) : (
-            <Button color="primary" variant="ghost" onPress={handleLogin} radius='md' size='md' className='font-bold'>
+            <Button color="primary" variant="bordered" onPress={handleLogin} radius='md' size='md' className='font-bold'>
               LOG IN
             </Button>
           )}

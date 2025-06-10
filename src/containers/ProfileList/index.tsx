@@ -75,7 +75,7 @@ const ProfileList = () => {
             {mentorProfileList.length != 0 ? (
               <div className="space-y-4">
                 {mentorProfileList.map((mentor) => (
-                  <ProfileCard key={mentor.id} profile={mentor} type="startup" />
+                  <ProfileCard key={mentor.id} profile={mentor} type="mentor" />
                 ))}
               </div>) : (
               <div className="p-4 h-full flex items-center justify-center">

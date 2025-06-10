@@ -12,19 +12,18 @@ export interface Startup {
     status: string;
     description: string | null;
     sdgGoal: string;
-    startupLink: string | null;
-    credential: string | null;
+    startupLink?: string | null;
+    credential?: string | null;
     locationBased: string;
-    marketFocus: string | null;
-    startupState: string | null;
-    stateSetail: string | null;
-    haveActiveUse: number;
-    revenue: number;
-    otherParticipatedDetail: string;
-    legalEquityDetail: string;
-    investmentDetail: string;
-    fundraisingDetail: string;
-    pushState: number;
+    marketFocus?: string | null;
+    startupState?: string | null;
+    stateDetail?: string | null;
+    haveActiveUse?: number;
+    revenue?: number;
+    otherParticipatedDetail?: string;
+    legalEquityDetail?: string;
+    investmentDetail?: string;
+    fundraisingDetail?: string;
     memberQty: number;
 }
 
