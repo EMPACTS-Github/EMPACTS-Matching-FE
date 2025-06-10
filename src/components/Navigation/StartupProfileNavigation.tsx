@@ -9,6 +9,7 @@ import StartupMemberContainer from '@/containers/StartupMember/StartupMemberCont
 import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
 import { suggest_mentor_list } from "@/apis/suggest-mentor";
 import { SuggestMentors } from '@/interfaces/startup';
+import { useStartupIdStore } from '@/stores/startupId-store';
 
 interface StartupProfileNavigationProps {
   startupId: string;
@@ -21,6 +22,8 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
   const [startup_profile, setStartupProfile] = useState<StartupProfileResponse>();
   const [suggestedMentors, setSuggestedMentors] = useState<SuggestMentors[]>([{} as SuggestMentors]);
   const [error, setError] = useState<string | null>(null);
+  const setStartupId = useStartupIdStore((state) => state.setStartupId);
+  setStartupId(startupId);
 
   useEffect(() => {
     const fetchStartupProfile = async () => {
@@ -70,7 +73,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
             title="Explore"
             className="pt-0 px-2"
           >
-            <ExploreContainer startupId={startupId} mentorList={suggestedMentors} error={error} />
+            <ExploreContainer mentorList={suggestedMentors} error={error} />
           </Tab>
           <Tab
             key="profile"

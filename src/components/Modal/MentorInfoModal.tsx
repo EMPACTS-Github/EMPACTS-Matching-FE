@@ -1,7 +1,11 @@
-import { Modal, ModalContent, ModalBody } from "@heroui/react";
+import { Modal, ModalContent, ModalBody, Button, useDisclosure } from "@heroui/react";
 import Image from "next/image";
 import TextLine from "@/components/common/TextLine";
 import { LANGUAGE_SPOKEN } from "@/constants/common";
+import { MATCHING_STATUS } from "@/constants/matching";
+import ConnectModal from '@/components/Modal/ConnectModal';
+import UserPlusIcon from "@/components/Icons/UserPlusIcon";
+import { useStartupIdStore } from "@/stores/startupId-store";
 
 interface MentorInfoModalProps {
     isOpen: boolean;
@@ -13,6 +17,8 @@ interface MentorInfoModalProps {
     mentorSdgFocusExpertises: string[] | undefined;
     mentorSkillOffered: string[] | undefined;
     mentorLanguagesSpoken: string[] | undefined;
+    matchingStatus?: string;
+    mentorId?: string;
 }
 
 const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
@@ -25,7 +31,11 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
     mentorSdgFocusExpertises,
     mentorSkillOffered,
     mentorLanguagesSpoken,
+    matchingStatus,
+    mentorId,
 }) => {
+    const { isOpen: isConnectModalOpen, onOpen: onConnectModalOpen, onOpenChange: onConnectModalOpenChange } = useDisclosure();
+    const startupId = useStartupIdStore((state) => state.startupId);
     const formatSDGExpertise = (expertise: string) => {
         return expertise
             .toLowerCase()
@@ -43,17 +53,36 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
             <ModalContent className="py-4">
                 {(onOpenChange) => (
                     <ModalBody className="flex flex-col gap-2">
-                        <div className="flex flex-row rounded-md py-2 items-center shadow-sm">
-                            <Image
-                                src={avtUrl}
-                                alt={`${mentorName}'s avatar`}
-                                width={56}
-                                height={56}
-                                className="rounded-full mb-2"
-                            />
-                            <div className="flex flex-col justify-start ml-4">
-                                <div className="text-lg font-semibold text-black">{mentorName}</div>
-                                <TextLine text={location} className="text-gray-600 text-sm text-left line-clamp-1" />
+                        <div className="flex justify-between items-end mb-4">
+                            <div className="flex flex-row rounded-md py-2 items-center">
+                                <Image
+                                    src={avtUrl}
+                                    alt={`${mentorName}'s avatar`}
+                                    width={56}
+                                    height={56}
+                                    className="rounded-full mb-2"
+                                />
+                                <div className="flex flex-col justify-start ml-4">
+                                    <div className="text-lg font-semibold text-black">{mentorName}</div>
+                                    <TextLine text={location} className="text-gray-600 text-sm text-left line-clamp-1" />
+                                </div>
+                            </div>
+                            <div className="flex flex-col items-end mr-2">
+                                {matchingStatus && (
+                                    <Button
+                                        type="submit"
+                                        color={matchingStatus !== MATCHING_STATUS.PENDING && matchingStatus !== MATCHING_STATUS.ACCEPTED ? "primary" : "default"}
+                                        isDisabled={matchingStatus === MATCHING_STATUS.PENDING || matchingStatus === MATCHING_STATUS.ACCEPTED}
+                                        size="md"
+                                        variant="solid"
+                                        radius="md"
+                                        startContent={<UserPlusIcon className="text-white" />}
+                                        onPress={onConnectModalOpen}
+                                        className={`text-white ${matchingStatus === MATCHING_STATUS.PENDING || matchingStatus === MATCHING_STATUS.ACCEPTED ? "bg-empacts-grey-50" : ""} font-semibold`}
+                                    >
+                                        {matchingStatus === MATCHING_STATUS.PENDING || matchingStatus === MATCHING_STATUS.ACCEPTED ? "Connected" : "Connect"}
+                                    </Button>
+                                )}
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 justify-start mt-1">
@@ -98,10 +127,17 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
                                 ) : "No data"}
                             </div>
                         </div>
+                        <ConnectModal
+                            startupId={startupId}
+                            mentorId={mentorId || ''}
+                            isOpen={isConnectModalOpen}
+                            onClose={onConnectModalOpenChange}
+                            mentorName={mentorName}
+                        />
                     </ModalBody>
                 )}
             </ModalContent>
-        </Modal>
+        </Modal >
     );
 };
 

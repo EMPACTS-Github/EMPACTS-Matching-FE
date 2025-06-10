@@ -1,6 +1,6 @@
 "use client";
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, Tab } from "@heroui/react";
 import CompassIcon from '@/components/Icons/CompassIcon';
 import { SuggestMentors } from '@/interfaces/startup';
@@ -9,20 +9,26 @@ import { mentor_profile_detail } from "@/apis/mentor-profile";
 import ForyouSection from './Section/ForyouSection';
 import MatchingActivitySection from './Section/MatchingActivitySection';
 import SearchSection from './Section/SearchSection';
+import { useStartupIdStore } from '@/stores/startupId-store';
+import { useMatchingStore } from "@/stores/matching-store";
+import { startup_matching_activity } from "@/apis/startup-matching";
+import { useErrorStore } from '@/stores/error-store';
 
 interface ExploreContainerProps {
-  startupId: string;
   mentorList: SuggestMentors[] | undefined;
   error: string | null;
 }
 
-const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error, startupId }) => {
-  const [searchValue, setSearchValue] = useState('');
+const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }) => {
   const [location, setLocation] = useState<string>('');
   const [isFavourite, setIsFavourite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mentor, setMentor] = useState<SuggestMentor[]>([]);
   const [selectedMentor, setSelectedMentor] = useState(mentor[0]);
+  const startupId = useStartupIdStore((state) => state.startupId);
+  const setMatches = useMatchingStore(state => state.setMatches);
+  const setError = useErrorStore(state => state.setError);
+
   useEffect(() => {
     const fetchMentors = async () => {
       if (!mentorList || mentorList.length === 0) return;
@@ -55,6 +61,27 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error, 
     };
     fetchMentors();
   }, [mentorList]);
+
+  useEffect(() => {
+    const fetchMatching = async () => {
+      try {
+        const data = await startup_matching_activity(startupId);
+        setMatches(data.data);
+        setError(null);
+      } catch (err: any) {
+        setMatches(null);
+        if (
+          err?.response?.status === 404 &&
+          err?.response?.data?.code === "MATCHING_ACTIVITY_NOT_FOUND"
+        ) {
+          setError("No matching activity found.");
+        } else {
+          setError("Failed to fetch matching activity.");
+        }
+      }
+    };
+    fetchMatching();
+  }, [startupId, setMatches, setError]);
   const handleFavoriteClick = (index: number) => {
     const newMentor = [...mentor];
     newMentor[index].isFavourite = !newMentor[index].isFavourite;
@@ -70,9 +97,7 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error, 
       <SearchWithLocation
         placeholder="Search for anything"
         className="w-3/5 mt-4"
-        value={searchValue}
         location={location}
-        onChange={setSearchValue}
         onLocationChange={setLocation}
       />
       <Tabs

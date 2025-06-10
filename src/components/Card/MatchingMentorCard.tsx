@@ -30,7 +30,7 @@ const MatchingMentorCard: React.FC<MatchingMentorCardProps> = ({
                 className="rounded-full mb-4"
             />
             <div className="flex flex-col justify-start ml-4">
-                <div className="text-lg font-semibold text-black">{name}</div>
+                <div className="text-lg font-semibold text-black text-left">{name}</div>
                 <TextLine text={location} className="text-gray-600 text-sm text-left line-clamp-1" />
                 <div className="flex gap-2 items-center mt-2">
                     <div className="font-semibold">Status:</div>
