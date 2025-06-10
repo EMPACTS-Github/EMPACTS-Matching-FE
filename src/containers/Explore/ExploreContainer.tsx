@@ -9,7 +9,7 @@ import { mentor_profile_detail } from "@/apis/mentor-profile";
 import ForyouSection from './Section/ForyouSection';
 import MatchingActivitySection from './Section/MatchingActivitySection';
 import SearchSection from './Section/SearchSection';
-import { useStartupIdStore } from '@/stores/startupId-store';
+import { useStartupIdStore } from '@/stores/startup-store';
 import { useMatchingStore } from "@/stores/matching-store";
 import { startup_matching_activity } from "@/apis/startup-matching";
 import { useErrorStore } from '@/stores/error-store';

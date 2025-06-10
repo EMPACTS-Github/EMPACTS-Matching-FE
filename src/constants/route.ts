@@ -65,5 +65,11 @@ export const ROUTES: Route[] = [
     pathname: '/startup-invitation',
     isPrivate: true,
     hasHeader: true,
-  }
+  },
+  {
+    name: 'MentorProfileDetail',
+    pathname: '/mentor-detail/:param',
+    isPrivate: true,
+    hasHeader: true,
+  },
 ];

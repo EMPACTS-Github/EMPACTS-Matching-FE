@@ -9,7 +9,7 @@ import StartupMemberContainer from '@/containers/StartupMember/StartupMemberCont
 import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
 import { suggest_mentor_list } from "@/apis/suggest-mentor";
 import { SuggestMentors } from '@/interfaces/startup';
-import { useStartupIdStore } from '@/stores/startupId-store';
+import { useStartupIdStore } from '@/stores/startup-store';
 
 interface StartupProfileNavigationProps {
   startupId: string;

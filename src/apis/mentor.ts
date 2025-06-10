@@ -17,3 +17,11 @@ export const mentor_search = async (
     );
     return response.data;
 };
+
+export const startup_profile_detail = async (startupId: string, mentorId: string) => {
+    const response = await axiosInstance.post(`/mentor/startup-profile`, {
+        startupId,
+        mentorId
+    });
+    return response.data;
+};
