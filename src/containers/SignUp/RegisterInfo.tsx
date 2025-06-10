@@ -26,10 +26,10 @@ function RegisterInfo() {
           if (e.target.files) {
             uploadAttachemt({
               file: e.target.files[0],
-              owner_type: UPLOAD_OWNER_TYPE.USER,
+              ownerType: UPLOAD_OWNER_TYPE.USER,
             })
               .then(response => {
-                setAvatarUrl(response.data.attachment_url);
+                setAvatarUrl(response.data.attachmentUrl);
                 setUploadAvatarId(response.data.id)
                 addToast({
                   title: 'Avatar uploaded',
@@ -70,8 +70,8 @@ function RegisterInfo() {
         router.replace('/profiles/new');
         updateAttachment({
           id: uploadAvatarId,
-          owner_type: UPLOAD_OWNER_TYPE.USER,
-          owner_id: response.data.user.id
+          ownerType: UPLOAD_OWNER_TYPE.USER,
+          ownerId: response.data.user.id
         })
       } catch (error) {
         console.log(error);

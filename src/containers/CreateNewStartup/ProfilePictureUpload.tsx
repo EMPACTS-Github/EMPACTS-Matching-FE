@@ -21,10 +21,10 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
     if (file) {
       setLoading(true);
       try {
-        const response = await uploadAttachemt({ file, owner_type: UPLOAD_OWNER_TYPE.STARTUP });
-        setImage(response.data.attachment_url);
+        const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
+        setImage(response.data.attachmentUrl);
         setError(null);
-        onImageUpload(response.data.attachment_url, response.data.id);
+        onImageUpload(response.data.attachmentUrl, response.data.id);
         addToast({
           title: 'Image uploaded successfully',
           color: 'success',

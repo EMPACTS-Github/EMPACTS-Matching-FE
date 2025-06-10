@@ -90,8 +90,8 @@ function CreateNewStartup() {
 
       updateAttachment({
         id: uploadedPictureId,
-        owner_id: response.data.newStartup.id,
-        owner_type: UPLOAD_OWNER_TYPE.STARTUP
+        ownerId: response.data.newStartup.id,
+        ownerType: UPLOAD_OWNER_TYPE.STARTUP
       });
 
       if (members.length !== 0) {
