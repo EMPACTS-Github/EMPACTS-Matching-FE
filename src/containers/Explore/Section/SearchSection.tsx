@@ -7,15 +7,17 @@ import { FETCH_MENTOR_LIMIT } from '@/constants';
 import { Mentor } from '@/interfaces/MentorProfile';
 import MentorInfoModal from '@/components/Modal/MentorInfoModal';
 import { getProvince } from '@/utils/getProvince';
+import { useMatchingStore } from '@/stores/matching-store';
 
 const SearchSection: React.FC = () => {
     const [mentors, setMentors] = useState<Mentor[]>([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    const [searchQuery, setSearchQuery] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
     const { isOpen: isMentorInfoModalOpen, onOpen: onMentorInfoModalOpen, onOpenChange: onMentorInfoModalOpenChange } = useDisclosure();
+    const matches = useMatchingStore((state) => state.matches);
+    const [matchStatus, setMatchStatus] = useState<string | undefined>("");
 
     const fetchMentors = useCallback(async () => {
         try {
@@ -39,6 +41,8 @@ const SearchSection: React.FC = () => {
         const mentor = mentors.find(m => m.id === id);
         if (mentor) {
             setSelectedMentor(mentor);
+            const match = matches?.find((m: any) => m.mentorId === mentor.id);
+            setMatchStatus(match ? match.status : "NOT_CONNECTED");
             onMentorInfoModalOpen();
         }
     };
@@ -71,6 +75,8 @@ const SearchSection: React.FC = () => {
                 mentorSdgFocusExpertises={selectedMentor?.sdgFocusExpertises || []}
                 mentorSkillOffered={selectedMentor?.skillOffered || []}
                 mentorLanguagesSpoken={selectedMentor?.languagesSpoken || []}
+                mentorId={selectedMentor?.id || ""}
+                matchingStatus={matchStatus}
             />
         </div>
     );

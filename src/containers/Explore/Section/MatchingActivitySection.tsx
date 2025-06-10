@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { startup_matching_activity } from "@/apis/startup-matching";
 import { Spinner, Button } from "@heroui/react";
 import { Spacer } from "@heroui/spacer";
 import { Matching } from "@/interfaces/matching";
@@ -8,6 +7,8 @@ import { Mentor } from "@/interfaces/MentorProfile";
 import MatchingMentorCard from "@/components/Card/MatchingMentorCard";
 import { getProvince } from "@/utils/getProvince";
 import MatchingInfoCard from "@/components/Card/MatchingInfoCard";
+import { useMatchingStore } from "@/stores/matching-store";
+import { useErrorStore } from "@/stores/error-store";
 
 interface MatchingActivitySectionProps {
     startupId: string;
@@ -16,10 +17,11 @@ interface MatchingActivitySectionProps {
 const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
     startupId
 }) => {
-    const [matches, setMatches] = useState<Matching[] | null>(null);
+    const matches = useMatchingStore(state => state.matches);
     const [mentorList, setMentorList] = useState<Mentor[]>([]);
     const [selectedMentorIndex, setSelectedMentorIndex] = useState<number>(0);
-    const [error, setError] = useState<string | null>(null);
+    const error = useErrorStore(state => state.error);
+    const setError = useErrorStore(state => state.setError);
     const [filterMode, setFilterMode] = useState<"ALL" | "ACCEPTED" | "PENDING">("ALL");
 
     const filterMentorIndexes = matches && mentorList.length
@@ -36,27 +38,6 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
     const filteredSelectedIndex = filterMentorIndexes.includes(selectedMentorIndex)
         ? selectedMentorIndex
         : filterMentorIndexes[0] ?? 0;
-
-    useEffect(() => {
-        const fetchMatching = async () => {
-            try {
-                const data = await startup_matching_activity(startupId);
-                setMatches(data.data);
-                setError(null);
-            } catch (err: any) {
-                setMatches(null);
-                if (
-                    err?.response?.status === 404 &&
-                    err?.response?.data?.code === "MATCHING_ACTIVITY_NOT_FOUND"
-                ) {
-                    setError("No matching activity found.");
-                } else {
-                    setError("Failed to fetch matching activity.");
-                }
-            }
-        };
-        fetchMatching();
-    }, [startupId]);
 
     useEffect(() => {
         const fetchAllMentorDetails = async () => {
@@ -91,11 +72,11 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
             }
         };
         fetchAllMentorDetails();
-    }, [matches]);
+    }, [matches, setError]);
 
-    const handleMentorSelect = (index: number) => {
-        setSelectedMentorIndex(index);
-    };
+    // const handleMentorSelect = (index: number) => {
+    //     setSelectedMentorIndex(index);
+    // };
 
     if (error) {
         return (
@@ -108,7 +89,7 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
     return (
         mentorList.length > 0 ? (
             <div className="flex w-full px-4 relative z-10 gap-0 mt-6">
-                <div className="mx-0 w-[30%] flex flex-col justify-start">
+                <div className="mx-0 w-[33%] flex flex-col justify-start">
                     <div className="flex flex-col gap-2 overflow-y-auto h-full pr-2 custom-scrollbar">
                         <div className="flex justify-between items-center mb-4" >
                             <div className="space-x-2">
@@ -158,7 +139,7 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
                 </div>
 
                 <Spacer x={4} />
-                <div className="w-[70%]">
+                <div className="w-[67%]">
                     {filterMentorIndexes.length > 0 && (
                         <MatchingInfoCard
                             startupId={startupId}

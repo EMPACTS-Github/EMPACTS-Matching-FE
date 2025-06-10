@@ -33,7 +33,7 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
             }
         };
         fetchMatching();
-    }, []);
+    }, [startup_profile?.startup.id]);
 
     return (
         <div className="flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-0 mt-6">

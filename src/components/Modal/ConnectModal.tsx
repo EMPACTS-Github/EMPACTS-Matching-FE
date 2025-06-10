@@ -50,6 +50,15 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ startupId, mentorId, isOpen
         const requestSchedule = new Date(isoString);
         setIsLoading(true);
         try {
+            if (!startupId) {
+                addToast({
+                    title: 'Startup ID is not available',
+                    color: 'danger',
+                    timeout: 5000,
+                });
+                setIsLoading(false);
+                return;
+            }
             const response = await request_matching_to_mentor(startupId, mentorId, note, requestSchedule);
             if (response.code === "CONNECT_REQUEST_SENT") {
                 addToast({
