@@ -17,7 +17,7 @@ const AdvancedBody: React.FC<AdvancedBodyProps> = ({ mentorProfile }) => {
             ? 'No data'
             : <Chip
               size="sm"
-              color="primary"
+              color="secondary"
               variant="bordered"
               className="border-1"
             >

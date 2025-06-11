@@ -156,6 +156,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
                             schedule={(matches as Matching[] | null)?.[filteredSelectedIndex]?.requestSchedule || ''}
                             meetingLink={(matches as Matching[] | null)?.[filteredSelectedIndex]?.meetingLink || ''}
                             note={(matches as Matching[] | null)?.[filteredSelectedIndex]?.note || ''}
+                            mentorId={mentorId || ''}
                         />
                     )}
                 </div>
