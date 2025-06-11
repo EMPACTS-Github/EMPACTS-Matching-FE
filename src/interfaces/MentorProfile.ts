@@ -26,4 +26,10 @@ export interface Mentor {
     locationBased: string;
     skillOffered: string[];
     languagesSpoken: string[];
+    marketFocusExpertise?: string;
+    experienceWithFundingStage?: string[];
+    yearOfProfessionalExperience?: number;
+    currentWorkplace?: string;
+    currentPosition?: string;
+    industryFocus?: string[];
 }

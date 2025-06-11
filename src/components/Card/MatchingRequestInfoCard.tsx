@@ -1,6 +1,6 @@
 import Image from "next/image";
-import React from "react";
-import { Button, useDisclosure, TimeInput } from "@heroui/react";
+import React, { useState } from "react";
+import { Button, useDisclosure, TimeInput, addToast } from "@heroui/react";
 import TextLine from "@/components/common/TextLine";
 import { MATCHING_STATUS } from "@/constants/matching";
 import UserRightIcon from "@/components/Icons/UserRightIcon";
@@ -11,6 +11,9 @@ import ClockIcon from "@/components/Icons/ClockIcon";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { getCalendarDateAndTime } from "@/utils/convertDateToDateAndTime";
 import { Snippet } from "@heroui/react";
+import { response_matching_request } from "@/apis/mentor-matching";
+import { Spinner } from "@heroui/spinner";
+
 
 interface MatchingRequestInfoCardProps {
     connectRequestCode: string;
@@ -21,6 +24,7 @@ interface MatchingRequestInfoCardProps {
     meetingLink: string;
     schedule: Date | string;
     note: string;
+    mentorId: string;
 };
 
 const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
@@ -32,8 +36,10 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
     schedule,
     note,
     avtUrl,
+    mentorId,
 }) => {
     const { calendarDate, time } = getCalendarDateAndTime(schedule);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onMeetingButtonClick = () => {
         if (meetingLink) {
@@ -45,14 +51,54 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
         }
     };
 
-    const handleAcceptRequestClick = () => {
-        // Logic to handle accepting the request
-        console.log("Accepting request for:", connectRequestCode);
+    const handleAcceptRequestClick = async () => {
+        setIsLoading(true);
+        try {
+            const response = await response_matching_request(MATCHING_STATUS.ACCEPTED, mentorId, connectRequestCode);
+            if (response.code === "RESPONSE_REQUEST_SENT") {
+                addToast({
+                    title: 'Accepted Matching Request',
+                    color: 'success',
+                    timeout: 5000,
+                });
+            }
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        } catch (error) {
+            console.error("Failed to cancel request:", error);
+            addToast({
+                title: 'Response Matching Request failed',
+                color: 'danger',
+                timeout: 5000,
+            });
+            setIsLoading(false);
+        }
     };
 
-    const handleRejectRequestClick = () => {
-        // Logic to handle rejecting the request
-        console.log("Rejecting request for:", connectRequestCode);
+    const handleRejectRequestClick = async () => {
+        setIsLoading(true);
+        try {
+            const response = await response_matching_request(MATCHING_STATUS.REJECTED, mentorId, connectRequestCode);
+            if (response.code === "RESPONSE_REQUEST_SENT") {
+                addToast({
+                    title: 'Rejected Matching Request',
+                    color: 'success',
+                    timeout: 5000,
+                });
+            }
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        } catch (error) {
+            console.error("Failed to cancel request:", error);
+            addToast({
+                title: 'Response Matching Request failed',
+                color: 'danger',
+                timeout: 5000,
+            });
+            setIsLoading(false);
+        }
     };
     return (
         <div className={`bg-white rounded-lg shadow-xl py-6 px-8 gap-y-6 flex flex-col`}>
@@ -80,28 +126,28 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                     </div>
                 </div>
                 {status === MATCHING_STATUS.PENDING && (
-                    <div>
+                    <div className="flex gap-x-2">
                         <Button
                             type="submit"
                             color="primary"
-                            size="md"
+                            size="sm"
                             variant="bordered"
                             radius="md"
                             startContent={<UserRightIcon className="text-empacts" />}
                             onPress={handleAcceptRequestClick}
                         >
-                            Accept Request
+                            {isLoading ? <Spinner size="sm" color="primary" /> : "Accept Request"}
                         </Button>
                         <Button
                             type="submit"
-                            color="primary"
-                            size="md"
+                            color="danger"
+                            size="sm"
                             variant="bordered"
                             radius="md"
-                            startContent={<UserRightIcon className="text-empacts" />}
+                            startContent={<UserRightIcon className="text-error" />}
                             onPress={handleRejectRequestClick}
                         >
-                            Reject Request
+                            {isLoading ? <Spinner size="sm" color="danger" /> : "Reject Request"}
                         </Button>
                     </div>
 
@@ -136,8 +182,13 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                             <Button color="primary" variant="solid" className="w-full" onPress={onMeetingButtonClick}>
                                 Join with Google Meet
                             </Button>
-                            <Snippet hideSymbol size="sm" className="bg-transparent border-none">
-                                {meetingLink}
+                            <Snippet
+                                hideSymbol
+                                size="sm"
+                                className="bg-transparent border-none"
+                                codeString={meetingLink}
+                            >
+                                {meetingLink.length > 25 ? meetingLink.slice(0, 25) + "..." : meetingLink}
                             </Snippet>
                         </div>
                     </div>

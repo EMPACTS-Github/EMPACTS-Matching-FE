@@ -12,9 +12,11 @@ import { Matching } from "@/interfaces/matching";
 import { useMentorIdStore } from "@/stores/mentor-store";
 
 interface MentorExploreContainerProps {
+    mentorId?: string | undefined;
 };
 
 const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
+    mentorId
 }) => {
     const matches = useMatchingRequestListStore(state => state.matchingRequestList);
     const [startupList, setStartupList] = useState<Startup[]>([]);
@@ -22,8 +24,6 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
     const error = useErrorStore(state => state.error);
     const setError = useErrorStore(state => state.setError);
     const [filterMode, setFilterMode] = useState<"ALL" | "ACCEPTED" | "PENDING">("ALL");
-    const mentorId = useMentorIdStore(state => state.mentorId);
-
     const filterMatchIndexes = matches && startupList.length
         ? matches
             .map((match, idx) => ({ match, idx }))
@@ -48,7 +48,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
             try {
                 const startupDetails = await Promise.all(
                     matches.map(async (match) => {
-                        const response = await startup_profile_detail(match.startupId || '', mentorId);
+                        const response = await startup_profile_detail(match.startupId || '', mentorId || '');
                         const startupData = response.data.startup;
                         return {
                             id: startupData.id,
@@ -82,7 +82,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
             }
         };
         fetchAllStartupDetails();
-    }, [matches, setError]);
+    }, [matches]);
 
     if (error) {
         return (
@@ -156,6 +156,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
                             schedule={(matches as Matching[] | null)?.[filteredSelectedIndex]?.requestSchedule || ''}
                             meetingLink={(matches as Matching[] | null)?.[filteredSelectedIndex]?.meetingLink || ''}
                             note={(matches as Matching[] | null)?.[filteredSelectedIndex]?.note || ''}
+                            mentorId={mentorId || ''}
                         />
                     )}
                 </div>

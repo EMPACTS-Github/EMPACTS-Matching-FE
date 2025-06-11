@@ -21,7 +21,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
     if (file) {
       setLoading(true);
       try {
-        const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
+        const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.MENTOR });
         setImage(response.data.attachmentUrl);
         setError(null);
         onImageUpload(response.data.attachmentUrl, response.data.id);
@@ -77,7 +77,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
         />
       </label>
       <p className="text-[#313957] text-lg leading-[160%] tracking-[0.18px] text-center">
-        Upload a startup profile picture
+        Upload a mentor profile picture
       </p>
     </div>
   );
