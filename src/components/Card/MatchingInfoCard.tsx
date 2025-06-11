@@ -137,7 +137,7 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
                                 className="bg-transparent border-none"
                                 codeString={meetingLink}
                             >
-                                {meetingLink.length > 25 ? meetingLink.slice(0, 25) + "..." : meetingLink}
+                                {meetingLink.replace(/^https?:\/\//, '')}
                             </Snippet>
                         </div>
                     </div>
