@@ -15,8 +15,8 @@ const OverviewBody: React.FC<OverviewBodyProps> = ({ startup }) => {
                 </p>
             </div>
             <div>
-                <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
-                <p className="text-gray-500 text-sm whitespace-pre-line">
+                <h4 className="text-lg font-semibold text-gray-800 w-1/2">Profile Link</h4>
+                <p className="text-gray-500 text-sm whitespace-pre-line w-1/2">
                     {startup.startupLink ? (
                         <Link isExternal showAnchorIcon size="sm" className="text-blue-500"
                             href={

@@ -28,7 +28,6 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
             </CardHeader>
             <CardBody>
                 <Divider />
-
                 <div className="flex justify-around items-center p-2">
                     <div className="flex flex-col justify-center items-center">
                         <p className="font-semibold text-lg text-gray-800 py-1">{startup.memberQty}</p>

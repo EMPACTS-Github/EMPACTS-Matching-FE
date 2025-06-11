@@ -23,8 +23,9 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
   const [suggestedMentors, setSuggestedMentors] = useState<SuggestMentors[]>([{} as SuggestMentors]);
   const [error, setError] = useState<string | null>(null);
   const setStartupId = useStartupIdStore((state) => state.setStartupId);
-  setStartupId(startupId);
-
+  useEffect(() => {
+    setStartupId(startupId);
+  }, [startupId]);
   useEffect(() => {
     const fetchStartupProfile = async () => {
       try {

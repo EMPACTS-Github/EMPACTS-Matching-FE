@@ -4,41 +4,46 @@ import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from "@heroui/react";
 import { mentor_profile_detail } from "@/apis/mentor-profile"
 import MentorExploreContainer from '@/containers/Explore/MentorExploreContainer';
-// import MentorProfileContainer from '@/containers/MentorProfile/MentorProfileContainer';
-import { useMentorIdStore, useMentorProfileStore } from '@/stores/mentor-store';
+import MentorProfileContainer from '@/containers/MentorProfile/MentorProfileContainer';
 import { mentor_matching_request_list } from '@/apis/mentor-matching';
 import { useErrorStore } from '@/stores/error-store';
-import { Matching } from '@/interfaces/matching';
 import { useMatchingRequestListStore } from '@/stores/matching-store';
+import { Mentor } from '@/interfaces/MentorProfile';
+import { MATCHING_STATUS } from "@/constants/matching";
 
 interface MentorProfileNavigationProps {
+    mentorId: string;
 }
 
-const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = () => {
+const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mentorId }) => {
     const [selectedTab, setSelectedTab] = useState("explore");
     const setError = useErrorStore((state) => state.setError);
-    const mentorId = useMentorIdStore((state) => state.mentorId);
-    const setMentorProfile = useMentorProfileStore((state) => state.setMentorProfile);
+    const [mentorProfile, setMentorProfile] = useState<Mentor | null>(null);
     const setMatchingRequestList = useMatchingRequestListStore((state) => state.setMatchingRequestList);
-
+    const [countMatchedRequests, setCountMatchedRequests] = useState<number>(0);
     useEffect(() => {
         const fetchMentorProfile = async () => {
             try {
                 const data = await mentor_profile_detail(mentorId);
-                setMentorProfile(data.data);
+                setMentorProfile(data.data.mentor);
             } catch (err) {
                 setError("Failed to fetch mentor profile");
                 console.error('Failed to fetch mentor profile:', err);
             }
         };
         fetchMentorProfile();
-    }, [mentorId, setMentorProfile, setError]);
+    }, [mentorId, setError]);
 
     useEffect(() => {
         const matchingRequestList = async () => {
             try {
                 const matchingRequestList = await mentor_matching_request_list(mentorId);
                 setMatchingRequestList(matchingRequestList.data);
+                setCountMatchedRequests(
+                    matchingRequestList.data.filter(
+                        (match: any) => match.status === MATCHING_STATUS.ACCEPTED
+                    ).length
+                );
             } catch (err: any) {
                 if (
                     err?.response?.status === 404 &&
@@ -70,8 +75,8 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = () => {
                         title="Explore"
                         className="pt-0 px-2"
                     >
-                        <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-                            <MentorExploreContainer />
+                        <div className="flex flex-col items-center w-full h-screen 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-y-2">
+                            <MentorExploreContainer mentorId={mentorId} />
                         </div>
                     </Tab>
                     <Tab
@@ -79,7 +84,7 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = () => {
                         title="Profile"
                         className="pt-0 px-2"
                     >
-                        {/* <MentorProfileContainer /> */}
+                        <MentorProfileContainer mentorProfile={mentorProfile} matchingRequestAccepted={countMatchedRequests} />
                     </Tab>
                 </Tabs >
             </div >

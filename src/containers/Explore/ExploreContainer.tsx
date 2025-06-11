@@ -81,7 +81,7 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
       }
     };
     fetchMatching();
-  }, [startupId, setMatches, setError]);
+  }, [startupId]);
   const handleFavoriteClick = (index: number) => {
     const newMentor = [...mentor];
     newMentor[index].isFavourite = !newMentor[index].isFavourite;

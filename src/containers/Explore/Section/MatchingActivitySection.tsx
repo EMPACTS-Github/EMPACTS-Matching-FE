@@ -72,7 +72,7 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
             }
         };
         fetchAllMentorDetails();
-    }, [matches, setError]);
+    }, [matches]);
 
     // const handleMentorSelect = (index: number) => {
     //     setSelectedMentorIndex(index);

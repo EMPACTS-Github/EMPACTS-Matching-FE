@@ -80,11 +80,11 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                     </div>
                 </div>
                 {status === MATCHING_STATUS.PENDING && (
-                    <div>
+                    <div className="flex gap-x-2">
                         <Button
                             type="submit"
                             color="primary"
-                            size="md"
+                            size="sm"
                             variant="bordered"
                             radius="md"
                             startContent={<UserRightIcon className="text-empacts" />}
@@ -94,11 +94,11 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                         </Button>
                         <Button
                             type="submit"
-                            color="primary"
-                            size="md"
+                            color="danger"
+                            size="sm"
                             variant="bordered"
                             radius="md"
-                            startContent={<UserRightIcon className="text-empacts" />}
+                            startContent={<UserRightIcon className="text-error" />}
                             onPress={handleRejectRequestClick}
                         >
                             Reject Request
@@ -136,8 +136,13 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                             <Button color="primary" variant="solid" className="w-full" onPress={onMeetingButtonClick}>
                                 Join with Google Meet
                             </Button>
-                            <Snippet hideSymbol size="sm" className="bg-transparent border-none">
-                                {meetingLink}
+                            <Snippet
+                                hideSymbol
+                                size="sm"
+                                className="bg-transparent border-none"
+                                codeString={meetingLink}
+                            >
+                                {meetingLink.length > 25 ? meetingLink.slice(0, 25) + "..." : meetingLink}
                             </Snippet>
                         </div>
                     </div>

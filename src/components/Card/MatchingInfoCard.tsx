@@ -131,8 +131,13 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
                             <Button color="primary" variant="solid" className="w-full" onPress={onMeetingButtonClick}>
                                 Join with Google Meet
                             </Button>
-                            <Snippet hideSymbol size="sm" className="bg-transparent border-none">
-                                {meetingLink}
+                            <Snippet
+                                hideSymbol
+                                size="sm"
+                                className="bg-transparent border-none"
+                                codeString={meetingLink}
+                            >
+                                {meetingLink.length > 25 ? meetingLink.slice(0, 25) + "..." : meetingLink}
                             </Snippet>
                         </div>
                     </div>
