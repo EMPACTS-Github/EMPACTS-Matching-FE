@@ -36,6 +36,7 @@ const Header = () => {
   const [startups, setStartups] = useState<StartupOfUserResponse[]>([]);
   //example test (have to change MentorOfUser)
   const [mentors, setMentors] = useState<MentorOfUserResponse[]>([])
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -101,7 +102,11 @@ const Header = () => {
             >
               <EmpactsLogoIcon />
             </Button>
-            <Popover placement="bottom-end">
+            <Popover
+              placement="bottom-end"
+              isOpen={popoverOpen}
+              onOpenChange={setPopoverOpen}
+            >
               <PopoverTrigger className="p-1 rounded-full">
                 <Button isIconOnly aria-label="Dropdown" variant="light">
                   <ChevronSelectorVerticalIcon className='text-secondary' />
@@ -110,7 +115,7 @@ const Header = () => {
               <PopoverContent className='w-[380px] block'>
                 <div className='px-1 py-2 flex flex-col gap-1 items-start'>
                   <PopoverContentItem>
-                    <Link href="/profiles/new">
+                    <Link href="/profiles/new" onClick={() => setPopoverOpen(false)}>
                       <div className="flex items-center gap-2">
                         <Image src={PlusSquareIcon} alt="Plus Icon" width={20} height={20} />
                         <div className='text-sm'>Create New Profile </div>
@@ -118,7 +123,7 @@ const Header = () => {
                     </Link>
                   </PopoverContentItem>
                   <PopoverContentItem>
-                    <Link href="/">
+                    <Link href="/" onClick={() => setPopoverOpen(false)}>
                       <div className="flex items-center gap-2">
                         <Image src={SoleLogoEmpacts} alt="Sole Logo" width={20} height={20} />
                         <div className='text-sm'>Discover SDGs Startups</div>
@@ -127,11 +132,10 @@ const Header = () => {
                   </PopoverContentItem>
                   <Divider />
                   <p className="text-small text-default-500">Mentor</p>
-                  <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
-                    {/* //example only (have to change to real mentor attributes) */}
+                  <div className="w-full max-h-40 overflow-y-auto">
                     {mentors.map((mentor) => (
                       <PopoverContentItem key={mentor.mentorId}>
-                        <Link href={`/mentor-detail/${mentor.mentorId}`}>
+                        <Link href={`/mentor-detail/${mentor.mentorId}`} onClick={() => setPopoverOpen(false)}>
                           <div className="flex items-center gap-2">
                             <Image src={mentor.avtUrl} alt="Logo" width={20} height={20} />
                             <div className="text-sm">{mentor.name}</div>
@@ -142,10 +146,10 @@ const Header = () => {
                   </div>
                   <Divider />
                   <p className="text-small text-default-500">Startup</p>
-                  <div className="w-full max-h-40 overflow-y-auto"> {/* Giới hạn chiều cao và cho phép cuộn */}
-                    {startups.map((startup) => ( // Giới hạn tổng mentors + startups tối đa 10 mục
+                  <div className="w-full max-h-40 overflow-y-auto">
+                    {startups.map((startup) => (
                       <PopoverContentItem key={startup.startupId}>
-                        <Link href={`/startup-detail/${startup.startupId}`}>
+                        <Link href={`/startup-detail/${startup.startupId}`} onClick={() => setPopoverOpen(false)}>
                           <div className="flex items-center gap-2">
                             <Image src={startup.avtUrl} alt="Logo" width={20} height={20} />
                             <div className="text-sm">{startup.name}</div>

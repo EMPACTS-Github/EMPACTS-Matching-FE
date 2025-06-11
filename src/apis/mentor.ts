@@ -1,5 +1,7 @@
 "use-client";
 import axiosInstance from ".";
+import { LanguagesSpoken } from "@/constants/common";
+
 
 export const mentor_search = async (
     limit: number,
@@ -23,5 +25,19 @@ export const startup_profile_detail = async (startupId: string, mentorId: string
         startupId,
         mentorId
     });
+    return response.data;
+};
+
+export const create_mentor_profile = async (data: {
+    name: string;
+    mentorUsername: string;
+    locationBased: string;
+    sdgFocusExpertises: string[];
+    description: string;
+    skillOffered: string[];
+    avtUrl: string | null;
+    languagesSpoken: LanguagesSpoken;
+}) => {
+    const response = await axiosInstance.post(`/mentor`, data);
     return response.data;
 };

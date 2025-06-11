@@ -2,37 +2,34 @@
 import React, { useState } from 'react';
 import HeaderSection from './HeaderSection';
 import ProfilePictureUpload from './ProfilePictureUpload';
-import StartupNameSection from './StartupNameSection';
+import MentorNameSection from './MentorNameSection';
 import LocationBasedSection from './LocationBasedSection';
 import SDGGoalSection from './SDGGoalSection';
-import AddMemberSection from './AddMemberSection';
 import ActionButtons from './ActionButtons';
-import { create_startup_profile, invite_list_member } from '@/apis/startup';
-import { MemberForInvite } from '@/interfaces/startup';
+import { create_mentor_profile } from '@/apis/mentor';
 import { LanguagesSpoken } from '@/constants/common';
+import { SkillOffered } from '@/constants/skillOffered';
 import { addToast } from '@heroui/react';
 import * as changeCase from "change-case";
-import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
 import { PROVINCES } from '@/constants/provinces';
 import { updateAttachment } from "@/apis/upload";
 import { useRouter } from 'next/navigation';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import LanguagesSpokenSection from './LanguagesSpokenSection';
-import FormedTimeSection from './FormedTimeSection';
 import DescriptionSection from './DescriptionSection';
+import SkillOfferedSection from './SkillOfferedSection';
 
-function CreateNewStartup() {
-  const [companyName, setCompanyName] = useState('');
-  const [startupUsername, setStartupUsername] = useState('');
-  const [selectedGoal, setSelectedGoal] = useState(STARTUP_SDG_GOALS.NO_POVERTY.textValue);
+function CreateNewMentor() {
+  const [mentorName, setMentorName] = useState('');
+  const [mentorUsername, setMentorUsername] = useState('');
   const [location, setLocation] = useState(PROVINCES[0].key);
   const [profilePicture, setProfilePicture] = useState('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
-  const [members, setMembers] = useState<MemberForInvite[]>([]);
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
-  const [formedTime, setFormedTime] = useState<Date | null>(null);
   const [languagesSpoken, setLanguagesSpoken] = useState<LanguagesSpoken>(['EN']);
+  const [skillOffered, setSkillOffered] = useState<SkillOffered>([]);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -40,82 +37,56 @@ function CreateNewStartup() {
     router.back();
   }
 
-  const handleGoalChange = (newGoal: string) => {
-    setSelectedGoal(newGoal);
-  }
-
   const handleChangeImage = (fileUrl: string, fileId: string) => {
     setProfilePicture(fileUrl);
     setUploadedPictureId(fileId);
   }
 
-  const handleChangeStartupUsername = (startupName: string) => {
-    const username = changeCase.snakeCase(startupName);
-    setStartupUsername('@' + username);
+  const handleChangeMentorUsername = (mentorName: string) => {
+    const username = changeCase.snakeCase(mentorName);
+    setMentorUsername('@' + username);
   }
 
   const handleDescriptionChange = (newDescription: string) => {
     setDescription(newDescription);
   }
 
-  const handleFormedTimeChange = (newFormedTime: Date | null) => {
-    setFormedTime(newFormedTime);
-  }
-
   const handleLanguagesSpokenChange = (newLanguages: LanguagesSpoken) => {
     setLanguagesSpoken(newLanguages);
+  }
+
+  const handleSkillOfferedChange = (newSkills: SkillOffered) => {
+    setSkillOffered(newSkills);
   }
 
   const handleCreateProfile = async () => {
     setLoading(true);
     const requestBody = {
-      name: companyName,
-      startupUsername: startupUsername,
+      name: mentorName,
+      mentorUsername: mentorUsername,
       locationBased: location,
-      sdgGoal: selectedGoal,
+      sdgFocusExpertises: selectedGoals,
       avtUrl: profilePicture,
       description: description,
-      formedTime: formedTime,
+      skillOffered: skillOffered,
       languagesSpoken: languagesSpoken,
     };
 
     try {
-      const response = await create_startup_profile(requestBody);
+      const response = await create_mentor_profile(requestBody);
       addToast({
         title: 'Profile created successfully',
         color: 'success',
         timeout: 3000,
       });
-      router.push(`/startup-detail/${response.data.newStartup.id}`);
-      const user = localStorage.getItem('user');
-      const userObj = user ? JSON.parse(user) : {};
-      const inviterEmail = userObj.email;
+      router.push(`/mentor-detail/${response.data.newMentor.id}`);
 
       updateAttachment({
         id: uploadedPictureId,
-        ownerId: response.data.newStartup.id,
-        ownerType: UPLOAD_OWNER_TYPE.STARTUP
+        ownerId: response.data.newMentor.id,
+        ownerType: UPLOAD_OWNER_TYPE.MENTOR,
       });
 
-      if (members.length !== 0) {
-        invite_list_member({
-          invitee: members,
-          inviterEmail: inviterEmail,
-          startupId: response.data.newStartup.id,
-        }).then(() => {
-          addToast({
-            title: 'Members invited successfully',
-            color: 'success',
-            timeout: 3000,
-          });
-        }).catch(() => {
-          addToast({
-            title: 'Error inviting members',
-            color: 'danger',
-            timeout: 5000,
-          });
-        });
-      }
     } catch (error) {
       addToast({
         title: 'Error creating profile',
@@ -137,16 +108,13 @@ function CreateNewStartup() {
       <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
         <HeaderSection />
         <ProfilePictureUpload onImageUpload={handleChangeImage} />
-        <StartupNameSection
-          companyName={companyName}
-          startupUsername={startupUsername}
-          onCompanyNameChange={setCompanyName}
-          onChangeStartupUsername={handleChangeStartupUsername}
+        <MentorNameSection
+          mentorName={mentorName}
+          mentorUsername={mentorUsername}
+          onMentorNameChange={setMentorName}
+          onChangeMentorUsername={handleChangeMentorUsername}
         />
         <LocationBasedSection selectedLocation={location} onChange={setLocation} />
-        <FormedTimeSection
-          formedTime={formedTime}
-          onFormedTimeSelect={handleFormedTimeChange} />
         <DescriptionSection
           description={description}
           onDescriptionChange={handleDescriptionChange}
@@ -155,15 +123,18 @@ function CreateNewStartup() {
           languagesSpoken={languagesSpoken}
           onLanguagesSpokenChange={handleLanguagesSpokenChange}
         />
-        <SDGGoalSection
-          selectedGoal={selectedGoal}
-          onGoalChange={handleGoalChange}
+        <SkillOfferedSection
+          skillOffered={skillOffered}
+          onSkillOfferedChange={handleSkillOfferedChange}
         />
-        <AddMemberSection members={members} setMembers={setMembers} />
+        <SDGGoalSection
+          selectedGoals={selectedGoals}
+          onGoalsChange={setSelectedGoals}
+        />
         <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
       </div>
     </div>
   )
 }
 
-export default CreateNewStartup
+export default CreateNewMentor

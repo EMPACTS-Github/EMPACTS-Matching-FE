@@ -45,7 +45,7 @@ const OverviewBody: React.FC<OverviewBodyProps> = ({ mentorProfile }) => {
                 </div>
                 <div className='space-y-2'>
                     <h4 className="text-lg font-semibold text-gray-800">Skill offered</h4>
-                    <p className="text-gray-500 text-sm whitespace-pre-line space-x-2">
+                    <p className="text-gray-500 text-sm whitespace-pre-line space-x-2 space-y-2">
                         {Array.isArray(mentorProfile?.skillOffered) && mentorProfile.skillOffered.length > 0
                             ? mentorProfile.skillOffered.map((skill: string, idx: number) => (
                                 <Chip
@@ -63,7 +63,7 @@ const OverviewBody: React.FC<OverviewBodyProps> = ({ mentorProfile }) => {
                 </div>
                 <div className='space-y-2'>
                     <h4 className="text-lg font-semibold text-gray-800">Language Spoken</h4>
-                    <p className="text-gray-500 text-sm whitespace-pre-line space-x-2">
+                    <p className="text-gray-500 text-sm whitespace-pre-line space-x-2 space-y-2">
                         {Array.isArray(mentorProfile?.languagesSpoken) && mentorProfile.languagesSpoken.length > 0
                             ? mentorProfile.languagesSpoken.map((lang: string, idx: number) => (
                                 <Chip

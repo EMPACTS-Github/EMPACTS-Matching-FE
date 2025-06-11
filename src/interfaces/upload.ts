@@ -5,7 +5,7 @@ export interface IUploadData {
 }
 
 export interface IUpdateAttachmentData {
-  id: number;
+  id: string;
   ownerId?: string;
   ownerType: string;
   attachmentTitle?: string;
