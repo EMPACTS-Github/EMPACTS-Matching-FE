@@ -42,7 +42,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [description, setDescription] = useState<string>(startup.description || "");
     const [sdgGoal, setSdgGoal] = useState<string>(startup.sdgGoal || "");
     const [profilePicture, setProfilePicture] = useState('');
-    const [uploadedPictureId, setUploadedPictureId] = useState(0);
+    const [uploadedPictureId, setUploadedPictureId] = useState('');
 
     const images: string[] = [
         "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
@@ -126,7 +126,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const handleDeleteProfileClick = () => {
         console.log("2")
     }
-    const onImageUpload = (fileUrl: string, fileId: number) => {
+    const onImageUpload = (fileUrl: string, fileId: string) => {
         setProfilePicture(fileUrl);
         setUploadedPictureId(fileId);
     }
