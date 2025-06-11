@@ -66,7 +66,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                 window.location.reload();
             }, 500);
         } catch (error) {
-            console.error("Failed to cancel request:", error);
+            console.error("Failed to accept request:", error);
             addToast({
                 title: 'Response Matching Request failed',
                 color: 'danger',
@@ -91,7 +91,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                 window.location.reload();
             }, 500);
         } catch (error) {
-            console.error("Failed to cancel request:", error);
+            console.error("Failed to reject request:", error);
             addToast({
                 title: 'Response Matching Request failed',
                 color: 'danger',
@@ -188,7 +188,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                                 className="bg-transparent border-none"
                                 codeString={meetingLink}
                             >
-                                {meetingLink.length > 25 ? meetingLink.slice(0, 25) + "..." : meetingLink}
+                                {meetingLink.replace(/^https?:\/\//, '')}
                             </Snippet>
                         </div>
                     </div>
