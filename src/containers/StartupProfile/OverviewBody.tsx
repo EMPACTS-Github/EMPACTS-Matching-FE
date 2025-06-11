@@ -2,7 +2,7 @@ import { Startup } from "@/interfaces/StartupProfile";
 import { Link } from "@heroui/link";
 
 interface OverviewBodyProps {
-    startup: Startup | null;
+    startup: Startup;
 }
 
 const OverviewBody: React.FC<OverviewBodyProps> = ({ startup }) => {
@@ -11,21 +11,21 @@ const OverviewBody: React.FC<OverviewBodyProps> = ({ startup }) => {
             <div>
                 <h4 className="text-lg font-semibold text-gray-800">Description</h4>
                 <p className="text-gray-500 text-sm whitespace-pre-line">
-                    {startup?.description || "No description available"}
+                    {startup.description || "No description available"}
                 </p>
             </div>
             <div>
-                <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
-                <p className="text-gray-500 text-sm whitespace-pre-line">
-                    {startup?.startup_link ? (
+                <h4 className="text-lg font-semibold text-gray-800 w-1/2">Profile Link</h4>
+                <p className="text-gray-500 text-sm whitespace-pre-line w-1/2">
+                    {startup.startupLink ? (
                         <Link isExternal showAnchorIcon size="sm" className="text-blue-500"
                             href={
-                                startup.startup_link.startsWith("http")
-                                    ? startup.startup_link
-                                    : `https://${startup.startup_link}`
+                                startup.startupLink.startsWith("http")
+                                    ? startup.startupLink
+                                    : `https://${startup.startupLink}`
                             }
                         >
-                            {startup.startup_link}
+                            {startup.startupLink}
                         </Link>
                     ) : (
                         <span className="text-gray-500">No profile link available</span>

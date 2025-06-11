@@ -68,7 +68,7 @@ function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  const handleStartupDetail = (id: number) => {
+  const handleStartupDetail = (id: string) => {
     router.push(`/startup/${id}`);
   }
 
@@ -94,7 +94,9 @@ function Home() {
           }
         </div>
         {loading && hasMore && (
-          <Spinner color="secondary" className="flex justify-center items-center mt-8 mb-8" size="lg" />
+          <div className='flex justify-center items-center h-[50%]'>
+            <Spinner classNames={{ label: "text-foreground mt-4" }} label="The system is fetching Startup. Please wait..." variant="wave" />
+          </div>
         )}
       </div>
     </main>

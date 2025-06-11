@@ -2,25 +2,24 @@ import Image from "next/image";
 import React from "react";
 import FavoriteIcon from "/public/assets/favorite-icon.svg";
 import FavoriteFilledIcon from "/public/assets/favorite-filled-icon.svg";
-import ExternalIcon from "/public/assets/external-icon.svg";
 import { Button } from "@heroui/react";
-import AvatarPlaceholder from "/public/assets/avatar-placeholder.png";
 import Label from "/public/assets/label.svg";
 import Star from "/public/assets/star.svg";
 import IconText from "@/components/common/IconText";
 import TitleWithDescription from "@/components/common/TitleWithDescription";
 import TextLine from "@/components/common/TextLine";
-import FlashIcon from "@/components/Icons/FlashIcon";
+import UserPlusIcon from "@/components/Icons/UserPlusIcon";
+import { getSDGGoal } from "@/utils/getSDGGoal";
 
 interface ProfileInfoCardProps {
     title: string;
-    location: string;
+    location: string | undefined;
     description: string;
-    bio: string;
     rating: number;
-    sdg: string;
+    sdg: string[];
     onFavoriteClick: () => void;
     isFavorite: boolean;
+    avtUrl: string
     className?: string;
     onClickButton?: () => void;
 };
@@ -29,8 +28,8 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
     title,
     location,
     description,
-    bio,
     rating,
+    avtUrl,
     sdg,
     onFavoriteClick,
     isFavorite,
@@ -38,19 +37,20 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
     onClickButton,
 }) => {
     return (
-        <div className={`bg-white rounded-lg shadow-md p-6 gap-y-6 flex flex-col ${className}`}>
-            <div className="flex justify-between">
+        <div className={`bg-white rounded-lg shadow-xl p-6 gap-y-6 flex flex-col h-fit ${className}`}>
+            <div className="flex justify-start">
                 <Image
-                    src={AvatarPlaceholder}
+                    src={avtUrl}
                     alt={title}
                     width={80}
                     height={80}
-                    className="mr-4 h-20 w-20 rounded-full"
+                    className="mr-6 h-20 w-20 rounded-full"
                 />
                 <div className="items-center justify-between flex-grow">
                     <div className="flex items-center justify-between">
                         <h3 className="text-[28px] font-semibold text-black">{title}</h3>
                         <div className="flex items-center gap-2">
+                            <IconText icon={Star} text={rating} alt="Rating" />
                             <Image
                                 onClick={onFavoriteClick}
                                 src={isFavorite ? FavoriteFilledIcon : FavoriteIcon}
@@ -59,12 +59,6 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                                 height={24}
                                 className="cursor-pointer"
                             />
-                            <Image
-                                src={ExternalIcon}
-                                alt="External"
-                                width={24}
-                                height={24}
-                            />
                         </div>
                     </div>
                     <div className="flex items-center justify-between">
@@ -72,9 +66,10 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                         <Button
                             type="submit"
                             color="primary"
-                            size="lg"
-                            className="rounded-lg bg-empacts border-empacts text-lg text-white"
-                            startContent={<FlashIcon className="text-white" />}
+                            size="md"
+                            variant="solid"
+                            radius="md"
+                            startContent={<UserPlusIcon className="text-white" />}
                             onPress={onClickButton}
                         >
                             Connect
@@ -83,11 +78,16 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
                 </div>
             </div>
             <div className="flex gap-x-4">
-                <IconText icon={Label} text={sdg} alt="SDG" />
-                <IconText icon={Star} text={rating} alt="Rating" />
+                <div>
+                    <div className="text-black text-md flex flex-wrap gap-1">
+                        <IconText icon={Label} alt="SDG" />
+                        {sdg.map((item, idx) => (
+                            <span key={idx}>{getSDGGoal(item)}</span>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <div className="flex flex-col gap-y-2">
-                <TitleWithDescription title="Bio" description={bio} />
+            <div className="flex flex-col gap-y-3">
                 <TitleWithDescription title="Description" description={description} />
             </div>
         </div>

@@ -22,9 +22,10 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
       key={category.id}
       onPress={() => handleSelectCategory(category.id)}
       size="md"
-      variant={selectedCategory.includes(category.id) ? "flat" : "ghost"}
+      variant={selectedCategory.includes(category.id) ? "solid" : "ghost"}
+      className={!selectedCategory.includes(category.id) ? "border-empacts-grey-50 border-1" : ""}
+      color='primary'
       style={{
-        border: selectedCategory.includes(category.id) ? "2px solid #EBEBEC" : "",
         whiteSpace: "normal", // Ensure full text is displayed
         wordBreak: "break-word", // Break long words
         fontSize: "16px",

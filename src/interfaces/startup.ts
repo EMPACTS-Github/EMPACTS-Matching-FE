@@ -1,24 +1,25 @@
 export interface HomepageStartup {
-  id: number;
+  id: string;
   name: string;
   description?: string;
-  category: string;
-  avt_url: string;
-  member_qty: number;
+  sdgGoal: string;
+  avtUrl: string;
+  memberQty: number;
 }
 
 export interface Startup {
-  id: number;
+  id: string;
   name: string;
-  avt_url?: string;
+  avtUrl?: string;
   description?: string;
-  category?: string;
-  startup_link?: string;
-  location_based: string;
-  member_qty?: number;
+  sdgGoal?: string;
+  startupLink?: string;
+  locationBased: string;
+  memberQty?: number;
+  profileLink?: string;
 }
 
-export interface Category {
+export interface SdgGoal {
   id: string;
   label: string;
 }
@@ -26,4 +27,9 @@ export interface Category {
 export interface MemberForInvite {
   email: string;
   title: string;
+}
+
+export interface SuggestMentors {
+  mentor_key: string;
+  similarity: number;
 }

@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import DeleteIcon from "@/components/Icons/DeleteIcon";
 import EditIcon from "@/components/Icons/EditIcon";
+import UsersIcon from "@/components/Icons/UsersIcon";
 import { Member } from "@/interfaces/StartupProfile";
 import EditMemberTitleModal from "@/components/Modal/EditMemberTitleModal";
 import MenuIcon from '/public/assets/three-dot-menu-icon.svg';
@@ -23,23 +24,23 @@ import InviteMemberModal from "@/components/Modal/InviteMemberModal";
 
 interface MemberListContainerProps {
     members: Member[] | undefined;
-    startupId: number;
+    startupId: string;
 }
 
 const RoleChip = ({ role }: { role: string }) => (
     <Chip
         size="sm"
-        color={role === "OWNER" ? "primary" : "default"}
-        variant="faded"
-        className={role === "OWNER" ? "border-empacts" : ""}
+        color="primary"
+        variant={role === "OWNER" ? "faded" : "bordered"}
+        className={role === "OWNER" ? "border-empacts border-1 bg-empacts-lighter capitalize" : "border-1"}
     >
-        {role}
+        {role === "OWNER" ? "Owner" : role === "MEMBER" ? "Member" : role}
     </Chip>
 );
 
 const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, startupId }) => {
     const [memberList, setMembers] = useState<Member[]>([]);
-    const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+    const [selectedMember, setSelectedMember] = useState<Member>({} as Member);
     const [filterMode, setFilterMode] = useState<"ALL" | "OWNER" | "MEMBER">("ALL");
     const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
     const [newMemberList, setNewMemberList] = useState<MemberForInvite[]>([]);
@@ -73,7 +74,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
     }, [filterMode, memberList]);
     useEffect(() => {
         if (!userId || !memberList) return;
-        const isOwner = memberList.some((member) => member.user_id.id === userId && member.role === "OWNER");
+        const isOwner = memberList.some((member) => member.user.id === userId && member.role === "OWNER");
         setAccessAction({
             canEdit: isOwner,
             canInvite: isOwner,
@@ -103,12 +104,12 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
         }
     }
 
-    const updateMemberTitle = async (memberId: number | undefined, newTitle: string) => {
+    const updateMemberTitle = async (memberId: string, newTitle: string) => {
         const member = memberList.find((member) => member.id === memberId);
-        if (member && member.position_title != newTitle) {
+        if (member && member.positionTitle != newTitle) {
             const data = {
-                startup_id: startupId,
-                position_title: newTitle,
+                startupId: startupId,
+                positionTitle: newTitle,
             }
             try {
                 const res = await startup_member_edit_title(memberId, data);
@@ -116,7 +117,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                 if (res.code == "STARTUP_MEMBER_UPDATED") {
                     setMembers((prevMembers) =>
                         prevMembers.map((member) =>
-                            member.id === memberId ? { ...member, position_title: res.data.position_title } : member
+                            member.id === memberId ? { ...member, positionTitle: res.data.positionTitle } : member
                         )
                     );
                     addToast({
@@ -136,11 +137,11 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
         };
     }
 
-    const changeMemberPermission = async (memberId: number | undefined, newRole: string) => {
+    const changeMemberPermission = async (memberId: string, newRole: string) => {
         const member = memberList.find((member) => member.id === memberId);
         if (member && member.role != newRole) {
             const data = {
-                startup_id: startupId,
+                startupId: startupId,
                 role: newRole,
             }
             try {
@@ -169,7 +170,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
         };
     }
 
-    const deleteMember = async (memberId: number | undefined) => {
+    const deleteMember = async (memberId: string) => {
         const member = memberList.find((member) => member.id === memberId);
         if (member) {
             const data = {
@@ -204,6 +205,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                 <div className="space-x-2">
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "ALL" ? "font-bold" : "border-empacts-grey-50 border-1 font-bold"}
                         variant={filterMode === "ALL" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("ALL")}
@@ -212,6 +215,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     </Button>
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "OWNER" ? "font-bold" : "border-empacts-grey-50 border-1 font-bold"}
                         variant={filterMode === "OWNER" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("OWNER")}
@@ -220,6 +225,8 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     </Button>
                     <Button
                         size="sm"
+                        color="primary"
+                        className={filterMode === "MEMBER" ? "font-bold" : "border-empacts-grey-50 border-1 font-bold"}
                         variant={filterMode === "MEMBER" ? "solid" : "bordered"}
                         radius="full"
                         onPress={() => setFilterMode("MEMBER")}
@@ -235,7 +242,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                     <div key={idx} className="flex justify-between p-4 bg-white shadow-lg rounded-lg w-full">
                         <div className="flex items-center gap-3">
                             <Image
-                                src={member.user_id.avt_url}
+                                src={member.user.avtUrl}
                                 alt="User Avatar"
                                 width={48}
                                 height={48}
@@ -243,10 +250,10 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                             />
                             <div>
                                 <div className="font-semibold flex items-center gap-2">
-                                    {member.user_id.name}
+                                    {member.user.name}
                                     <RoleChip role={member.role} />
                                 </div>
-                                <div className="text-sm text-gray-500">{member.position_title}</div>
+                                <div className="text-sm text-gray-500">{member.positionTitle}</div>
                             </div>
                         </div>
                         {acessAction.canEdit && <Dropdown placement="bottom-end">
@@ -266,7 +273,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                                 </DropdownItem>
                                 <DropdownItem
                                     key="change-permission"
-                                    startContent={<EditIcon className={iconClasses} />}
+                                    startContent={<UsersIcon className={iconClasses} />}
                                     onPress={() => {
                                         setSelectedMember(member); // Lưu thành viên được chọn
                                         onChangePermissionOpen(); // Mở modal Change Permission

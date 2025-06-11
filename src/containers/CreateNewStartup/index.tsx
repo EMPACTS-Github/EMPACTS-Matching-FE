@@ -9,6 +9,7 @@ import AddMemberSection from './AddMemberSection';
 import ActionButtons from './ActionButtons';
 import { create_startup_profile, invite_list_member } from '@/apis/startup';
 import { MemberForInvite } from '@/interfaces/startup';
+import { LanguagesSpoken } from '@/constants/common';
 import { addToast } from '@heroui/react';
 import * as changeCase from "change-case";
 import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
@@ -16,6 +17,9 @@ import { PROVINCES } from '@/constants/provinces';
 import { updateAttachment } from "@/apis/upload";
 import { useRouter } from 'next/navigation';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
+import LanguagesSpokenSection from './LanguagesSpokenSection';
+import FormedTimeSection from './FormedTimeSection';
+import DescriptionSection from './DescriptionSection';
 
 function CreateNewStartup() {
   const [companyName, setCompanyName] = useState('');
@@ -23,9 +27,12 @@ function CreateNewStartup() {
   const [selectedGoal, setSelectedGoal] = useState(STARTUP_SDG_GOALS.NO_POVERTY.textValue);
   const [location, setLocation] = useState(PROVINCES[0].key);
   const [profilePicture, setProfilePicture] = useState('');
-  const [uploadedPictureId, setUploadedPictureId] = useState(0);
+  const [uploadedPictureId, setUploadedPictureId] = useState('');
   const [members, setMembers] = useState<MemberForInvite[]>([]);
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState('');
+  const [formedTime, setFormedTime] = useState<Date | null>(null);
+  const [languagesSpoken, setLanguagesSpoken] = useState<LanguagesSpoken>(['EN']);
 
   const router = useRouter();
 
@@ -37,7 +44,7 @@ function CreateNewStartup() {
     setSelectedGoal(newGoal);
   }
 
-  const handleChangeImage = (fileUrl: string, fileId: number) => {
+  const handleChangeImage = (fileUrl: string, fileId: string) => {
     setProfilePicture(fileUrl);
     setUploadedPictureId(fileId);
   }
@@ -47,13 +54,29 @@ function CreateNewStartup() {
     setStartupUsername('@' + username);
   }
 
+  const handleDescriptionChange = (newDescription: string) => {
+    setDescription(newDescription);
+  }
+
+  const handleFormedTimeChange = (newFormedTime: Date | null) => {
+    setFormedTime(newFormedTime);
+  }
+
+  const handleLanguagesSpokenChange = (newLanguages: LanguagesSpoken) => {
+    setLanguagesSpoken(newLanguages);
+  }
+
   const handleCreateProfile = async () => {
     setLoading(true);
     const requestBody = {
       name: companyName,
-      location_based: location,
-      category: selectedGoal,
-      avt_url: profilePicture,
+      startupUsername: startupUsername,
+      locationBased: location,
+      sdgGoal: selectedGoal,
+      avtUrl: profilePicture,
+      description: description,
+      formedTime: formedTime,
+      languagesSpoken: languagesSpoken,
     };
 
     try {
@@ -70,8 +93,8 @@ function CreateNewStartup() {
 
       updateAttachment({
         id: uploadedPictureId,
-        owner_id: response.data.newStartup.id,
-        owner_type: UPLOAD_OWNER_TYPE.STARTUP
+        ownerId: response.data.newStartup.id,
+        ownerType: UPLOAD_OWNER_TYPE.STARTUP
       });
 
       if (members.length !== 0) {
@@ -121,6 +144,17 @@ function CreateNewStartup() {
           onChangeStartupUsername={handleChangeStartupUsername}
         />
         <LocationBasedSection selectedLocation={location} onChange={setLocation} />
+        <FormedTimeSection
+          formedTime={formedTime}
+          onFormedTimeSelect={handleFormedTimeChange} />
+        <DescriptionSection
+          description={description}
+          onDescriptionChange={handleDescriptionChange}
+        />
+        <LanguagesSpokenSection
+          languagesSpoken={languagesSpoken}
+          onLanguagesSpokenChange={handleLanguagesSpokenChange}
+        />
         <SDGGoalSection
           selectedGoal={selectedGoal}
           onGoalChange={handleGoalChange}

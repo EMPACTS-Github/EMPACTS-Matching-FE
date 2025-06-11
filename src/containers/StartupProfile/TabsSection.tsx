@@ -6,13 +6,13 @@ import AdvancedBody from "./AdvancedBody";
 import DocumentBody from "./DocumentBody";
 
 interface TabsSectionProps {
-    startup: Startup | null;
+    startup: Startup;
 }
 
 const TabsSection: React.FC<TabsSectionProps> = ({ startup }) => {
     return (
-        <div className="flex-1 overflow-y-scroll">
-            <Tabs aria-label="Startup Tabs" variant="underlined">
+        <div className="flex-1">
+            <Tabs aria-label="Startup Tabs" variant="underlined" color="primary" className="font-bold">
                 <Tab key="overview" title="Overview">
                     <OverviewBody startup={startup} />
                 </Tab>

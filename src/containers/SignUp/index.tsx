@@ -83,7 +83,7 @@ function SignUp() {
         type="submit"
         color="primary"
         size="lg"
-        className="!text-white w-full rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+        className="!text-white w-full rounded-lg bg-empacts border-empacts"
       >
         Sign up
       </Button>
@@ -91,8 +91,8 @@ function SignUp() {
   );
 
   return (
-    <div className="col-span-1 bg-white flex items-center justify-center h-full">
-      <div className="p-8 rounded-lg w-full max-w-sm h-3/4">
+    <div className="col-span-1 bg-white flex items-center justify-center h-screen">
+      <div className="p-8 rounded-lg w-full max-w-sm h-screen flex flex-col justify-center">
         {currentScreen == 'verification' ? (
           <EmailVerification />
         ) : currentScreen == 'password' ? (

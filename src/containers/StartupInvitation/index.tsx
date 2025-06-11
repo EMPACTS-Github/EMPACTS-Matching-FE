@@ -28,33 +28,42 @@ const StartupInvitation = () => {
   const [differentAccount, setDifferentAccount] = useState(false);
   const [invitationStatus, setInvitationStatus] = useState<string>('');
   const [inviteeStartupInfo, setInviteeStartupInfo] = useState<InviteeStartupInfo | null>({
-    positionTitle: "Senior Software Engineer",
-    startupAvt: "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/avatar_placeholder.png",
-    startupName: "WePushToMaster",
-    startupGoal: "TOP 0.001%",
+    positionTitle: '',
+    startupAvt: '',
+    startupName: '',
+    startupGoal: '',
   });
-  const [invitationResponse, setInvitationResponse] = useState<string>('');
+  const [invitationResponse, setInvitationResponse] = useState({
+    invitedEmail: '',
+    inviteCode: '',
+    response: '',
+  });
+  const [currentStartupId, setCurrentStartupId] = useState('');
 
   const invitationCode = searchParams.get('code');
-  const inviteeEmail = searchParams.get('email');
+  const invitedEmail = searchParams.get('email');
   let userInfo = JSON.parse(localStorage.getItem('user') as string);
 
   const handleChangeInvitationResponse = (response: string) => {
-    setInvitationResponse(response);
+    setInvitationResponse({
+      invitedEmail: invitedEmail as string,
+      inviteCode: invitationCode as string,
+      response: response,
+    });
   }
 
   const handleLoginAsDifferentAccount = () => {
     logout()
       .then(() => {
         localStorage.setItem('invitationCode', invitationCode as string);
-        localStorage.setItem('inviteeEmail', inviteeEmail as string);
+        localStorage.setItem('invitedEmail', invitedEmail as string);
         localStorage.setItem('status', INVITATION_PENDING_STATUS);
         route.replace('/auth/login');
       })
   }
 
   const handleCancelLoginAsDifferentAccount = () => {
-    localStorage.removeItem('inviteeEmail');
+    localStorage.removeItem('invitedEmail');
     localStorage.removeItem('invitationCode');
     localStorage.removeItem('status');
     route.replace('/');
@@ -63,10 +72,8 @@ const StartupInvitation = () => {
   const getCheckInvitationStatus = async () => {
     try {
       const response = await checkInvitationStatus({
-        invited_email: inviteeEmail as string,
-        invite_code: invitationCode as string,
+        inviteCode: invitationCode as string,
       });
-
       if (response.code === STARTUP_INVITATION_RESPONSE_CODE.INVITATION_EXPIRED ||
         response.code === STARTUP_INVITATION_RESPONSE_CODE.INVITATION_INVALID
       ) {
@@ -76,12 +83,13 @@ const StartupInvitation = () => {
 
       const data = response.data;
       const startupInfo = {
-        positionTitle: data.position_title as string,
-        startupAvt: data.startup_id.avt_url as string,
-        startupName: data.startup_id.name as string,
-        startupGoal: getSDGGoal(data.startup_id.category) as string,
+        positionTitle: data.positionTitle as string,
+        startupAvt: data.startup.avtUrl as string,
+        startupName: data.startup.name as string,
+        startupGoal: getSDGGoal(data.startup.sdgGoal) as string,
       }
       setInviteeStartupInfo(startupInfo);
+      setCurrentStartupId(data.startup.id);
     } catch (error) {
       addToast({
         title: 'Error in checking invitation status',
@@ -95,20 +103,19 @@ const StartupInvitation = () => {
   const responseInvitation = async (invitationResponse: string) => {
     try {
       const response = await responseStartupInvitation({
-        invite_code: invitationCode as string,
-        invited_email: inviteeEmail as string,
+        inviteCode: invitationCode as string,
+        invitedEmail: invitedEmail as string,
         response: invitationResponse,
       })
 
-      localStorage.removeItem('inviteeEmail');
+      localStorage.removeItem('invitedEmail');
       localStorage.removeItem('invitationCode');
       localStorage.removeItem('status');
 
       if (response.code === STARTUP_INVITATION_RESPONSE_CODE.INVITATION_REJECTED) {
         route.replace('/');
       } else {
-        const startupId = response.data.startup_id.id;
-        route.replace(`/startup-detail/${startupId}`);
+        route.replace(`/startup-detail/${currentStartupId}`);
       }
     } catch (error) {
       addToast({
@@ -121,7 +128,7 @@ const StartupInvitation = () => {
 
   useEffect(() => {
     if (userInfo) {
-      if (userInfo.email !== inviteeEmail) {
+      if (userInfo.email !== invitedEmail) {
         setDifferentAccount(true);
         setLoading(false);
       } else {
@@ -130,13 +137,13 @@ const StartupInvitation = () => {
       }
     } else {
       localStorage.setItem('invitationCode', invitationCode as string);
-      localStorage.setItem('inviteeEmail', inviteeEmail as string);
+      localStorage.setItem('invitedEmail', invitedEmail as string);
       localStorage.setItem('status', INVITATION_PENDING_STATUS);
       route.replace('/auth/login');
     }
   }, [])
 
-  if (!invitationCode || !inviteeEmail) {
+  if (!invitationCode || !invitedEmail) {
     route.replace('/');
   }
 
@@ -153,7 +160,7 @@ const StartupInvitation = () => {
       return (
         <AlertLoginAs
           email={userInfo.email}
-          inviteeEmail={inviteeEmail as string}
+          inviteeEmail={invitedEmail as string}
           onLoginAsDifferentAccount={handleLoginAsDifferentAccount}
           onCancelLoginAsDifferentAccount={handleCancelLoginAsDifferentAccount}
         />

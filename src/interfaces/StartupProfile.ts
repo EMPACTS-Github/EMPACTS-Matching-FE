@@ -4,48 +4,42 @@ export interface StartupProfileResponse {
 }
 
 export interface Startup {
-    id: number;
+    id: string;
     name: string;
+    startupUsername: string;
     phone: string | null;
-    avt_url: string;
+    avtUrl: string;
     status: string;
     description: string | null;
-    category: string;
-    startup_link: string | null;
-    credential: string | null;
-    location_based: string;
-    market_focus: string | null;
-    startup_state: string | null;
-    state_detail: string | null;
-    have_active_use: number;
-    revenue: number;
-    other_participated_detail: string;
-    legal_equity_detail: string;
-    investment_detail: string;
-    fundraising_detail: string;
-    push_state: number;
-    member_qty: number;
-    is_deleted: boolean;
-    created_at: string;
-    updated_at: string;
+    sdgGoal: string;
+    startupLink?: string | null;
+    credential?: string | null;
+    locationBased: string;
+    marketFocus?: string | null;
+    startupState?: string | null;
+    stateDetail?: string | null;
+    haveActiveUse?: number;
+    revenue?: number;
+    otherParticipatedDetail?: string;
+    legalEquityDetail?: string;
+    investmentDetail?: string;
+    fundraisingDetail?: string;
+    memberQty: number;
 }
 
 export interface Member {
-    id: number;
-    position_title: string;
+    id: string;
+    positionTitle: string;
     role: string;
     description: string | null;
-    linkedin_url: string | null;
-    is_deleted: boolean;
-    created_at: string;
-    updated_at: string;
-    user_id: User;
+    linkedinUrl: string | null;
+    user: User;
 }
 
 export interface User {
     id: number;
     email: string;
     name: string;
-    avt_url: string;
-    is_verified: boolean;
+    avtUrl: string;
+    isVerified: boolean;
 }

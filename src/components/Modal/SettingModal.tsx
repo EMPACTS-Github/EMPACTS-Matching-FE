@@ -23,7 +23,7 @@ import { Textarea } from "@heroui/input";
 interface SettingModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
-    startup: Startup | undefined;
+    startup: Startup;
 }
 
 const PlusSquareIcon = () => (
@@ -36,12 +36,11 @@ const PlusSquareIcon = () => (
 const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false); // Add loading state
-    const [image, setImage] = useState<string>(startup?.avt_url || "");
-    const [startupName, setStartupName] = useState<string>(startup?.name || "");
-    const [location, setLocation] = useState<string>(startup?.location_based || "");
-    const [description, setDescription] = useState<string>(startup?.description || "");
-    const [sdgGoal, setSdgGoal] = useState<string>(startup?.category || "");
-    const [bio, setBio] = useState<string>("");
+    const [image, setImage] = useState<string>(startup.avtUrl || "");
+    const [startupName, setStartupName] = useState<string>(startup.name || "");
+    const [location, setLocation] = useState<string>(startup.locationBased || "");
+    const [description, setDescription] = useState<string>(startup.description || "");
+    const [sdgGoal, setSdgGoal] = useState<string>(startup.sdgGoal || "");
     const [profilePicture, setProfilePicture] = useState('');
     const [uploadedPictureId, setUploadedPictureId] = useState(0);
 
@@ -53,31 +52,31 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
 
     // Đồng bộ state với props khi startup thay đổi
     useEffect(() => {
-        if (startup?.name) {
+        if (startup.name) {
             setStartupName(startup.name);
         }
-        if (startup?.location_based) {
-            setLocation(startup.location_based);
+        if (startup.locationBased) {
+            setLocation(startup.locationBased);
         }
-        if (startup?.avt_url) {
-            setImage(startup.avt_url);
+        if (startup.avtUrl) {
+            setImage(startup.avtUrl);
         }
-        if (startup?.description) {
+        if (startup.description) {
             setDescription(startup.description);
         }
-        if (startup?.category) {
-            setSdgGoal(startup.category);
+        if (startup.sdgGoal) {
+            setSdgGoal(startup.sdgGoal);
         }
         // if (startup?.bio) {
         //     setBio(startup.bio);
         // }
     }, [startup]);
     const onUpdateProfileClick = async () => {
-        if (startup?.id) {
+        if (startup.id) {
             setLoading(true);
             const requestBody = {
                 name: startupName,
-                location_based: location,
+                locationBased: location,
                 description: description,
                 sdgGoal: sdgGoal,
                 isHide: false,
@@ -85,8 +84,8 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
             try {
                 const updateImageResponse = await updateAttachment({
                     id: uploadedPictureId,
-                    owner_id: startup.id,
-                    owner_type: UPLOAD_OWNER_TYPE.STARTUP,
+                    ownerId: startup.id,
+                    ownerType: UPLOAD_OWNER_TYPE.STARTUP,
                 });
                 try {
                     const updateProfileResponse = await startup_profile_update(
@@ -136,10 +135,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         if (file) {
             setLoading(true);
             try {
-                const response = await uploadAttachemt({ file, owner_type: UPLOAD_OWNER_TYPE.STARTUP });
-                setImage(response.data.attachment_url);
+                const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
+                setImage(response.data.attachmentUrl);
                 setError(null);
-                onImageUpload(response.data.attachment_url, response.data.id);
+                onImageUpload(response.data.attachmentUrl, response.data.id);
                 addToast({
                     title: 'Image uploaded successfully',
                     color: 'success',
@@ -165,7 +164,6 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         }
     };
     return <Modal
-        isDismissable={false}
         size="5xl"
         isKeyboardDismissDisabled={true}
         isOpen={isOpen}
@@ -247,13 +245,6 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                     {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
                                 </Autocomplete>
                                 <LabelWithTextarea
-                                    label="Bio"
-                                    content=""
-                                    setContent={setBio}
-                                    minRows={1}
-                                    placeholder="Bio"
-                                />
-                                <LabelWithTextarea
                                     label="Description"
                                     content={description}
                                     setContent={setDescription}
@@ -280,27 +271,27 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                 <Divider />
                                 <LabelStartAndSwitchEnd
                                     label="Active user"
-                                    checked={startup?.have_active_use ? true : false}
+                                    checked={startup.haveActiveUse ? true : false}
                                     onChange={() => { }}
                                 />
                                 <LabelStartAndSwitchEnd
                                     label="Lastest Revenue"
-                                    checked={startup?.revenue ? true : false}
+                                    checked={startup.revenue ? true : false}
                                     onChange={() => { }}
                                 />
                                 <LabelStartAndSwitchEnd
                                     label="Legal Equity"
-                                    checked={startup?.legal_equity_detail ? true : false}
+                                    checked={startup.legalEquityDetail ? true : false}
                                     onChange={() => { }}
                                 />
                                 <LabelStartAndSwitchEnd
                                     label="Investment"
-                                    checked={startup?.investment_detail ? true : false}
+                                    checked={startup.investmentDetail ? true : false}
                                     onChange={() => { }}
                                 />
                                 <LabelStartAndSwitchEnd
                                     label="Fundraising"
-                                    checked={startup?.fundraising_detail ? true : false}
+                                    checked={startup.fundraisingDetail ? true : false}
                                     onChange={() => { }}
                                 />
                             </Tab>

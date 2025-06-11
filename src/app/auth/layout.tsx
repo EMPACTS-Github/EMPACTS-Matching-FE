@@ -4,11 +4,11 @@ import EmpactsBg from '/public/empacts-bg.png';
 
 function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-3 min-h-screen">
-      <div className="col-span-1">
+    <div className="md:grid md:grid-cols-3 flex flex-col min-h-screen">
+      <div className="w-full md:col-span-1 flex flex-col flex-grow">
         {children}
       </div>
-      <div className="col-span-2 h-screen overflow-hidden relative bg-[#1A1D1F]">
+      <div className="w-full col-span-2 md:h-screen overflow-hidden relative bg-secondary">
         <Image
           src={EmpactsBg}
           alt="EMPACTS Background Image"

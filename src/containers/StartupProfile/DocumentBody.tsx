@@ -155,7 +155,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({ startup }) => {
                         type="submit"
                         color="primary"
                         size="lg"
-                        className="rounded-lg bg-[#7f00ff] border-[#7f00ff] text-md text-white"
+                        className="rounded-lg bg-empacts border-empacts text-md text-white"
                         startContent={<PlusSquareIcon />}
                         onPress={onClickButton}
                     >

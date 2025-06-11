@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import EmpactsLogo from '/public/empacts-logo.svg'
+import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon'
 import FormTitle from '@/components/Form/FormTitle'
 import { addToast, Button, Form, Input } from '@heroui/react'
 import UserAvatar from '@/components/Form/UserAvatar'
@@ -16,7 +16,7 @@ function RegisterInfo() {
   const router = useRouter()
   const [username, setUsername] = useState('')
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
-  const [uploadAvatarId, setUploadAvatarId] = useState(0);
+  const [uploadAvatarId, setUploadAvatarId] = useState('');
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -26,10 +26,10 @@ function RegisterInfo() {
           if (e.target.files) {
             uploadAttachemt({
               file: e.target.files[0],
-              owner_type: UPLOAD_OWNER_TYPE.USER,
+              ownerType: UPLOAD_OWNER_TYPE.USER,
             })
               .then(response => {
-                setAvatarUrl(response.data.attachment_url);
+                setAvatarUrl(response.data.attachmentUrl);
                 setUploadAvatarId(response.data.id)
                 addToast({
                   title: 'Avatar uploaded',
@@ -67,11 +67,23 @@ function RegisterInfo() {
         const response = await create_new_profile(email, userProfileImgUrl, username);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.removeItem('email');
-        router.replace('/profiles/new');
+
+        const hasInvitationStatus = localStorage.getItem('status');
+        if (hasInvitationStatus) {
+          const invitationCode = localStorage.getItem('invitationCode');
+          const invitedEmail = localStorage.getItem('invitedEmail');
+          if (invitedEmail === email) {
+            router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
+          } else {
+            router.replace('/profiles/new');
+          }
+        } else {
+          router.replace('/profiles/new');
+        }
         updateAttachment({
           id: uploadAvatarId,
-          owner_type: UPLOAD_OWNER_TYPE.USER,
-          owner_id: response.data.user.id
+          ownerType: UPLOAD_OWNER_TYPE.USER,
+          ownerId: response.data.user.id
         })
       } catch (error) {
         console.log(error);
@@ -82,13 +94,14 @@ function RegisterInfo() {
   return (
     <div className='flex flex-col items-center justify-center gap-12 w-full'>
       <div>
-        <Image
-          src={EmpactsLogo}
-          alt="EMPACTS Logo Image"
-          priority
-          width={200}
-          height={200}
-        />
+        <Button
+          isIconOnly
+          aria-label="EMPACTS Logo Image"
+          className='w-48 p-1 bg-transparent'
+          radius='md'
+        >
+          <EmpactsLogoIcon />
+        </Button>
       </div>
       <div>
         <FormTitle className='font-bold text-2xl text-black' text='Complete your profile' />
@@ -117,7 +130,7 @@ function RegisterInfo() {
         <Button
           type="submit"
           color="primary"
-          className="interceptor-loading w-4/5 rounded-lg bg-[#7f00ff] border-[#7f00ff]"
+          className="interceptor-loading w-4/5 rounded-lg bg-empacts border-empacts"
         >
           Sign up
         </Button>

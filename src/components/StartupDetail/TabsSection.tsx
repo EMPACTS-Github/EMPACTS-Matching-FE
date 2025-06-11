@@ -5,7 +5,7 @@ import { Link } from "@heroui/react";
 const TabsSection = ({ startup }: { startup: Startup | null }) => {
     return (
         <div className="flex-1 overflow-hidden">
-            <Tabs aria-label="Startup Tabs" variant="underlined">
+            <Tabs aria-label="Startup Tabs" variant="underlined" color="primary">
                 <Tab key="overview" title="Overview">
                     <div className="space-y-4 overflow-auto h-[60vh] pr-2 hide-scrollbar">
                         <div>
@@ -16,9 +16,13 @@ const TabsSection = ({ startup }: { startup: Startup | null }) => {
                         </div>
                         <div>
                             <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
-                            <p className="text-gray-500 text-sm whitespace-pre-line">
-                                <Link isExternal showAnchorIcon href={startup?.startup_link}>{startup?.startup_link}</Link>
-                            </p>
+                            {startup?.profileLink ? (
+                                <p className="text-gray-500 text-sm whitespace-pre-line">
+                                    <Link isExternal showAnchorIcon href={startup?.startupLink}>{startup?.startupLink}</Link>
+                                </p>
+                            ) : (
+                                <p className="text-gray-500 text-sm">No profile link provided.</p>
+                            )}
                         </div>
                     </div>
                 </Tab>

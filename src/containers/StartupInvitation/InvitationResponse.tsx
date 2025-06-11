@@ -5,7 +5,11 @@ import React from 'react'
 type Props = {
   onResponseInvitation: (response: string) => void,
   onChangeInvitationResponse: (response: string) => void,
-  inivtationResponse: string,
+  inivtationResponse: {
+    invitedEmail: string,
+    inviteCode: string,
+    response: string,
+  },
   invitationInfo: {
     positionTitle: string,
     startupAvt: string,
@@ -27,14 +31,14 @@ const InvitationResponse = ({
   }
 
   const renderActionButton = () => {
-    if (!inivtationResponse) {
+    if (!inivtationResponse.response) {
       return (
-        <>
+        <div className='flex gap-10'>
           <Button
             onPress={() => handleChangeInvitationResponse(STARTUP_INVITATION_RESPONSE.REJECTED)}
             variant="solid"
             color="danger"
-            className="rounded-lg p-3 mr-5"
+            className="rounded-lg p-3 bg-[#F14A410F] text-[#F14A41] w-[120px]"
           >
             Decline
           </Button>
@@ -42,14 +46,14 @@ const InvitationResponse = ({
             onPress={() => handleChangeInvitationResponse(STARTUP_INVITATION_RESPONSE.ACCEPTED)}
             variant="solid"
             color="success"
-            className="rounded-lg p-3"
+            className="rounded-lg p-3 bg-[#15A23914] text-[#15A239] w-[120px]"
           >
             Accept
           </Button>
-        </>
+        </div>
       )
     }
-    if (inivtationResponse === STARTUP_INVITATION_RESPONSE.ACCEPTED) {
+    if (inivtationResponse.response === STARTUP_INVITATION_RESPONSE.ACCEPTED) {
       return (
         <div>
           <p className="text-center">

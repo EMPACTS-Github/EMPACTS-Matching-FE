@@ -1,13 +1,13 @@
 export interface IUploadData {
-  owner_type: string;
-  owner_id?: string;
+  ownerType: string;
+  ownerId?: string;
   file: File;
 }
 
 export interface IUpdateAttachmentData {
-  id: number;
-  owner_id?: number;
-  owner_type: string;
-  attachment_title?: string;
-  is_deleted?: number;
+  id: string;
+  ownerId?: string;
+  ownerType: string;
+  attachmentTitle?: string;
+  isDeleted?: boolean;
 }
