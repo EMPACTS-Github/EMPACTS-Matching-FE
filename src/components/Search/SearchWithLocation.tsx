@@ -6,7 +6,7 @@ import { mentor_search } from "@/apis/mentor";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Spinner } from "@heroui/spinner";
 import UsersIcon from "@/components/Icons/UsersIcon";
-import FlashIcon from "@/components/Icons/FlashIcon";
+import ClearIcon from "@/components/Icons/ClearIcon";
 import MentorInfoModal from '@/components/Modal/MentorInfoModal';
 import { getProvince } from '@/utils/getProvince';
 import { useMatchingStore } from '@/stores/matching-store';
@@ -148,7 +148,7 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
             {isLoading && <Spinner size="sm" color="white" />}
             {query && !isLoading && (
               <button onClick={handleClear} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
-                <FlashIcon className="h-4 w-4 text-gray-400" />
+                <ClearIcon className="h-4 w-4" />
               </button>
             )}
           </div>

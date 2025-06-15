@@ -26,7 +26,7 @@ function CreateNewStartup() {
   const [startupUsername, setStartupUsername] = useState('');
   const [selectedGoal, setSelectedGoal] = useState(STARTUP_SDG_GOALS.NO_POVERTY.textValue);
   const [location, setLocation] = useState(PROVINCES[0].key);
-  const [profilePicture, setProfilePicture] = useState('');
+  const [profilePicture, setProfilePicture] = useState<string | undefined>('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
   const [members, setMembers] = useState<MemberForInvite[]>([]);
   const [loading, setLoading] = useState(false);
@@ -67,13 +67,30 @@ function CreateNewStartup() {
   }
 
   const handleCreateProfile = async () => {
+    const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
+    if (
+      !companyName.trim() ||
+      !startupUsername.trim() ||
+      !location ||
+      !avtUrl ||
+      !description.trim() ||
+      !languagesSpoken.length ||
+      !formedTime
+    ) {
+      addToast({
+        title: 'Please fill in all required fields',
+        color: 'danger',
+        timeout: 3000,
+      });
+      return;
+    }
     setLoading(true);
     const requestBody = {
       name: companyName,
       startupUsername: startupUsername,
       locationBased: location,
       sdgGoal: selectedGoal,
-      avtUrl: profilePicture,
+      avtUrl: avtUrl,
       description: description,
       formedTime: formedTime,
       languagesSpoken: languagesSpoken,

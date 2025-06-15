@@ -23,7 +23,7 @@ function CreateNewMentor() {
   const [mentorName, setMentorName] = useState('');
   const [mentorUsername, setMentorUsername] = useState('');
   const [location, setLocation] = useState(PROVINCES[0].key);
-  const [profilePicture, setProfilePicture] = useState('');
+  const [profilePicture, setProfilePicture] = useState<string | undefined>('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
@@ -60,13 +60,40 @@ function CreateNewMentor() {
   }
 
   const handleCreateProfile = async () => {
+    const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
+    if (
+      !mentorName.trim() ||
+      !mentorUsername.trim() ||
+      !location ||
+      !avtUrl ||
+      !description.trim() ||
+      !languagesSpoken.length ||
+      !skillOffered.length ||
+      !selectedGoals.length
+    ) {
+      console.log(mentorName.trim())
+      console.log(mentorUsername.trim())
+      console.log(location)
+      console.log(avtUrl)
+      console.log(description.trim())
+      console.log(languagesSpoken.length)
+      console.log(skillOffered.length)
+      console.log(selectedGoals.length)
+      addToast({
+        title: 'Please fill in all required fields.',
+        color: 'danger',
+        timeout: 3000,
+      });
+      return;
+    }
+
     setLoading(true);
     const requestBody = {
       name: mentorName,
       mentorUsername: mentorUsername,
       locationBased: location,
       sdgFocusExpertises: selectedGoals,
-      avtUrl: profilePicture,
+      avtUrl: avtUrl,
       description: description,
       skillOffered: skillOffered,
       languagesSpoken: languagesSpoken,
