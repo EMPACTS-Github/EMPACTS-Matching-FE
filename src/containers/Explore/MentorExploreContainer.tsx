@@ -10,6 +10,8 @@ import { useMatchingRequestListStore } from "@/stores/matching-store";
 import { useErrorStore } from "@/stores/error-store";
 import { Matching } from "@/interfaces/matching";
 import { useMentorIdStore } from "@/stores/mentor-store";
+import { Member } from "@/interfaces/StartupProfile";
+
 
 interface MentorExploreContainerProps {
     mentorId?: string | undefined;
@@ -24,6 +26,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
     const error = useErrorStore(state => state.error);
     const setError = useErrorStore(state => state.setError);
     const [filterMode, setFilterMode] = useState<"ALL" | "ACCEPTED" | "PENDING">("ALL");
+    const [startupMembersList, setStartupMembersList] = useState<Member[][]>([])
     const filterMatchIndexes = matches && startupList.length
         ? matches
             .map((match, idx) => ({ match, idx }))
@@ -50,34 +53,40 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
                     matches.map(async (match) => {
                         const response = await startup_profile_detail(match.startupId || '', mentorId || '');
                         const startupData = response.data.startup;
+                        const startupMember = response.data.members;
                         return {
-                            id: startupData.id,
-                            name: startupData.name,
-                            startupUsername: startupData.startupUsername,
-                            phone: startupData.phone,
-                            avtUrl: startupData.avtUrl,
-                            status: startupData.status,
-                            description: startupData.description,
-                            sdgGoal: startupData.sdgGoal,
-                            startupLink: startupData.startupLink,
-                            locationBased: startupData.locationBased,
-                            credential: startupData.credential,
-                            languagesSpoken: startupData.languagesSpoken,
-                            marketFocus: startupData.marketFocus,
-                            startupState: startupData.startupState,
-                            haveActiveUse: startupData.haveActiveUse,
-                            revenue: startupData.revenue,
-                            otherParticipatedDetail: startupData.otherParticipatedDetail,
-                            legalEquityDetail: startupData.legalEquityDetail,
-                            investmentDetail: startupData.investmentDetail,
-                            fundraisingDetail: startupData.fundraisingDetail,
-                            memberQty: startupData.memberQty,
-                        } as Startup;
+                            startup: {
+                                id: startupData.id,
+                                name: startupData.name,
+                                startupUsername: startupData.startupUsername,
+                                phone: startupData.phone,
+                                avtUrl: startupData.avtUrl,
+                                status: startupData.status,
+                                description: startupData.description,
+                                sdgGoal: startupData.sdgGoal,
+                                startupLink: startupData.startupLink,
+                                locationBased: startupData.locationBased,
+                                credential: startupData.credential,
+                                languagesSpoken: startupData.languagesSpoken,
+                                marketFocus: startupData.market_focus,
+                                startupFundingStage: startupData.startupFundingStage,
+                                haveActiveUse: startupData.activeUse,
+                                revenue: startupData.revenue,
+                                otherParticipatedDetail: startupData.otherParticipatedDetail,
+                                legalEquityDetail: startupData.legalEquityDetail,
+                                investmentDetail: startupData.investmentDetail,
+                                fundraisingDetail: startupData.fundraisingDetail,
+                                memberQty: startupData.memberQty,
+                            } as Startup,
+                            members: startupMember
+                        }
                     })
                 );
-                setStartupList(startupDetails);
+                setStartupList(startupDetails.map(item => item.startup));
+                setStartupMembersList(startupDetails.map(item => item.members));
             } catch (err) {
                 setStartupList([]);
+                setStartupMembersList([]);
                 setError("Failed to fetch Startup details.");
             }
         };
@@ -152,11 +161,13 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
                             title={startupList[filteredSelectedIndex]?.name || ''}
                             location={getProvince(startupList[filteredSelectedIndex]?.locationBased || '')}
                             avtUrl={startupList[filteredSelectedIndex]?.avtUrl || ''}
+                            startup={startupList[filteredSelectedIndex]}
                             status={(matches as Matching[] | null)?.[filteredSelectedIndex]?.status || ''}
                             schedule={(matches as Matching[] | null)?.[filteredSelectedIndex]?.requestSchedule || ''}
                             meetingLink={(matches as Matching[] | null)?.[filteredSelectedIndex]?.meetingLink || ''}
                             note={(matches as Matching[] | null)?.[filteredSelectedIndex]?.note || ''}
                             mentorId={mentorId || ''}
+                            startupMembers={startupMembersList[filteredSelectedIndex] || []}
                         />
                     )}
                 </div>

@@ -16,7 +16,7 @@ export interface Startup {
     credential?: string | null;
     locationBased: string;
     marketFocus?: string | null;
-    startupState?: string | null;
+    startupFundingStage?: string | null;
     stateDetail?: string | null;
     haveActiveUse?: number;
     revenue?: number;

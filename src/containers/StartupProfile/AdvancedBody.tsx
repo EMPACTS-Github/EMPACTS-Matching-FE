@@ -32,7 +32,7 @@ const AdvancedBody: React.FC<AdvancedBodyProps> = ({ startup }) => {
           Startup State - State
         </h4>
         <p className="text-gray-500 text-sm">
-          {startup.startupState == null ? 'No data' : startup.startupState}
+          {startup.startupFundingStage == null ? 'No data' : startup.startupFundingStage}
         </p>
       </div>
       <div>

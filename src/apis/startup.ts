@@ -59,6 +59,6 @@ export const invite_list_member = async (data: {
 };
 
 export const search_startup = async (query: string) => {
-  const response = await axiosInstance.get(`/search/startups?query=${query}`);
+  const response = await axiosInstance.get(`/startups/search?name=${query}`);
   return response.data;
 }
