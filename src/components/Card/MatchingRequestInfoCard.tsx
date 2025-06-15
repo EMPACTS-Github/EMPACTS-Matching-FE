@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { Button, useDisclosure, TimeInput, addToast } from "@heroui/react";
+import { Button, TimeInput, addToast } from "@heroui/react";
 import TextLine from "@/components/common/TextLine";
 import { MATCHING_STATUS } from "@/constants/matching";
 import UserRightIcon from "@/components/Icons/UserRightIcon";
@@ -13,7 +13,9 @@ import { getCalendarDateAndTime } from "@/utils/convertDateToDateAndTime";
 import { Snippet } from "@heroui/react";
 import { response_matching_request } from "@/apis/mentor-matching";
 import { Spinner } from "@heroui/spinner";
-
+import { Tab, Tabs } from "@heroui/react";
+import { Startup } from "@/interfaces/StartupProfile";
+import { Member } from "@/interfaces/StartupProfile";
 
 interface MatchingRequestInfoCardProps {
     connectRequestCode: string;
@@ -25,6 +27,8 @@ interface MatchingRequestInfoCardProps {
     schedule: Date | string;
     note: string;
     mentorId: string;
+    startup: Startup;
+    startupMembers: Member[];
 };
 
 const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
@@ -37,6 +41,8 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
     note,
     avtUrl,
     mentorId,
+    startup,
+    startupMembers,
 }) => {
     const { calendarDate, time } = getCalendarDateAndTime(schedule);
     const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +107,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
         }
     };
     return (
-        <div className={`bg-white rounded-lg shadow-xl py-6 px-8 gap-y-6 flex flex-col`}>
+        <div className={`bg-white rounded-lg shadow-xl py-6 px-8 gap-y-4 flex flex-col`}>
             <div className="flex justify-between items-end">
                 <div className="flex justify-start">
                     <Image
@@ -153,81 +159,193 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
 
                 )}
             </div>
-            <div className="flex gap-x-2 items-center">
-                <div className="font-semibold">Status:</div>
-                <div className={status === MATCHING_STATUS.ACCEPTED ? "text-success font-semibold" : "text-gray-500 font-semibold"}>{capitalizeFirstLetter(status)}</div>
-            </div>
-            {
-                status === MATCHING_STATUS.ACCEPTED ? (
-                    <div className="flex w-full gap-2">
-                        <div className="flex w-[60%] flex-wrap md:flex-nowrap gap-4">
-                            <DateInput
-                                isReadOnly
-                                defaultValue={calendarDate}
-                                placeholderValue={new CalendarDate(2025, 12, 1)}
-                                endContent={
-                                    <CalendarIcon className="text-black pointer-events-none" />
-                                }
-                                className="w-1/2"
+            <Tabs aria-label="Request Tabs" variant="underlined" color="primary" className="font-bold">
+                <Tab key="request_detail" title="Request detail">
+                    <div className="flex gap-x-2 items-center">
+                        <div className="font-semibold">Status:</div>
+                        <div className={status === MATCHING_STATUS.ACCEPTED ? "text-success font-semibold" : "text-gray-500 font-semibold"}>{capitalizeFirstLetter(status)}</div>
+                    </div>
+                    {
+                        status === MATCHING_STATUS.ACCEPTED ? (
+                            <div className="flex w-full gap-2">
+                                <div className="flex w-[60%] flex-wrap md:flex-nowrap gap-4">
+                                    <DateInput
+                                        isReadOnly
+                                        defaultValue={calendarDate}
+                                        placeholderValue={new CalendarDate(2025, 12, 1)}
+                                        endContent={
+                                            <CalendarIcon className="text-black pointer-events-none" />
+                                        }
+                                        className="w-1/2"
+                                    />
+                                    <TimeInput
+                                        isReadOnly
+                                        defaultValue={time}
+                                        endContent={
+                                            <ClockIcon className="text-xl text-black pointer-events-none" />
+                                        }
+                                        className="w-1/2" />
+                                </div>
+                                <div className="flex flex-col w-[40%] gap-2">
+                                    <Button color="primary" variant="solid" className="w-full" onPress={onMeetingButtonClick}>
+                                        Join with Google Meet
+                                    </Button>
+                                    <Snippet
+                                        hideSymbol
+                                        size="sm"
+                                        className="bg-transparent border-none"
+                                        codeString={meetingLink}
+                                    >
+                                        {meetingLink.replace(/^https?:\/\//, '')}
+                                    </Snippet>
+                                </div>
+                            </div>
+
+                        ) : (
+                            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                                <DateInput
+                                    isReadOnly
+                                    defaultValue={calendarDate}
+                                    placeholderValue={new CalendarDate(2025, 12, 1)}
+                                    endContent={
+                                        <CalendarIcon className="text-black pointer-events-none" />
+                                    }
+                                    className="w-1/2"
+                                />
+                                <TimeInput
+                                    isReadOnly
+                                    defaultValue={time}
+                                    endContent={
+                                        <ClockIcon className="text-xl text-black pointer-events-none" />
+                                    }
+                                    className="w-1/2" />
+                            </div>
+                        )
+                    }
+
+                    <div className="flex flex-col gap-y-3">
+                        <div className={`flex flex-col gap-1`}>
+                            {note && (
+                                <label className="text-sm text-gray-700 mb-1">Note</label>
+                            )}
+                            <textarea
+                                readOnly
+                                value={note}
+                                rows={5}
+                                className="border border-gray-50 rounded-lg min-h-[120px] p-3 bg-gray-50 text-gray-700 resize-none focus:outline-none"
                             />
-                            <TimeInput
-                                isReadOnly
-                                defaultValue={time}
-                                endContent={
-                                    <ClockIcon className="text-xl text-black pointer-events-none" />
-                                }
-                                className="w-1/2" />
-                        </div>
-                        <div className="flex flex-col w-[40%] gap-2">
-                            <Button color="primary" variant="solid" className="w-full" onPress={onMeetingButtonClick}>
-                                Join with Google Meet
-                            </Button>
-                            <Snippet
-                                hideSymbol
-                                size="sm"
-                                className="bg-transparent border-none"
-                                codeString={meetingLink}
-                            >
-                                {meetingLink.replace(/^https?:\/\//, '')}
-                            </Snippet>
                         </div>
                     </div>
+                </Tab>
+                <Tab key="startup_infomation" title="Startup information">
+                    <div className="space-y-4">
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Description</h4>
+                            <p className="text-gray-500 text-sm whitespace-pre-line">
+                                {startup?.description || "No description available"}
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Member</h4>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-8 py-4">
+                                {startupMembers.map((member, index) => (
+                                    <div className="flex justify-start" key={member.id || index}>
+                                        <Image
+                                            src={member.user.avtUrl}
+                                            alt={member.user.name}
+                                            width={40}
+                                            height={40}
+                                            className="mr-6 h-14 w-14 rounded-full"
+                                        />
+                                        <div className="items-center justify-between flex-grow">
+                                            <div className="flex items-center justify-between">
+                                                <h3
+                                                    className="text-md font-semibold text-black hover:underline cursor-pointer"
+                                                    tabIndex={0}
+                                                >
+                                                    {member.user.name}
+                                                </h3>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <TextLine text={member.positionTitle} className="text-black text-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div>
+                                <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
+                                <p className="text-gray-500 text-sm whitespace-pre-line">
+                                    {startup?.startupLink || "No data"}
+                                </p>
+                            </div>
+                            {/* <div>
+                                <h4 className="text-lg font-semibold text-gray-800">Media</h4>
 
-                ) : (
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                        <DateInput
-                            isReadOnly
-                            defaultValue={calendarDate}
-                            placeholderValue={new CalendarDate(2025, 12, 1)}
-                            endContent={
-                                <CalendarIcon className="text-black pointer-events-none" />
-                            }
-                            className="w-1/2"
-                        />
-                        <TimeInput
-                            isReadOnly
-                            defaultValue={time}
-                            endContent={
-                                <ClockIcon className="text-xl text-black pointer-events-none" />
-                            }
-                            className="w-1/2" />
+                            </div>
+                            <div>
+                                <h4 className="text-lg font-semibold text-gray-800">Documentation</h4>
+                            </div> */}
+                        </div>
                     </div>
-                )
-            }
-
-            <div className="flex flex-col gap-y-3">
-                <div className={`flex flex-col gap-1`}>
-                    {note && (
-                        <label className="text-sm text-gray-700 mb-1">Note</label>
-                    )}
-                    <textarea
-                        readOnly
-                        value={note}
-                        rows={5}
-                        className="border border-gray-50 rounded-lg min-h-[120px] p-3 bg-gray-50 text-gray-700 resize-none focus:outline-none"
-                    />
-                </div>
-            </div>
+                </Tab>
+                <Tab key="advanced" title="Advanced">
+                    <div className="space-y-6">
+                        <div className="grid grid-cols-3 gap-10 w-1/2">
+                            <div className="col-span-2 text-lg font-semibold text-gray-800">
+                                Active User
+                            </div>
+                            <p className="text-gray-500 text-sm">
+                                {startup.haveActiveUse == null
+                                    ? 'No data'
+                                    : startup.haveActiveUse
+                                        ? 'Yes'
+                                        : 'Not yet'}
+                            </p>
+                        </div>
+                        <div className="grid grid-cols-3 gap-10 w-1/2">
+                            <div className="col-span-2 text-lg font-semibold text-gray-800">
+                                Lastest Revenue
+                            </div>
+                            <p className="text-gray-500 text-sm">
+                                {startup?.revenue == null ? 'No data' : startup.revenue}
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">
+                                Startup State - State
+                            </h4>
+                            <p className="text-gray-500 text-sm">
+                                {startup.startupFundingStage == null ? 'No data' : startup.startupFundingStage}
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Legal Equity</h4>
+                            <p className="text-gray-500 text-sm">
+                                {startup.legalEquityDetail == null
+                                    ? 'No data'
+                                    : startup.legalEquityDetail}
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Investment</h4>
+                            <p className="text-gray-500 text-sm">
+                                {startup.investmentDetail == null
+                                    ? 'No data'
+                                    : startup.investmentDetail}
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Fundraising</h4>
+                            <p className="text-gray-500 text-sm">
+                                {startup.fundraisingDetail == null
+                                    ? 'No data'
+                                    : startup.fundraisingDetail}
+                            </p>
+                        </div>
+                    </div>
+                </Tab>
+            </Tabs>
         </div >
     );
 }

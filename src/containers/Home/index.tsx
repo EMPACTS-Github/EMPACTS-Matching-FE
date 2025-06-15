@@ -7,7 +7,7 @@ import StartupCard from '@/containers/Home/StartupCard';
 import CategoryList from '@/containers/Home/Category';
 import SearchBar from '@/containers/Home/SearchBar';
 import { HeroSection } from '@/containers/Home/HeroSection';
-import { startup_list, search_startup } from '@/apis/startup';
+import { startup_list } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 import { FETCH_STARTUP_LIMIT } from '@/constants';
 import { HomepageStartup } from '@/interfaces/startup';
@@ -18,7 +18,6 @@ function Home() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
   const fetchStartups = useCallback(async () => {
@@ -35,18 +34,6 @@ function Home() {
       setLoading(false);
     }
   }, [page, selectedCategory]);
-
-  const handleSearch = async () => {
-    try {
-      setLoading(true);
-      const response = await search_startup(searchQuery);
-      setStartups(response.startups);
-    } catch (error) {
-      console.error('Failed to search startups:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     setPage(1);
@@ -77,9 +64,6 @@ function Home() {
       <div className="w-full flex flex-col items-center">
         <HeroSection />
         <SearchBar
-          value={searchQuery}
-          onChange={setSearchQuery}
-          onSearch={handleSearch}
           className="mb-8 w-full max-w-2xl shadow-md"
         />
         <CategoryList setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} />
