@@ -1,80 +1,117 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
-import MediaEmptyStateLogo from "/public/assets/media-empty-state-logo.svg";
-import { Button } from '@heroui/react';
+import ImagePlusIcon from "/public/assets/image-plus.svg";
+import { IDocument } from '@/interfaces/upload';
+import { Button, useDisclosure } from '@heroui/react';
+import CloseIcon from '@/components/Icons/CloseIcon';
+import DeleteImageModal from '@/components/Modal/DeleteImageModal';
 
 interface ImageGalleryProps {
-    images: string[];
+    images: IDocument[];
+    selectedImage: IDocument | null;
+    onUploadNewImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onSelectImage: (image: IDocument) => void;
+    onDeleteAttachment: (attachment: IDocument | null) => void;
 }
 
-const PlusSquareIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-        <path d="M8.5 4.58984L8.5 12.5898" stroke="white" stroke-width="2" stroke-linecap="round" />
-        <path d="M12.5 8.58984L4.5 8.58984" stroke="white" stroke-width="2" stroke-linecap="round" />
-    </svg>
-);
+const ImageGallery: React.FC<ImageGalleryProps> = ({ images, selectedImage, onUploadNewImage, onSelectImage, onDeleteAttachment }) => {
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const imageInputRef = useRef<HTMLInputElement>(null);
+    const [displayDeleteIcon, setDisplayDeleteIcon] = useState(false);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
-    const [selectedIndex, setSelectedIndex] = useState(0); // Lưu trữ chỉ số của hình ảnh được chọn
-    const onClickButton = () => {
-        console.log('Add new media');
-    };
+    const handleDisplayDeleteIcon = () => {
+        setDisplayDeleteIcon(true);
+    }
+
+    const handleHideDeleteIcon = () => {
+        setDisplayDeleteIcon(false);
+    }
+
+    const handleClickAddImage = () => {
+        imageInputRef.current?.click();
+    }
+
     return (
-        <div className="flex flex-col w-full my-4">
-            {/* Hiển thị ảnh chính */}
-            {images.length > 0 ? (
+        <>
+            <div className="flex flex-col w-full my-4">
                 <div>
-                    <div className="w-full h-auto mb-4">
-                        <Image
-                            src={images[selectedIndex]}
-                            alt="Selected"
-                            width={800} // Chiều rộng của ảnh chính
-                            height={400} // Chiều cao của ảnh chính
-                            className="object-cover shadow-lg rounded-lg"
-                        />
-                    </div>
+                    {
+                        images.length > 0 && (
+                            <div onMouseEnter={handleDisplayDeleteIcon} onMouseLeave={handleHideDeleteIcon} className="w-full h-auto mb-4 relative">
+                                <Image
+                                    src={selectedImage?.attachmentUrl || ''}
+                                    alt="Selected"
+                                    width={800}
+                                    height={400}
+                                    className="object-cover shadow-lg rounded-lg"
+                                />
+                                {
+                                    displayDeleteIcon && (
+                                        <Button
+                                            className="absolute top-2 right-2 rounded-full bg-black/50"
+                                            size="sm"
+                                            isIconOnly
+                                            onPress={() => onOpen()}
+                                        >
+                                            <CloseIcon />
+                                        </Button>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
 
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 justify-center">
                         {images.map((image, index) => (
                             <div
                                 key={index}
-                                onClick={() => setSelectedIndex(index)}
+                                onClick={() => {
+                                    setSelectedIndex(index);
+                                    onSelectImage(image);
+                                }}
                             >
                                 <Image
-                                    src={image}
+                                    src={image.attachmentUrl}
                                     alt={`Thumbnail ${index}`}
-                                    width={56} // Chiều rộng của thumbnail
-                                    height={56} // Chiều cao của thumbnail
+                                    width={56}
+                                    height={56}
                                     className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${selectedIndex == index ? 'border-empacts' : 'border-transparent'
                                         } rounded-lg`}
                                 />
                             </div>
                         ))}
+                        <div
+                            key="add-new-media"
+                            className="flex items-center justify-center w-14 h-14 cursor-pointer box-border p-1 border-[3px] border-dashed border-black"
+                            onClick={handleClickAddImage}
+                        >
+                            <Image
+                                src={ImagePlusIcon}
+                                alt="Add new media"
+                                width={36}
+                                height={36}
+                                className="cursor-pointer m-auto"
+                            />
+                            <input
+                                ref={imageInputRef}
+                                id="image-upload"
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={onUploadNewImage}
+                            />
+                        </div>
                     </div>
-                </div>) : (
-                <div className="flex flex-col items-center justify-center mt-4">
-                    <Image
-                        src={MediaEmptyStateLogo}
-                        alt="Media Empty State Logo"
-                        className='w-40 h-auto'
-                    />
-                    <div className='flex flex-col items-center justify-center mb-4'>
-                        <p className="text-md text-gray-500 mb-2">No Result</p>
-                        <p className="text-sm text-gray-400">This is a mistake? Please refresh your page to see updates</p>
-                    </div>
-                    <Button
-                        type="submit"
-                        color="primary"
-                        size="lg"
-                        className="rounded-lg bg-empacts border-empacts text-md text-white"
-                        startContent={<PlusSquareIcon />}
-                        onPress={onClickButton}
-                    >
-                        Add new media
-                    </Button>
                 </div>
-            )}
-        </div>
+            </div>
+            <DeleteImageModal
+                image={selectedImage}
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onDeleteAttachment={onDeleteAttachment}
+            />
+        </>
     );
 };
 
