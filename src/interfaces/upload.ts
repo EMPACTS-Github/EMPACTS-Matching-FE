@@ -11,3 +11,21 @@ export interface IUpdateAttachmentData {
   attachmentTitle?: string;
   isDeleted?: boolean;
 }
+
+export interface IGetStartupDocumentsData {
+  ownerId: string;
+  ownerType: string;
+  limit: number;
+  page: number;
+}
+
+export interface IDocument {
+  id: string;
+  ownerId: string;
+  ownerType: string;
+  attachmentUrl: string;
+  type: string;
+  size: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
