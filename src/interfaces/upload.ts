@@ -24,6 +24,7 @@ export interface IDocument {
   ownerId: string;
   ownerType: string;
   attachmentUrl: string;
+  attachmentTitle: string;
   type: string;
   size: number;
   createdAt: Date;

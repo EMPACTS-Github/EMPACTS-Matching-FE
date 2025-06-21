@@ -22,19 +22,13 @@ import {
 } from "@heroui/modal";
 import { isDocumentFile, isImageFile } from "@/services/upload";
 import { IDocument } from "@/interfaces/upload";
+import DocumentBody from "./DocumentBody";
 
 interface SettingModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
     startup: Startup;
 }
-
-const PlusSquareIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-        <path d="M8.5 4.58984L8.5 12.5898" stroke="white" stroke-width="2" stroke-linecap="round" />
-        <path d="M12.5 8.58984L4.5 8.58984" stroke="white" stroke-width="2" stroke-linecap="round" />
-    </svg>
-);
 
 const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup }) => {
     const [error, setError] = useState<string | null>(null);
@@ -168,7 +162,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         }
     };
 
-    const handleUploadNewStartupImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUploadNewStartupAttachment = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             try {
@@ -178,9 +172,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                     color: 'success',
                     timeout: 3000,
                 });
-                const newStartupImage: IDocument = {
+                const newDocument: IDocument = {
                     id: response.data.id,
                     attachmentUrl: response.data.attachmentUrl,
+                    attachmentTitle: response.data.attachmentTitle,
                     type: response.data.type,
                     size: response.data.size,
                     createdAt: response.data.createdAt,
@@ -188,7 +183,11 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                     ownerId: startup.id,
                     ownerType: UPLOAD_OWNER_TYPE.STARTUP,
                 }
-                setStartupImages([...startupImages, newStartupImage]);
+                if (isImageFile(response.data.type)) {
+                    setStartupImages([...startupImages, newDocument]);
+                } else {
+                    setStartupDocuments([...startupDocuments, newDocument]);
+                }
             } catch (err) {
                 addToast({
                     title: 'Failed to upload the image',
@@ -203,6 +202,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
 
     const handleSelectImage = (image: IDocument) => {
         setSelectedImage(image);
+    }
+
+    const handleSelectDocument = (document: IDocument) => {
+        setSelectedDocument(document);
     }
 
     const handleDeleteAttachment = async (attachment: IDocument | null) => {
@@ -277,7 +280,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         isKeyboardDismissDisabled={true}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        scrollBehavior="outside"
+        scrollBehavior="inside"
         className="py-4 px-6 min-h-96"
     >
         <ModalContent>
@@ -366,21 +369,20 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                 <ImageGallery
                                     images={startupImages}
                                     selectedImage={selectedImage}
-                                    onUploadNewImage={handleUploadNewStartupImage}
+                                    onUploadNewImage={handleUploadNewStartupAttachment}
                                     onSelectImage={handleSelectImage}
                                     onDeleteAttachment={handleDeleteAttachment}
                                 />
 
                                 <div className="font-semibold text-lg text-empacts">Documentation</div>
                                 <Divider />
-                                <Button
-                                    size="sm"
-                                    className="rounded-lg bg-empacts w-36 text-xs text-white"
-                                    startContent={<PlusSquareIcon />}
-                                    onPress={() => { }}
-                                >
-                                    Add new file
-                                </Button>
+                                <DocumentBody
+                                    files={startupDocuments}
+                                    selectedFile={selectedDocument}
+                                    onSelectFile={handleSelectDocument}
+                                    onDeleteAttachment={handleDeleteAttachment}
+                                    onUploadNewFile={handleUploadNewStartupAttachment}
+                                />
 
                                 <div className="font-semibold text-lg text-empacts">Advanced Information</div>
                                 <Divider />
