@@ -7,7 +7,8 @@ import { uploadAttachemt, updateAttachment, getStartupDocuments } from "@/apis/u
 import { startup_profile_update } from "@/apis/startup-profile";
 import { Startup } from "@/interfaces/StartupProfile";
 import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
-import ImageGallery from "@/containers/StartupProfile/ImageGallery";
+import ImageGallery from "./ImageGallery";
+import DocumentBody from "./DocumentBody";
 import LabelStartAndSwitchEnd from "@/components/Switch/LabelStartAndSwitchEnd";
 import sdgGoals from "@/utils/data/sdgGoals.json";
 import provinces from "@/utils/data/provinces.json";
@@ -22,7 +23,6 @@ import {
 } from "@heroui/modal";
 import { isDocumentFile, isImageFile } from "@/services/upload";
 import { IDocument } from "@/interfaces/upload";
-import DocumentBody from "./DocumentBody";
 
 interface SettingModalProps {
     isOpen: boolean;
