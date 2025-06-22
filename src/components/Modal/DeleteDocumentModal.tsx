@@ -27,6 +27,8 @@ const DeleteDocumentModal = ({ document, isOpen, onOpenChange, onDeleteAttachmen
     docx: DocsIcon,
     csv: SheetsIcon,
     pptx: SlidesIcon,
+    xlsx: SheetsIcon,
+    pdf: SlidesIcon,
   };
 
   // Get icon based on file type
