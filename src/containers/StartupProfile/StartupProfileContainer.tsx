@@ -68,11 +68,6 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
 
     useEffect(() => {
         fetchStartupDocuments();
-
-        return () => {
-            setStartupImages([]);
-            setStartupDocuments([]);
-        }
     }, []);
 
     return (
