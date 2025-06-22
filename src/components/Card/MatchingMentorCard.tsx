@@ -4,6 +4,7 @@ import { Card } from "@heroui/card";
 import TextLine from "@/components/common/TextLine";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { MATCHING_STATUS } from "@/constants/matching";
+import { Avatar } from "@heroui/react";
 
 interface MatchingMentorCardProps {
     name: string;
@@ -21,15 +22,19 @@ const MatchingMentorCard: React.FC<MatchingMentorCardProps> = ({
     onCardClick
 }) => {
     return (
-        <Card fullWidth isPressable className="flex flex-row rounded-md px-4 py-4 items-center shadow-sm" onPress={onCardClick}>
-            <Image
-                src={avatarUrl}
-                alt={`${name}'s avatar`}
-                width={100}
-                height={100}
-                className="rounded-full mb-4"
-            />
-            <div className="flex flex-col justify-start ml-4">
+        <Card fullWidth isPressable className="flex flex-row gap-2 rounded-md px-4 py-4 items-center shadow-sm" onPress={onCardClick}>
+            <div className="w-[25%]">
+                <Avatar
+                    src={avatarUrl}
+                    alt={`${name}'s avatar`}
+                    color="primary"
+                    isBordered
+                    size="lg"
+                    radius="full"
+                    className="bg-white"
+                />
+            </div>
+            <div className="flex flex-col justify-start w-[75%]">
                 <div className="text-lg font-semibold text-black text-left">{name}</div>
                 <TextLine text={location} className="text-gray-600 text-sm text-left line-clamp-1" />
                 <div className="flex gap-2 items-center mt-2">

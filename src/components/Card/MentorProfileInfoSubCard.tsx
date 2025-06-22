@@ -16,8 +16,10 @@ const MentorProfileInfoSubCard: React.FC<MentorProfileInfoSubCardProps> = ({ cou
                 <Avatar
                     alt="heroui logo"
                     src={mentorProfile?.avtUrl}
-                    className="w-20 h-20"
+                    className="w-20 h-20 bg-white"
                     radius="full"
+                    isBordered
+                    color="primary"
                 />
                 <div className="flex flex-col justify-center items-center">
                     <p className="font-semibold text-xl text-gray-800">{mentorProfile?.name}</p>

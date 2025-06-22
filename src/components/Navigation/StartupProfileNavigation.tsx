@@ -32,7 +32,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
       console.error('Failed to fetch startup profile:', err);
     }
   };
-  
+
   useEffect(() => {
     setStartupId(startupId);
   }, [startupId]);
@@ -94,7 +94,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
             className="pt-0 px-2"
           >
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-              <StartupMemberContainer startup_profile={startup_profile} />
+              <StartupMemberContainer onFetchStartupProfile={fetchStartupProfile} startup_profile={startup_profile} />
             </div>
           </Tab>
         </Tabs >

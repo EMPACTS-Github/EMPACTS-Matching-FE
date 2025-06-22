@@ -7,6 +7,7 @@ import { Mentor } from "@/interfaces/mentor";
 import ProfileCard from "./ProfileCard";
 import { startup_list } from "@/apis/startup-profile";
 import { mentor_list } from "@/apis/mentor-profile";
+import { Divider } from "@heroui/react";
 
 const ProfileList = () => {
   const router = useRouter();
@@ -55,13 +56,16 @@ const ProfileList = () => {
         <p className="text-gray-500 text-sm">Access your desired profile</p>
       </div>
 
-      <div className="flex-1 overflow-y-scroll">
+      <div className="flex-1  overflow-y-auto">
         <Tabs aria-label="Profile Tabs" variant="underlined">
           <Tab key="startups" title="Startups">
             {startupProfileList.length != 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-1">
                 {startupProfileList.map((startup) => (
-                  <ProfileCard key={startup.id} profile={startup} type="startup" />
+                  <div className="flex flex-col gap-1" key={startup.id}>
+                    <ProfileCard key={startup.id} profile={startup} type="startup" />
+                    <Divider className="w-full" />
+                  </div>
                 ))}
               </div>) : (
               <div className="p-4 h-full flex items-center justify-center">
@@ -73,9 +77,12 @@ const ProfileList = () => {
 
           <Tab key="mentors" title="Mentors">
             {mentorProfileList.length != 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-1">
                 {mentorProfileList.map((mentor) => (
-                  <ProfileCard key={mentor.id} profile={mentor} type="mentor" />
+                  <div className="flex flex-col gap-1" key={mentor.id}>
+                    <ProfileCard key={mentor.id} profile={mentor} type="mentor" />
+                    <Divider className="w-full" />
+                  </div>
                 ))}
               </div>) : (
               <div className="p-4 h-full flex items-center justify-center">

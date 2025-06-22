@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Avatar } from "@heroui/react";
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import { useRouter } from 'next/navigation';
 import {
@@ -137,7 +138,7 @@ const Header = () => {
                       <PopoverContentItem key={mentor.mentorId}>
                         <Link href={`/mentor-detail/${mentor.mentorId}`} onClick={() => setPopoverOpen(false)}>
                           <div className="flex items-center gap-2">
-                            <Image src={mentor.avtUrl} alt="Logo" width={20} height={20} />
+                            <Avatar src={mentor.avtUrl} alt="Logo" size='sm' className='bg-white' radius='sm' />
                             <div className="text-sm">{mentor.name}</div>
                           </div>
                         </Link>
@@ -151,7 +152,7 @@ const Header = () => {
                       <PopoverContentItem key={startup.startupId}>
                         <Link href={`/startup-detail/${startup.startupId}`} onClick={() => setPopoverOpen(false)}>
                           <div className="flex items-center gap-2">
-                            <Image src={startup.avtUrl} alt="Logo" width={20} height={20} />
+                            <Avatar src={startup.avtUrl} alt="Logo" size='sm' className='bg-white' radius='sm' />
                             <div className="text-sm">{startup.name}</div>
                           </div>
                         </Link>
