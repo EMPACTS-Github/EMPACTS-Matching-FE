@@ -16,6 +16,8 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({ documents }) => {
         docx: DocsIcon,
         csv: SheetsIcon,
         pptx: SlidesIcon,
+        xlsx: SheetsIcon,
+        pdf: SlidesIcon,
     };
 
     // Get icon based on file type

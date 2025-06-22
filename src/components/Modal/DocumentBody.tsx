@@ -26,6 +26,8 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({ files, selectedFile, onSele
     docx: DocsIcon,
     csv: SheetsIcon,
     pptx: SlidesIcon,
+    xlsx: SheetsIcon,
+    pdf: SlidesIcon,
   };
 
   const inputRef = useRef<HTMLInputElement>(null);

@@ -45,7 +45,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [startupDocuments, setStartupDocuments] = useState<IDocument[]>([]);
     const [selectedImage, setSelectedImage] = useState<IDocument | null>(null);
     const [selectedDocument, setSelectedDocument] = useState<IDocument | null>(null);
-    
+
     // Đồng bộ state với props khi startup thay đổi
     useEffect(() => {
         if (startup.name) {
@@ -219,7 +219,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
             });
             if (isImageFile(attachment.type)) {
                 const newStartupImages = startupImages.filter((image) => image.id !== attachment.id);
-                setStartupImages(newStartupImages);  
+                setStartupImages(newStartupImages);
                 setSelectedImage(newStartupImages[0] || null);
             } else {
                 const newStartupDocuments = startupDocuments.filter((doc) => doc.id !== attachment.id);
@@ -356,13 +356,23 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                 >
                                     {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
                                 </Autocomplete>
-                                <LabelWithTextarea
+                                {/* <LabelWithTextarea
                                     label="Description"
                                     content={description}
                                     setContent={setDescription}
                                     minRows={3}
                                     placeholder="Description"
-                                />
+                                /> */}
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-sm text-gray-700 mb-1">Description</label>
+                                    <textarea
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                        rows={5}
+                                        className="border border-gray-200 rounded-lg min-h-[120px] p-3 bg-white text-black resize-none focus:outline-none focus:border-black transition-colors"
+                                        placeholder="Description"
+                                    />
+                                </div>
 
                                 <div className="font-semibold text-lg text-empacts">Media</div>
                                 <Divider />
