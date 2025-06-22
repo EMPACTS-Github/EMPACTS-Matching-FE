@@ -8,8 +8,9 @@ interface ProfileInfoSubCardProps {
     startup: Startup;
     isOwner: boolean | undefined;
     countMatches: number;
+    onFetchStartupProfile: () => Promise<void>;
 }
-const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwner, countMatches }) => {
+const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwner, countMatches, onFetchStartupProfile }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <Card className="bg-white min-w-lg shadow-lg rounded-lg px-4 py-2">
@@ -45,7 +46,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
                 <Button onPress={onOpen} className="w-full font-bold" variant="ghost" color="primary" isDisabled={!isOwner}>
                     SETTINGS
                 </Button>
-                <SettingModal isOpen={isOpen} onOpenChange={onOpenChange} startup={startup} />
+                <SettingModal onFetchStartupProfile={onFetchStartupProfile} isOpen={isOpen} onOpenChange={onOpenChange} startup={startup} />
             </CardFooter>
         </Card >
     );
