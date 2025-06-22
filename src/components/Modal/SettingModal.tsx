@@ -356,13 +356,6 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                 >
                                     {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
                                 </Autocomplete>
-                                {/* <LabelWithTextarea
-                                    label="Description"
-                                    content={description}
-                                    setContent={setDescription}
-                                    minRows={3}
-                                    placeholder="Description"
-                                /> */}
                                 <div className="flex flex-col gap-1">
                                     <label className="text-sm text-gray-700 mb-1">Description</label>
                                     <textarea

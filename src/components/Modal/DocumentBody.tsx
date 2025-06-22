@@ -84,6 +84,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({ files, selectedFile, onSele
                         <Button
                           className="flex items-center gap-2 bg-transparent border-none p-0 w-full"
                           onPress={() => {
+                            onSelectFile(file);
                             onOpenDeleteDocumentModal()
                           }}
                         >
