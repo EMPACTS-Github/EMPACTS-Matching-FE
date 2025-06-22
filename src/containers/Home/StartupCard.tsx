@@ -21,7 +21,7 @@ const StartupCard: React.FC<StartupCardProps> = ({
   return (
     <div className="p-5 bg-white rounded-lg flex flex-col items-center gap-3 shadow-md cursor-pointer" onClick={() => onClick(id)}>
       {/* <Image src={avtUrl} alt="Startup Logo" width={120} height={120} className="object-cover" /> */}
-      <Avatar src={avtUrl} name={name} radius="full" className="bg-white w-32 h-32" isBordered color='primary' />
+      <Avatar src={avtUrl} name={name} radius="full" className="bg-white w-24 h-24" isBordered color='primary' />
       <h2 className="font-inter font-semibold text-lg text-gray-900 text-center">{name}</h2>
       <div className="font-inter text-sm font-normal text-gray-500 text-ellipsis line-clamp-4">
         {description}
