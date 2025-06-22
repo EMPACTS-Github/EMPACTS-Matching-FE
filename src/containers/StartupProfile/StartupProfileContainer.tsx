@@ -18,9 +18,10 @@ import { isDocumentFile } from '@/services/upload';
 
 interface StartupProfileContainerProps {
     startup_profile: StartupProfileResponse | undefined;
+    onFetchStartupProfile: () => Promise<void>;
 }
 
-const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ startup_profile }) => {
+const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ startup_profile, onFetchStartupProfile }) => {
     const user = localStorage.getItem('user');
     const userObj = user ? JSON.parse(user) : {};
     const userId = userObj.id;
@@ -101,7 +102,7 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
             {
                 startup_profile?.startup ? (
                     <div className="w-[25%]">
-                        <ProfileInfoSubCard startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
+                        <ProfileInfoSubCard onFetchStartupProfile={onFetchStartupProfile} startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
                     </div>
                 ) : (
                     <div className="w-[25%]">

@@ -28,9 +28,10 @@ interface SettingModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
     startup: Startup;
+    onFetchStartupProfile: () => Promise<void>;
 }
 
-const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup }) => {
+const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup, onFetchStartupProfile }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false); // Add loading state
     const [image, setImage] = useState<string>(startup.avtUrl || "");
@@ -74,42 +75,30 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                 description: description,
                 sdgGoal: sdgGoal,
                 isHide: false,
+                avtUrl: profilePicture ? profilePicture : startup.avtUrl,
             };
+
             try {
-                await updateAttachment({
-                    id: uploadedPictureId,
-                    ownerId: startup.id,
-                    ownerType: UPLOAD_OWNER_TYPE.STARTUP,
-                });
-                try {
-                    await startup_profile_update(
-                        startup.id, requestBody
-                    );
-                    addToast({
-                        title: 'Profile updated successfully',
-                        color: 'success',
-                        timeout: 3000,
-                    });
-                } catch (err) {
-                    setError("Failed to upload the image. Please try again.");
-                    addToast({
-                        title: 'Failed to upload the image',
-                        color: 'danger',
-                        timeout: 3000,
-                    });
-                } finally {
-                    setLoading(false);
-                }
-            } catch (error) {
+                await startup_profile_update(
+                    startup.id, requestBody
+                );
                 addToast({
-                    title: "Failed to update profile",
-                    color: "danger",
+                    title: 'Profile updated successfully',
+                    color: 'success',
+                    timeout: 3000,
+                });
+                await onFetchStartupProfile();
+            } catch (err) {
+                addToast({
+                    title: 'Failed to update profile',
+                    color: 'danger',
                     timeout: 3000,
                 });
             } finally {
                 setLoading(false);
                 onOpenChange();
             }
+
         }
     }
 
@@ -132,7 +121,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         if (file) {
             setLoading(true);
             try {
-                const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
+                const response = await uploadAttachemt({ file, ownerId: startup.id, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
                 setImage(response.data.attachmentUrl);
                 setError(null);
                 onImageUpload(response.data.attachmentUrl, response.data.id);
@@ -338,7 +327,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                     labelPlacement="outside"
                                     label="Location"
                                     placeholder="Select your location"
-                                    onSelectionChange={() => setLocation}
+                                    onSelectionChange={(key) => {
+                                        let selectedLocation = provinces.find((province) => province.value === key);
+                                        setLocation(selectedLocation?.value || "");
+                                    }}
                                     defaultItems={provinces}
                                     variant="bordered"
                                     defaultSelectedKey={location}
@@ -349,7 +341,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                     labelPlacement="outside"
                                     label="SDG Goals"
                                     placeholder="Select SDG Goals"
-                                    onSelectionChange={() => setSdgGoal}
+                                    onSelectionChange={(key) => {
+                                        let selectedSdgGoal = sdgGoals.find((sdgGoal) => sdgGoal.value === key);
+                                        setSdgGoal(selectedSdgGoal?.value || "");
+                                    }}
                                     defaultItems={sdgGoals}
                                     variant="bordered"
                                     defaultSelectedKey={sdgGoal}
