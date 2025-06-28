@@ -24,3 +24,8 @@ export const mentor_profile_update = async (id: string, data: IUpdateMentorProfi
     const response = await axiosInstance.put(`/mentor-profile/${id}`, data);
     return response.data;
 };
+
+export const mentor_profile_delete = async (id: string) => {
+    const response = await axiosInstance.delete(`/mentor-profile/${id}`);
+    return response.data;
+}
