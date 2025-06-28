@@ -23,7 +23,7 @@ const MentorProfileInfoSubCard: React.FC<MentorProfileInfoSubCardProps> = ({ cou
                 />
                 <div className="flex flex-col justify-center items-center">
                     <p className="font-semibold text-xl text-gray-800">{mentorProfile?.name}</p>
-                    <p className="text-gray-400 text-xs mb-2">@{mentorProfile?.mentorUsername}</p>
+                    <p className="text-gray-400 text-xs mb-2">{mentorProfile?.mentorUsername}</p>
                     <p className={`text-sm font-semibold ${mentorProfile.status === "ACTIVATED" ? "text-success" : "text-gray-500"}`}>{mentorProfile.status === "ACTIVATED" ? "Active" : mentorProfile.status === "ARCHIVED" ? "Archived" : "Deactivated"}</p>
                 </div>
             </CardHeader>
@@ -35,9 +35,9 @@ const MentorProfileInfoSubCard: React.FC<MentorProfileInfoSubCardProps> = ({ cou
                         <p className="text-gray-400 text-xs">Matches</p>
                     </div>
                 </div>
-                {/* <Divider /> */}
+                <Divider />
             </CardBody>
-            <CardFooter className="pt-4">
+            <CardFooter className="pt-5">
                 <Button className="w-full font-bold" variant="bordered" color="primary" onPress={onOpen}>
                     SETTINGS
                 </Button>

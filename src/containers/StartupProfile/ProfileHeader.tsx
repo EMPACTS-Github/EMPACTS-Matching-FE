@@ -14,7 +14,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
     return (
         <div className="mb-2">
             <div className="flex items-center">
-                <Avatar showFallback isBordered src={startup?.avtUrl} size="lg" radius="sm" className="bg-white" color="primary" />
+                <Avatar showFallback isBordered src={startup?.avtUrl} size="lg" radius="full" className="bg-white" color="primary" />
                 <div className="flex flex-col ml-4">
                     <h3 className="text-xl font-bold text-gray-800">{startup?.name}</h3>
                     <p className="text-gray-500 text-md">{getProvince(startup?.locationBased || "")}</p>
