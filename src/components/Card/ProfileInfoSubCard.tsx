@@ -25,7 +25,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
                 />
                 <div className="flex flex-col justify-center items-center">
                     <p className="font-semibold text-xl text-gray-800">{startup.name}</p>
-                    <p className="text-gray-400 text-xs mb-2">@{startup.startupUsername}</p>
+                    <p className="text-gray-400 text-xs mb-2">{startup.startupUsername}</p>
                     <p className={`text-sm font-semibold ${startup.status === "ACTIVATED" ? "text-success" : "text-gray-500"}`}>{startup.status === "ACTIVATED" ? "Active" : startup.status === "ARCHIVED" ? "Archived" : "Deactivated"}</p>
                 </div>
             </CardHeader>
@@ -45,7 +45,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
                 <Divider />
             </CardBody>
             <CardFooter className="pt-4">
-                <Button onPress={onOpen} className="w-full font-bold" variant="ghost" color="primary" isDisabled={!isOwner}>
+                <Button onPress={onOpen} className="w-full font-bold" variant="bordered" color="primary" isDisabled={!isOwner}>
                     SETTINGS
                 </Button>
                 <SettingModal onFetchStartupProfile={onFetchStartupProfile} isOpen={isOpen} onOpenChange={onOpenChange} startup={startup} />

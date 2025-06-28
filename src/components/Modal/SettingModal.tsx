@@ -23,6 +23,7 @@ import {
 } from "@heroui/modal";
 import { isDocumentFile, isImageFile } from "@/services/upload";
 import { IDocument } from "@/interfaces/upload";
+import { start } from "repl";
 
 interface SettingModalProps {
     isOpen: boolean;
@@ -36,6 +37,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [loading, setLoading] = useState(false); // Add loading state
     const [image, setImage] = useState<string>(startup.avtUrl || "");
     const [startupName, setStartupName] = useState<string>(startup.name || "");
+    const [startupUsername, setStartupUsername] = useState<string>(startup.startupUsername || "");
     const [location, setLocation] = useState<string>(startup.locationBased || "");
     const [description, setDescription] = useState<string>(startup.description || "");
     const [sdgGoal, setSdgGoal] = useState<string>(startup.sdgGoal || "");
@@ -64,6 +66,12 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         if (startup.sdgGoal) {
             setSdgGoal(startup.sdgGoal);
         }
+        if (startup.startupUsername) {
+            setStartupUsername(startup.startupUsername);
+        }
+        if (startup.avtUrl) {
+            setProfilePicture(startup.avtUrl);
+        }
     }, [startup]);
 
     const onUpdateProfileClick = async () => {
@@ -71,10 +79,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
             setLoading(true);
             const requestBody = {
                 name: startupName,
+                startupUsername: startupUsername,
                 locationBased: location,
                 description: description,
                 sdgGoal: sdgGoal,
-                isHide: false,
                 avtUrl: profilePicture ? profilePicture : startup.avtUrl,
             };
 
@@ -281,7 +289,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                 alt="heroui logo"
                                 src={image}
                                 size="md"
-                                radius="sm"
+                                radius="full"
+                                isBordered
+                                color="primary"
+                                className="bg-white"
                             />
                             <div className="flex flex-col justify-center">
                                 <p className="font-semibold text-lg text-gray-800">{startup?.name}</p>
@@ -301,6 +312,9 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                         src={image}
                                         size="sm"
                                         radius="full"
+                                        isBordered
+                                        color="primary"
+                                        className="bg-white"
                                     />
                                     <div className="flex flex-col justify-center items-center">
                                         <label htmlFor="profile-upload" className="cursor-pointer">
@@ -321,6 +335,13 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                     setContent={setStartupName}
                                     minRows={1}
                                     placeholder="Startup name"
+                                />
+                                <LabelWithTextarea
+                                    label="Startup username"
+                                    content={startupUsername}
+                                    setContent={setStartupUsername}
+                                    minRows={1}
+                                    placeholder="Startup username"
                                 />
                                 <Autocomplete
                                     isVirtualized={false}
@@ -409,6 +430,11 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                     checked={startup.fundraisingDetail ? true : false}
                                     onChange={() => { }}
                                 />
+                                <Divider />
+                                <div className="flex justify-end gap-4">
+                                    <Button className="border-2" variant="light" onPress={onOpenChange}>Cancel</Button>
+                                    <Button className="bg-success text-white" onPress={onUpdateProfileClick}>Update profile</Button>
+                                </div>
                             </Tab>
                             <Tab key="advanced" title="Advanced" className="w-full flex flex-col gap-2 py-3">
                                 <div className="flex justify-between">
@@ -428,11 +454,6 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                             </Tab>
                         </Tabs>
                     </ModalBody>
-                    <Divider />
-                    <ModalFooter className="flex justify-end">
-                        <Button className="border-2" variant="light" onPress={onOpenChange}>Cancel</Button>
-                        <Button className="bg-success text-white" onPress={onUpdateProfileClick}>Update profile</Button>
-                    </ModalFooter>
                 </>
             )}
         </ModalContent>
