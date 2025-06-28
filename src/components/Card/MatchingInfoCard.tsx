@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { Button, useDisclosure, TimeInput } from "@heroui/react";
+import { Button, useDisclosure, TimeInput, Avatar } from "@heroui/react";
 import TextLine from "@/components/common/TextLine";
 import { MATCHING_STATUS } from "@/constants/matching";
 import UserRightIcon from "@/components/Icons/UserRightIcon";
@@ -61,13 +61,15 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
     return (
         <div className={`bg-white rounded-lg shadow-xl py-6 px-8 gap-y-6 flex flex-col`}>
             <div className="flex justify-between items-end">
-                <div className="flex justify-start">
-                    <Image
+                <div className="flex justify-start items-center">
+                    <Avatar
                         src={avtUrl}
                         alt={title}
-                        width={80}
-                        height={80}
-                        className="mr-6 h-20 w-20 rounded-full"
+                        color="primary"
+                        isBordered
+                        size="lg"
+                        radius="full"
+                        className="mr-6 bg-white"
                     />
                     <div className="items-center justify-between flex-grow">
                         <div className="flex items-center justify-between">

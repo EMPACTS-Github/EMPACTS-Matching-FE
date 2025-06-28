@@ -1,15 +1,15 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import React from "react";
 import FavoriteIcon from "/public/assets/favorite-icon.svg";
 import FavoriteFilledIcon from "/public/assets/favorite-filled-icon.svg";
 import TextLine from "@/components/common/TextLine";
-import { Progress } from "@heroui/react";
+import { Avatar, Progress } from "@heroui/react";
 import { Card } from "@heroui/card";
 
 interface MentorCardProps {
     name: string;
     location: string | undefined;
-    avatarUrl: string | StaticImageData;
+    avatarUrl: string | undefined;
     description: string;
     matchScore: number;
     onFavoriteClick: () => void;
@@ -31,15 +31,20 @@ const MentorCard: React.FC<MentorCardProps> = ({
     const matchColor = matchScore >= 70 ? "success" : matchScore >= 50 ? "warning" : "danger";
 
     return (
-        <Card fullWidth isPressable className="flex flex-row bg-white rounded-md px-4 py-4 items-center shadow-md" onPress={onCardClick}>
-            <Image
-                src={avatarUrl}
-                alt={name}
-                width={80}
-                height={80}
-                className="w-20 h-20 rounded-full"
-            />
-            <div className="flex flex-col justify-start ml-4">
+        <Card fullWidth isPressable className="flex flex-row gap-2 bg-white rounded-md px-4 py-4 items-center shadow-md" onPress={onCardClick}>
+            <div className="w-[25%]">
+                <Avatar
+                    src={avatarUrl}
+                    alt={name}
+                    color="primary"
+                    isBordered
+                    size="lg"
+                    radius="full"
+                    className="bg-white"
+                />
+            </div>
+
+            <div className="flex flex-col justify-start w-[75%]">
                 <div className="flex justify-between items-center w-full">
                     <div className="text-md font-semibold text-black">{name}</div>
                     <button onClick={onFavoriteClick}>
@@ -50,7 +55,7 @@ const MentorCard: React.FC<MentorCardProps> = ({
                     </button>
                 </div>
                 <TextLine text={location} className="text-gray-500 text-xs text-left" />
-                <TextLine text={description} className="text-gray-600 mt-2 text-[10px] text-left line-clamp-1" />
+                <TextLine text={description} className="text-gray-600 mt-2 text-[10px] text-left line-clamp-3" />
                 <Progress
                     classNames={{
                         base: "w-full gap-0.5 mt-2",

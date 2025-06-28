@@ -7,7 +7,7 @@ const TabsSection = ({ startup }: { startup: Startup | null }) => {
         <div className="flex-1 overflow-hidden">
             <Tabs aria-label="Startup Tabs" variant="underlined" color="primary">
                 <Tab key="overview" title="Overview">
-                    <div className="space-y-4 overflow-auto h-[60vh] pr-2 hide-scrollbar">
+                    <div className="space-y-4 overflow-auto pr-2 hide-scrollbar">
                         <div>
                             <h4 className="text-lg font-semibold text-gray-800">Description</h4>
                             <p className="text-gray-500 text-sm whitespace-pre-line">
@@ -27,16 +27,6 @@ const TabsSection = ({ startup }: { startup: Startup | null }) => {
                     </div>
                 </Tab>
                 <Tab key="media" title="Media">
-                    <div className="p-4 h-full flex items-center justify-center">
-                        <p className="text-sm text-gray-500">Not available yet.</p>
-                    </div>
-                </Tab>
-                <Tab key="documentation" title="Documentation">
-                    <div className="p-4 h-full flex items-center justify-center">
-                        <p className="text-sm text-gray-500">Not available yet.</p>
-                    </div>
-                </Tab>
-                <Tab key="advanced" title="Advanced">
                     <div className="p-4 h-full flex items-center justify-center">
                         <p className="text-sm text-gray-500">Not available yet.</p>
                     </div>

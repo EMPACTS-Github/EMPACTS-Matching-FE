@@ -18,8 +18,10 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
                 <Avatar
                     alt="heroui logo"
                     src={startup.avtUrl}
-                    className="w-20 h-20"
+                    className="w-20 h-20 bg-white"
                     radius="full"
+                    isBordered
+                    color="primary"
                 />
                 <div className="flex flex-col justify-center items-center">
                     <p className="font-semibold text-xl text-gray-800">{startup.name}</p>

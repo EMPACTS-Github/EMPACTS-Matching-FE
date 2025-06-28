@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, cn, useDisclosure, addToast } from "@heroui/react";
 import { Chip } from "@heroui/chip";
+import { Avatar } from "@heroui/react";
 import {
     Dropdown,
     DropdownTrigger,
@@ -241,12 +242,13 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                 {filteredMembers.map((member, idx) => (
                     <div key={idx} className="flex justify-between p-4 bg-white shadow-lg rounded-lg w-full">
                         <div className="flex items-center gap-3">
-                            <Image
+                            <Avatar
                                 src={member.user.avtUrl}
                                 alt="User Avatar"
-                                width={48}
-                                height={48}
-                                className="rounded-lg"
+                                className="rounded-lg bg-white"
+                                size="md"
+                                radius="sm"
+                                isBordered
                             />
                             <div>
                                 <div className="font-semibold flex items-center gap-2">

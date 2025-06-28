@@ -23,12 +23,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
       onPress={() => handleSelectCategory(category.id)}
       size="md"
       variant={selectedCategory.includes(category.id) ? "solid" : "ghost"}
-      className={!selectedCategory.includes(category.id) ? "border-empacts-grey-50 border-1" : ""}
+      className={!selectedCategory.includes(category.id) ? "border-empacts-grey-50 border-1 text-sm font-semibold" : "text-sm font-semibold"}
       color='primary'
       style={{
         whiteSpace: "normal", // Ensure full text is displayed
         wordBreak: "break-word", // Break long words
-        fontSize: "16px",
       }}
       radius="full"
     >
