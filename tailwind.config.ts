@@ -24,7 +24,7 @@ const config: Config = {
       colors: {
         primary: "#9200FE",
         secondary: "#010B23",
-        tertiary: "#FF00D6",
+        tertiary: "#F44336",
         empacts: "#9200FE",
         "empacts-light": "#E8D9FF",
         "empacts-dark": "#6300AC",

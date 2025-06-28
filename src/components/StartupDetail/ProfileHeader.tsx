@@ -30,7 +30,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
         <div className="flex items-center gap-1">
           <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
           <span className="font-inter font-semibold text-base text-black text-center">
-            {startup.memberQty} Members
+            {startup.memberQty} {startup.memberQty === 1 ? 'Member' : 'Members'}
           </span>
         </div>
       </div>

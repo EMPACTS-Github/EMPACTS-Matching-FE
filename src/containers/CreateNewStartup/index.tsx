@@ -12,8 +12,6 @@ import { MemberForInvite } from '@/interfaces/startup';
 import { LanguagesSpoken } from '@/constants/common';
 import { addToast } from '@heroui/react';
 import * as changeCase from "change-case";
-import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
-import { PROVINCES } from '@/constants/provinces';
 import { updateAttachment } from "@/apis/upload";
 import { useRouter } from 'next/navigation';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
@@ -84,7 +82,6 @@ function CreateNewStartup() {
       });
       return;
     }
-    setLoading(true);
     const requestBody = {
       name: companyName,
       startupUsername: startupUsername,
@@ -95,6 +92,7 @@ function CreateNewStartup() {
       formedTime: formedTime,
       languagesSpoken: languagesSpoken,
     };
+    setLoading(true);
 
     try {
       const response = await create_startup_profile(requestBody);
@@ -108,11 +106,13 @@ function CreateNewStartup() {
       const userObj = user ? JSON.parse(user) : {};
       const inviterEmail = userObj.email;
 
-      updateAttachment({
-        id: uploadedPictureId,
-        ownerId: response.data.newStartup.id,
-        ownerType: UPLOAD_OWNER_TYPE.STARTUP
-      });
+      if (uploadedPictureId) {
+        updateAttachment({
+          id: uploadedPictureId,
+          ownerId: response.data.newStartup.id,
+          ownerType: UPLOAD_OWNER_TYPE.STARTUP
+        });
+      }
 
       if (members.length !== 0) {
         invite_list_member({

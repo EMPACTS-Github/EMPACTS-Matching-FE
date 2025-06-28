@@ -260,7 +260,7 @@ const MemberListContainer: React.FC<MemberListContainerProps> = ({ members, star
                         </div>
                         {acessAction.canEdit && <Dropdown placement="bottom-end">
                             <DropdownTrigger>
-                                <Image src={MenuIcon} alt="Menu Icon" width={30} height={30} />
+                                <Image src={MenuIcon} alt="Menu Icon" width={30} height={30} className="hover:cursor-pointer" />
                             </DropdownTrigger>
                             <DropdownMenu variant="faded">
                                 <DropdownItem

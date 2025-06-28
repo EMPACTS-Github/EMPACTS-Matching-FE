@@ -31,3 +31,8 @@ export const startup_profile_update = async (id: string, data: IUpdateStartupPro
     const response = await axiosInstance.put(`/startup-profile/${id}`, data);
     return response.data;
 }
+
+export const startup_profile_delete = async (id: string) => {
+    const response = await axiosInstance.delete(`/startup-profile/${id}`);
+    return response.data;
+}

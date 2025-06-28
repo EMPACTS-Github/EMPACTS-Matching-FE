@@ -43,12 +43,13 @@ const DeleteDocumentModal = ({ document, isOpen, onOpenChange, onDeleteAttachmen
       scrollBehavior="outside"
       size='lg'
       className='z-[1000]'
+      placement="center"
     >
       <ModalContent>
         {
           (onClose) => (
             <>
-              <ModalHeader className="flex gap-2">
+              <ModalHeader className="flex gap-4">
                 <Image
                   src={DeleteWarningIcon}
                   alt="Delete Warning Icon"
@@ -75,11 +76,13 @@ const DeleteDocumentModal = ({ document, isOpen, onOpenChange, onDeleteAttachmen
                   </div>
                 </div>
               </ModalBody>
-              <ModalFooter className="flex justify-between gap-4">
+              <ModalFooter className="flex justify-between gap-4 w-full">
                 <Button
                   onPress={onClose}
-                  className="border-[#9200FE] border-1 text-[#9200FE] font-bold bg-white w-full"
+                  className="font-semibold bg-white w-1/2"
                   radius="lg"
+                  variant='bordered'
+                  color='primary'
                 >
                   Cancel
                 </Button>
@@ -88,8 +91,10 @@ const DeleteDocumentModal = ({ document, isOpen, onOpenChange, onDeleteAttachmen
                     onDeleteAttachment(document)
                     onClose()
                   }}
-                  className="bg-[#9200FE] text-white font-bold w-full"
+                  className="font-semibold w-1/2"
                   radius="lg"
+                  color='primary'
+                  variant='solid'
                 >
                   Delete
                 </Button>

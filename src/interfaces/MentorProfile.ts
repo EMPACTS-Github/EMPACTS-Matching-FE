@@ -32,4 +32,5 @@ export interface Mentor {
     currentWorkplace?: string;
     currentPosition?: string;
     industryFocus?: string[];
+    isHide?: boolean;
 }
