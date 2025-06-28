@@ -20,37 +20,24 @@ function RegisterInfo() {
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      addToast({
-        title: 'Uploading your avatar. Please wait',
-        promise: new Promise((resolve, reject) => {
-          if (e.target.files) {
-            uploadAttachemt({
-              file: e.target.files[0],
-              ownerType: UPLOAD_OWNER_TYPE.USER,
-            })
-              .then(response => {
-                setAvatarUrl(response.data.attachmentUrl);
-                setUploadAvatarId(response.data.id)
-                addToast({
-                  title: 'Avatar uploaded',
-                  timeout: 3000,
-                })
-                resolve(response);
-              })
-              .catch(err => {
-                console.log(err);
-                addToast({
-                  title: 'An error occured while uploading avatar. Please try again.',
-                  timeout: 3000,
-                })
-                reject(err);
-              })
-              .finally(() => {
-                e.target.files = null
-              });
-          }
-        })
+      const uploadResult = await uploadAttachemt({
+        file: e.target.files[0],
+        ownerType: UPLOAD_OWNER_TYPE.USER,
       })
+      if (uploadResult.data.attachmentUrl) {
+        setAvatarUrl(uploadResult.data.attachmentUrl);
+        setUploadAvatarId(uploadResult.data.id)
+        addToast({
+          title: 'Avatar uploaded',
+          timeout: 3000,
+        })
+      } else {
+        addToast({
+          title: 'An error occured while uploading avatar. Please try again.',
+          timeout: 3000,
+        })
+      }
+      e.target.files = null
     }
   }
 
@@ -80,11 +67,13 @@ function RegisterInfo() {
         } else {
           router.replace('/profiles/new');
         }
-        updateAttachment({
-          id: uploadAvatarId,
-          ownerType: UPLOAD_OWNER_TYPE.USER,
-          ownerId: response.data.user.id
-        })
+        if (uploadAvatarId) {
+          updateAttachment({
+            id: uploadAvatarId,
+            ownerType: UPLOAD_OWNER_TYPE.USER,
+            ownerId: response.data.user.id
+          })
+        }
       } catch (error) {
         console.log(error);
       }

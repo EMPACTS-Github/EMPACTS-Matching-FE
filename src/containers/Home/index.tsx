@@ -67,7 +67,7 @@ function Home() {
           className="w-full shadow-md"
         />
         <CategoryList setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 mb-8">
           {startups.length > 0 ? (
             startups.map((card, index) => (
               <StartupCard key={index} {...card} onClick={handleStartupDetail} />
