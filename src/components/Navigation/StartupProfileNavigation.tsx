@@ -23,18 +23,21 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
   const [suggestedMentors, setSuggestedMentors] = useState<SuggestMentors[]>([{} as SuggestMentors]);
   const [error, setError] = useState<string | null>(null);
   const setStartupId = useStartupIdStore((state) => state.setStartupId);
+
+  const fetchStartupProfile = async () => {
+    try {
+      const data = await startup_profile_detail(startupId);
+      setStartupProfile(data.data);
+    } catch (err) {
+      console.error('Failed to fetch startup profile:', err);
+    }
+  };
+
   useEffect(() => {
     setStartupId(startupId);
   }, [startupId]);
+
   useEffect(() => {
-    const fetchStartupProfile = async () => {
-      try {
-        const data = await startup_profile_detail(startupId);
-        setStartupProfile(data.data);
-      } catch (err) {
-        console.error('Failed to fetch startup profile:', err);
-      }
-    };
     fetchStartupProfile();
   }, [startupId]);
 
@@ -82,7 +85,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
             className="pt-0 px-2"
           >
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-              <StartupProfileContainer startup_profile={startup_profile} />
+              <StartupProfileContainer onFetchStartupProfile={fetchStartupProfile} startup_profile={startup_profile} />
             </div>
           </Tab>
           <Tab
@@ -91,7 +94,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
             className="pt-0 px-2"
           >
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-              <StartupMemberContainer startup_profile={startup_profile} />
+              <StartupMemberContainer onFetchStartupProfile={fetchStartupProfile} startup_profile={startup_profile} />
             </div>
           </Tab>
         </Tabs >

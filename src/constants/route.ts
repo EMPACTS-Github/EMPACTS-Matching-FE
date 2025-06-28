@@ -72,4 +72,10 @@ export const ROUTES: Route[] = [
     isPrivate: true,
     hasHeader: true,
   },
+  {
+    name: 'CreateNewMentorProfile',
+    pathname: '/profiles/new/mentor',
+    isPrivate: true,
+    hasHeader: false,
+  },
 ];

@@ -12,7 +12,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
   return (
     <div className="flex flex-col gap-7">
       <div className="flex gap-3 items-center">
-        <Avatar className="w-[60px] h-[60px]" radius="md" src={startup.avtUrl} />
+        <Avatar isBordered color="primary" className="w-[60px] h-[60px] bg-white" radius="md" src={startup.avtUrl} />
         <div>
           <h1 className="text-2xl font-bold text-gray-800">{startup?.name}</h1>
           <p className="text-gray-600">
@@ -33,9 +33,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
             {startup.memberQty} Members
           </span>
         </div>
-      </div>
-      <div>
-        <p className="text-gray-500 text-[14px]">Startup Bio...</p>
       </div>
     </div>
   );

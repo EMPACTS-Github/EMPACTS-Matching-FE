@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Avatar } from "@heroui/react";
 import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import { useRouter } from 'next/navigation';
 import {
@@ -21,6 +22,7 @@ import { mentor_list } from '@/apis/mentor-profile';
 import { StartupOfUserResponse, MentorOfUserResponse } from '@/interfaces/StartupOfUser'
 import ChevronSelectorVerticalIcon from '@/components/Icons/ChevronSelectorVerticalIcon';
 import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
+import { u } from 'framer-motion/client';
 
 const PopoverContentItem = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -34,12 +36,14 @@ const Header = () => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [startups, setStartups] = useState<StartupOfUserResponse[]>([]);
-  //example test (have to change MentorOfUser)
   const [mentors, setMentors] = useState<MentorOfUserResponse[]>([])
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
+    const userAvatar = user ? JSON.parse(user).avtUrl : null;
+    setAvatarUrl(userAvatar);
     setIsLoggedIn(!!user);
     //api for get list_startup for user
     const fetchStartups = async () => {
@@ -74,13 +78,11 @@ const Header = () => {
       })
   }
 
-
-
   const renderAccountOptions = () => {
     return (
       <PopoverContent className='w-[200px] block'>
         <div className='px-1 py-2 flex flex-col gap-1 items-start'>
-          <Link className='text-black hover:bg-slate-200 w-full px-1.5 py-1.5 rounded-lg transition-all' href={'/'}>Account</Link>
+          {/* <Link className='text-black hover:bg-slate-200 w-full px-1.5 py-1.5 rounded-lg transition-all' href={'/'}>Account</Link> */}
           <Link className='text-black hover:bg-slate-200 w-full px-1.5 py-1.5 rounded-lg transition-all' href={'/'}>Setting</Link>
           <div onClick={handleLogout} className='cursor-pointer text-black hover:bg-slate-200 w-full px-1.5 py-1.5 rounded-lg transition-all'>Logout</div>
         </div>
@@ -103,7 +105,7 @@ const Header = () => {
               <EmpactsLogoIcon />
             </Button>
             <Popover
-              placement="bottom-end"
+              placement="bottom"
               isOpen={popoverOpen}
               onOpenChange={setPopoverOpen}
             >
@@ -137,7 +139,7 @@ const Header = () => {
                       <PopoverContentItem key={mentor.mentorId}>
                         <Link href={`/mentor-detail/${mentor.mentorId}`} onClick={() => setPopoverOpen(false)}>
                           <div className="flex items-center gap-2">
-                            <Image src={mentor.avtUrl} alt="Logo" width={20} height={20} />
+                            <Avatar src={mentor.avtUrl} alt="Logo" size='sm' className='bg-white' radius='sm' />
                             <div className="text-sm">{mentor.name}</div>
                           </div>
                         </Link>
@@ -151,7 +153,7 @@ const Header = () => {
                       <PopoverContentItem key={startup.startupId}>
                         <Link href={`/startup-detail/${startup.startupId}`} onClick={() => setPopoverOpen(false)}>
                           <div className="flex items-center gap-2">
-                            <Image src={startup.avtUrl} alt="Logo" width={20} height={20} />
+                            <Avatar src={startup.avtUrl} alt="Logo" size='sm' className='bg-white' radius='sm' />
                             <div className="text-sm">{startup.name}</div>
                           </div>
                         </Link>
@@ -165,17 +167,17 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <div className="flex items-center gap-3">
-                <Image
+                {/* <Image
                   src={BellIcon}
                   alt="Notifications"
                   width={28}
                   height={28}
                   className="cursor-pointer"
-                />
-                <Popover>
+                /> */}
+                <Popover placement='bottom-end'>
                   <PopoverTrigger>
                     <Image
-                      src={AvatarPlaceholder}
+                      src={avatarUrl || AvatarPlaceholder}
                       alt="Avatar"
                       width={40}
                       height={40}

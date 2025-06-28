@@ -41,7 +41,7 @@ const StartupDetailPage = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center w-full relative z-10 overflow-hidden">
-        <div className="w-[65vw] mx-auto p-8 mt-10 rounded-lg shadow-lg bg-white flex flex-col gap-7 h-[80vh] overflow-hidden">
+        <div className="w-[50vw] mx-auto p-8 mt-10 rounded-lg bg-white flex flex-col gap-7 h-[80vh] overflow-hidden">
           <Skeleton className="h-8 w-full rounded-full bg-default-300" />
           <Divider className="w-full" />
           <Skeleton className="h-8 w-full rounded-full bg-default-300" />
@@ -54,7 +54,7 @@ const StartupDetailPage = () => {
 
   return (
     <div className="flex justify-center items-center w-full relative z-10 overflow-hidden">
-      <div className="w-[65vw] mx-auto p-8 mt-10 rounded-lg shadow-lg bg-white flex flex-col gap-7 h-[80vh] overflow-hidden">
+      <div className="w-[50vw] mx-auto p-8 mt-10 rounded-lg shadow-lg bg-white flex flex-col gap-7 h-[80vh] overflow-hidden">
         <ProfileHeader startup={startup} />
         <TabsSection startup={startup} />
       </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { Button, TimeInput, addToast } from "@heroui/react";
+import { Avatar, Button, TimeInput, addToast } from "@heroui/react";
 import TextLine from "@/components/common/TextLine";
 import { MATCHING_STATUS } from "@/constants/matching";
 import UserRightIcon from "@/components/Icons/UserRightIcon";
@@ -16,6 +16,8 @@ import { Spinner } from "@heroui/spinner";
 import { Tab, Tabs } from "@heroui/react";
 import { Startup } from "@/interfaces/StartupProfile";
 import { Member } from "@/interfaces/StartupProfile";
+import LabelIcon from '/public/assets/label.png';
+import { getSDGGoal } from "@/utils/getSDGGoal";
 
 interface MatchingRequestInfoCardProps {
     connectRequestCode: string;
@@ -70,7 +72,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
             }
             setTimeout(() => {
                 window.location.reload();
-            }, 500);
+            }, 2000);
         } catch (error) {
             console.error("Failed to accept request:", error);
             addToast({
@@ -109,13 +111,15 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
     return (
         <div className={`bg-white rounded-lg shadow-xl py-6 px-8 gap-y-4 flex flex-col`}>
             <div className="flex justify-between items-end">
-                <div className="flex justify-start">
-                    <Image
+                <div className="flex justify-start  items-center">
+                    <Avatar
                         src={avtUrl}
                         alt={title}
-                        width={80}
-                        height={80}
-                        className="mr-6 h-20 w-20 rounded-full"
+                        className="mr-6 bg-white"
+                        color="primary"
+                        isBordered
+                        size="lg"
+                        radius="full"
                     />
                     <div className="items-center justify-between flex-grow">
                         <div className="flex items-center justify-between">
@@ -131,7 +135,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                         </div>
                     </div>
                 </div>
-                {status === MATCHING_STATUS.PENDING && (
+                {status === MATCHING_STATUS.PENDING && !isLoading && (
                     <div className="flex gap-x-2">
                         <Button
                             type="submit"
@@ -142,7 +146,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                             startContent={<UserRightIcon className="text-empacts" />}
                             onPress={handleAcceptRequestClick}
                         >
-                            {isLoading ? <Spinner size="sm" color="primary" /> : "Accept Request"}
+                            Accept
                         </Button>
                         <Button
                             type="submit"
@@ -153,14 +157,19 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                             startContent={<UserRightIcon className="text-error" />}
                             onPress={handleRejectRequestClick}
                         >
-                            {isLoading ? <Spinner size="sm" color="danger" /> : "Reject Request"}
+                            Reject
                         </Button>
                     </div>
-
                 )}
             </div>
+            <div className="flex items-center gap-1 overflow-hidden">
+                <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
+                <span className="font-inter font-semibold text-base text-black text-center truncate">
+                    {getSDGGoal(startup?.sdgGoal || "")}
+                </span>
+            </div>
             <Tabs aria-label="Request Tabs" variant="underlined" color="primary" className="font-bold">
-                <Tab key="request_detail" title="Request detail">
+                <Tab key="request_detail" title="Request detail" className="flex flex-col gap-y-4">
                     <div className="flex gap-x-2 items-center">
                         <div className="font-semibold">Status:</div>
                         <div className={status === MATCHING_STATUS.ACCEPTED ? "text-success font-semibold" : "text-gray-500 font-semibold"}>{capitalizeFirstLetter(status)}</div>
@@ -225,12 +234,11 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
 
                     <div className="flex flex-col gap-y-3">
                         <div className={`flex flex-col gap-1`}>
-                            {note && (
-                                <label className="text-sm text-gray-700 mb-1">Note</label>
-                            )}
+                            <label className="text-sm text-gray-700 mb-1">Note</label>
                             <textarea
                                 readOnly
                                 value={note}
+                                placeholder="No note provided"
                                 rows={5}
                                 className="border border-gray-50 rounded-lg min-h-[120px] p-3 bg-gray-50 text-gray-700 resize-none focus:outline-none"
                             />
@@ -250,12 +258,13 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-8 py-4">
                                 {startupMembers.map((member, index) => (
                                     <div className="flex justify-start" key={member.id || index}>
-                                        <Image
+                                        <Avatar
                                             src={member.user.avtUrl}
                                             alt={member.user.name}
-                                            width={40}
-                                            height={40}
-                                            className="mr-6 h-14 w-14 rounded-full"
+                                            className="mr-6 bg-white"
+                                            isBordered
+                                            size="md"
+                                            radius="full"
                                         />
                                         <div className="items-center justify-between flex-grow">
                                             <div className="flex items-center justify-between">

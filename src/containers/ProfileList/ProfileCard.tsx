@@ -28,14 +28,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, type }) => {
   return (
     <div
       key={profile.id}
-      className="flex items-center justify-between p-2 border-b cursor-pointer hover:bg-slate-200 hover:rounded-lg"
+      className="flex items-center justify-between p-2 cursor-pointer hover:bg-slate-200 hover:rounded-lg"
       onClick={handleNavigateToProfile}
     >
       <div className="flex items-center">
         <Avatar
           src={profile.avtUrl}
           alt={`${profile.name} Avatar`}
-          size="lg"
+          size="md"
+          radius='full'
+          className="bg-white"
+          color="primary"
+          isBordered
         />
         <div className="ml-4">
           <p className="font-bold text-gray-800">{profile.name}</p>

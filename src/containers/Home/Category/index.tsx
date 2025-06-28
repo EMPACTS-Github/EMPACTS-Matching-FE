@@ -22,10 +22,10 @@ const CategoryList: React.FC<CategoryProps> = ({
     label: STARTUP_SDG_GOALS[key].label,
   }));
 
-  const initialCategories = allCategories.slice(0, 6);
-  const moreTabs1 = allCategories.slice(6, 10);
-  const moreTabs2 = allCategories.slice(10, 14);
-  const moreTabs3 = allCategories.slice(14);
+  const initialCategories = allCategories.slice(0, 5);
+  const moreTabs1 = allCategories.slice(5, 8);
+  const moreTabs2 = allCategories.slice(8, 11);
+  const moreTabs3 = allCategories.slice(11, 14);
 
   const [showMore, setShowMore] = useState(false);
   const [selectAll, setSelectAll] = useState(true);
@@ -50,8 +50,8 @@ const CategoryList: React.FC<CategoryProps> = ({
   }
 
   return (
-    <div className="w-full p-4">
-      <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap">
+    <div className="w-full p-6">
+      <div className="flex gap-2 overflow-x-auto justify-center whitespace-nowrap mb-2">
         <Button
           onPress={() => handleSelectAll()}
           size="md"
@@ -64,7 +64,7 @@ const CategoryList: React.FC<CategoryProps> = ({
           }}
           className={!selectAll ? "border-empacts-grey-50 border-1" : ""}
         >
-          <div className="text-[16px]">
+          <div className="text-sm">
             All
           </div>
         </Button>
@@ -85,7 +85,7 @@ const CategoryList: React.FC<CategoryProps> = ({
           className="border-empacts-grey-50 border-1"
           endContent={<ChevronDownIcon className="color-empacts" />}
         >
-          <div className="text-[16px]">
+          <div className="text-sm font-semibold">
             More
           </div>
         </Button>
@@ -93,7 +93,7 @@ const CategoryList: React.FC<CategoryProps> = ({
       </div>
       {showMore && (
         <div className="flex flex-col items-center">
-          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap">
+          <div className="flex gap-2 overflow-x-auto mb-2 justify-center whitespace-nowrap">
             {moreTabs1.map((category) => (
               <CategoryItem
                 key={category.id}
@@ -103,7 +103,7 @@ const CategoryList: React.FC<CategoryProps> = ({
               />
             ))}
           </div>
-          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap">
+          <div className="flex gap-2 overflow-x-auto mb-2 justify-center whitespace-nowrap">
             {moreTabs2.map((category) => (
               <CategoryItem
                 key={category.id}
@@ -113,7 +113,7 @@ const CategoryList: React.FC<CategoryProps> = ({
               />
             ))}
           </div>
-          <div className="flex gap-2 overflow-x-auto mb-4 justify-center whitespace-nowrap">
+          <div className="flex gap-2 overflow-x-auto mb-2 justify-center whitespace-nowrap">
             {moreTabs3.map((category) => (
               <CategoryItem
                 key={category.id}
@@ -131,7 +131,7 @@ const CategoryList: React.FC<CategoryProps> = ({
               className="border-empacts-grey-50 border-1"
               endContent={<ChevronUpIcon className="color-empacts" />}
             >
-              <div className="text-[16px]">
+              <div className="text-sm font-semibold">
                 Less
               </div>
             </Button>

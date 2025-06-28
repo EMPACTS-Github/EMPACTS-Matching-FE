@@ -107,7 +107,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }, [selectedIndex]);
 
   return (
-    <div className='w-[40%] relative'>
+    <div className='w-[60%] relative'>
       <div className="flex items-center justify-between">
         <Input
           ref={inputRef}

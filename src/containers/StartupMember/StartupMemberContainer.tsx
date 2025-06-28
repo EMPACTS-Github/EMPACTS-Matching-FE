@@ -11,9 +11,10 @@ import { MATCHING_STATUS } from "@/constants/matching";
 
 interface StartupMemberContainerProps {
     startup_profile: StartupProfileResponse | undefined;
+    onFetchStartupProfile: () => Promise<void>;
 }
 
-const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ startup_profile }) => {
+const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ startup_profile, onFetchStartupProfile }) => {
     const user = localStorage.getItem('user');
     const userObj = user ? JSON.parse(user) : {};
     const userId = userObj.id;
@@ -65,7 +66,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({ startup
             {
                 startup_profile?.startup ? (
                     <div className="w-[25%]">
-                        <ProfileInfoSubCard startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
+                        <ProfileInfoSubCard onFetchStartupProfile={onFetchStartupProfile} startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
                     </div>
                 ) : (
                     <div className="w-[25%]">

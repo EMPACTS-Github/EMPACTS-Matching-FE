@@ -61,13 +61,13 @@ function Home() {
 
   return (
     <main className="flex flex-col items-center min-h-screen">
-      <div className="w-full flex flex-col items-center">
+      <div className="flex flex-col items-center w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 gap-0 mt-6">
         <HeroSection />
         <SearchBar
-          className="mb-8 w-full max-w-2xl shadow-md"
+          className="w-full shadow-md"
         />
         <CategoryList setSelectedCategory={setSelectedCategory} selectedCategory={selectedCategory} />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
           {startups.length > 0 ? (
             startups.map((card, index) => (
               <StartupCard key={index} {...card} onClick={handleStartupDetail} />

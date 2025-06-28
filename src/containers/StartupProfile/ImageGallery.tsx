@@ -1,35 +1,25 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import MediaEmptyStateLogo from "/public/assets/media-empty-state-logo.svg";
-import { Button } from '@heroui/react';
+import { IDocument } from '@/interfaces/upload';
 
 interface ImageGalleryProps {
-    images: string[];
+    images: IDocument[];
 }
 
-const PlusSquareIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-        <path d="M8.5 4.58984L8.5 12.5898" stroke="white" stroke-width="2" stroke-linecap="round" />
-        <path d="M12.5 8.58984L4.5 8.58984" stroke="white" stroke-width="2" stroke-linecap="round" />
-    </svg>
-);
-
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
-    const [selectedIndex, setSelectedIndex] = useState(0); // Lưu trữ chỉ số của hình ảnh được chọn
-    const onClickButton = () => {
-        console.log('Add new media');
-    };
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
     return (
         <div className="flex flex-col w-full my-4">
-            {/* Hiển thị ảnh chính */}
             {images.length > 0 ? (
                 <div>
                     <div className="w-full h-auto mb-4">
                         <Image
-                            src={images[selectedIndex]}
+                            src={images[selectedIndex].attachmentUrl}
                             alt="Selected"
-                            width={800} // Chiều rộng của ảnh chính
-                            height={400} // Chiều cao của ảnh chính
+                            width={800}
+                            height={400}
                             className="object-cover shadow-lg rounded-lg"
                         />
                     </div>
@@ -41,10 +31,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                                 onClick={() => setSelectedIndex(index)}
                             >
                                 <Image
-                                    src={image}
+                                    src={image.attachmentUrl}
                                     alt={`Thumbnail ${index}`}
-                                    width={56} // Chiều rộng của thumbnail
-                                    height={56} // Chiều cao của thumbnail
+                                    width={56}
+                                    height={56}
                                     className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${selectedIndex == index ? 'border-empacts' : 'border-transparent'
                                         } rounded-lg`}
                                 />
@@ -62,16 +52,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
                         <p className="text-md text-gray-500 mb-2">No Result</p>
                         <p className="text-sm text-gray-400">This is a mistake? Please refresh your page to see updates</p>
                     </div>
-                    <Button
-                        type="submit"
-                        color="primary"
-                        size="lg"
-                        className="rounded-lg bg-empacts border-empacts text-md text-white"
-                        startContent={<PlusSquareIcon />}
-                        onPress={onClickButton}
-                    >
-                        Add new media
-                    </Button>
+                    
                 </div>
             )}
         </div>

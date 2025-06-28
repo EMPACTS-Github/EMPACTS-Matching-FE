@@ -22,7 +22,7 @@ import SkillOfferedSection from './SkillOfferedSection';
 function CreateNewMentor() {
   const [mentorName, setMentorName] = useState('');
   const [mentorUsername, setMentorUsername] = useState('');
-  const [location, setLocation] = useState(PROVINCES[0].key);
+  const [location, setLocation] = useState('');
   const [profilePicture, setProfilePicture] = useState<string | undefined>('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
   const [loading, setLoading] = useState(false);

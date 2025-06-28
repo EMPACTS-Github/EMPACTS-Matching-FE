@@ -24,8 +24,8 @@ import DescriptionSection from './DescriptionSection';
 function CreateNewStartup() {
   const [companyName, setCompanyName] = useState('');
   const [startupUsername, setStartupUsername] = useState('');
-  const [selectedGoal, setSelectedGoal] = useState(STARTUP_SDG_GOALS.NO_POVERTY.textValue);
-  const [location, setLocation] = useState(PROVINCES[0].key);
+  const [selectedGoal, setSelectedGoal] = useState("");
+  const [location, setLocation] = useState("");
   const [profilePicture, setProfilePicture] = useState<string | undefined>('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
   const [members, setMembers] = useState<MemberForInvite[]>([]);

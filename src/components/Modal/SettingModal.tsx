@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { Tabs, Tab, Button, Input, Divider, Avatar, addToast } from "@heroui/react";
+import { Tabs, Tab, Button, Divider, Avatar, addToast } from "@heroui/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import React, { useState, useEffect } from "react";
-import { uploadAttachemt, updateAttachment } from "@/apis/upload";
+import { uploadAttachemt, updateAttachment, getStartupDocuments } from "@/apis/upload";
 import { startup_profile_update } from "@/apis/startup-profile";
 import { Startup } from "@/interfaces/StartupProfile";
 import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
-import ImageGallery from "@/containers/StartupProfile/ImageGallery";
+import ImageGallery from "./ImageGallery";
+import DocumentBody from "./DocumentBody";
 import LabelStartAndSwitchEnd from "@/components/Switch/LabelStartAndSwitchEnd";
 import sdgGoals from "@/utils/data/sdgGoals.json";
 import provinces from "@/utils/data/provinces.json";
@@ -19,21 +21,17 @@ import {
     ModalBody,
     ModalFooter
 } from "@heroui/modal";
-import { Textarea } from "@heroui/input";
+import { isDocumentFile, isImageFile } from "@/services/upload";
+import { IDocument } from "@/interfaces/upload";
+
 interface SettingModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
     startup: Startup;
+    onFetchStartupProfile: () => Promise<void>;
 }
 
-const PlusSquareIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
-        <path d="M8.5 4.58984L8.5 12.5898" stroke="white" stroke-width="2" stroke-linecap="round" />
-        <path d="M12.5 8.58984L4.5 8.58984" stroke="white" stroke-width="2" stroke-linecap="round" />
-    </svg>
-);
-
-const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup }) => {
+const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup, onFetchStartupProfile }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false); // Add loading state
     const [image, setImage] = useState<string>(startup.avtUrl || "");
@@ -44,11 +42,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [profilePicture, setProfilePicture] = useState('');
     const [uploadedPictureId, setUploadedPictureId] = useState('');
 
-    const images: string[] = [
-        "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
-        "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
-        "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/EmpactsLogo.png",
-    ];
+    const [startupImages, setStartupImages] = useState<IDocument[]>([]);
+    const [startupDocuments, setStartupDocuments] = useState<IDocument[]>([]);
+    const [selectedImage, setSelectedImage] = useState<IDocument | null>(null);
+    const [selectedDocument, setSelectedDocument] = useState<IDocument | null>(null);
 
     // Đồng bộ state với props khi startup thay đổi
     useEffect(() => {
@@ -67,10 +64,8 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         if (startup.sdgGoal) {
             setSdgGoal(startup.sdgGoal);
         }
-        // if (startup?.bio) {
-        //     setBio(startup.bio);
-        // }
     }, [startup]);
+
     const onUpdateProfileClick = async () => {
         if (startup.id) {
             setLoading(true);
@@ -80,62 +75,53 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                 description: description,
                 sdgGoal: sdgGoal,
                 isHide: false,
+                avtUrl: profilePicture ? profilePicture : startup.avtUrl,
             };
+
             try {
-                const updateImageResponse = await updateAttachment({
-                    id: uploadedPictureId,
-                    ownerId: startup.id,
-                    ownerType: UPLOAD_OWNER_TYPE.STARTUP,
-                });
-                try {
-                    const updateProfileResponse = await startup_profile_update(
-                        startup.id, requestBody
-                    );
-                    addToast({
-                        title: 'Profile updated successfully',
-                        color: 'success',
-                        timeout: 3000,
-                    });
-                } catch (err) {
-                    setError("Failed to upload the image. Please try again.");
-                    addToast({
-                        title: 'Failed to upload the image',
-                        color: 'danger',
-                        timeout: 3000,
-                    });
-                } finally {
-                    setLoading(false);
-                }
-            } catch (error) {
-                console.error("Error updating profile:", error);
+                await startup_profile_update(
+                    startup.id, requestBody
+                );
                 addToast({
-                    title: "Failed to update profile",
-                    color: "danger",
+                    title: 'Profile updated successfully',
+                    color: 'success',
+                    timeout: 3000,
+                });
+                await onFetchStartupProfile();
+            } catch (err) {
+                addToast({
+                    title: 'Failed to update profile',
+                    color: 'danger',
                     timeout: 3000,
                 });
             } finally {
                 setLoading(false);
                 onOpenChange();
             }
+
         }
     }
+
     const handleHideProfileClick = () => {
         console.log(sdgGoal)
         console.log("1")
     }
+
     const handleDeleteProfileClick = () => {
         console.log("2")
     }
+
     const onImageUpload = (fileUrl: string, fileId: string) => {
         setProfilePicture(fileUrl);
         setUploadedPictureId(fileId);
     }
+
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             setLoading(true);
             try {
-                const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
+                const response = await uploadAttachemt({ file, ownerId: startup.id, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
                 setImage(response.data.attachmentUrl);
                 setError(null);
                 onImageUpload(response.data.attachmentUrl, response.data.id);
@@ -153,6 +139,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                 });
             } finally {
                 setLoading(false);
+                event.target.files = null;
             }
         } else {
             setError("No file selected. Please choose an image file.");
@@ -163,12 +150,126 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
             });
         }
     };
+
+    const handleUploadNewStartupAttachment = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            try {
+                const response = await uploadAttachemt({ file, ownerId: startup.id, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
+                addToast({
+                    title: 'Image uploaded successfully',
+                    color: 'success',
+                    timeout: 3000,
+                });
+                const newDocument: IDocument = {
+                    id: response.data.id,
+                    attachmentUrl: response.data.attachmentUrl,
+                    attachmentTitle: response.data.attachmentTitle,
+                    type: response.data.type,
+                    size: response.data.size,
+                    createdAt: response.data.createdAt,
+                    updatedAt: response.data.updatedAt,
+                    ownerId: startup.id,
+                    ownerType: UPLOAD_OWNER_TYPE.STARTUP,
+                }
+                if (isImageFile(response.data.type)) {
+                    setStartupImages([...startupImages, newDocument]);
+                } else {
+                    setStartupDocuments([...startupDocuments, newDocument]);
+                }
+            } catch (err) {
+                addToast({
+                    title: 'Failed to upload the image',
+                    color: 'danger',
+                    timeout: 3000,
+                });
+            } finally {
+                event.target.files = null;
+            }
+        }
+    }
+
+    const handleSelectImage = (image: IDocument) => {
+        setSelectedImage(image);
+    }
+
+    const handleSelectDocument = (document: IDocument) => {
+        setSelectedDocument(document);
+    }
+
+    const handleDeleteAttachment = async (attachment: IDocument | null) => {
+        if (!attachment) return;
+        try {
+            await updateAttachment({
+                id: attachment.id,
+                ownerId: startup.id,
+                ownerType: UPLOAD_OWNER_TYPE.STARTUP,
+                isDeleted: true,
+            });
+            if (isImageFile(attachment.type)) {
+                const newStartupImages = startupImages.filter((image) => image.id !== attachment.id);
+                setStartupImages(newStartupImages);
+                setSelectedImage(newStartupImages[0] || null);
+            } else {
+                const newStartupDocuments = startupDocuments.filter((doc) => doc.id !== attachment.id);
+                setStartupDocuments(newStartupDocuments);
+                setSelectedDocument(newStartupDocuments[0] || null);
+            }
+            addToast({
+                title: 'Attachment deleted successfully',
+                color: 'success',
+                timeout: 3000,
+            });
+        } catch (error) {
+            addToast({
+                title: 'Failed to delete the attachment',
+                color: 'danger',
+                timeout: 3000,
+            });
+        }
+    }
+
+    const fetchStartupDocuments = async () => {
+        try {
+            const response = await getStartupDocuments({
+                ownerId: startup.id,
+                ownerType: UPLOAD_OWNER_TYPE.STARTUP,
+                limit: 100,
+                page: 1,
+            });
+            const allDocuments = response.data;
+            const images = allDocuments.filter((document: IDocument) => isImageFile(document.type));
+            const documents = allDocuments.filter((document: IDocument) => isDocumentFile(document.type));
+            setStartupImages(images);
+            setStartupDocuments(documents);
+            setSelectedImage(images[0] || null);
+            setSelectedDocument(documents[0] || null);
+        } catch (error) {
+            addToast({
+                title: 'Oops! Something went wrong',
+                color: 'danger',
+                timeout: 3000,
+            });
+        }
+    }
+
+    useEffect(() => {
+        if (isOpen) {
+            fetchStartupDocuments();
+        }
+
+        return () => {
+            setStartupImages([]);
+            setStartupDocuments([]);
+        }
+    }, [isOpen]);
+
     return <Modal
         size="5xl"
         isKeyboardDismissDisabled={true}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        scrollBehavior="outside"
+        scrollBehavior="inside"
         className="py-4 px-6 min-h-96"
     >
         <ModalContent>
@@ -226,7 +327,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                     labelPlacement="outside"
                                     label="Location"
                                     placeholder="Select your location"
-                                    onSelectionChange={() => setLocation}
+                                    onSelectionChange={(key) => {
+                                        let selectedLocation = provinces.find((province) => province.value === key);
+                                        setLocation(selectedLocation?.value || "");
+                                    }}
                                     defaultItems={provinces}
                                     variant="bordered"
                                     defaultSelectedKey={location}
@@ -237,35 +341,46 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                     labelPlacement="outside"
                                     label="SDG Goals"
                                     placeholder="Select SDG Goals"
-                                    onSelectionChange={() => setSdgGoal}
+                                    onSelectionChange={(key) => {
+                                        let selectedSdgGoal = sdgGoals.find((sdgGoal) => sdgGoal.value === key);
+                                        setSdgGoal(selectedSdgGoal?.value || "");
+                                    }}
                                     defaultItems={sdgGoals}
                                     variant="bordered"
                                     defaultSelectedKey={sdgGoal}
                                 >
                                     {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
                                 </Autocomplete>
-                                <LabelWithTextarea
-                                    label="Description"
-                                    content={description}
-                                    setContent={setDescription}
-                                    minRows={3}
-                                    placeholder="Description"
-                                />
+                                <div className="flex flex-col gap-1">
+                                    <label className="text-sm text-gray-700 mb-1">Description</label>
+                                    <textarea
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                        rows={5}
+                                        className="border border-gray-200 rounded-lg min-h-[120px] p-3 bg-white text-black resize-none focus:outline-none focus:border-black transition-colors"
+                                        placeholder="Description"
+                                    />
+                                </div>
 
                                 <div className="font-semibold text-lg text-empacts">Media</div>
                                 <Divider />
-                                <ImageGallery images={images} />
+                                <ImageGallery
+                                    images={startupImages}
+                                    selectedImage={selectedImage}
+                                    onUploadNewImage={handleUploadNewStartupAttachment}
+                                    onSelectImage={handleSelectImage}
+                                    onDeleteAttachment={handleDeleteAttachment}
+                                />
 
                                 <div className="font-semibold text-lg text-empacts">Documentation</div>
                                 <Divider />
-                                <Button
-                                    size="sm"
-                                    className="rounded-lg bg-empacts w-36 text-xs text-white"
-                                    startContent={<PlusSquareIcon />}
-                                    onPress={() => { }}
-                                >
-                                    Add new file
-                                </Button>
+                                <DocumentBody
+                                    files={startupDocuments}
+                                    selectedFile={selectedDocument}
+                                    onSelectFile={handleSelectDocument}
+                                    onDeleteAttachment={handleDeleteAttachment}
+                                    onUploadNewFile={handleUploadNewStartupAttachment}
+                                />
 
                                 <div className="font-semibold text-lg text-empacts">Advanced Information</div>
                                 <Divider />

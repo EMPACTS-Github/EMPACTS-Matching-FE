@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from 'react';
 import { Spacer } from "@heroui/spacer";
@@ -6,20 +7,29 @@ import TabsSection from "./TabsSection";
 import ProfileInfoSubCard from "@/components/Card/ProfileInfoSubCard";
 import { StartupProfileResponse } from "@/interfaces/StartupProfile";
 import { Skeleton } from "@heroui/skeleton";
-import { Card, CardBody, Divider } from "@heroui/react";
+import { addToast, Card, CardBody, Divider } from "@heroui/react";
 import { startup_matching_activity } from "@/apis/startup-matching";
 import { MATCHING_STATUS } from "@/constants/matching";
+import { IDocument } from '@/interfaces/upload';
+import { getStartupDocuments } from '@/apis/upload';
+import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
+import { isImageFile } from '@/services/upload';
+import { isDocumentFile } from '@/services/upload';
 
 interface StartupProfileContainerProps {
     startup_profile: StartupProfileResponse | undefined;
+    onFetchStartupProfile: () => Promise<void>;
 }
 
-const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ startup_profile }) => {
+const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ startup_profile, onFetchStartupProfile }) => {
     const user = localStorage.getItem('user');
     const userObj = user ? JSON.parse(user) : {};
     const userId = userObj.id;
     const isOwner = startup_profile?.members.some((member) => member.user.id === userId && member.role === "OWNER")
     const [countMatches, setCountMatches] = useState<number>(0);
+
+    const [startupImages, setStartupImages] = useState<IDocument[]>([]);
+    const [startupDocuments, setStartupDocuments] = useState<IDocument[]>([]);
 
     useEffect(() => {
         if (!startup_profile?.startup?.id) return;
@@ -35,13 +45,39 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
         fetchMatching();
     }, [startup_profile?.startup.id]);
 
+    const fetchStartupDocuments = async () => {
+        try {
+            const response = await getStartupDocuments({
+                ownerId: startup_profile?.startup.id || '',
+                ownerType: UPLOAD_OWNER_TYPE.STARTUP,
+                limit: 100,
+                page: 1,
+            });
+            const allDocuments = response.data;
+            const images = allDocuments.filter((document: IDocument) => isImageFile(document.type));
+            const documents = allDocuments.filter((document: IDocument) => isDocumentFile(document.type));
+            setStartupImages(images);
+            setStartupDocuments(documents);
+        } catch (error) {
+            addToast({
+                title: 'Oops! Something went wrong',
+                color: 'danger',
+                timeout: 3000,
+            });
+        }
+    }
+
+    useEffect(() => {
+        fetchStartupDocuments();
+    }, []);
+
     return (
         <div className="flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-0 mt-6">
             <div className="w-[75%] mx-0 p-8 rounded-lg shadow-lg bg-white flex flex-col justify-center">
                 {startup_profile?.startup ? (
                     <div>
                         <ProfileHeader startup={startup_profile?.startup} />
-                        <TabsSection startup={startup_profile?.startup} />
+                        <TabsSection startup={startup_profile?.startup} images={startupImages} documents={startupDocuments} />
                     </div>
                 ) : (
                     <div>
@@ -66,7 +102,7 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
             {
                 startup_profile?.startup ? (
                     <div className="w-[25%]">
-                        <ProfileInfoSubCard startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
+                        <ProfileInfoSubCard onFetchStartupProfile={onFetchStartupProfile} startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
                     </div>
                 ) : (
                     <div className="w-[25%]">
