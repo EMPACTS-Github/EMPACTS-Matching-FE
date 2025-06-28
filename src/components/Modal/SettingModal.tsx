@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { Tabs, Tab, Button, Divider, Avatar, addToast } from "@heroui/react";
+import { Tabs, Tab, Button, Divider, Avatar, addToast, useDisclosure } from "@heroui/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import React, { useState, useEffect } from "react";
 import { uploadAttachemt, updateAttachment, getStartupDocuments } from "@/apis/upload";
-import { startup_profile_update } from "@/apis/startup-profile";
+import { startup_profile_update, startup_profile_delete } from "@/apis/startup-profile";
 import { Startup } from "@/interfaces/StartupProfile";
 import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
 import ImageGallery from "./ImageGallery";
@@ -13,6 +13,8 @@ import LabelStartAndSwitchEnd from "@/components/Switch/LabelStartAndSwitchEnd";
 import sdgGoals from "@/utils/data/sdgGoals.json";
 import provinces from "@/utils/data/provinces.json";
 import { UPLOAD_OWNER_TYPE } from "@/constants/upload";
+import DeleteProfileModal from "./DeleteProfileModal";
+import HideProfileModal from "./HideProfileModal";
 
 import {
     Modal,
@@ -48,6 +50,9 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
     const [startupDocuments, setStartupDocuments] = useState<IDocument[]>([]);
     const [selectedImage, setSelectedImage] = useState<IDocument | null>(null);
     const [selectedDocument, setSelectedDocument] = useState<IDocument | null>(null);
+
+    const { isOpen: isDeleteProfileModalOpen, onOpen: onOpenDeleteProfileModal, onOpenChange: onOpenChangeDeleteProfileModal } = useDisclosure();
+    const { isOpen: isHideProfileModalOpen, onOpen: onOpenHideProfileModal, onOpenChange: onOpenChangeHideProfileModal } = useDisclosure();
 
     // Đồng bộ state với props khi startup thay đổi
     useEffect(() => {
@@ -110,13 +115,77 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
         }
     }
 
-    const handleHideProfileClick = () => {
-        console.log(sdgGoal)
-        console.log("1")
+    const handleHideProfileClick = async () => {
+        if (startup.id) {
+            setLoading(true);
+            const requestBody = {
+                isHide: !startup.isHide,
+            };
+
+            try {
+                await startup_profile_update(
+                    startup.id, requestBody
+                );
+                if (requestBody.isHide) {
+                    addToast({
+                        title: 'Profile has been hidden successfully',
+                        color: 'success',
+                        timeout: 3000,
+                    });
+                } else {
+                    addToast({
+                        title: 'Profile has been unhidden successfully',
+                        color: 'success',
+                        timeout: 3000,
+                    });
+                }
+                await onFetchStartupProfile();
+            } catch (err) {
+                if (requestBody.isHide) {
+                    addToast({
+                        title: 'Failed to hide the profile',
+                        color: 'danger',
+                        timeout: 3000,
+                    });
+                } else {
+                    addToast({
+                        title: 'Failed to unhide the profile',
+                        color: 'danger',
+                        timeout: 3000,
+                    });
+                }
+            } finally {
+                setLoading(false);
+                onOpenChange();
+            }
+
+        }
     }
 
-    const handleDeleteProfileClick = () => {
-        console.log("2")
+    const handleDeleteProfileClick = async () => {
+        if (startup.id) {
+            setLoading(true);
+            try {
+                await startup_profile_delete(
+                    startup.id
+                );
+                addToast({
+                    title: 'Profile has been deleted successfully',
+                    color: 'success',
+                    timeout: 3000,
+                });
+            } catch (err) {
+                addToast({
+                    title: 'Failed to delete the profile',
+                    color: 'danger',
+                    timeout: 3000,
+                });
+            } finally {
+                setLoading(false);
+                onOpenChange();
+            }
+
+        }
     }
 
     const onImageUpload = (fileUrl: string, fileId: string) => {
@@ -302,7 +371,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                     </ModalHeader>
                     <Divider />
                     <ModalBody>
-                        <Tabs aria-label="Options" variant="light" isVertical={true} className="py-2">
+                        <Tabs aria-label="Options" variant="light" color="primary" isVertical={true} className="py-2 pr-4 mr-4 border-r-1 border-gray-200">
                             <Tab key="general" title="General" className="w-full flex flex-col gap-2 py-2">
                                 <div className="font-semibold text-lg text-empacts">Basic information</div>
                                 <Divider />
@@ -437,20 +506,32 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                                 </div>
                             </Tab>
                             <Tab key="advanced" title="Advanced" className="w-full flex flex-col gap-2 py-3">
-                                <div className="flex justify-between">
-                                    <div className="flex flex-col justify-center">
-                                        <p className="font-semibold text-sm text-gray-800">Hide Profile</p>
-                                        <p className="text-gray-400 font-normal text-xs">Hide your profile from search results across entire platform.</p>
+                                {!startup.isHide ? (
+                                    <div className="flex justify-between">
+                                        <div className="flex flex-col justify-center">
+                                            <p className="font-semibold text-sm text-gray-800">Hide Profile</p>
+                                            <p className="text-gray-400 font-normal text-xs">Hide your profile from search results across entire platform.</p>
+                                        </div>
+                                        <Button className="bg-tertiary text-white w-32" variant="solid" onPress={onOpenHideProfileModal}>Hide profile</Button>
                                     </div>
-                                    <Button className="bg-danger text-white" variant="solid" onPress={handleHideProfileClick}>Hide profile</Button>
-                                </div>
+                                ) : (
+                                    <div className="flex justify-between">
+                                        <div className="flex flex-col justify-center">
+                                            <p className="font-semibold text-sm text-gray-800">Profile is hidden</p>
+                                            <p className="text-gray-400 font-normal text-xs">Your profile is currently hidden from search results.</p>
+                                        </div>
+                                        <Button className="bg-empacts text-white w-32" variant="solid" onPress={onOpenHideProfileModal}>Unhide profile</Button>
+                                    </div>
+                                )}
                                 <div className="flex justify-between">
                                     <div className="flex flex-col justify-center">
                                         <p className="font-semibold text-sm text-gray-800">Delete Profile</p>
                                         <p className="text-gray-400 font-normal text-xs">Once deleted, it will be gone forever. Please be certain.</p>
                                     </div>
-                                    <Button className="bg-danger text-white" variant="solid" onPress={handleDeleteProfileClick}>Delete profile</Button>
+                                    <Button className="bg-tertiary text-white w-32" variant="solid" onPress={onOpenDeleteProfileModal}>Delete profile</Button>
                                 </div>
+                                <HideProfileModal isOpen={isHideProfileModalOpen} onOpenChange={onOpenChangeHideProfileModal} onHideProfile={handleHideProfileClick} isHide={startup.isHide} />
+                                <DeleteProfileModal isOpen={isDeleteProfileModalOpen} onOpenChange={onOpenChangeDeleteProfileModal} onDeleteProfile={handleDeleteProfileClick} />
                             </Tab>
                         </Tabs>
                     </ModalBody>

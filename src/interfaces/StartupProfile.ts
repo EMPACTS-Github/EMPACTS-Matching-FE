@@ -25,6 +25,7 @@ export interface Startup {
     investmentDetail?: string;
     fundraisingDetail?: string;
     memberQty: number;
+    isHide?: boolean;
 }
 
 export interface Member {

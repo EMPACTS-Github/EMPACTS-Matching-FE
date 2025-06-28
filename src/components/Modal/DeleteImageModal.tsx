@@ -21,17 +21,18 @@ interface DeleteImageModalProps {
 const DeleteImageModal = ({ image, isOpen, onOpenChange, onDeleteAttachment }: DeleteImageModalProps) => {
   return (
     <Modal
-        isKeyboardDismissDisabled={true}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        scrollBehavior="outside"
-        size='lg'
+      isKeyboardDismissDisabled={true}
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      scrollBehavior="outside"
+      size='lg'
+      placement="center"
     >
       <ModalContent>
         {
           (onClose) => (
             <>
-              <ModalHeader className="flex gap-2">
+              <ModalHeader className="flex gap-4">
                 <Image
                   src={DeleteWarningIcon}
                   alt="Delete Warning Icon"
@@ -49,11 +50,13 @@ const DeleteImageModal = ({ image, isOpen, onOpenChange, onDeleteAttachment }: D
                   className="rounded-lg"
                 />
               </ModalBody>
-              <ModalFooter className="flex justify-between gap-4">
+              <ModalFooter className="flex justify-between gap-4 w-full">
                 <Button
                   onPress={onClose}
-                  className="border-[#9200FE] border-1 text-[#9200FE] font-bold bg-white w-full"
+                  className="font-semibold w-1/2"
                   radius="lg"
+                  color='primary'
+                  variant='bordered'
                 >
                   Cancel
                 </Button>
@@ -62,8 +65,10 @@ const DeleteImageModal = ({ image, isOpen, onOpenChange, onDeleteAttachment }: D
                     onDeleteAttachment(image)
                     onClose()
                   }}
-                  className="bg-[#9200FE] text-white font-bold w-full"
+                  className="font-semibold w-1/2"
                   radius="lg"
+                  color='primary'
+                  variant='solid'
                 >
                   Delete
                 </Button>
