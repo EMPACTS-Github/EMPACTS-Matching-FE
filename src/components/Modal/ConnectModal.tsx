@@ -46,8 +46,10 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ startupId, mentorId, isOpen
             return;
         }
         const [hour, minute] = selectedTime.split(":").map(Number);
-        const isoString = `${selectedDate.toString()}T${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}:00Z`;
-        const requestSchedule = new Date(isoString);
+        const year = selectedDate.year;
+        const month = selectedDate.month - 1; // JS Date: 0-based month
+        const day = selectedDate.day;
+        const requestSchedule = new Date(year, month, day, hour, minute, 0);
         setIsLoading(true);
         try {
             if (!startupId) {
