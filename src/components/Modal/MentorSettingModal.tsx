@@ -42,17 +42,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange,
     const [location, setLocation] = useState<string>(mentor.locationBased || "");
     const [description, setDescription] = useState<string>(mentor.description || "");
     const [sdgFocusExpertises, setSdgFocusExpertises] = useState<string[]>(mentor.sdgFocusExpertises || []);
-    const [skillOffered, setSkillOffered] = useState<string[]>(() => {
-        if (!mentor.skillOffered || mentor.skillOffered.length === 0) return [];
-
-        // Map skill labels to values, filtering out any invalid mappings
-        return mentor.skillOffered
-            .map((skill: string) => {
-                const skillItem = skills.find((s) => s.label === skill);
-                return skillItem?.value;
-            })
-            .filter((value): value is string => value !== undefined && value !== '');
-    });
+    const [skillOffered, setSkillOffered] = useState<string[]>(mentor.skillOffered || []);
     const [languagesSpoken, setLanguagesSpoken] = useState<string[]>(mentor.languagesSpoken || []);
     const [marketFocusExpertise, setMarketFocusExpertise] = useState<string>(mentor.marketFocusExpertise || '');
     const [experienceWithFundingStage, setExperienceWithFundingStage] = useState<string[]>(mentor.experienceWithFundingStage || []);
@@ -84,14 +74,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange,
             setSdgFocusExpertises(mentor.sdgFocusExpertises);
         }
         if (mentor.skillOffered) {
-            // Map skill labels to values, filtering out any invalid mappings
-            const mappedSkills = mentor.skillOffered
-                .map((skill: string) => {
-                    const skillItem = skills.find((s) => s.label === skill);
-                    return skillItem?.value;
-                })
-                .filter((value): value is string => value !== undefined && value !== '');
-            setSkillOffered(mappedSkills);
+            setSkillOffered(mentor.skillOffered);
         }
         if (mentor.languagesSpoken) {
             setLanguagesSpoken(mentor.languagesSpoken);

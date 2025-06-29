@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { Avatar, Button, TimeInput, addToast } from "@heroui/react";
+import { Avatar, Button, TimeInput, addToast, Card, CardBody } from "@heroui/react";
 import TextLine from "@/components/common/TextLine";
 import { MATCHING_STATUS } from "@/constants/matching";
 import UserRightIcon from "@/components/Icons/UserRightIcon";
@@ -18,6 +18,13 @@ import { Startup } from "@/interfaces/StartupProfile";
 import { Member } from "@/interfaces/StartupProfile";
 import LabelIcon from '/public/assets/label.png';
 import { getSDGGoal } from "@/utils/getSDGGoal";
+import DocsIcon from '/public/assets/docs-icon.svg';
+import SheetsIcon from '/public/assets/sheets-icon.svg';
+import SlidesIcon from '/public/assets/slides-icon.svg';
+import DocumentEmptyStateLogo from "/public/assets/document-empty-state-logo.svg";
+import MediaEmptyStateLogo from "/public/assets/media-empty-state-logo.svg";
+import { getFileName, handleDocumentDownload } from "@/services/file";
+import { IDocument } from "@/interfaces/upload";
 
 interface MatchingRequestInfoCardProps {
     connectRequestCode: string;
@@ -31,6 +38,8 @@ interface MatchingRequestInfoCardProps {
     mentorId: string;
     startup: Startup;
     startupMembers: Member[];
+    documents: IDocument[];
+    images: IDocument[];
 };
 
 const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
@@ -45,9 +54,24 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
     mentorId,
     startup,
     startupMembers,
+    documents,
+    images,
 }) => {
     const { calendarDate, time } = getCalendarDateAndTime(schedule);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const fileIcons = {
+        docx: DocsIcon,
+        csv: SheetsIcon,
+        pptx: SlidesIcon,
+        xlsx: SheetsIcon,
+        pdf: SlidesIcon,
+    };
+
+    // Get icon based on file type
+    const getFileIcon = (fileType: string) => {
+        return fileIcons[fileType as keyof typeof fileIcons] || DocumentEmptyStateLogo;
+    }
 
     const onMeetingButtonClick = () => {
         if (meetingLink) {
@@ -282,19 +306,109 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                                     </div>
                                 ))}
                             </div>
-                            <div>
-                                <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
-                                <p className="text-gray-500 text-sm whitespace-pre-line">
-                                    {startup?.startupLink || "No data"}
-                                </p>
-                            </div>
-                            {/* <div>
-                                <h4 className="text-lg font-semibold text-gray-800">Media</h4>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
+                            <p className="text-gray-500 text-sm whitespace-pre-line">
+                                {startup?.startupLink || "No data"}
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Documentation</h4>
+                            <div className="space-y-4">
+                                {
+                                    documents.length > 0 ? (
+                                        <Card className="flex gap-3 shadow-none m-0 p-0">
+                                            <CardBody className='m-0 p-1'>
+                                                <div className="space-y-4">
+                                                    {documents.map((document, index) => (
+                                                        <div key={index} className="flex items-center gap-4">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDocumentDownload(document.attachmentUrl, document.attachmentTitle)}
+                                                                className="cursor-pointer bg-transparent border-none p-0 flex items-center"
+                                                            >
+                                                                <Image
+                                                                    alt={`${document.type} icon`}
+                                                                    height={40}
+                                                                    src={getFileIcon(document.type)}
+                                                                    width={40}
+                                                                    className="cursor-pointer"
+                                                                />
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleDocumentDownload(document.attachmentUrl, document.attachmentTitle)}
+                                                                className="grid justify-items-start text-left cursor-pointer bg-transparent border-none p-0"
+                                                            >
+                                                                <div className="text-lg text-black font-bold">{getFileName(document.attachmentTitle, 50)}</div>
+                                                                <div className="text-xs text-gray-500">{document.type}</div>
+                                                            </button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </CardBody>
+                                        </Card>
+                                    ) : (<div className="flex flex-col items-center justify-center mt-4">
+                                        <Image
+                                            src={DocumentEmptyStateLogo}
+                                            alt="Media Empty State Logo"
+                                            className='w-24 h-auto'
+                                        />
+                                        <div className='flex flex-col items-center justify-center mb-4'>
+                                            <p className="text-md text-gray-500 mb-2">No Data</p>
+                                        </div>
 
+                                    </div>)
+                                }
                             </div>
-                            <div>
-                                <h4 className="text-lg font-semibold text-gray-800">Documentation</h4>
-                            </div> */}
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-semibold text-gray-800">Media</h4>
+                            <div className="flex flex-col w-full my-4">
+                                {images.length > 0 ? (
+                                    <div>
+                                        <div className="w-full h-auto mb-4">
+                                            <Image
+                                                src={images[selectedIndex].attachmentUrl}
+                                                alt="Selected"
+                                                width={800}
+                                                height={400}
+                                                className="object-cover shadow-lg rounded-lg"
+                                            />
+                                        </div>
+
+                                        <div className="flex space-x-2">
+                                            {images.map((image, index) => (
+                                                <div
+                                                    key={index}
+                                                    onClick={() => setSelectedIndex(index)}
+                                                >
+                                                    <Image
+                                                        src={image.attachmentUrl}
+                                                        alt={`Thumbnail ${index}`}
+                                                        width={56}
+                                                        height={56}
+                                                        className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${selectedIndex == index ? 'border-empacts' : 'border-transparent'
+                                                            } rounded-lg`}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>) : (
+                                    <div className="flex flex-col items-center justify-center mt-4">
+                                        <Image
+                                            src={MediaEmptyStateLogo}
+                                            alt="Media Empty State Logo"
+                                            className='w-24 h-auto'
+                                        />
+                                        <div className='flex flex-col items-center justify-center mb-4'>
+                                            <p className="text-md text-gray-500 mb-2">No Data</p>
+                                        </div>
+
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </Tab>

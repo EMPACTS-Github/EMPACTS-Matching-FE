@@ -10,6 +10,12 @@ import { useMatchingRequestListStore } from "@/stores/matching-store";
 import { useErrorStore } from "@/stores/error-store";
 import { Matching } from "@/interfaces/matching";
 import { Member } from "@/interfaces/StartupProfile";
+import { isImageFile } from '@/services/upload';
+import { isDocumentFile } from '@/services/upload';
+import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
+import { getStartupDocuments } from '@/apis/upload';
+import { IDocument } from '@/interfaces/upload';
+import { match } from "assert";
 
 interface MentorExploreContainerProps {
     mentorId?: string | undefined;
@@ -25,6 +31,8 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
     const setError = useErrorStore(state => state.setError);
     const [filterMode, setFilterMode] = useState<"ALL" | "ACCEPTED" | "PENDING">("ALL");
     const [startupMembersList, setStartupMembersList] = useState<Member[][]>([])
+    const [startupImages, setStartupImages] = useState<IDocument[]>([]);
+    const [startupDocuments, setStartupDocuments] = useState<IDocument[]>([]);
     const filterMatchIndexes = matches && startupList.length
         ? matches
             .map((match, idx) => ({ match, idx }))
@@ -90,6 +98,36 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
         };
         fetchAllStartupDetails();
     }, [matches]);
+
+    const fetchStartupDocuments = async (startupId: string) => {
+        try {
+            const response = await getStartupDocuments({
+                ownerId: startupId,
+                ownerType: UPLOAD_OWNER_TYPE.STARTUP,
+                limit: 100,
+                page: 1,
+            });
+            const allDocuments = response.data;
+            const images = allDocuments.filter((document: IDocument) => isImageFile(document.type));
+            const documents = allDocuments.filter((document: IDocument) => isDocumentFile(document.type));
+            setStartupImages(images);
+            setStartupDocuments(documents);
+        } catch (error) {
+            setStartupImages([]);
+            setStartupDocuments([]);
+            console.error("Failed to fetch startup documents:", error);
+        }
+    };
+
+    useEffect(() => {
+        const selectedStartup = startupList[filteredSelectedIndex];
+        if (selectedStartup?.id) {
+            fetchStartupDocuments(selectedStartup.id);
+        } else {
+            setStartupImages([]);
+            setStartupDocuments([]);
+        }
+    }, [filteredSelectedIndex, startupList]);
 
     if (error) {
         return (
@@ -166,6 +204,8 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({
                             note={(matches as Matching[] | null)?.[filteredSelectedIndex]?.note || ''}
                             mentorId={mentorId || ''}
                             startupMembers={startupMembersList[filteredSelectedIndex] || []}
+                            documents={startupDocuments}
+                            images={startupImages}
                         />
                     )}
                 </div>
