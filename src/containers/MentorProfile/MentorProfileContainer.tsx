@@ -12,8 +12,9 @@ import { Mentor } from '@/interfaces/MentorProfile';
 interface MentorProfileContainerProps {
     mentorProfile: Mentor | null;
     matchingRequestAccepted?: number;
+    onFetchMentorProfile: () => Promise<void>;
 }
-const MentorProfileContainer: React.FC<MentorProfileContainerProps> = ({ mentorProfile, matchingRequestAccepted }) => {
+const MentorProfileContainer: React.FC<MentorProfileContainerProps> = ({ mentorProfile, matchingRequestAccepted, onFetchMentorProfile }) => {
 
     return (
         <div className="flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-0 mt-6">
@@ -46,7 +47,7 @@ const MentorProfileContainer: React.FC<MentorProfileContainerProps> = ({ mentorP
             {
                 mentorProfile ? (
                     <div className="w-[25%]">
-                        <MentorProfileInfoSubCard countMatches={matchingRequestAccepted || 0} mentorProfile={mentorProfile} />
+                        <MentorProfileInfoSubCard onFetchMentorProfile={onFetchMentorProfile} countMatches={matchingRequestAccepted || 0} mentorProfile={mentorProfile} />
                     </div>
                 ) : (
                     <div className="w-[25%]">

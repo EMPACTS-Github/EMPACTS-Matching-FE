@@ -3,10 +3,19 @@ import axiosInstance from ".";
 
 interface IUpdateMentorProfile {
     name?: string,
+    mentorUsername?: string,
     locationBased?: string,
     avtUrl?: string,
     description?: string;
-    sdgGoal?: string;
+    sdgFocusExpertises?: string[];
+    skillOffered?: string[];
+    languagesSpoken?: string[];
+    marketFocusExpertise?: string;
+    experienceWithFundingStage?: string[];
+    yearOfProfessionalExperience?: number;
+    currentWorkplace?: string;
+    currentPosition?: string;
+    industryFocus?: string[];
     isHide?: boolean;
 };
 

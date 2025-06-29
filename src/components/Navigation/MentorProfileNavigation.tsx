@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -21,16 +22,18 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mento
     const [mentorProfile, setMentorProfile] = useState<Mentor | null>(null);
     const setMatchingRequestList = useMatchingRequestListStore((state) => state.setMatchingRequestList);
     const [countMatchedRequests, setCountMatchedRequests] = useState<number>(0);
+    
+    const fetchMentorProfile = async () => {
+        try {
+            const data = await mentor_profile_detail(mentorId);
+            setMentorProfile(data.data.mentor);
+        } catch (err) {
+            setError("Failed to fetch mentor profile");
+            console.error('Failed to fetch mentor profile:', err);
+        }
+    };
+    
     useEffect(() => {
-        const fetchMentorProfile = async () => {
-            try {
-                const data = await mentor_profile_detail(mentorId);
-                setMentorProfile(data.data.mentor);
-            } catch (err) {
-                setError("Failed to fetch mentor profile");
-                console.error('Failed to fetch mentor profile:', err);
-            }
-        };
         fetchMentorProfile();
     }, [mentorId, setError]);
 
@@ -84,7 +87,7 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mento
                         title="Profile"
                         className="pt-0 px-2"
                     >
-                        <MentorProfileContainer mentorProfile={mentorProfile} matchingRequestAccepted={countMatchedRequests} />
+                        <MentorProfileContainer onFetchMentorProfile={fetchMentorProfile} mentorProfile={mentorProfile} matchingRequestAccepted={countMatchedRequests} />
                     </Tab>
                 </Tabs >
             </div >
