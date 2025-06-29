@@ -57,7 +57,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
   }, [startupId]);
 
   return (
-    <div className="w-full border-b border-gray-200 flex justify-center">
+    <div className="w-full flex justify-center">
       <div className="flex-col w-full">
         <Tabs
           aria-label="Startup profile tabs"

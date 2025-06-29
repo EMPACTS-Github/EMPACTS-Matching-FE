@@ -8,9 +8,17 @@ import { Mentor } from '@/interfaces/MentorProfile';
 import MentorInfoModal from '@/components/Modal/MentorInfoModal';
 import { getProvince } from '@/utils/getProvince';
 import { useMatchingStore } from '@/stores/matching-store';
+import { mentor_list } from '@/apis/mentor-profile';
+import { MentorOfUserResponse } from '@/interfaces/StartupOfUser'
 
 const SearchSection: React.FC = () => {
     const [mentors, setMentors] = useState<Mentor[]>([]);
+    const [myMentors, setMyMentors] = useState<MentorOfUserResponse[]>([])
+    const myMentorIds = React.useMemo(() => myMentors.map(m => m.mentorId), [myMentors]);
+    const filteredMentors = React.useMemo(
+        () => mentors.filter(mentor => !myMentorIds.includes(mentor.id)),
+        [mentors, myMentorIds]
+    );
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -18,6 +26,15 @@ const SearchSection: React.FC = () => {
     const { isOpen: isMentorInfoModalOpen, onOpen: onMentorInfoModalOpen, onOpenChange: onMentorInfoModalOpenChange } = useDisclosure();
     const matches = useMatchingStore((state) => state.matches);
     const [matchStatus, setMatchStatus] = useState<string | undefined>("");
+
+    const fetchMyMentors = async () => {
+        try {
+            const mentorData = await mentor_list();
+            setMyMentors(mentorData.data);
+        } catch (error) {
+            console.error('Failed to fetch my mentors:', error);
+        }
+    };
 
     const fetchMentors = useCallback(async () => {
         try {
@@ -34,6 +51,7 @@ const SearchSection: React.FC = () => {
     }, [page]);
 
     useEffect(() => {
+        fetchMyMentors();
         fetchMentors();
     }, [page, fetchMentors]);
 
@@ -51,8 +69,8 @@ const SearchSection: React.FC = () => {
         <div className="flex flex-col items-center min-h-screen">
             <div className="w-full flex flex-col items-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
-                    {mentors.length > 0 ? (
-                        mentors.map((mentor) => (
+                    {filteredMentors.length > 0 ? (
+                        filteredMentors.map((mentor) => (
                             <MentorSearchSectionCard key={mentor.id} {...mentor} onClick={handleMentorDetailClick} />
                         ))
                     ) : (
