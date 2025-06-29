@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button, Tabs, Tab } from "@heroui/react";
+import { Button, Tabs, Tab, Spinner } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { Startup } from "@/interfaces/startup";
 import { Mentor } from "@/interfaces/mentor";
@@ -13,12 +13,15 @@ const ProfileList = () => {
   const router = useRouter();
   const [startupProfileList, setStartupProfileList] = useState<Startup[]>([]);
   const [mentorProfileList, setMentorProfileList] = useState<Mentor[]>([]);
+  const [isLoadingStartup, setIsLoadingStartup] = useState(false);
+  const [isLoadingMentor, setIsLoadingMentor] = useState(false);
 
   const handleNavigateToCreateProfile = () => {
     router.push('/profiles/new');
   }
 
   const fetchStartupProfileList = async () => {
+    setIsLoadingStartup(true);
     const response = await startup_list();
     const modifiedResponse = response.data.map((startupProfile: any) => {
       const startupDetail = startupProfile;
@@ -29,9 +32,11 @@ const ProfileList = () => {
       }
     })
     setStartupProfileList(modifiedResponse);
+    setIsLoadingStartup(false);
   }
 
   const fetchMentorProfileList = async () => {
+    setIsLoadingMentor(true);
     const response = await mentor_list();
     const modifiedResponse = response.data.map((mentorProfile: any) => {
       const mentorDetail = mentorProfile;
@@ -42,6 +47,7 @@ const ProfileList = () => {
       }
     })
     setMentorProfileList(modifiedResponse);
+    setIsLoadingMentor(false);
   }
 
   useEffect(() => {
@@ -59,7 +65,11 @@ const ProfileList = () => {
       <div className="flex-1  overflow-y-auto">
         <Tabs aria-label="Profile Tabs" variant="underlined">
           <Tab key="startups" title="Startups">
-            {startupProfileList.length != 0 ? (
+            {isLoadingStartup ? (
+              <div className="p-4 h-full flex items-center justify-center">
+                <Spinner color="primary" />
+              </div>
+            ) : startupProfileList.length != 0 ? (
               <div className="space-y-1">
                 {startupProfileList.map((startup) => (
                   <div className="flex flex-col gap-1" key={startup.id}>
@@ -76,9 +86,13 @@ const ProfileList = () => {
           </Tab>
 
           <Tab key="mentors" title="Mentors">
-            {mentorProfileList.length != 0 ? (
+            {isLoadingMentor ? (
+              <div className="p-4 h-full flex items-center justify-center">
+                <Spinner color="primary" />
+              </div>
+            ) : mentorProfileList.length != 0 ? (
               <div className="space-y-1">
-                {mentorProfileList.map((mentor) => (
+                {mentorProfileList.map((mentor: Mentor) => (
                   <div className="flex flex-col gap-1" key={mentor.id}>
                     <ProfileCard key={mentor.id} profile={mentor} type="mentor" />
                     <Divider className="w-full" />
@@ -102,7 +116,7 @@ const ProfileList = () => {
         type="submit"
         color="primary"
         size="lg"
-        className="w-full rounded-lg bg-purple-600 border-purple-600 text-white hover:bg-purple-700"
+        className="w-full rounded-lg bg-primary border-primary text-white hover:bg-primary/80"
         onPress={() => handleNavigateToCreateProfile()}
       >
         Create new profile

@@ -29,36 +29,37 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
   const setMatches = useMatchingStore(state => state.setMatches);
   const setError = useErrorStore(state => state.setError);
 
+  const fetchMentors = async () => {
+    if (!mentorList || mentorList.length === 0) return;
+    try {
+      const mentorDetails = await Promise.all(
+        mentorList.map(async (item) => {
+          const mentorData = await mentor_profile_detail(item.mentor_key);
+          return {
+            id: mentorData.data.mentor.id,
+            name: mentorData.data.mentor.name,
+            mentorUsername: mentorData.data.mentor.mentorUsername,
+            phone: mentorData.data.mentor.phone,
+            avtUrl: mentorData.data.mentor.avtUrl,
+            status: mentorData.data.mentor.status,
+            description: mentorData.data.mentor.description,
+            sdgFocusExpertises: mentorData.data.mentor.sdgFocusExpertises,
+            locationBased: mentorData.data.mentor.locationBased,
+            skillOffered: mentorData.data.mentor.skillOffered,
+            languagesSpoken: mentorData.data.mentor.languagesSpoken,
+            matchScore: item.similarity * 100,
+            isFavourite: false,
+          };
+        })
+      );
+      setMentor(mentorDetails);
+      setSelectedMentor(mentorDetails[0]);
+    } catch (err) {
+      console.error('Failed to fetch mentors profile:', err);
+    }
+  };
+
   useEffect(() => {
-    const fetchMentors = async () => {
-      if (!mentorList || mentorList.length === 0) return;
-      try {
-        const mentorDetails = await Promise.all(
-          mentorList.map(async (item) => {
-            const mentorData = await mentor_profile_detail(item.mentor_key);
-            return {
-              id: mentorData.data.mentor.id,
-              name: mentorData.data.mentor.name,
-              mentorUsername: mentorData.data.mentor.mentorUsername,
-              phone: mentorData.data.mentor.phone,
-              avtUrl: mentorData.data.mentor.avtUrl,
-              status: mentorData.data.mentor.status,
-              description: mentorData.data.mentor.description,
-              sdgFocusExpertises: mentorData.data.mentor.sdgFocusExpertises,
-              locationBased: mentorData.data.mentor.locationBased,
-              skillOffered: mentorData.data.mentor.skillOffered,
-              languagesSpoken: mentorData.data.mentor.languagesSpoken,
-              matchScore: item.similarity * 100,
-              isFavourite: false,
-            };
-          })
-        );
-        setMentor(mentorDetails);
-        setSelectedMentor(mentorDetails[0]);
-      } catch (err) {
-        console.error('Failed to fetch mentors profile:', err);
-      }
-    };
     fetchMentors();
   }, [mentorList]);
 
@@ -82,6 +83,7 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
     };
     fetchMatching();
   }, [startupId]);
+
   const handleFavoriteClick = (index: number) => {
     const newMentor = [...mentor];
     newMentor[index].isFavourite = !newMentor[index].isFavourite;
