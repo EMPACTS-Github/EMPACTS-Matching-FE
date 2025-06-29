@@ -15,7 +15,7 @@ interface ImageGalleryProps {
 }
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, selectedImage, onUploadNewImage, onSelectImage, onDeleteAttachment }) => {
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState(images.findIndex(image => image.id === selectedImage?.id) || 0);
     const imageInputRef = useRef<HTMLInputElement>(null);
     const [displayDeleteIcon, setDisplayDeleteIcon] = useState(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();

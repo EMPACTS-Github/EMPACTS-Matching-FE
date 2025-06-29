@@ -9,9 +9,7 @@ import MatchingRequestInfoCard from "@/components/Card/MatchingRequestInfoCard";
 import { useMatchingRequestListStore } from "@/stores/matching-store";
 import { useErrorStore } from "@/stores/error-store";
 import { Matching } from "@/interfaces/matching";
-import { useMentorIdStore } from "@/stores/mentor-store";
 import { Member } from "@/interfaces/StartupProfile";
-
 
 interface MentorExploreContainerProps {
     mentorId?: string | undefined;

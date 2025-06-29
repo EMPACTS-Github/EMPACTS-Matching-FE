@@ -1,16 +1,15 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, Button, useDisclosure, Avatar } from "@heroui/react";
 import SettingModal from "@/components/Modal/SettingModal";
 import { Startup } from "@/interfaces/StartupProfile";
-import { Skeleton } from "@heroui/skeleton";
-
 
 interface ProfileInfoSubCardProps {
     startup: Startup;
     isOwner: boolean | undefined;
     countMatches: number;
     onFetchStartupProfile: () => Promise<void>;
+    onFetchStartupDocuments: () => Promise<void>;
 }
-const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwner, countMatches, onFetchStartupProfile }) => {
+const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwner, countMatches, onFetchStartupProfile, onFetchStartupDocuments }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <Card className="bg-white min-w-lg shadow-lg rounded-lg px-4 py-2">
@@ -34,12 +33,12 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
                 <div className="flex justify-around items-center p-2">
                     <div className="flex flex-col justify-center items-center">
                         <p className="font-semibold text-lg text-gray-800 py-1">{startup.memberQty}</p>
-                        <p className="text-gray-400 text-xs">Members</p>
+                        <p className="text-gray-400 text-xs">{startup.memberQty === 1 ? "Member" : "Members"}</p>
                     </div>
                     <Divider orientation="vertical" className="h-14" />
                     <div className="flex flex-col justify-center items-center">
                         <p className="font-semibold text-lg text-gray-800 py-1">{countMatches}</p>
-                        <p className="text-gray-400 text-xs">Matches</p>
+                        <p className="text-gray-400 text-xs">{countMatches <= 1 ? "Match" : "Matches"}</p>
                     </div>
                 </div>
                 <Divider />
@@ -48,7 +47,7 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({ startup, isOwne
                 <Button onPress={onOpen} className="w-full font-bold" variant="bordered" color="primary" isDisabled={!isOwner}>
                     SETTINGS
                 </Button>
-                <SettingModal onFetchStartupProfile={onFetchStartupProfile} isOpen={isOpen} onOpenChange={onOpenChange} startup={startup} />
+                <SettingModal onFetchStartupProfile={onFetchStartupProfile} onFetchStartupDocuments={onFetchStartupDocuments} isOpen={isOpen} onOpenChange={onOpenChange} startup={startup} />
             </CardFooter>
         </Card >
     );

@@ -74,10 +74,6 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({
         fetchAllMentorDetails();
     }, [matches]);
 
-    // const handleMentorSelect = (index: number) => {
-    //     setSelectedMentorIndex(index);
-    // };
-
     if (error) {
         return (
             <div className='flex justify-center items-center h-[50%]'>

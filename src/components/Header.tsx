@@ -14,7 +14,6 @@ import { Divider } from "@heroui/react";
 import { Button } from "@heroui/button";
 import PlusSquareIcon from '/public/assets/plus-square.svg';
 import SoleLogoEmpacts from '/public/assets/sole-logo-empacts.svg';
-import BellIcon from '/public/assets/bell_icon.svg';
 import { logout } from '@/apis/auth';
 import Link from 'next/link';
 import { startup_list } from '@/apis/startup-profile';
@@ -22,7 +21,6 @@ import { mentor_list } from '@/apis/mentor-profile';
 import { StartupOfUserResponse, MentorOfUserResponse } from '@/interfaces/StartupOfUser'
 import ChevronSelectorVerticalIcon from '@/components/Icons/ChevronSelectorVerticalIcon';
 import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
-import { u } from 'framer-motion/client';
 
 const PopoverContentItem = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -38,11 +36,11 @@ const Header = () => {
   const [startups, setStartups] = useState<StartupOfUserResponse[]>([]);
   const [mentors, setMentors] = useState<MentorOfUserResponse[]>([])
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string>('');
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    const userAvatar = user ? JSON.parse(user).avtUrl : null;
+    const user = localStorage.getItem('user') as string;
+    const userAvatar = JSON.parse(user)?.avtUrl;
     setAvatarUrl(userAvatar);
     setIsLoggedIn(!!user);
     //api for get list_startup for user
@@ -167,21 +165,15 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <div className="flex items-center gap-3">
-                {/* <Image
-                  src={BellIcon}
-                  alt="Notifications"
-                  width={28}
-                  height={28}
-                  className="cursor-pointer"
-                /> */}
                 <Popover placement='bottom-end'>
                   <PopoverTrigger>
-                    <Image
-                      src={avatarUrl || AvatarPlaceholder}
-                      alt="Avatar"
-                      width={40}
-                      height={40}
-                      className="rounded-full cursor-pointer"
+                    <Avatar
+                      src={avatarUrl}
+                      size="sm"
+                      radius='full'
+                      className="bg-white"
+                      color="primary"
+                      isBordered
                     />
                   </PopoverTrigger>
                   {renderAccountOptions()}

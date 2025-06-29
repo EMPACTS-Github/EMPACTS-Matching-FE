@@ -1,11 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input, Button, addToast } from "@heroui/react";
 import Image from 'next/image';
 import { reset_password } from '@/apis/auth';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import { useRouter } from 'next/navigation';
 
 const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0: boolean) => void }) => {
+  const router = useRouter();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isValidPassword, setIsValidPassword] = useState(true);
@@ -18,12 +20,12 @@ const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0
 
   const handleResetPassword = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (password.length < 12) {
+    if (password.length < 9) {
       setIsValidPassword(false);
-      setPasswordError('Password must contain at least 12 characters');
+      setPasswordError('Password must contain at least 9 characters');
       setPasswordColor('danger');
       addToast({
-        title: 'Password must contain at least 12 characters',
+        title: 'Password must contain at least 9 characters',
         color: 'danger',
         timeout: 5000,
       })
@@ -50,6 +52,7 @@ const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0
             timeout: 3000,
           })
           props.setOpenResetPasswordScreen(false);
+          router.push('/auth/login');
         } else {
           addToast({
             title: response.message,
@@ -67,6 +70,16 @@ const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0
       }
     }
   };
+
+  useEffect(() => {
+    setPasswordError('');
+    setPasswordDescription('');
+    setIsValidPassword(true);
+    setPasswordColor('default');
+    setConfirmPasswordError('');
+    setConfirmPasswordColor('default');
+    setIsValidConfirmPassword(true);
+  }, [password, confirmPassword]);
 
   return (
     <div>

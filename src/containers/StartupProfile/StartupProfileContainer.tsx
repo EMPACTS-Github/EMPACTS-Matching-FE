@@ -102,7 +102,13 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({ start
             {
                 startup_profile?.startup ? (
                     <div className="w-[25%]">
-                        <ProfileInfoSubCard onFetchStartupProfile={onFetchStartupProfile} startup={startup_profile.startup} isOwner={isOwner} countMatches={countMatches} />
+                        <ProfileInfoSubCard
+                            onFetchStartupProfile={onFetchStartupProfile}
+                            onFetchStartupDocuments={fetchStartupDocuments}
+                            startup={startup_profile.startup}
+                            isOwner={isOwner}
+                            countMatches={countMatches}
+                        />
                     </div>
                 ) : (
                     <div className="w-[25%]">
