@@ -1,5 +1,6 @@
 import { Mentor } from '@/interfaces/MentorProfile';
 import { Chip } from "@heroui/chip";
+import skills from '@/utils/data/skillOffered.json';
 
 interface OverviewBodyProps {
     mentorProfile: Mentor | null;
@@ -55,7 +56,7 @@ const OverviewBody: React.FC<OverviewBodyProps> = ({ mentorProfile }) => {
                                     variant="bordered"
                                     className="border-1"
                                 >
-                                    {skill}
+                                    {skills.find((s) => s.value === skill)?.label || skill}
                                 </Chip>
                             ))
                             : 'No data'}

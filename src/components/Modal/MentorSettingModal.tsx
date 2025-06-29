@@ -30,9 +30,10 @@ interface SettingModalProps {
     isOpen: boolean;
     onOpenChange: () => void;
     mentor: Mentor;
+    onFetchMentorProfile: () => Promise<void>;
 }
 
-const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, mentor }) => {
+const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, mentor, onFetchMentorProfile }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState<string>(mentor.avtUrl || "");
@@ -41,7 +42,17 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange,
     const [location, setLocation] = useState<string>(mentor.locationBased || "");
     const [description, setDescription] = useState<string>(mentor.description || "");
     const [sdgFocusExpertises, setSdgFocusExpertises] = useState<string[]>(mentor.sdgFocusExpertises || []);
-    const [skillOffered, setSkillOffered] = useState<string[]>(mentor.skillOffered || []);
+    const [skillOffered, setSkillOffered] = useState<string[]>(() => {
+        if (!mentor.skillOffered || mentor.skillOffered.length === 0) return [];
+
+        // Map skill labels to values, filtering out any invalid mappings
+        return mentor.skillOffered
+            .map((skill: string) => {
+                const skillItem = skills.find((s) => s.label === skill);
+                return skillItem?.value;
+            })
+            .filter((value): value is string => value !== undefined && value !== '');
+    });
     const [languagesSpoken, setLanguagesSpoken] = useState<string[]>(mentor.languagesSpoken || []);
     const [marketFocusExpertise, setMarketFocusExpertise] = useState<string>(mentor.marketFocusExpertise || '');
     const [experienceWithFundingStage, setExperienceWithFundingStage] = useState<string[]>(mentor.experienceWithFundingStage || []);
@@ -54,7 +65,6 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange,
 
     const { isOpen: isDeleteProfileModalOpen, onOpen: onOpenDeleteProfileModal, onOpenChange: onOpenChangeDeleteProfileModal } = useDisclosure();
     const { isOpen: isHideProfileModalOpen, onOpen: onOpenHideProfileModal, onOpenChange: onOpenChangeHideProfileModal } = useDisclosure();
-
 
     // Đồng bộ state với props khi mentor thay đổi
     useEffect(() => {
@@ -74,7 +84,14 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange,
             setSdgFocusExpertises(mentor.sdgFocusExpertises);
         }
         if (mentor.skillOffered) {
-            setSkillOffered(mentor.skillOffered);
+            // Map skill labels to values, filtering out any invalid mappings
+            const mappedSkills = mentor.skillOffered
+                .map((skill: string) => {
+                    const skillItem = skills.find((s) => s.label === skill);
+                    return skillItem?.value;
+                })
+                .filter((value): value is string => value !== undefined && value !== '');
+            setSkillOffered(mappedSkills);
         }
         if (mentor.languagesSpoken) {
             setLanguagesSpoken(mentor.languagesSpoken);
@@ -125,10 +142,11 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange,
                     color: 'success',
                     timeout: 3000,
                 });
+                await onFetchMentorProfile();
             } catch (err) {
-                setError("Failed to upload the image. Please try again.");
+                setError("Failed to update the profile. Please try again.");
                 addToast({
-                    title: 'Failed to upload the image',
+                    title: 'Failed to update the profile',
                     color: 'danger',
                     timeout: 3000,
                 });
