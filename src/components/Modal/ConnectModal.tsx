@@ -62,29 +62,46 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ startupId, mentorId, isOpen
                 return;
             }
             const response = await request_matching_to_mentor(startupId, mentorId, note, requestSchedule);
+            console.log("Response from request_matching_to_mentor:", response);
             if (response.code === "CONNECT_REQUEST_SENT") {
+                setIsLoading(false);
                 addToast({
                     title: 'Request sent',
                     color: 'success',
                     timeout: 5000,
                 });
+                setSelectedDate(null);
+                setSelectedTime("");
+                setNote("");
+                onClose();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             }
-            setSelectedDate(null);
-            setSelectedTime("");
-            setNote("");
-            onClose();
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-
-        } catch (error) {
-            console.error("Failed to request:", error);
-            addToast({
-                title: 'Request failed',
-                color: 'danger',
-                timeout: 5000,
-            });
-            setIsLoading(false);
+        } catch (error: any) {
+            const errData = error?.response?.data || {};
+            if (
+                errData.code === "USER_HAS_NO_PERMISSION" &&
+                errData.statusCode === 400
+            ) {
+                setIsLoading(false);
+                addToast({
+                    title: 'You have no permission to connect with this mentor',
+                    color: 'danger',
+                    timeout: 5000,
+                });
+                setSelectedDate(null);
+                setSelectedTime("");
+                setNote("");
+                onClose();
+            } else {
+                addToast({
+                    title: 'Request failed',
+                    color: 'danger',
+                    timeout: 5000,
+                });
+                setIsLoading(false);
+            }
         }
     };
     return (
