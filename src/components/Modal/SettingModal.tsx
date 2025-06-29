@@ -32,9 +32,10 @@ interface SettingModalProps {
     onOpenChange: () => void;
     startup: Startup;
     onFetchStartupProfile: () => Promise<void>;
+    onFetchStartupDocuments: () => Promise<void>;
 }
 
-const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup, onFetchStartupProfile }) => {
+const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, startup, onFetchStartupProfile, onFetchStartupDocuments }) => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false); // Add loading state
     const [image, setImage] = useState<string>(startup.avtUrl || "");
@@ -234,7 +235,7 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
             try {
                 const response = await uploadAttachemt({ file, ownerId: startup.id, ownerType: UPLOAD_OWNER_TYPE.STARTUP });
                 addToast({
-                    title: 'Image uploaded successfully',
+                    title: 'Attachement uploaded successfully',
                     color: 'success',
                     timeout: 3000,
                 });
@@ -251,9 +252,11 @@ const SettingModal: React.FC<SettingModalProps> = ({ isOpen, onOpenChange, start
                 }
                 if (isImageFile(response.data.type)) {
                     setStartupImages([...startupImages, newDocument]);
+                    setSelectedImage(newDocument);
                 } else {
                     setStartupDocuments([...startupDocuments, newDocument]);
                 }
+                await onFetchStartupDocuments();
             } catch (err) {
                 addToast({
                     title: 'Failed to upload the image',

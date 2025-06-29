@@ -46,7 +46,7 @@ function ForgotPassword() {
     if (isEmailValid) {
       try {
         const response = await send_forgot_password_otp(email);
-        if (response.code === "VERIFICATION_CODE_SENT") {
+        if (response.code === "FORGOT_PASSWORD_EMAIL_SENT") {
           addToast({
             title: 'Verification code sent to your email',
             color: 'success',
@@ -56,7 +56,7 @@ function ForgotPassword() {
           router.push('/auth/forgot-password?stage=verification');
         } else if (response.code === "EMAIL_ALREADY_SENT") {
           addToast({
-            title: 'Email already sent. Please wait before requesting again.',
+            title: 'Email already sent. Please wait 1 minutes before requesting again.',
             color: 'danger',
             timeout: 5000,
           });

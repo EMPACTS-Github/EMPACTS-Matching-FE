@@ -33,7 +33,7 @@ const StartupCard: React.FC<StartupCardProps> = ({
             {sdgGoal}
           </span>
         </div>
-        <div className="flex items-center w-1/2 gap-1">
+        <div className="flex items-center w-full gap-1">
           <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
           <span className="font-inter font-semibold text-base text-black text-center text-wrap">
             {memberQty} {memberQty === 1 ? 'Member' : 'Members'}

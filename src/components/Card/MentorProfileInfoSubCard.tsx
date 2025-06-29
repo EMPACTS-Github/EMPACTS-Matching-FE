@@ -6,8 +6,9 @@ import MentorSettingModal from "@/components/Modal/MentorSettingModal";
 interface MentorProfileInfoSubCardProps {
     countMatches: number;
     mentorProfile: Mentor;
+    onFetchMentorProfile: () => Promise<void>;
 }
-const MentorProfileInfoSubCard: React.FC<MentorProfileInfoSubCardProps> = ({ countMatches, mentorProfile }) => {
+const MentorProfileInfoSubCard: React.FC<MentorProfileInfoSubCardProps> = ({ countMatches, mentorProfile, onFetchMentorProfile }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
@@ -32,7 +33,7 @@ const MentorProfileInfoSubCard: React.FC<MentorProfileInfoSubCardProps> = ({ cou
                 <div className="flex justify-around items-center p-2">
                     <div className="flex flex-col justify-center items-center">
                         <p className="font-semibold text-lg text-gray-800 py-1">{countMatches}</p>
-                        <p className="text-gray-400 text-xs">Matches</p>
+                        <p className="text-gray-400 text-xs">{countMatches <= 1 ? "Match" : "Matches"}</p>
                     </div>
                 </div>
                 <Divider />
@@ -41,7 +42,7 @@ const MentorProfileInfoSubCard: React.FC<MentorProfileInfoSubCardProps> = ({ cou
                 <Button className="w-full font-bold" variant="bordered" color="primary" onPress={onOpen}>
                     SETTINGS
                 </Button>
-                <MentorSettingModal isOpen={isOpen} onOpenChange={onOpenChange} mentor={mentorProfile} />
+                <MentorSettingModal onFetchMentorProfile={onFetchMentorProfile} isOpen={isOpen} onOpenChange={onOpenChange} mentor={mentorProfile} />
             </CardFooter>
         </Card >
     );

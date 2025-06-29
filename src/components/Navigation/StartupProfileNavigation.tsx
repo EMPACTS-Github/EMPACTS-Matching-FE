@@ -33,36 +33,31 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
     }
   };
 
+  const suggestMentorList = async () => {
+    try {
+      const suggestedMentorList = await suggest_mentor_list({ startupId: startupId });
+      setSuggestedMentors(suggestedMentorList.data);
+    } catch (err: any) {
+      if (
+        err?.response?.status === 404 &&
+        err?.response?.data?.code === "SUGGESTION_NOT_FOUND"
+      ) {
+        setError("No suggestion found");
+      } else {
+        setError("Failed to fetch suggestion mentor");
+      }
+      console.error('Failed to fetch suggested mentors:', err);
+    }
+  };
+
   useEffect(() => {
     setStartupId(startupId);
-  }, [startupId]);
-
-  useEffect(() => {
     fetchStartupProfile();
-  }, [startupId]);
-
-  useEffect(() => {
-    const suggestMentorList = async () => {
-      try {
-        const suggestedMentorList = await suggest_mentor_list({ startupId: startupId });
-        setSuggestedMentors(suggestedMentorList.data);
-      } catch (err: any) {
-        if (
-          err?.response?.status === 404 &&
-          err?.response?.data?.code === "SUGGESTION_NOT_FOUND"
-        ) {
-          setError("No suggestion found");
-        } else {
-          setError("Failed to fetch suggestion mentor");
-        }
-        console.error('Failed to fetch suggested mentors:', err);
-      }
-    };
     suggestMentorList();
-  }, [startup_profile, startupId]);
+  }, [startupId]);
 
   return (
-    <div className="w-full border-b border-gray-200 flex justify-center">
+    <div className="w-full flex justify-center">
       <div className="flex-col w-full">
         <Tabs
           aria-label="Startup profile tabs"
