@@ -65,6 +65,7 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
                 isFavorite={selectedMentor?.isFavourite || false}
                 avtUrl={selectedMentor?.avtUrl || ''}
                 onClickButton={() => setIsOpen(true)}
+                mentorProfile={selectedMentor}
             />
             <ConnectModal
                 startupId={startupId}
@@ -72,6 +73,7 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 mentorName={selectedMentor?.name || ''}
+                avtUrl={selectedMentor?.avtUrl || ''}
             />
         </div>
     ) : (
