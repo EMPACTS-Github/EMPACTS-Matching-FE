@@ -7,9 +7,9 @@ interface AdvancedBodyProps {
 
 const AdvancedBody: React.FC<AdvancedBodyProps> = ({ mentorProfile }) => {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-3 gap-10 w-[80%]">
-        <h4 className="col-span-2 text-lg font-semibold text-gray-800">
+    <div className="space-y-4 mt-2">
+      <div className="space-y-2">
+        <h4 className="text-lg font-semibold text-gray-800">
           Market Focus
         </h4>
         <p className="text-gray-500 text-sm">
@@ -25,8 +25,8 @@ const AdvancedBody: React.FC<AdvancedBodyProps> = ({ mentorProfile }) => {
             </Chip>}
         </p>
       </div>
-      <div className="grid grid-cols-3 gap-10 w-[80%]">
-        <h4 className="col-span-2 text-lg font-semibold text-gray-800">
+      <div className="space-y-2">
+        <h4 className="text-lg font-semibold text-gray-800">
           Funding Stage Experience
         </h4>
         <p className="text-gray-500 text-sm flex gap-2 flex-wrap">

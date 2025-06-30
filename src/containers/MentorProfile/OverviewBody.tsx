@@ -9,7 +9,7 @@ interface OverviewBodyProps {
 const OverviewBody: React.FC<OverviewBodyProps> = ({ mentorProfile }) => {
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 mt-2">
             <div>
                 <h4 className="text-lg font-semibold text-gray-800">Description</h4>
                 <p className="text-gray-500 text-sm whitespace-pre-line">
