@@ -1,4 +1,4 @@
-import { Modal, ModalContent, ModalBody, Button, useDisclosure } from "@heroui/react";
+import { Modal, ModalContent, ModalBody, Button, useDisclosure, Avatar } from "@heroui/react";
 import Image from "next/image";
 import TextLine from "@/components/common/TextLine";
 import { LANGUAGE_SPOKEN } from "@/constants/common";
@@ -55,12 +55,14 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
                     <ModalBody className="flex flex-col gap-2">
                         <div className="flex justify-between items-end mb-4">
                             <div className="flex flex-row rounded-md py-2 items-center">
-                                <Image
+                                <Avatar
+                                    alt="mentor's avatar"
                                     src={avtUrl}
-                                    alt={`${mentorName}'s avatar`}
-                                    width={56}
-                                    height={56}
-                                    className="rounded-full mb-2"
+                                    size="lg"
+                                    radius="full"
+                                    isBordered
+                                    color="primary"
+                                    className="bg-white"
                                 />
                                 <div className="flex flex-col justify-start ml-4">
                                     <div className="text-lg font-semibold text-black">{mentorName}</div>
@@ -133,6 +135,7 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
                             isOpen={isConnectModalOpen}
                             onClose={onConnectModalOpenChange}
                             mentorName={mentorName}
+                            avtUrl={avtUrl}
                         />
                     </ModalBody>
                 )}
