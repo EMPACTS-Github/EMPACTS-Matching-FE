@@ -11,6 +11,12 @@ export interface SuggestMentor {
     skillOffered: string[];
     languagesSpoken: string[];
     isFavourite: boolean;
+    marketFocusExpertise?: string;
+    experienceWithFundingStage?: string[];
+    yearOfProfessionalExperience?: number;
+    currentWorkplace?: string;
+    currentPosition?: string;
+    industryFocus?: string[];
     matchScore: number;
 }
 
