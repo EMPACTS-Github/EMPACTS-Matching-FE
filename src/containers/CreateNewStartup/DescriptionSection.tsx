@@ -10,10 +10,6 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
     description,
     onDescriptionChange
 }) => {
-    const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onDescriptionChange(e.target.value);
-    }
-
     return (
         <div className="flex flex-col w-full gap-2">
             <label className="text-[14px] font-semibold text-[#09090b]">

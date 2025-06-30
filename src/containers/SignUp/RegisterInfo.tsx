@@ -49,6 +49,8 @@ function RegisterInfo() {
     e.preventDefault()
     const email = localStorage.getItem('email')
     const userProfileImgUrl = avatarUrl || 'https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/avatar_placeholder.png'
+    console.log('🚀 ~ handleFormSubmit ~ userProfileImgUrl:', userProfileImgUrl)
+    console.log('🚀 ~ handleFormSubmit ~ userProfileImgUrl:', uploadAvatarId)
     if (email && username) {
       try {
         const response = await create_new_profile(email, userProfileImgUrl, username);
@@ -124,7 +126,7 @@ function RegisterInfo() {
           Sign up
         </Button>
       </Form>
-      <div className="text-center mt-8">
+      <div className="text-center">
         <span className="text-gray-500">Already have an account? </span>
         <Link href="/auth/login" color="secondary" className="text-empacts font-bold">
           Sign in
