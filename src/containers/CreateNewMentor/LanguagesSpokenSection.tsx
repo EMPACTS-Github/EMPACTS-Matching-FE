@@ -30,7 +30,7 @@ const LanguagesSpokenSection: React.FC<LanguagesSpokenSectionProps> = ({
                 classNames={{
                     trigger:
                         "h-12 border border-[#e4e4e7] bg-white rounded-lg px-3 flex justify-between text-empacts",
-                    value: "text-[14px] font-semibold text-empacts",
+                    value: "text-[14px] text-empacts",
                     selectorIcon: "text-empacts",
                 }}
                 placeholder="Select languages"
