@@ -109,7 +109,7 @@ function CreateNewStartup() {
       if (uploadedPictureId) {
         updateAttachment({
           id: uploadedPictureId,
-          ownerId: response.data.newStartup.id,
+          ownerId: undefined,
           ownerType: UPLOAD_OWNER_TYPE.STARTUP
         });
       }
