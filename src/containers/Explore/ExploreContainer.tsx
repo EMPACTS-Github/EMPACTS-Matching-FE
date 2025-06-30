@@ -47,6 +47,12 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
             locationBased: mentorData.data.mentor.locationBased,
             skillOffered: mentorData.data.mentor.skillOffered,
             languagesSpoken: mentorData.data.mentor.languagesSpoken,
+            marketFocusExpertise: mentorData.data.mentor.marketFocusExpertise,
+            experienceWithFundingStage: mentorData.data.mentor.experienceWithFundingStage,
+            yearOfProfessionalExperience: mentorData.data.mentor.yearOfProfessionalExperience,
+            currentWorkplace: mentorData.data.mentor.currentWorkplace,
+            currentPosition: mentorData.data.mentor.currentPosition,
+            industryFocus: mentorData.data.mentor.industryFocus,
             matchScore: item.similarity * 100,
             isFavourite: false,
           };
