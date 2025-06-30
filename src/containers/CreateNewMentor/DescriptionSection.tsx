@@ -10,26 +10,17 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
     description,
     onDescriptionChange
 }) => {
-    const handleChangeDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onDescriptionChange(e.target.value);
-    }
-
     return (
         <div className="flex flex-col w-full gap-2">
             <label className="text-[14px] font-semibold text-[#09090b]">
                 Description
             </label>
 
-            <Input
-                type="text"
+            <textarea
                 value={description}
-                onChange={handleChangeDescription}
-                placeholder="Description"
-                classNames={{
-                    input: "text-[14px] font-normal",
-                    inputWrapper: "h-12 border border-[#e4e4e7] bg-white rounded-lg px-3"
-                }}
-                fullWidth
+                onChange={(e) => onDescriptionChange(e.target.value)}
+                placeholder="Add your description here..."
+                className="border border-[#e4e4e7] bg-white rounded-lg px-3 py-2 h-24 text-[14px] font-normal resize-none"
             />
         </div>
     );

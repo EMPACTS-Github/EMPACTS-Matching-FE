@@ -52,7 +52,7 @@ const CreatePassword = (props: { email: string }) => {
 
   return (
     <div className="text-center">
-      <div className="flex flex-col items-center text-center h-3/4">
+      <div className="flex flex-col items-center text-center">
         <Image
           src={EmpactsLogo}
           alt="EMPACTS Logo Image"

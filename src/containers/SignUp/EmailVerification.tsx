@@ -54,7 +54,7 @@ const EmailVerification = () => {
 
   return (
     <div className="text-center">
-      <div className="flex flex-col items-center text-center h-3/4">
+      <div className="flex flex-col items-center text-center">
         <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => router.push('/signup')}>
           <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
         </div>
