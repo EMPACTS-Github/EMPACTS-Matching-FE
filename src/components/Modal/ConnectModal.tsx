@@ -1,4 +1,4 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Avatar } from "@heroui/react";
 import Image from "next/image";
 import AvatarPlaceholder from "/public/assets/avatar-placeholder.png";
 import { useState, useMemo } from "react";
@@ -16,9 +16,10 @@ interface ConnectModalProps {
     isOpen: boolean;
     onClose: () => void;
     mentorName: string;
+    avtUrl: string;
 }
 
-const ConnectModal: React.FC<ConnectModalProps> = ({ startupId, mentorId, isOpen, onClose, mentorName }) => {
+const ConnectModal: React.FC<ConnectModalProps> = ({ startupId, mentorId, isOpen, onClose, mentorName, avtUrl }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [note, setNote] = useState("");
     const timeOptions = useMemo(() => {
@@ -114,9 +115,19 @@ const ConnectModal: React.FC<ConnectModalProps> = ({ startupId, mentorId, isOpen
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="flex gap-1 items-center ">
-                            <Image src={AvatarPlaceholder} alt={mentorName} width={80} height={80} className="rounded-full" />
-                            <div className="ml-4">
+                        <ModalHeader className="flex gap-4 items-center">
+                            <div className="w-[10%]">
+                                <Avatar
+                                    alt="mentor's avatar"
+                                    src={avtUrl}
+                                    size="lg"
+                                    radius="full"
+                                    isBordered
+                                    color="primary"
+                                    className="bg-white"
+                                />
+                            </div>
+                            <div className="w-[90%]">
                                 <h3 className="text-lg text-black font-semibold">Connect with <span className="text-empacts">{mentorName}</span></h3>
                                 <p className="text-sm text-gray-500"><span className="text-empacts">{mentorName}</span> will be able to view your advanced information and documentation when you request to connect</p>
                             </div>
