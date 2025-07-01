@@ -27,16 +27,16 @@ const StartupCard: React.FC<StartupCardProps> = ({
         {description}
       </div>
       <div className="flex flex-col justify-between w-full gap-x-3">
-        <div className="flex items-start gap-1 overflow-hidden">
-          <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
-          <span className="font-inter font-semibold text-base text-black text-wrap">
-            {sdgGoal}
-          </span>
-        </div>
         <div className="flex items-center w-full gap-1">
           <Image src={GroupIcon} alt="Members" width={24} height={24} className="object-cover" />
           <span className="font-inter font-semibold text-base text-black text-center text-wrap">
             {memberQty} {memberQty === 1 ? 'Member' : 'Members'}
+          </span>
+        </div>
+        <div className="flex items-start gap-1 overflow-hidden">
+          <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
+          <span className="font-inter font-semibold text-base text-black text-wrap">
+            {sdgGoal}
           </span>
         </div>
       </div>
