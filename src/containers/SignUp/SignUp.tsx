@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { Input, Button, addToast } from "@heroui/react";
 import Link from 'next/link';
 import { email_signup } from '@/apis/auth';
-import EmailVerification from '@/containers/SignUp/EmailVerification';
-import CreatePassword from '@/containers/SignUp/CreatePassword';
-import RegisterInfo from '@/containers/SignUp/RegisterInfo';
+import { EmailVerification } from '@/containers/SignUp';
+import { CreatePassword } from '@/containers/SignUp';
+import { RegisterInfo } from '@/containers/SignUp';
 import { useRouter } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
 
@@ -120,4 +120,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUp; 
