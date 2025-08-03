@@ -6,7 +6,7 @@ import { updateAttachment, uploadAttachemt } from '@/apis/upload';
 import { create_new_profile } from '@/apis/auth';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { Button, Form, Input } from '@heroui/react';
-import AuthLink from '@/components/common/AuthLink';
+import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
 import FormTitle from '@/components/Form/FormTitle';
 import UserAvatar from '@/components/Form/UserAvatar';
@@ -124,12 +124,12 @@ function RegisterInfo() {
           Sign up
         </AuthButton>
       </Form>
-      <div className="text-center">
-        <span className="text-gray-500">Already have an account? </span>
-        <AuthLink href="/auth/login" className="font-bold">
-          Sign in
-        </AuthLink>
-      </div>
+      <AuthFormFooter
+        text="Already have an account?"
+        linkText="Sign in"
+        linkHref="/auth/login"
+        linkClassName="font-bold"
+      />
     </div>
   );
 }

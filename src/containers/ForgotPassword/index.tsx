@@ -1,12 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { addToast } from "@heroui/react";
 import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
 import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { send_forgot_password_otp } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
-import { checkEmailFormat } from '@/utils/checkValid';
+import { getEmailValidationState } from '@/utils/emailValidation';
 import EmailInput from '@/components/FormInput/EmailInput';
 import AuthButton from '@/components/common/AuthButton';
 import BackButton from '@/components/common/BackButton';
@@ -22,19 +22,13 @@ function ForgotPassword() {
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  // Function to validate email format
-  const validateEmailFormat = (email: string): boolean => {
-    if (!checkEmailFormat(email)) {
-      setEmailError('Invalid email format');
-      setEmailColor('danger');
-      setIsValidEmail(false);
-      return false;
-    }
-    setEmailError('');
-    setEmailColor('default');
-    setIsValidEmail(true);
-    return true;
-  };
+  const updateEmailValidation = useCallback((email: string) => {
+    const validation = getEmailValidationState(email, hasSubmitted);
+    setEmailError(validation.error);
+    setEmailColor(validation.color);
+    setIsValidEmail(validation.isValid);
+    return validation.isValid;
+  }, [hasSubmitted]);
 
   const handleBackButton = () => {
     router.back()
@@ -43,7 +37,7 @@ function ForgotPassword() {
   const handleSentCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
-    const isEmailValid = validateEmailFormat(email);
+    const isEmailValid = updateEmailValidation(email);
     if (isEmailValid) {
       try {
         const response = await send_forgot_password_otp(email);
@@ -93,9 +87,9 @@ function ForgotPassword() {
     }
 
     if (hasSubmitted && !isValidEmail) {
-      validateEmailFormat(email);
+      updateEmailValidation(email);
     }
-  }, [email, hasSubmitted, isValidEmail]);
+  }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
 
 
 

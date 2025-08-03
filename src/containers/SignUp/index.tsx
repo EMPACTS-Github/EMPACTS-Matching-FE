@@ -5,10 +5,10 @@ import { email_signup } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
-import { checkEmailFormat } from '@/utils/checkValid';
+import { getEmailValidationState } from '@/utils/emailValidation';
 import EmailInput from '@/components/FormInput/EmailInput';
 import AuthButton from '@/components/common/AuthButton';
-import AuthLink from '@/components/common/AuthLink';
+import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmailVerification from '@/containers/SignUp/EmailVerification';
 import CreatePassword from '@/containers/SignUp/CreatePassword';
 import RegisterInfo from '@/containers/SignUp/RegisterInfo';
@@ -22,22 +22,17 @@ function SignUp() {
   const [emailError, setEmailError] = useState('');
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
 
-  const validateEmailFormat = (email: string): boolean => {
-    if (!checkEmailFormat(email)) {
-      setEmailError('Invalid email format');
-      setEmailColor('danger');
-      setIsValidEmail(false);
-      return false;
-    }
-    setEmailError('');
-    setEmailColor('default');
-    setIsValidEmail(true);
-    return true;
+  const updateEmailValidation = (email: string) => {
+    const validation = getEmailValidationState(email, true);
+    setEmailError(validation.error);
+    setEmailColor(validation.color);
+    setIsValidEmail(validation.isValid);
+    return validation.isValid;
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isEmailValid = validateEmailFormat(email);
+    const isEmailValid = updateEmailValidation(email);
     if (!isEmailValid) return;
     
     try {
@@ -95,13 +90,11 @@ function SignUp() {
               </AuthButton>
             </form>
             
-            {/* Sign In Link */}
-            <div className="text-center mt-8">
-              <span className="text-gray-500">Already have an account? </span>
-              <AuthLink href="/auth/login">
-                Sign in
-              </AuthLink>
-            </div>
+            <AuthFormFooter
+              text="Already have an account?"
+              linkText="Sign in"
+              linkHref="/auth/login"
+            />
           </div>
         )}
       </div>

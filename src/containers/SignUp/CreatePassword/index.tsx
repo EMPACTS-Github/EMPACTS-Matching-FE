@@ -6,7 +6,7 @@ import { addToast } from "@heroui/react";
 import Image from 'next/image';
 import PasswordInput from '@/components/FormInput/PasswordInput';
 import AuthButton from '@/components/common/AuthButton';
-import AuthLink from '@/components/common/AuthLink';
+import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmpactsLogo from '/public/empacts-logo.png';
 
 interface CreatePasswordProps {
@@ -85,13 +85,11 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
         </AuthButton>
       </div>
 
-      {/* Sign In Link */}
-      <div className="text-center mt-8">
-        <span className="text-gray-500">Already have an account? </span>
-        <AuthLink href="/auth/login">
-          Sign in
-        </AuthLink>
-      </div>
+      <AuthFormFooter
+        text="Already have an account?"
+        linkText="Sign in"
+        linkHref="/auth/login"
+      />
     </div>
   );
 }

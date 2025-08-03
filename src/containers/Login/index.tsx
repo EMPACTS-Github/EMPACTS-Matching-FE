@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { addToast } from "@heroui/react";
 import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
@@ -13,6 +13,9 @@ import AuthButton from '@/components/common/AuthButton';
 import AuthLink from '@/components/common/AuthLink';
 import GoogleSignInButton from '@/components/common/GoogleSignInButton';
 import FormDivider from '@/components/common/FormDivider';
+import AuthFormFooter from '@/components/common/AuthFormFooter';
+import { getEmailValidationState } from '@/utils/emailValidation';
+import { handlePostLoginRouting } from '@/utils/authRouting';
 
 function Login() {
   const router = useRouter();
@@ -31,25 +34,19 @@ function Login() {
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const validateEmailFormat = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError('Invalid email format');
-      setEmailColor('danger');
-      setIsValidEmail(false);
-      return false;
-    }
-    setEmailError('');
-    setEmailColor('default');
-    setIsValidEmail(true);
-    return true;
-  };
+  const updateEmailValidation = useCallback((email: string) => {
+    const validation = getEmailValidationState(email, hasSubmitted);
+    setEmailError(validation.error);
+    setEmailColor(validation.color);
+    setIsValidEmail(validation.isValid);
+    return validation.isValid;
+  }, [hasSubmitted]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
 
-    const isEmailValid = validateEmailFormat(email);
+    const isEmailValid = updateEmailValidation(email);
     if (!isEmailValid) return;
 
     try {
@@ -78,23 +75,7 @@ function Login() {
         });
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
-
-        const hasInvitationStatus = localStorage.getItem('status');
-        if (hasInvitationStatus) {
-          const invitationCode = localStorage.getItem('invitationCode');
-          const invitedEmail = localStorage.getItem('invitedEmail');
-          if (invitedEmail === response.data.email) {
-            router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
-          } else {
-            router.push('/profiles');
-          }
-        } else {
-          if (response.data.user.hasProfile) {
-            router.push('/profiles');
-          } else {
-            router.push('/profiles/new');
-          }
-        }
+        handlePostLoginRouting(router, response.data);
       }
     } catch (error) {
       console.error(error);
@@ -108,9 +89,9 @@ function Login() {
 
   useEffect(() => {
     if (hasSubmitted && !isValidEmail) {
-      validateEmailFormat(email);
+      updateEmailValidation(email);
     }
-  }, [email, hasSubmitted, isValidEmail]);
+  }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
 
   useEffect(() => {
     async function getUserAuthInfo() {
@@ -120,20 +101,7 @@ function Login() {
           const response = await getUserAuthInfoAPI();
           localStorage.setItem('user', JSON.stringify(response.data));
 
-          const hasInvitationStatus = localStorage.getItem('status');
-          if (hasInvitationStatus) {
-            const invitationCode = localStorage.getItem('invitationCode');
-            const invitedEmail = localStorage.getItem('invitedEmail');
-            if (invitedEmail === response.data.email) {
-              router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
-            }
-          } else {
-            if (response.data.hasProfile) {
-              router.push('/profiles');
-            } else {
-              router.push('/profiles/new');
-            }
-          }
+          handlePostLoginRouting(router, response.data);
         } catch (error) {
           console.error('Error fetching user auth info:', error);
           addToast({
@@ -153,32 +121,7 @@ function Login() {
     getUserAuthInfo()
   }, [searchParams, router]);
 
-  const renderForm = () => (
-    <form onSubmit={handleLogin} className="space-y-4">
-      <EmailInput
-        value={email}
-        onChange={setEmail}
-        isInvalid={!isValidEmail}
-        color={emailColor}
-        errorMessage={emailError}
-      />
-      <PasswordInput
-        value={password}
-        onChange={setPassword}
-        isInvalid={!isValidPassword}
-        color={passwordColor}
-        errorMessage={passwordError}
-      />
-      <div className="text-right !mt-1">
-        <AuthLink href="/auth/forgot-password" className="text-sm font-bold">
-          Forgot your password?
-        </AuthLink>
-      </div>
-      <AuthButton type="submit" className="mt-4">
-        Sign in
-      </AuthButton>
-    </form>
-  );
+
 
   return (
     <div className="bg-white flex justify-center items-center h-screen">
@@ -187,15 +130,38 @@ function Login() {
           title="Sign in"
           description=""
         />
-        {renderForm()}
+        <form onSubmit={handleLogin} className="space-y-4">
+          <EmailInput
+            value={email}
+            onChange={setEmail}
+            isInvalid={!isValidEmail}
+            color={emailColor}
+            errorMessage={emailError}
+          />
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
+            isInvalid={!isValidPassword}
+            color={passwordColor}
+            errorMessage={passwordError}
+          />
+          <div className="text-right !mt-1">
+            <AuthLink href="/auth/forgot-password" className="text-sm font-bold">
+              Forgot your password?
+            </AuthLink>
+          </div>
+          <AuthButton type="submit" className="mt-4">
+            Sign in
+          </AuthButton>
+        </form>
+        
         <FormDivider />
         <GoogleSignInButton onPress={loginWithGoogleAPI} />
-        <div className="text-center mt-4">
-          <span className="text-gray-500">Don&apos;t have an account? </span>
-          <AuthLink href="/auth/signup">
-            Sign Up
-          </AuthLink>
-        </div>
+        <AuthFormFooter
+          text="Don't have an account?"
+          linkText="Sign Up"
+          linkHref="/auth/signup"
+        />
       </div>
     </div>
   );
