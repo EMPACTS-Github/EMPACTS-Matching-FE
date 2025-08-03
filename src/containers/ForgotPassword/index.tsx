@@ -1,14 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Input, Button, addToast } from "@heroui/react";
-import EnterEmail from '@/containers/ForgotPassword/EnterEmail';
+import { addToast } from "@heroui/react";
+import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
 import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { send_forgot_password_otp } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
 import { checkEmailFormat } from '@/utils/checkValid';
+import ForgotPasswordEmailForm from '@/components/Form/ForgotPasswordEmailForm';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -39,7 +40,7 @@ function ForgotPassword() {
     router.back()
   }
 
-  const handleSentCode = async (e: { preventDefault: () => void }) => {
+  const handleSentCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
     const isEmailValid = validateEmailFormat(email);
@@ -96,31 +97,7 @@ function ForgotPassword() {
     }
   }, [email, hasSubmitted, isValidEmail]);
 
-  const renderForm = () => (
-    <form onSubmit={handleSentCode} className="space-y-4">
-      <Input
-        variant='underlined'
-        fullWidth
-        radius='none'
-        size="lg"
-        label="Email"
-        value={email}
-        isInvalid={!isValidEmail}
-        color={emailColor}
-        errorMessage={emailError}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <Button
-        type="submit"
-        color="primary"
-        size="lg"
-        className="!text-white w-full mt-4 rounded-lg bg-empacts border-empacts"
-      >
-        Continue
-      </Button>
-    </form>
-  );
+
 
   return (
     <div className=" bg-white flex items-center justify-center h-full">
@@ -129,7 +106,7 @@ function ForgotPassword() {
           <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
         </div>
         {currentScreen == 'verification' ? (
-          <EnterEmail
+          <EmailVerification
             email={email}
             setEmailSent={() => { }}
             setResetPasswordScreen={() => router.push('/auth/forgot-password?stage=reset')}
@@ -144,7 +121,14 @@ function ForgotPassword() {
               title="Forgot password"
               description="Enter your email address and we will send you instructions to reset your password."
             />
-            {renderForm()}
+            <ForgotPasswordEmailForm
+              email={email}
+              onEmailChange={setEmail}
+              onSubmit={handleSentCode}
+              isValidEmail={isValidEmail}
+              emailError={emailError}
+              emailColor={emailColor}
+            />
           </div>
         )}
       </div>
