@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
 import { checkEmailFormat } from '@/utils/checkValid';
-import SignUpForm from '@/components/Form/SignUpForm';
+import EmailInput from '@/components/FormInput/EmailInput';
+import AuthButton from '@/components/common/AuthButton';
+import AuthLink from '@/components/common/AuthLink';
 import EmailVerification from '@/containers/SignUp/EmailVerification';
 import CreatePassword from '@/containers/SignUp/CreatePassword';
 import RegisterInfo from '@/containers/SignUp/RegisterInfo';
@@ -79,14 +81,27 @@ function SignUp() {
               title="Sign up"
               description=""
             />
-            <SignUpForm
-              email={email}
-              onEmailChange={setEmail}
-              onSubmit={handleSignup}
-              isValidEmail={isValidEmail}
-              emailError={emailError}
-              emailColor={emailColor}
-            />
+            <form onSubmit={handleSignup} className="space-y-4">
+              <EmailInput
+                value={email}
+                onChange={setEmail}
+                isInvalid={!isValidEmail}
+                color={emailColor}
+                errorMessage={emailError}
+                required
+              />
+              <AuthButton type="submit">
+                Sign up
+              </AuthButton>
+            </form>
+            
+            {/* Sign In Link */}
+            <div className="text-center mt-8">
+              <span className="text-gray-500">Already have an account? </span>
+              <AuthLink href="/auth/login">
+                Sign in
+              </AuthLink>
+            </div>
           </div>
         )}
       </div>

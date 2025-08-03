@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import { create_new_password } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { addToast } from "@heroui/react";
-import PasswordCreationForm from '@/components/Form/PasswordCreationForm';
+import Image from 'next/image';
+import PasswordInput from '@/components/FormInput/PasswordInput';
+import AuthButton from '@/components/common/AuthButton';
+import AuthLink from '@/components/common/AuthLink';
+import EmpactsLogo from '/public/empacts-logo.png';
 
 interface CreatePasswordProps {
   email?: string;
@@ -55,13 +59,40 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
   };
 
   return (
-    <PasswordCreationForm
-      password={password}
-      confirmPassword={confirmPassword}
-      onPasswordChange={setPassword}
-      onConfirmPasswordChange={setConfirmPassword}
-      onSubmit={handleCreatePassword}
-    />
+    <div className="text-center">
+      <div className="flex flex-col items-center text-center">
+        <Image
+          src={EmpactsLogo}
+          alt="EMPACTS Logo Image"
+          priority
+          width={120}
+          height={120}
+        />
+        <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign up</h2>
+      </div>
+      <div className="space-y-4">
+        <PasswordInput
+          value={password}
+          onChange={setPassword}
+        />
+        <PasswordInput
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          label="Confirm Password"
+        />
+        <AuthButton onClick={handleCreatePassword}>
+          Sign up
+        </AuthButton>
+      </div>
+
+      {/* Sign In Link */}
+      <div className="text-center mt-8">
+        <span className="text-gray-500">Already have an account? </span>
+        <AuthLink href="/auth/login">
+          Sign in
+        </AuthLink>
+      </div>
+    </div>
   );
 }
 

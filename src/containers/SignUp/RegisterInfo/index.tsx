@@ -5,7 +5,13 @@ import { useRouter } from 'next/navigation';
 import { updateAttachment, uploadAttachemt } from '@/apis/upload';
 import { create_new_profile } from '@/apis/auth';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
-import ProfileCompletionForm from '@/components/Form/ProfileCompletionForm';
+import { Button, Form, Input } from '@heroui/react';
+import AuthLink from '@/components/common/AuthLink';
+import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
+import FormTitle from '@/components/Form/FormTitle';
+import UserAvatar from '@/components/Form/UserAvatar';
+import FormLabel from '@/components/Form/FormLabel';
+import AuthButton from '@/components/common/AuthButton';
 
 function RegisterInfo() {
   const router = useRouter();
@@ -79,13 +85,52 @@ function RegisterInfo() {
   };
 
   return (
-    <ProfileCompletionForm
-      username={username}
-      avatarUrl={avatarUrl}
-      onUsernameChange={handleUsernameChange}
-      onAvatarChange={handleAvatarChange}
-      onSubmit={handleFormSubmit}
-    />
+    <div className='flex flex-col items-center justify-center gap-12 w-full'>
+      <div>
+        <Button
+          isIconOnly
+          aria-label="EMPACTS Logo Image"
+          className='w-48 p-1 bg-transparent'
+          radius='md'
+        >
+          <EmpactsLogoIcon />
+        </Button>
+      </div>
+      <div>
+        <FormTitle className='font-bold text-2xl text-black' text='Complete your profile' />
+      </div>
+      <Form
+        className='flex flex-col items-center justify-center w-full gap-10'
+        onSubmit={handleFormSubmit}
+      >
+        <div className='flex flex-col items-center justify-center gap-3'>
+          <UserAvatar
+            handleAvatarChange={handleAvatarChange}
+            avatarUrl={avatarUrl}
+          />
+          <FormLabel className='text-black text-medium' text='Upload your profile picture' />
+        </div>
+
+        <Input
+          variant="underlined"
+          className='w-4/5'
+          radius='none'
+          label="Your name"
+          value={username}
+          onChange={handleUsernameChange}
+        />
+
+        <AuthButton type="submit" className="w-4/5">
+          Sign up
+        </AuthButton>
+      </Form>
+      <div className="text-center">
+        <span className="text-gray-500">Already have an account? </span>
+        <AuthLink href="/auth/login" className="font-bold">
+          Sign in
+        </AuthLink>
+      </div>
+    </div>
   );
 }
 
