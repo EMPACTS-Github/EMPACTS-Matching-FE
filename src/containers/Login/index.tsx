@@ -1,14 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { Input, Button, addToast } from "@heroui/react";
-import Link from 'next/link';
+import { addToast } from "@heroui/react";
 import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
+import LoginForm from '@/components/Form/LoginForm';
 
 function Login() {
   const router = useRouter();
@@ -149,47 +148,7 @@ function Login() {
     getUserAuthInfo()
   }, [searchParams, router]);
 
-  const renderForm = () => (
-    <form onSubmit={handleLogin} className="space-y-4">
-      <Input
-        variant="underlined"
-        size="lg"
-        label="Email"
-        value={email}
-        radius='none'
-        isInvalid={!isValidEmail}
-        color={emailColor}
-        errorMessage={emailError}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <Input
-        variant="underlined"
-        radius='none'
-        size="lg"
-        type="password"
-        label="Password"
-        value={password}
-        isInvalid={!isValidPassword}
-        color={passwordColor}
-        errorMessage={passwordError}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ borderRadius: '0px' }}
-      />
-      <div className="text-right !mt-1">
-        <Link href="/auth/forgot-password" className="text-sm text-secondary font-bold">
-          Forgot your password?
-        </Link>
-      </div>
-      <Button
-        type="submit"
-        color="primary"
-        size="lg"
-        className="!text-white w-full mt-4 rounded-lg bg-empacts border-empacts"
-      >
-        Sign in
-      </Button>
-    </form>
-  );
+
 
   return (
     <div className="bg-white flex justify-center items-center h-screen">
@@ -198,34 +157,20 @@ function Login() {
           title="Sign in"
           description=""
         />
-        {renderForm()}
-        <div className="my-6 text-gray-500 flex items-center">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-4 text-black text-sm">Or</span>
-          <div className="flex-grow border-t border-gray-300"></div>
-        </div>
-        {/* Google Sign In Button */}
-        <Button
-          onPress={loginWithGoogleAPI}
-          size="lg"
-          className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
-        >
-          <Image
-            src="/google-icon.svg"
-            alt="Google icon"
-            width={20}
-            height={20}
-            className="mr-2"
-          />
-          Sign in with Google
-        </Button>
-        {/* Sign Up Link */}
-        <div className="text-center mt-4">
-          <span className="text-gray-500">Don&apos;t have an account? </span>
-          <Link href="/auth/signup" color="secondary" className="text-empacts">
-            Sign Up
-          </Link>
-        </div>
+        <LoginForm
+          email={email}
+          password={password}
+          onEmailChange={setEmail}
+          onPasswordChange={setPassword}
+          onSubmit={handleLogin}
+          onGoogleLogin={loginWithGoogleAPI}
+          isValidEmail={isValidEmail}
+          emailError={emailError}
+          emailColor={emailColor}
+          isValidPassword={isValidPassword}
+          passwordError={passwordError}
+          passwordColor={passwordColor}
+        />
       </div>
     </div>
   );
