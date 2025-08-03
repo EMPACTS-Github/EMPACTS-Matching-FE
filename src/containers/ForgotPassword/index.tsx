@@ -1,15 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { addToast } from "@heroui/react";
 import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
 import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
-import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { send_forgot_password_otp } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
 import { checkEmailFormat } from '@/utils/checkValid';
-import ForgotPasswordEmailForm from '@/components/Form/ForgotPasswordEmailForm';
+import EmailInput from '@/components/FormInput/EmailInput';
+import AuthButton from '@/components/common/AuthButton';
+import BackButton from '@/components/common/BackButton';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -102,9 +102,7 @@ function ForgotPassword() {
   return (
     <div className=" bg-white flex items-center justify-center h-full">
       <div className="p-8 rounded-lg w-full max-w-sm h-3/4">
-        <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={handleBackButton}>
-          <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
-        </div>
+        <BackButton onClick={handleBackButton} />
         {currentScreen == 'verification' ? (
           <EmailVerification
             email={email}
@@ -121,14 +119,19 @@ function ForgotPassword() {
               title="Forgot password"
               description="Enter your email address and we will send you instructions to reset your password."
             />
-            <ForgotPasswordEmailForm
-              email={email}
-              onEmailChange={setEmail}
-              onSubmit={handleSentCode}
-              isValidEmail={isValidEmail}
-              emailError={emailError}
-              emailColor={emailColor}
-            />
+            <form onSubmit={handleSentCode} className="space-y-4">
+              <EmailInput
+                value={email}
+                onChange={setEmail}
+                isInvalid={!isValidEmail}
+                color={emailColor}
+                errorMessage={emailError}
+                required
+              />
+              <AuthButton type="submit" className="mt-4">
+                Continue
+              </AuthButton>
+            </form>
           </div>
         )}
       </div>

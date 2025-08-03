@@ -2,7 +2,10 @@
 import { useEffect, useState } from 'react';
 import { send_forgot_password_otp, verify_forgot_password_otp } from '@/apis/auth';
 import { addToast } from '@heroui/react';
-import ForgotPasswordOTPForm from '@/components/Form/ForgotPasswordOTPForm';
+import OTPInput from '@/components/FormInput/OTPInput';
+import BackButton from '@/components/common/BackButton';
+import LogoHeader from '@/components/common/LogoHeader';
+import ResendCodeButton from '@/components/common/ResendCodeButton';
 
 interface EmailVerificationProps {
   email: string;
@@ -118,18 +121,28 @@ function EmailVerification({
   };
 
   return (
-    <ForgotPasswordOTPForm
-      email={email}
-      otp={otp}
-      title={title}
-      description={description}
-      isResendDisabled={isResendDisabled}
-      resendCountdown={resendCountdown}
-      onOtpChange={setOtp}
-      onSubmitOtp={handleSubmitOtp}
-      onResendCode={handleResendCode}
-      onGoBack={handleGoBack}
-    />
+    <div className="text-center">
+      <div className="flex flex-col items-center text-center h-3/4">
+        <BackButton onClick={handleGoBack} />
+        <LogoHeader title={title} />
+      </div>
+      <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
+      <div className="flex justify-center space-x-2 mt-6">
+        <OTPInput
+          value={otp}
+          onValueChange={setOtp}
+          onComplete={handleSubmitOtp}
+        />
+      </div>
+      <div className="text-gray-500 mt-4">
+        Did not receive code? <span> </span>
+        <ResendCodeButton
+          isDisabled={isResendDisabled}
+          countdown={resendCountdown}
+          onClick={handleResendCode}
+        />
+      </div>
+    </div>
   );
 }
 

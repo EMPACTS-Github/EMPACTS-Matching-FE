@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react';
 import { addToast } from "@heroui/react";
 import { reset_password } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
-import ForgotPasswordResetForm from '@/components/Form/ForgotPasswordResetForm';
+import PasswordInput from '@/components/FormInput/PasswordInput';
+import AuthButton from '@/components/common/AuthButton';
+import BackButton from '@/components/common/BackButton';
+import LogoHeader from '@/components/common/LogoHeader';
 
 interface ResetPasswordProps {
   email: string;
@@ -90,21 +93,37 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
   }, [password, confirmPassword]);
 
   return (
-    <ForgotPasswordResetForm
-      password={password}
-      confirmPassword={confirmPassword}
-      onPasswordChange={setPassword}
-      onConfirmPasswordChange={setConfirmPassword}
-      onSubmit={handleResetPassword}
-      onGoBack={handleGoBack}
-      isValidPassword={isValidPassword}
-      isValidConfirmPassword={isValidConfirmPassword}
-      passwordError={passwordError}
-      passwordDescription={passwordDescription}
-      confirmPasswordError={confirmPasswordError}
-      passwordColor={passwordColor}
-      confirmPasswordColor={confirmPasswordColor}
-    />
+    <div>
+      <div className="flex flex-col items-center text-center h-3/4">
+        <BackButton onClick={handleGoBack} />
+        <LogoHeader title="Create new password" />
+      </div>
+      <div className="flex justify-center space-x-2 mt-6">
+        <form onSubmit={handleResetPassword} className="space-y-6 w-full max-w-xs">
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
+            isInvalid={!isValidPassword}
+            color={passwordColor}
+            errorMessage={passwordError}
+            description={passwordDescription}
+            required
+          />
+          <PasswordInput
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            label="Confirm Password"
+            isInvalid={!isValidConfirmPassword}
+            color={confirmPasswordColor}
+            errorMessage={confirmPasswordError}
+            required
+          />
+          <AuthButton type="submit">
+            Reset Password
+          </AuthButton>
+        </form>
+      </div>
+    </div>
   );
 }
 
