@@ -13,9 +13,9 @@ import AuthLink from '@/components/common/AuthLink';
 import GoogleSignInButton from '@/components/common/GoogleSignInButton';
 import FormDivider from '@/components/common/FormDivider';
 import AuthFormFooter from '@/components/common/AuthFormFooter';
-import { getEmailValidationState } from '@/utils/emailValidation';
 import { ROUTES } from '@/constants/routes';
 import { getStartupInvitationUrl } from '@/constants/routes';
+import { getEmailValidationState } from '@/utils/emailValidation';
 
 function routeAfterLoginWithInvitation(router: any, response: any) {
   const hasInvitationStatus = localStorage.getItem("status");

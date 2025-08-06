@@ -49,7 +49,6 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
           });
         }
       } catch (error) {
-        console.error(error);
         addToast({
           title: "An error occurred while creating the password",
           color: 'danger',

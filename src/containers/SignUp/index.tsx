@@ -5,14 +5,14 @@ import { emailSignup } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
-import { getEmailValidationState } from '@/utils/emailValidation';
 import { ROUTES } from '@/constants/routes';
 import Input from '@/components/FormInput/Input';
 import Button from '@/components/Button/Button';
 import AuthFormFooter from '@/components/common/AuthFormFooter';
-import EmailVerification from '@/containers/EmailVerification';
-import CreatePassword from '@/containers/CreatePassword';
-import RegisterInfo from '@/containers/RegisterInfo';
+import EmailVerification from '@/containers/SignUp/EmailVerification';
+import CreatePassword from '@/containers/SignUp/CreatePassword';
+import RegisterInfo from '@/containers/SignUp/RegisterInfo';
+import { getEmailValidationState } from '@/utils/emailValidation';
 
 function SignUp() {
   const router = useRouter();

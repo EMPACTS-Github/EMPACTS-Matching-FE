@@ -44,7 +44,6 @@ function EmailVerification() {
           });
         }
       } catch (error) {
-        console.error(error);
         addToast({
           title: 'An error occurred while verifying the OTP',
           color: 'danger',

@@ -6,11 +6,11 @@ import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { sendForgotPasswordOTP } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
-import { getEmailValidationState } from '@/utils/emailValidation';
 import { ROUTES } from '@/constants/routes';
 import Input from '@/components/FormInput/Input';
 import Button from '@/components/Button/Button';
 import BackButton from '@/components/common/BackButton';
+import { getEmailValidationState } from '@/utils/emailValidation';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -64,7 +64,6 @@ function ForgotPassword() {
           });
         }
       } catch (error) {
-        console.error(error);
         addToast({
           title: 'An error occurred while sending the verification code',
           color: 'danger',

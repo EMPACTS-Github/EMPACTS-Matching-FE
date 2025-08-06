@@ -69,7 +69,6 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
           });
         }
       } catch (error) {
-        console.error(error);
         addToast({
           title: 'An error occurred while resetting the password',
           color: 'danger',

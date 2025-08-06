@@ -80,7 +80,10 @@ function RegisterInfo() {
           });
         }
       } catch (error) {
-        console.log(error);
+        addToast({
+          title: 'An error occurred while creating profile',
+          timeout: 3000,
+        });
       }
     }
   };
