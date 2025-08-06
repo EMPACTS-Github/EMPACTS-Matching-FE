@@ -3,15 +3,16 @@ import React, { useState } from 'react';
 import { addToast } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import { updateAttachment, uploadAttachemt } from '@/apis/upload';
-import { create_new_profile } from '@/apis/auth';
+import { createNewProfile } from '@/apis/auth';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
-import { Button, Form, Input } from '@heroui/react';
+import { ROUTES, getStartupInvitationUrl, DEFAULT_AVATAR_URL } from '@/constants/routes';
+import { Form, Input } from '@heroui/react';
 import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
 import FormTitle from '@/components/Form/FormTitle';
 import UserAvatar from '@/components/Form/UserAvatar';
 import FormLabel from '@/components/Form/FormLabel';
-import AuthButton from '@/components/common/AuthButton';
+import Button from '@/components/Button/Button';
 
 function RegisterInfo() {
   const router = useRouter();
@@ -50,11 +51,11 @@ function RegisterInfo() {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = localStorage.getItem('email');
-    const userProfileImgUrl = avatarUrl || 'https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/avatar_placeholder.png';
+    const userProfileImgUrl = avatarUrl || DEFAULT_AVATAR_URL;
     
     if (email && username) {
       try {
-        const response = await create_new_profile(email, userProfileImgUrl, username);
+        const response = await createNewProfile(email, userProfileImgUrl, username);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.removeItem('email');
 
@@ -63,12 +64,12 @@ function RegisterInfo() {
           const invitationCode = localStorage.getItem('invitationCode');
           const invitedEmail = localStorage.getItem('invitedEmail');
           if (invitedEmail === email) {
-            router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
+            router.push(getStartupInvitationUrl(invitationCode!, invitedEmail!));
           } else {
-            router.replace('/profiles/new');
+            router.replace(ROUTES.PROFILES.NEW);
           }
         } else {
-          router.replace('/profiles/new');
+          router.replace(ROUTES.PROFILES.NEW);
         }
         
         if (uploadAvatarId) {
@@ -87,14 +88,9 @@ function RegisterInfo() {
   return (
     <div className='flex flex-col items-center justify-center gap-12 w-full'>
       <div>
-        <Button
-          isIconOnly
-          aria-label="EMPACTS Logo Image"
-          className='w-48 p-1 bg-transparent'
-          radius='md'
-        >
+        <div className='w-48 p-1 bg-transparent'>
           <EmpactsLogoIcon />
-        </Button>
+        </div>
       </div>
       <div>
         <FormTitle className='font-bold text-2xl text-black' text='Complete your profile' />
@@ -120,18 +116,18 @@ function RegisterInfo() {
           onChange={handleUsernameChange}
         />
 
-        <AuthButton type="submit" className="w-4/5">
+        <Button type="submit" fullWidth color="primary" className="w-4/5 rounded-lg bg-empacts border-empacts !text-white">
           Sign up
-        </AuthButton>
+        </Button>
       </Form>
       <AuthFormFooter
         text="Already have an account?"
         linkText="Sign in"
-        linkHref="/auth/login"
+        linkHref={ROUTES.AUTH.LOGIN}
         linkClassName="font-bold"
       />
     </div>
   );
 }
 
-export default RegisterInfo;
+export default RegisterInfo; 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from '@heroui/react';
+import { Button as HeroButton } from '@heroui/react';
 
-interface AuthButtonProps {
+interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
@@ -12,9 +12,10 @@ interface AuthButtonProps {
   color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
   fullWidth?: boolean;
   className?: string;
+  radius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
 }
 
-function AuthButton({
+function Button({
   children,
   onClick,
   type = 'button',
@@ -23,16 +24,16 @@ function AuthButton({
   size = 'lg',
   variant = 'solid',
   color = 'primary',
-  fullWidth = true,
-  className = ''
-}: AuthButtonProps) {
-  const defaultClasses = 'rounded-lg bg-empacts border-empacts !text-white';
+  fullWidth = false,
+  className = '',
+  radius = 'md'
+}: ButtonProps) {
   const finalClasses = fullWidth 
-    ? `w-full ${defaultClasses} ${className}` 
-    : `${defaultClasses} ${className}`;
+    ? `w-full ${className}` 
+    : className;
 
   return (
-    <Button
+    <HeroButton
       type={type}
       color={color}
       size={size}
@@ -41,10 +42,11 @@ function AuthButton({
       isLoading={loading}
       onPress={onClick}
       className={finalClasses}
+      radius={radius}
     >
       {children}
-    </Button>
+    </HeroButton>
   );
 }
 
-export default AuthButton;
+export default Button; 

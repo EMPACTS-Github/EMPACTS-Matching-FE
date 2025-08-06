@@ -1,17 +1,18 @@
 'use client';
 import React, { useState } from 'react';
 import { addToast } from "@heroui/react";
-import { email_signup } from '@/apis/auth';
+import { emailSignup } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
 import { getEmailValidationState } from '@/utils/emailValidation';
-import EmailInput from '@/components/FormInput/EmailInput';
-import AuthButton from '@/components/common/AuthButton';
+import { ROUTES } from '@/constants/routes';
+import Input from '@/components/FormInput/Input';
+import Button from '@/components/Button/Button';
 import AuthFormFooter from '@/components/common/AuthFormFooter';
-import EmailVerification from '@/containers/SignUp/EmailVerification';
-import CreatePassword from '@/containers/SignUp/CreatePassword';
-import RegisterInfo from '@/containers/SignUp/RegisterInfo';
+import EmailVerification from '@/containers/EmailVerification';
+import CreatePassword from '@/containers/CreatePassword';
+import RegisterInfo from '@/containers/RegisterInfo';
 
 function SignUp() {
   const router = useRouter();
@@ -23,7 +24,7 @@ function SignUp() {
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
 
   const updateEmailValidation = (email: string) => {
-    const validation = getEmailValidationState(email, true);
+    const validation = getEmailValidationState(email);
     setEmailError(validation.error);
     setEmailColor(validation.color);
     setIsValidEmail(validation.isValid);
@@ -36,7 +37,7 @@ function SignUp() {
     if (!isEmailValid) return;
     
     try {
-      const response = await email_signup(email);
+      const response = await emailSignup(email);
       if (response.code == "VERIFICATION_EMAIL_SENT") {
         addToast({
           title: 'Verification code sent to your email',
@@ -44,7 +45,7 @@ function SignUp() {
           timeout: 3000,
         });
         localStorage.setItem('email', email);
-        router.push('/auth/signup?stage=verification');
+        router.push(`${ROUTES.AUTH.SIGNUP}?stage=verification`);
       } else {
         addToast({
           title: 'User already exist',
@@ -77,7 +78,8 @@ function SignUp() {
               description=""
             />
             <form onSubmit={handleSignup} className="space-y-4">
-              <EmailInput
+              <Input
+                variant="email"
                 value={email}
                 onChange={setEmail}
                 isInvalid={!isValidEmail}
@@ -85,15 +87,15 @@ function SignUp() {
                 errorMessage={emailError}
                 required
               />
-              <AuthButton type="submit">
+              <Button type="submit" fullWidth color="primary" className="rounded-lg bg-empacts border-empacts !text-white">
                 Sign up
-              </AuthButton>
+              </Button>
             </form>
             
             <AuthFormFooter
               text="Already have an account?"
               linkText="Sign in"
-              linkHref="/auth/login"
+              linkHref={ROUTES.AUTH.LOGIN}
             />
           </div>
         )}

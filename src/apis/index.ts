@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { refresh_token } from "./auth";
+import { refreshToken } from "./auth";
 import { AUTH_RESPONSE_CODE } from "@/constants/response";
 import { interceptorLoadingElements } from "@/utils/formatter";
 
@@ -17,15 +17,16 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-axiosInstance.interceptors.response.use((response) => {
-  if (response.data.code === AUTH_RESPONSE_CODE.LOGOUT) {
-    localStorage.removeItem('user');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  }
-  interceptorLoadingElements(false);
-  return response;
-},
+axiosInstance.interceptors.response.use(
+  (response) => {
+    if (response.data.code === AUTH_RESPONSE_CODE.LOGOUT) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    }
+    interceptorLoadingElements(false);
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
@@ -34,8 +35,8 @@ axiosInstance.interceptors.response.use((response) => {
       originalRequest._retry = true; // Mark this request as retried
 
       try {
-        // Call refresh_token to get a new access token
-        const data = await refresh_token();
+        // Call refreshToken to get a new access token
+        const data = await refreshToken();
         if (!data?.accessToken) {
           // If no access token is returned, reject the error
           return Promise.reject(error);

@@ -1,10 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import { addToast } from '@heroui/react';
-import { verify_OTP } from '@/apis/auth';
+import { verifyOTP } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
 import Image from 'next/image';
-import OTPInput from '@/components/FormInput/OTPInput';
+import Input from '@/components/FormInput/Input';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
 function EmailVerification() {
@@ -15,14 +16,14 @@ function EmailVerification() {
   const handleSubmitOtp = async () => {
     if (email && otp) {
       try {
-        const response = await verify_OTP(email, otp);
+        const response = await verifyOTP(email, otp);
         if (response.code === "EMAIL_SUCCESSFULLY_VERIFIED") {
           addToast({
             title: 'OTP code verified successfully',
             color: 'success',
             timeout: 5000,
           });
-          router.replace('/auth/signup?stage=password');
+          router.replace(`${ROUTES.AUTH.SIGNUP}?stage=password`);
         } else if (response.code === "OTP_EXPIRED") {
           addToast({
             title: 'OTP code has expired. Please request a new one.',
@@ -54,16 +55,11 @@ function EmailVerification() {
   };
 
   const handleGoBack = () => {
-    router.push('/auth/signup');
+    router.push(ROUTES.AUTH.SIGNUP);
   };
 
   const handleResendCode = () => {
     // TODO: Implement resend OTP functionality
-    addToast({
-      title: 'Resend code functionality not implemented yet',
-      color: 'warning',
-      timeout: 3000,
-    });
   };
 
   return (
@@ -88,9 +84,10 @@ function EmailVerification() {
         Please input your OTP code to finish the registration process.
       </p>
       <div className="flex justify-center space-x-2 mt-6">
-        <OTPInput
+        <Input
+          variant="otp"
           value={otp}
-          onValueChange={setOtp}
+          onChange={setOtp}
           onComplete={handleSubmitOtp}
         />
       </div>
@@ -107,4 +104,4 @@ function EmailVerification() {
   );
 }
 
-export default EmailVerification;
+export default EmailVerification; 

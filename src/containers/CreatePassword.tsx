@@ -1,11 +1,12 @@
 'use client';
 import React, { useState } from 'react';
-import { create_new_password } from '@/apis/auth';
+import { createNewPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { addToast } from "@heroui/react";
+import { ROUTES } from '@/constants/routes';
 import Image from 'next/image';
-import PasswordInput from '@/components/FormInput/PasswordInput';
-import AuthButton from '@/components/common/AuthButton';
+import Input from '@/components/FormInput/Input';
+import Button from '@/components/Button/Button';
 import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmpactsLogo from '/public/empacts-logo.png';
 
@@ -32,14 +33,14 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
     
     if (password && email) {
       try {
-        const response = await create_new_password(email, password);
+        const response = await createNewPassword(email, password);
         if (response.code === "PASSWORD_CREATED") {
           addToast({
             title: 'Password created successfully',
             color: 'success',
             timeout: 3000,
           });
-          router.push('/auth/signup?stage=registerinfo');
+          router.push(`${ROUTES.AUTH.SIGNUP}?stage=registerinfo`);
         } else {
           addToast({
             title: response.message,
@@ -71,27 +72,29 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
         <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign up</h2>
       </div>
       <div className="space-y-4">
-        <PasswordInput
+        <Input
+          variant="password"
           value={password}
           onChange={setPassword}
         />
-        <PasswordInput
+        <Input
+          variant="password"
           value={confirmPassword}
           onChange={setConfirmPassword}
           label="Confirm Password"
         />
-        <AuthButton onClick={handleCreatePassword}>
+        <Button onClick={handleCreatePassword} fullWidth color="primary" className="rounded-lg bg-empacts border-empacts !text-white">
           Sign up
-        </AuthButton>
+        </Button>
       </div>
 
       <AuthFormFooter
         text="Already have an account?"
         linkText="Sign in"
-        linkHref="/auth/login"
+        linkHref={ROUTES.AUTH.LOGIN}
       />
     </div>
   );
 }
 
-export default CreatePassword;
+export default CreatePassword; 

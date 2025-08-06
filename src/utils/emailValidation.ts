@@ -1,11 +1,8 @@
 import { checkEmailFormat } from "./checkValid";
 
 // Utility function for email validation state that can be reused across components
-export const getEmailValidationState = (
-  email: string,
-  hasSubmitted: boolean = false
-) => {
-  if (!hasSubmitted && !email) {
+export const getEmailValidationState = (email: string) => {
+  if (!email) {
     return {
       isValid: true,
       error: "",

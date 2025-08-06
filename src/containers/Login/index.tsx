@@ -2,20 +2,41 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { addToast } from "@heroui/react";
-import { email_signin, loginWithGoogleAPI } from '@/apis/auth';
+import { emailSignin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
-import EmailInput from '@/components/FormInput/EmailInput';
-import PasswordInput from '@/components/FormInput/PasswordInput';
-import AuthButton from '@/components/common/AuthButton';
+import Input from '@/components/FormInput/Input';
+import Button from '@/components/Button/Button';
 import AuthLink from '@/components/common/AuthLink';
 import GoogleSignInButton from '@/components/common/GoogleSignInButton';
 import FormDivider from '@/components/common/FormDivider';
 import AuthFormFooter from '@/components/common/AuthFormFooter';
 import { getEmailValidationState } from '@/utils/emailValidation';
-import { handlePostLoginRouting } from '@/utils/authRouting';
+import { ROUTES } from '@/constants/routes';
+import { getStartupInvitationUrl } from '@/constants/routes';
+
+function routeAfterLoginWithInvitation(router: any, response: any) {
+  const hasInvitationStatus = localStorage.getItem("status");
+
+  if (hasInvitationStatus) {
+    const invitationCode = localStorage.getItem("invitationCode");
+    const invitedEmail = localStorage.getItem("invitedEmail");
+
+    if (invitedEmail === response.email) {
+      router.push(getStartupInvitationUrl(invitationCode || '', invitedEmail || ''));
+    } else {
+      router.push(ROUTES.PROFILES.NEW); 
+    }
+  } else {
+    if (response.user.hasProfile) {
+      router.push(ROUTES.PROFILES.NEW);
+    } else {
+      router.push(ROUTES.PROFILES.NEW);
+    }
+  }
+}
 
 function Login() {
   const router = useRouter();
@@ -35,22 +56,22 @@ function Login() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const updateEmailValidation = useCallback((email: string) => {
-    const validation = getEmailValidationState(email, hasSubmitted);
+    const validation = getEmailValidationState(email);
     setEmailError(validation.error);
     setEmailColor(validation.color);
     setIsValidEmail(validation.isValid);
     return validation.isValid;
-  }, [hasSubmitted]);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
 
-    const isEmailValid = updateEmailValidation(email);
+    const isEmailValid = email ? updateEmailValidation(email) : false;
     if (!isEmailValid) return;
 
     try {
-      const response = await email_signin(email, password);
+      const response = await emailSignin(email, password);
 
       if (response.code !== "LOGIN") {
         setPasswordError(response.message || 'Invalid credentials');
@@ -75,7 +96,7 @@ function Login() {
         });
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        handlePostLoginRouting(router, response.data);
+        routeAfterLoginWithInvitation(router, response.data);
       }
     } catch (error) {
       console.error(error);
@@ -88,7 +109,7 @@ function Login() {
   };
 
   useEffect(() => {
-    if (hasSubmitted && !isValidEmail) {
+    if (hasSubmitted && email) {
       updateEmailValidation(email);
     }
   }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
@@ -101,7 +122,7 @@ function Login() {
           const response = await getUserAuthInfoAPI();
           localStorage.setItem('user', JSON.stringify(response.data));
 
-          handlePostLoginRouting(router, response.data);
+          routeAfterLoginWithInvitation(router, response.data);
         } catch (error) {
           console.error('Error fetching user auth info:', error);
           addToast({
@@ -131,14 +152,16 @@ function Login() {
           description=""
         />
         <form onSubmit={handleLogin} className="space-y-4">
-          <EmailInput
+          <Input
+            variant="email"
             value={email}
             onChange={setEmail}
             isInvalid={!isValidEmail}
             color={emailColor}
             errorMessage={emailError}
           />
-          <PasswordInput
+          <Input
+            variant="password"
             value={password}
             onChange={setPassword}
             isInvalid={!isValidPassword}
@@ -150,9 +173,9 @@ function Login() {
               Forgot your password?
             </AuthLink>
           </div>
-          <AuthButton type="submit" className="mt-4">
+          <Button type="submit" fullWidth color="primary" className="mt-4 rounded-lg bg-empacts border-empacts !text-white">
             Sign in
-          </AuthButton>
+          </Button>
         </form>
         
         <FormDivider />
@@ -160,7 +183,7 @@ function Login() {
         <AuthFormFooter
           text="Don't have an account?"
           linkText="Sign Up"
-          linkHref="/auth/signup"
+          linkHref={ROUTES.AUTH.SIGNUP}
         />
       </div>
     </div>

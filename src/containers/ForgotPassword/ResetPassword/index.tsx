@@ -1,10 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { addToast } from "@heroui/react";
-import { reset_password } from '@/apis/auth';
+import { resetPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
-import PasswordInput from '@/components/FormInput/PasswordInput';
-import AuthButton from '@/components/common/AuthButton';
+import { ROUTES } from '@/constants/routes';
+import Input from '@/components/FormInput/Input';
+import Button from '@/components/Button/Button';
 import BackButton from '@/components/common/BackButton';
 import LogoHeader from '@/components/common/LogoHeader';
 
@@ -51,7 +52,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
       });
     } else {
       try {
-        const response = await reset_password(email, password);
+        const response = await resetPassword(email, password);
         if (response.code === "PASSWORD_RESETED") {
           addToast({
             title: 'Password reset successful',
@@ -59,7 +60,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             timeout: 3000,
           });
           setOpenResetPasswordScreen(false);
-          router.push('/auth/login');
+          router.push(ROUTES.AUTH.LOGIN);
         } else {
           addToast({
             title: response.message,
@@ -100,7 +101,8 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
       </div>
       <div className="flex justify-center space-x-2 mt-6">
         <form onSubmit={handleResetPassword} className="space-y-6 w-full max-w-xs">
-          <PasswordInput
+          <Input
+            variant="password"
             value={password}
             onChange={setPassword}
             isInvalid={!isValidPassword}
@@ -109,7 +111,8 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             description={passwordDescription}
             required
           />
-          <PasswordInput
+          <Input
+            variant="password"
             value={confirmPassword}
             onChange={setConfirmPassword}
             label="Confirm Password"
@@ -118,9 +121,9 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             errorMessage={confirmPasswordError}
             required
           />
-          <AuthButton type="submit">
+          <Button type="submit" fullWidth color="primary" className="rounded-lg bg-empacts border-empacts !text-white">
             Reset Password
-          </AuthButton>
+          </Button>
         </form>
       </div>
     </div>

@@ -4,11 +4,12 @@ import { addToast } from "@heroui/react";
 import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
 import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { send_forgot_password_otp } from '@/apis/auth';
+import { sendForgotPasswordOTP } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
 import { getEmailValidationState } from '@/utils/emailValidation';
-import EmailInput from '@/components/FormInput/EmailInput';
-import AuthButton from '@/components/common/AuthButton';
+import { ROUTES } from '@/constants/routes';
+import Input from '@/components/FormInput/Input';
+import Button from '@/components/Button/Button';
 import BackButton from '@/components/common/BackButton';
 
 function ForgotPassword() {
@@ -23,12 +24,12 @@ function ForgotPassword() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const updateEmailValidation = useCallback((email: string) => {
-    const validation = getEmailValidationState(email, hasSubmitted);
+    const validation = getEmailValidationState(email);
     setEmailError(validation.error);
     setEmailColor(validation.color);
     setIsValidEmail(validation.isValid);
     return validation.isValid;
-  }, [hasSubmitted]);
+  }, []);
 
   const handleBackButton = () => {
     router.back()
@@ -37,10 +38,10 @@ function ForgotPassword() {
   const handleSentCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
-    const isEmailValid = updateEmailValidation(email);
+    const isEmailValid = email ? updateEmailValidation(email) : false;
     if (isEmailValid) {
       try {
-        const response = await send_forgot_password_otp(email);
+        const response = await sendForgotPasswordOTP(email);
         if (response.code === "FORGOT_PASSWORD_EMAIL_SENT") {
           addToast({
             title: 'Verification code sent to your email',
@@ -48,7 +49,7 @@ function ForgotPassword() {
             timeout: 3000,
           });
           localStorage.setItem('email', email); // Store email in localStorage
-          router.push('/auth/forgot-password?stage=verification');
+          router.push(`${ROUTES.AUTH.FORGOT_PASSWORD}?stage=verification`);
         } else if (response.code === "EMAIL_ALREADY_SENT") {
           addToast({
             title: 'Email already sent. Please wait 1 minutes before requesting again.',
@@ -86,7 +87,7 @@ function ForgotPassword() {
       setEmail(storedEmail);
     }
 
-    if (hasSubmitted && !isValidEmail) {
+    if (hasSubmitted && email) {
       updateEmailValidation(email);
     }
   }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
@@ -114,7 +115,8 @@ function ForgotPassword() {
               description="Enter your email address and we will send you instructions to reset your password."
             />
             <form onSubmit={handleSentCode} className="space-y-4">
-              <EmailInput
+              <Input
+                variant="email"
                 value={email}
                 onChange={setEmail}
                 isInvalid={!isValidEmail}
@@ -122,9 +124,9 @@ function ForgotPassword() {
                 errorMessage={emailError}
                 required
               />
-              <AuthButton type="submit" className="mt-4">
+              <Button type="submit" fullWidth color="primary" className="mt-4 rounded-lg bg-empacts border-empacts !text-white">
                 Continue
-              </AuthButton>
+              </Button>
             </form>
           </div>
         )}

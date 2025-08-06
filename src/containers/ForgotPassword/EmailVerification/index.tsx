@@ -1,8 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { send_forgot_password_otp, verify_forgot_password_otp } from '@/apis/auth';
+import { sendForgotPasswordOTP, verifyForgotPasswordOTP } from '@/apis/auth';
 import { addToast } from '@heroui/react';
-import OTPInput from '@/components/FormInput/OTPInput';
+import { ROUTES } from '@/constants/routes';
+import Input from '@/components/FormInput/Input';
 import BackButton from '@/components/common/BackButton';
 import LogoHeader from '@/components/common/LogoHeader';
 import ResendCodeButton from '@/components/common/ResendCodeButton';
@@ -45,7 +46,7 @@ function EmailVerification({
 
   const handleResendCode = async () => {
     try {
-      const response = await send_forgot_password_otp(email);
+      const response = await sendForgotPasswordOTP(email);
       if (response.code === "FORGOT_PASSWORD_EMAIL_SENT") {
         addToast({
           title: 'Verification code sent successfully',
@@ -78,7 +79,7 @@ function EmailVerification({
 
   const handleSubmitOtp = async () => {
     try {
-      const response = await verify_forgot_password_otp(email, otp);
+      const response = await verifyForgotPasswordOTP(email, otp);
       if (response.code === "OTP_VERIFIED") {
         addToast({
           title: 'OTP code verified successfully',
@@ -128,9 +129,10 @@ function EmailVerification({
       </div>
       <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
       <div className="flex justify-center space-x-2 mt-6">
-        <OTPInput
+        <Input
+          variant="otp"
           value={otp}
-          onValueChange={setOtp}
+          onChange={setOtp}
           onComplete={handleSubmitOtp}
         />
       </div>
