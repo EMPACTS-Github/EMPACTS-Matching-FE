@@ -34,4 +34,4 @@ export const getMentorDetailUrl = (id: string) =>
 
 // Default avatar placeholder URL
 export const DEFAULT_AVATAR_URL =
-  "https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/avatar_placeholder.png";
+  process.env.NEXT_PUBLIC_DEFAULT_AVATAR_URL || "";

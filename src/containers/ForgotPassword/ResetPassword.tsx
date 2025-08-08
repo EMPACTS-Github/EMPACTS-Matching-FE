@@ -8,6 +8,7 @@ import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import Image from 'next/image';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 interface ResetPasswordProps {
   email: string;
@@ -35,25 +36,25 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
 
     try {
       const response = await resetPassword(email, password);
-      if (response.code === "RESET_PASSWORD") {
+      if (response.code === API_RESPONSE_CODES.RESET_PASSWORD) {
         addToast({
-          title: 'Password reset successfully',
-          color: 'success',
+          title: TOAST_MESSAGES.PASSWORD_RESET_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
         });
         router.push(ROUTES.AUTH.LOGIN);
       } else {
         addToast({
-          title: response.message || 'Failed to reset password',
-          color: 'danger',
-          timeout: 5000,
+          title: response.message || TOAST_MESSAGES.PASSWORD_RESET_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       }
     } catch (error) {
       console.error(error);
       addToast({
-        title: 'An error occurred while resetting password',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.PASSWORD_RESET_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
     }
   };
@@ -123,11 +124,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             required
           />
           <Button 
-            type="submit" 
-            fullWidth 
-            customVariant="primary" 
-            customStyle="solid"
-            className="rounded-lg"
+            variant="submit-lg"
           >
             Reset Password
           </Button>

@@ -9,7 +9,8 @@ import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import EmpactsLogo from '/public/empacts-logo.png';
 import AuthLink from '@/components/AuthLink';
-import FormFooterAction from '@/components/FormFooterAction';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 interface CreatePasswordProps {
   email?: string;
@@ -25,9 +26,9 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
   const handleCreatePassword = async () => {
     if (password !== confirmPassword) {
       addToast({
-        title: 'Passwords do not match',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.PASSWORD_MISMATCH,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
       return;
     }
@@ -35,25 +36,25 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
     if (password && email) {
       try {
         const response = await createNewPassword(email, password);
-        if (response.code === "PASSWORD_CREATED") {
+        if (response.code === API_RESPONSE_CODES.PASSWORD_CREATED) {
           addToast({
-            title: 'Password created successfully',
-            color: 'success',
-            timeout: 3000,
+            title: TOAST_MESSAGES.PASSWORD_CREATED_SUCCESS,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: TOAST_TIMEOUT.SHORT,
           });
           router.push(`${ROUTES.AUTH.SIGNUP}?stage=registerinfo`);
         } else {
           addToast({
             title: response.message,
-            color: 'danger',
-            timeout: 5000,
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
           });
         }
       } catch (error) {
         addToast({
-          title: "An error occurred while creating the password",
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.PASSWORD_CREATE_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       }
     }
@@ -86,12 +87,9 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
         />
         <Button 
           onClick={handleCreatePassword} 
-          fullWidth 
-          customVariant="primary" 
-          customStyle="solid"
-          className="rounded-lg"
+          variant="action-lg"
         >
-          Sign up
+          Continue
         </Button>
       </div>
 

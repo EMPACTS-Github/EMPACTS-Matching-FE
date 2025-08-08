@@ -13,7 +13,8 @@ import CreatePassword from '@/containers/SignUp/CreatePassword';
 import RegisterInfo from '@/containers/SignUp/RegisterInfo';
 import { checkEmailFormat } from '@/utils/checkValid';
 import AuthLink from '@/components/AuthLink';
-import FormFooterAction from '@/components/FormFooterAction';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function SignUp() {
   const router = useRouter();
@@ -39,26 +40,26 @@ function SignUp() {
     
     try {
       const response = await emailSignup(email);
-      if (response.code == "VERIFICATION_EMAIL_SENT") {
+      if (response.code == API_RESPONSE_CODES.VERIFICATION_EMAIL_SENT) {
         addToast({
-          title: 'Verification code sent to your email',
-          color: 'success',
-          timeout: 3000,
+          title: TOAST_MESSAGES.VERIFICATION_EMAIL_SENT,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: TOAST_TIMEOUT.SHORT,
         });
         localStorage.setItem('email', email);
         router.push(`${ROUTES.AUTH.SIGNUP}?stage=verification`);
       } else {
         addToast({
-          title: 'User already exist',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.USER_ALREADY_EXISTS,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       }
     } catch (error) {
       addToast({
-        title: 'An error occurred while signing up',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.SIGNUP_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
     }
   };
@@ -90,11 +91,7 @@ function SignUp() {
                 required
               />
               <Button 
-                type="submit" 
-                fullWidth 
-                customVariant="primary" 
-                customStyle="solid"
-                className="rounded-lg"
+                variant="submit-lg"
               >
                 Sign up
               </Button>

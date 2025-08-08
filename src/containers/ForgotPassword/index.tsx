@@ -12,6 +12,7 @@ import Button from '@/components/Button/Button';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import Image from 'next/image';
 import { checkEmailFormat } from '@/utils/checkValid';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -43,39 +44,39 @@ function ForgotPassword() {
     if (isEmailValid) {
       try {
         const response = await sendForgotPasswordOTP(email);
-        if (response.code === "FORGOT_PASSWORD_EMAIL_SENT") {
+        if (response.code === API_RESPONSE_CODES.FORGOT_PASSWORD_EMAIL_SENT) {
           addToast({
-            title: 'Verification code sent to your email',
-            color: 'success',
-            timeout: 3000,
+            title: TOAST_MESSAGES.VERIFICATION_EMAIL_SENT,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: TOAST_TIMEOUT.SHORT,
           });
           localStorage.setItem('email', email); // Store email in localStorage
           router.push(`${ROUTES.AUTH.FORGOT_PASSWORD}?stage=verification`);
-        } else if (response.code === "EMAIL_ALREADY_SENT") {
+        } else if (response.code === API_RESPONSE_CODES.EMAIL_ALREADY_SENT) {
           addToast({
-            title: 'Email already sent. Please wait 1 minutes before requesting again.',
-            color: 'danger',
-            timeout: 5000,
+            title: TOAST_MESSAGES.EMAIL_ALREADY_SENT,
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
           });
         } else {
           addToast({
             title: response.message,
-            color: 'danger',
-            timeout: 5000,
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
           });
         }
       } catch (error) {
         addToast({
-          title: 'An error occurred while sending the verification code',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.FORGOT_PASSWORD_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       }
     } else {
       addToast({
-        title: 'Invalid email format',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.INVALID_EMAIL_FORMAT,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
     }
   };
@@ -132,11 +133,8 @@ function ForgotPassword() {
                 required
               />
               <Button 
-                type="submit" 
-                fullWidth 
-                customVariant="primary" 
-                customStyle="solid"
-                className="mt-4 rounded-lg"
+                variant="action-lg"
+                className="mt-4"
               >
                 Continue
               </Button>

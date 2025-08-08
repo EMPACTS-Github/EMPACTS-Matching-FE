@@ -10,10 +10,11 @@ import AuthHeader from '@/components/Header/AuthHeader';
 import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import AuthLink from '@/components/AuthLink';
-import FormFooterAction from '@/components/FormFooterAction';
+import FormFooterAction from '@/components/Form/FormFooterAction';
 import { ROUTES } from '@/constants/link';
 import { getStartupInvitationUrl } from '@/constants/link';
 import { checkEmailFormat } from '@/utils/checkValid';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 import Image from 'next/image';
 
 function routeAfterLoginWithInvitation(router: any, response: any) {
@@ -72,16 +73,16 @@ function Login() {
     try {
       const response = await emailSignin(email, password);
 
-      if (response.code !== "LOGIN") {
-        setPasswordError(response.message || 'Invalid credentials');
+      if (response.code !== API_RESPONSE_CODES.LOGIN) {
+        setPasswordError(response.message || TOAST_MESSAGES.INVALID_CREDENTIALS);
         setPasswordColor('danger');
         setIsValidPassword(false);
         setEmailColor('danger');
         setIsValidEmail(false);
         addToast({
-          title: response.message || 'Invalid credentials',
-          color: 'danger',
-          timeout: 5000,
+          title: response.message || TOAST_MESSAGES.INVALID_CREDENTIALS,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       } else {
         setPasswordError('');
@@ -90,8 +91,8 @@ function Login() {
         setEmailColor('default');
         setIsValidEmail(true);
         addToast({
-          title: 'Login successful',
-          color: 'success',
+          title: TOAST_MESSAGES.LOGIN_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
         });
 
         localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -100,9 +101,9 @@ function Login() {
     } catch (error) {
       console.error(error);
       addToast({
-        title: 'An error occurred while logging in',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.LOGIN_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
     }
   };
@@ -125,16 +126,16 @@ function Login() {
         } catch (error) {
           console.error('Error fetching user auth info:', error);
           addToast({
-            title: 'Login with Google failed!',
-            color: 'danger',
-            timeout: 5000,
+            title: TOAST_MESSAGES.GOOGLE_LOGIN_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
           });
         }
       } else if (success == 'false') {
         addToast({
-          title: 'Login with Google failed!',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.GOOGLE_LOGIN_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       }
     }
@@ -153,8 +154,7 @@ function Login() {
   const GoogleSignInButton = () => (
     <Button
       onClick={loginWithGoogleAPI}
-      size="lg"
-      className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
+      variant="google"
     >
       <Image
         src="/google-icon.svg"
@@ -194,16 +194,13 @@ function Login() {
             errorMessage={passwordError}
           />
           <div className="text-right !mt-1">
-            <AuthLink href="/auth/forgot-password" className="text-sm font-bold text-[#1A1D1F]">
+            <AuthLink href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-sm font-bold text-[#1A1D1F]">
               Forgot your password?
             </AuthLink>
           </div>
           <Button 
-            type="submit" 
-            fullWidth 
-            customVariant="primary" 
-            customStyle="solid"
-            className="mt-4 rounded-lg"
+            variant="submit-lg"
+            className="mt-4"
           >
             Sign in
           </Button>

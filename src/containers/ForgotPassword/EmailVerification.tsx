@@ -6,6 +6,7 @@ import { ROUTES } from '@/constants/link';
 import Input from '@/components/Input/Input';
 import Image from 'next/image';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 interface EmailVerificationProps {
   email: string;
@@ -88,38 +89,38 @@ function EmailVerification({
   const handleSubmitOtp = async () => {
     try {
       const response = await verifyForgotPasswordOTP(email, otp);
-      if (response.code === "OTP_VERIFIED") {
+      if (response.code === API_RESPONSE_CODES.OTP_VERIFIED) {
         addToast({
-          title: 'OTP code verified successfully',
-          color: 'success',
-          timeout: 3000,
+          title: TOAST_MESSAGES.OTP_VERIFIED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: TOAST_TIMEOUT.SHORT,
         });
         setEmailSent(false);
         setResetPasswordScreen(true);
-      } else if (response.code === "OTP_INCORRECT") {
+      } else if (response.code === API_RESPONSE_CODES.OTP_INCORRECT) {
         addToast({
-          title: 'Incorrect OTP code. Please try again.',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.OTP_INCORRECT,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
-      } else if (response.code === "OTP_EXPIRED") {
+      } else if (response.code === API_RESPONSE_CODES.OTP_EXPIRED) {
         addToast({
-          title: 'OTP code has expired. Please request a new one.',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.OTP_EXPIRED,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       } else {
         addToast({
           title: response.message,
-          color: 'danger',
-          timeout: 5000,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       }
     } catch (error) {
       addToast({
-        title: 'An error occurred while verifying the OTP',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.OTP_VERIFY_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
     }
   };

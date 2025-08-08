@@ -13,7 +13,8 @@ import UserAvatar from '@/components/Form/UserAvatar';
 import FormLabel from '@/components/Form/FormLabel';
 import Button from '@/components/Button/Button';
 import AuthLink from '@/components/AuthLink';
-import FormFooterAction from '@/components/FormFooterAction';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function RegisterInfo() {
   const router = useRouter();
@@ -32,13 +33,15 @@ function RegisterInfo() {
         setAvatarUrl(uploadResult.data.attachmentUrl);
         setUploadAvatarId(uploadResult.data.id);
         addToast({
-          title: 'Avatar uploaded',
-          timeout: 3000,
+          title: TOAST_MESSAGES.AVATAR_UPLOADED,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: TOAST_TIMEOUT.SHORT,
         });
       } else {
         addToast({
-          title: 'An error occured while uploading avatar. Please try again.',
-          timeout: 3000,
+          title: TOAST_MESSAGES.AVATAR_UPLOAD_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.SHORT,
         });
       }
       e.target.files = null;
@@ -82,8 +85,9 @@ function RegisterInfo() {
         }
       } catch (error) {
         addToast({
-          title: 'An error occurred while creating profile',
-          timeout: 3000,
+          title: TOAST_MESSAGES.PROFILE_CREATE_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.SHORT,
         });
       }
     }
@@ -121,11 +125,8 @@ function RegisterInfo() {
         />
 
         <Button 
-          type="submit" 
-          fullWidth 
-          customVariant="primary" 
-          customStyle="solid"
-          className="w-4/5 rounded-lg"
+          variant="submit-lg"
+          className="w-4/5"
         >
           Sign up
         </Button>
