@@ -5,14 +5,15 @@ import { emailSignup } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
-import { ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/link';
 import Input from '@/components/FormInput/Input';
 import Button from '@/components/Button/Button';
-import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmailVerification from '@/containers/SignUp/EmailVerification';
 import CreatePassword from '@/containers/SignUp/CreatePassword';
 import RegisterInfo from '@/containers/SignUp/RegisterInfo';
-import { getEmailValidationState } from '@/utils/emailValidation';
+import { checkEmailFormat } from '@/utils/checkValid';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/FormFooterAction';
 
 function SignUp() {
   const router = useRouter();
@@ -24,11 +25,11 @@ function SignUp() {
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
 
   const updateEmailValidation = (email: string) => {
-    const validation = getEmailValidationState(email);
-    setEmailError(validation.error);
-    setEmailColor(validation.color);
-    setIsValidEmail(validation.isValid);
-    return validation.isValid;
+    const isValid = checkEmailFormat(email);
+    setEmailError(isValid ? '' : 'Invalid email format');
+    setEmailColor(isValid ? 'default' : 'danger');
+    setIsValidEmail(isValid);
+    return isValid;
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -92,10 +93,9 @@ function SignUp() {
               </Button>
             </form>
             
-            <AuthFormFooter
+            <FormFooterAction
               text="Already have an account?"
-              linkText="Sign in"
-              linkHref={ROUTES.AUTH.LOGIN}
+              action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
             />
           </div>
         )}

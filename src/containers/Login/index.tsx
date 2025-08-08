@@ -9,13 +9,12 @@ import { useRouter } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
 import Input from '@/components/FormInput/Input';
 import Button from '@/components/Button/Button';
-import AuthLink from '@/components/common/AuthLink';
-import GoogleSignInButton from '@/components/common/GoogleSignInButton';
-import FormDivider from '@/components/common/FormDivider';
-import AuthFormFooter from '@/components/common/AuthFormFooter';
-import { ROUTES } from '@/constants/routes';
-import { getStartupInvitationUrl } from '@/constants/routes';
-import { getEmailValidationState } from '@/utils/emailValidation';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/FormFooterAction';
+import { ROUTES } from '@/constants/link';
+import { getStartupInvitationUrl } from '@/constants/link';
+import { checkEmailFormat } from '@/utils/checkValid';
+import Image from 'next/image';
 
 function routeAfterLoginWithInvitation(router: any, response: any) {
   const hasInvitationStatus = localStorage.getItem("status");
@@ -56,11 +55,11 @@ function Login() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const updateEmailValidation = useCallback((email: string) => {
-    const validation = getEmailValidationState(email);
-    setEmailError(validation.error);
-    setEmailColor(validation.color);
-    setIsValidEmail(validation.isValid);
-    return validation.isValid;
+    const isValid = checkEmailFormat(email);
+    setEmailError(isValid ? '' : 'Invalid email format');
+    setEmailColor(isValid ? 'default' : 'danger');
+    setIsValidEmail(isValid);
+    return isValid;
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -142,7 +141,31 @@ function Login() {
     getUserAuthInfo()
   }, [searchParams, router]);
 
+  // Inline components
+  const FormDivider = () => (
+    <div className="my-6 text-gray-500 flex items-center">
+      <div className="flex-grow border-t border-gray-300"></div>
+      <span className="mx-4 text-black text-sm">Or</span>
+      <div className="flex-grow border-t border-gray-300"></div>
+    </div>
+  );
 
+  const GoogleSignInButton = () => (
+    <Button
+      onClick={loginWithGoogleAPI}
+      size="lg"
+      className="w-full mt-2 flex justify-center items-center rounded-lg bg-[#F4F4F4] text-black"
+    >
+      <Image
+        src="/google-icon.svg"
+        alt="Google icon"
+        width={20}
+        height={20}
+        className="mr-2"
+      />
+      Sign in with Google
+    </Button>
+  );
 
   return (
     <div className="bg-white flex justify-center items-center h-screen">
@@ -179,11 +202,10 @@ function Login() {
         </form>
         
         <FormDivider />
-        <GoogleSignInButton onPress={loginWithGoogleAPI} />
-        <AuthFormFooter
+        <GoogleSignInButton />
+        <FormFooterAction
           text="Don't have an account?"
-          linkText="Sign Up"
-          linkHref={ROUTES.AUTH.SIGNUP}
+          action={<AuthLink href={ROUTES.AUTH.SIGNUP}>Sign Up</AuthLink>}
         />
       </div>
     </div>

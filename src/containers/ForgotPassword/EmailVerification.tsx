@@ -2,11 +2,10 @@
 import { useEffect, useState } from 'react';
 import { sendForgotPasswordOTP, verifyForgotPasswordOTP } from '@/apis/auth';
 import { addToast } from '@heroui/react';
-import { ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/link';
 import Input from '@/components/FormInput/Input';
-import BackButton from '@/components/common/BackButton';
-import LogoHeader from '@/components/common/LogoHeader';
-import ResendCodeButton from '@/components/common/ResendCodeButton';
+import Image from 'next/image';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
 interface EmailVerificationProps {
   email: string;
@@ -44,37 +43,46 @@ function EmailVerification({
     return () => clearInterval(timer!);
   }, [isResendDisabled]);
 
-  const handleResendCode = async () => {
-    try {
-      const response = await sendForgotPasswordOTP(email);
-      if (response.code === "FORGOT_PASSWORD_EMAIL_SENT") {
-        addToast({
-          title: 'Verification code sent successfully',
-          color: 'success',
-          timeout: 3000,
-        });
-        setIsResendDisabled(true);
-      } else if (response.code === "EMAIL_ALREADY_SENT") {
-        addToast({
-          title: 'Email already sent. Please wait 1 minutes before requesting again.',
-          color: 'danger',
-          timeout: 5000,
-        });
-      } else {
-        addToast({
-          title: response.message,
-          color: 'danger',
-          timeout: 5000,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      addToast({
-        title: 'An error occurred while resending the code',
-        color: 'danger',
-        timeout: 5000,
-      });
-    }
+  const handleResendCode = () => {
+    // TODO: Implement resend OTP functionality
+  };
+
+  const BackButton = ({ onClick, className = 'absolute left-10 hover:bg-gray-300 rounded-lg' }: { onClick: () => void; className?: string }) => (
+    <div className={className} onClick={onClick}>
+      <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+    </div>
+  );
+
+  const LogoHeader = ({ title, logoSrc = '/empacts-logo.png', logoWidth = 0, logoHeight = 0, titleClassName = 'text-2xl font-bold mt-6 mb-6 text-black' }: { title: string; logoSrc?: string; logoWidth?: number; logoHeight?: number; titleClassName?: string }) => (
+    <div className="flex flex-col items-center text-center">
+      <Image
+        src={logoSrc}
+        alt="Logo"
+        width={logoWidth}
+        height={logoHeight}
+        sizes="100vw"
+        style={{ width: logoWidth === 0 ? '50%' : 'auto', height: 'auto' }}
+        priority
+      />
+      <h2 className={titleClassName}>{title}</h2>
+    </div>
+  );
+
+  const ResendCodeButton = ({ isDisabled, countdown = 0, onClick, className = '' }: { isDisabled: boolean; countdown?: number; onClick: () => void; className?: string }) => {
+    const baseClasses = 'cursor-pointer';
+    const disabledClasses = 'text-purple-400 cursor-not-allowed';
+    const enabledClasses = 'text-purple-600';
+    
+    const finalClasses = `${baseClasses} ${isDisabled ? disabledClasses : enabledClasses} ${className}`;
+  
+    return (
+      <span
+        onClick={isDisabled ? undefined : onClick}
+        className={finalClasses}
+      >
+        {isDisabled ? `Resend code(${countdown}s)` : 'Resend code'}
+      </span>
+    );
   };
 
   const handleSubmitOtp = async () => {
@@ -108,7 +116,6 @@ function EmailVerification({
         });
       }
     } catch (error) {
-      console.error(error);
       addToast({
         title: 'An error occurred while verifying the OTP',
         color: 'danger',

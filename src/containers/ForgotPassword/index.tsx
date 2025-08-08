@@ -6,11 +6,12 @@ import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { sendForgotPasswordOTP } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
-import { ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/link';
 import Input from '@/components/FormInput/Input';
 import Button from '@/components/Button/Button';
-import BackButton from '@/components/common/BackButton';
-import { getEmailValidationState } from '@/utils/emailValidation';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import Image from 'next/image';
+import { checkEmailFormat } from '@/utils/checkValid';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -24,11 +25,11 @@ function ForgotPassword() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const updateEmailValidation = useCallback((email: string) => {
-    const validation = getEmailValidationState(email);
-    setEmailError(validation.error);
-    setEmailColor(validation.color);
-    setIsValidEmail(validation.isValid);
-    return validation.isValid;
+    const isValid = checkEmailFormat(email);
+    setEmailError(isValid ? '' : 'Invalid email format');
+    setEmailColor(isValid ? 'default' : 'danger');
+    setIsValidEmail(isValid);
+    return isValid;
   }, []);
 
   const handleBackButton = () => {
@@ -78,6 +79,12 @@ function ForgotPassword() {
       });
     }
   };
+
+  const BackButton = ({ onClick, className = 'absolute left-10 hover:bg-gray-300 rounded-lg' }: { onClick: () => void; className?: string }) => (
+    <div className={className} onClick={onClick}>
+      <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+    </div>
+  );
 
   useEffect(() => {
     // Get email from localStorage if available

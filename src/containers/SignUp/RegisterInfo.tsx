@@ -5,14 +5,15 @@ import { useRouter } from 'next/navigation';
 import { updateAttachment, uploadAttachemt } from '@/apis/upload';
 import { createNewProfile } from '@/apis/auth';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
-import { ROUTES, getStartupInvitationUrl, DEFAULT_AVATAR_URL } from '@/constants/routes';
+import { ROUTES, getStartupInvitationUrl, DEFAULT_AVATAR_URL } from '@/constants/link';
 import { Form, Input } from '@heroui/react';
-import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
 import FormTitle from '@/components/Form/FormTitle';
 import UserAvatar from '@/components/Form/UserAvatar';
 import FormLabel from '@/components/Form/FormLabel';
 import Button from '@/components/Button/Button';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/FormFooterAction';
 
 function RegisterInfo() {
   const router = useRouter();
@@ -123,11 +124,9 @@ function RegisterInfo() {
           Sign up
         </Button>
       </Form>
-      <AuthFormFooter
+      <FormFooterAction
         text="Already have an account?"
-        linkText="Sign in"
-        linkHref={ROUTES.AUTH.LOGIN}
-        linkClassName="font-bold"
+        action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
       />
     </div>
   );

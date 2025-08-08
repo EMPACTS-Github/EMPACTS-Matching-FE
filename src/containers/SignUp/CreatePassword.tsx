@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { createNewPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { addToast } from "@heroui/react";
-import { ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/link';
 import Image from 'next/image';
 import Input from '@/components/FormInput/Input';
 import Button from '@/components/Button/Button';
-import AuthFormFooter from '@/components/common/AuthFormFooter';
 import EmpactsLogo from '/public/empacts-logo.png';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/FormFooterAction';
 
 interface CreatePasswordProps {
   email?: string;
@@ -87,10 +88,9 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
         </Button>
       </div>
 
-      <AuthFormFooter
+      <FormFooterAction
         text="Already have an account?"
-        linkText="Sign in"
-        linkHref={ROUTES.AUTH.LOGIN}
+        action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
       />
     </div>
   );

@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { addToast } from '@heroui/react';
 import { verifyOTP } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/constants/routes';
+import { ROUTES } from '@/constants/link';
 import Image from 'next/image';
 import Input from '@/components/FormInput/Input';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import FormFooterAction from '@/components/FormFooterAction';
 
 function EmailVerification() {
   const router = useRouter();
@@ -90,15 +91,14 @@ function EmailVerification() {
           onComplete={handleSubmitOtp}
         />
       </div>
-      <div className="text-gray-500 mt-4">
-        Did not receive code? 
-        <span 
-          className="text-purple-600 cursor-pointer" 
-          onClick={handleResendCode}
-        >
-          Resend code
-        </span>
-      </div>
+      <FormFooterAction
+        text="Did not receive code?"
+        action={
+          <span className="text-purple-600 cursor-pointer" onClick={handleResendCode}>
+            Resend code
+          </span>
+        }
+      />
     </div>
   );
 }
