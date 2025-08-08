@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
 import { ROUTES } from '@/constants/link';
-import Input from '@/components/FormInput/Input';
+import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import EmailVerification from '@/containers/SignUp/EmailVerification';
 import CreatePassword from '@/containers/SignUp/CreatePassword';
@@ -80,6 +80,7 @@ function SignUp() {
             />
             <form onSubmit={handleSignup} className="space-y-4">
               <Input
+                label="Email"
                 variant="email"
                 value={email}
                 onChange={setEmail}
@@ -88,7 +89,13 @@ function SignUp() {
                 errorMessage={emailError}
                 required
               />
-              <Button type="submit" fullWidth color="primary" className="rounded-lg bg-empacts border-empacts !text-white">
+              <Button 
+                type="submit" 
+                fullWidth 
+                customVariant="primary" 
+                customStyle="solid"
+                className="rounded-lg"
+              >
                 Sign up
               </Button>
             </form>

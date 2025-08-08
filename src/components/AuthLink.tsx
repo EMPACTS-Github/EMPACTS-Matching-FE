@@ -8,7 +8,7 @@ interface AuthLinkProps {
 }
 
 function AuthLink({ href, children, className = '' }: AuthLinkProps) {
-  const defaultClasses = 'text-empacts';
+  const defaultClasses = 'text-primary';
   const finalClasses = `${defaultClasses} ${className}`;
 
   return (

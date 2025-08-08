@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
 import { useRouter } from 'next/navigation';
 import AuthHeader from '@/components/Header/AuthHeader';
-import Input from '@/components/FormInput/Input';
+import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import AuthLink from '@/components/AuthLink';
 import FormFooterAction from '@/components/FormFooterAction';
@@ -176,6 +176,7 @@ function Login() {
         />
         <form onSubmit={handleLogin} className="space-y-4">
           <Input
+            label="Email"
             variant="email"
             value={email}
             onChange={setEmail}
@@ -184,6 +185,7 @@ function Login() {
             errorMessage={emailError}
           />
           <Input
+            label="Password"
             variant="password"
             value={password}
             onChange={setPassword}
@@ -192,11 +194,17 @@ function Login() {
             errorMessage={passwordError}
           />
           <div className="text-right !mt-1">
-            <AuthLink href="/auth/forgot-password" className="text-sm font-bold">
+            <AuthLink href="/auth/forgot-password" className="text-sm font-bold text-[#1A1D1F]">
               Forgot your password?
             </AuthLink>
           </div>
-          <Button type="submit" fullWidth color="primary" className="mt-4 rounded-lg bg-empacts border-empacts !text-white">
+          <Button 
+            type="submit" 
+            fullWidth 
+            customVariant="primary" 
+            customStyle="solid"
+            className="mt-4 rounded-lg"
+          >
             Sign in
           </Button>
         </form>

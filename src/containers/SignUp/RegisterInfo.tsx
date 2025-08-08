@@ -120,7 +120,13 @@ function RegisterInfo() {
           onChange={handleUsernameChange}
         />
 
-        <Button type="submit" fullWidth color="primary" className="w-4/5 rounded-lg bg-empacts border-empacts !text-white">
+        <Button 
+          type="submit" 
+          fullWidth 
+          customVariant="primary" 
+          customStyle="solid"
+          className="w-4/5 rounded-lg"
+        >
           Sign up
         </Button>
       </Form>

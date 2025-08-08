@@ -5,7 +5,7 @@ import { verifyOTP } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
 import Image from 'next/image';
-import Input from '@/components/FormInput/Input';
+import Input from '@/components/Input/Input';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import FormFooterAction from '@/components/FormFooterAction';
 

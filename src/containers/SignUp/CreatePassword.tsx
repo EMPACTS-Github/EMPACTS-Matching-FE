@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { addToast } from "@heroui/react";
 import { ROUTES } from '@/constants/link';
 import Image from 'next/image';
-import Input from '@/components/FormInput/Input';
+import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import EmpactsLogo from '/public/empacts-logo.png';
 import AuthLink from '@/components/AuthLink';
@@ -73,6 +73,7 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
       </div>
       <div className="space-y-4">
         <Input
+          label="Password"
           variant="password"
           value={password}
           onChange={setPassword}
@@ -83,7 +84,13 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
           onChange={setConfirmPassword}
           label="Confirm Password"
         />
-        <Button onClick={handleCreatePassword} fullWidth color="primary" className="rounded-lg bg-empacts border-empacts !text-white">
+        <Button 
+          onClick={handleCreatePassword} 
+          fullWidth 
+          customVariant="primary" 
+          customStyle="solid"
+          className="rounded-lg"
+        >
           Sign up
         </Button>
       </div>

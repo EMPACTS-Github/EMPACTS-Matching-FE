@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import { uploadAttachemt } from "@/apis/upload";
 import { mentor_profile_update, mentor_profile_delete } from "@/apis/mentor-profile";
 import { Mentor } from "@/interfaces/MentorProfile";
-import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
+import LabelWithTextarea from "@/components/Input/LabelWithTextarea";
 import sdgGoals from "@/utils/data/sdgGoals.json";
 import provinces from "@/utils/data/provinces.json";
 import { UPLOAD_OWNER_TYPE } from "@/constants/upload";

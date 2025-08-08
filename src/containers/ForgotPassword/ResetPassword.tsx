@@ -4,7 +4,7 @@ import { addToast } from "@heroui/react";
 import { resetPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
-import Input from '@/components/FormInput/Input';
+import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import Image from 'next/image';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
@@ -102,6 +102,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
       <div className="flex justify-center space-x-2 mt-6">
         <form onSubmit={handleResetPassword} className="space-y-6 w-full max-w-xs">
           <Input
+            label="Password"
             variant="password"
             value={password}
             onChange={setPassword}
@@ -112,16 +113,22 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             required
           />
           <Input
+            label="Confirm Password"
             variant="password"
             value={confirmPassword}
             onChange={setConfirmPassword}
-            label="Confirm Password"
             isInvalid={!isValidConfirmPassword}
             color={confirmPasswordColor}
             errorMessage={confirmPasswordError}
             required
           />
-          <Button type="submit" fullWidth color="primary" className="rounded-lg bg-empacts border-empacts !text-white">
+          <Button 
+            type="submit" 
+            fullWidth 
+            customVariant="primary" 
+            customStyle="solid"
+            className="rounded-lg"
+          >
             Reset Password
           </Button>
         </form>

@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { sendForgotPasswordOTP } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
 import { ROUTES } from '@/constants/link';
-import Input from '@/components/FormInput/Input';
+import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import Image from 'next/image';
@@ -122,6 +122,7 @@ function ForgotPassword() {
             />
             <form onSubmit={handleSentCode} className="space-y-4">
               <Input
+                label="Email"
                 variant="email"
                 value={email}
                 onChange={setEmail}
@@ -130,7 +131,13 @@ function ForgotPassword() {
                 errorMessage={emailError}
                 required
               />
-              <Button type="submit" fullWidth color="primary" className="mt-4 rounded-lg bg-empacts border-empacts !text-white">
+              <Button 
+                type="submit" 
+                fullWidth 
+                customVariant="primary" 
+                customStyle="solid"
+                className="mt-4 rounded-lg"
+              >
                 Continue
               </Button>
             </form>

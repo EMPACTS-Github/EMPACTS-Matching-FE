@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { sendForgotPasswordOTP, verifyForgotPasswordOTP } from '@/apis/auth';
 import { addToast } from '@heroui/react';
 import { ROUTES } from '@/constants/link';
-import Input from '@/components/FormInput/Input';
+import Input from '@/components/Input/Input';
 import Image from 'next/image';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
