@@ -64,8 +64,8 @@ function SignUp() {
   };
 
   return (
-    <div className="col-span-1 bg-white flex items-center justify-center h-screen">
-      <div className="p-8 rounded-lg w-full max-w-sm h-screen flex flex-col justify-center">
+    <div className="col-span-1 bg-white h-screen flex justify-center">
+      <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
         {currentScreen == 'verification' ? (
           <EmailVerification />
         ) : currentScreen == 'password' ? (

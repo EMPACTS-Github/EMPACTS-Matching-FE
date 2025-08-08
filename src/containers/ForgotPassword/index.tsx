@@ -101,8 +101,8 @@ function ForgotPassword() {
 
 
   return (
-    <div className=" bg-white flex items-center justify-center h-full">
-      <div className="p-8 rounded-lg w-full max-w-sm h-3/4">
+    <div className="bg-white h-full flex justify-center">
+      <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
         <BackButton onClick={handleBackButton} />
         {currentScreen == 'verification' ? (
           <EmailVerification
@@ -115,7 +115,7 @@ function ForgotPassword() {
         ) : currentScreen == 'reset' ? (
           <ResetPassword email={email} setOpenResetPasswordScreen={() => { }} />
         ) : (
-          <div>
+          <div className="space-y-[12.5%]">
             <AuthHeader
               title="Forgot password"
               description="Enter your email address and we will send you instructions to reset your password."

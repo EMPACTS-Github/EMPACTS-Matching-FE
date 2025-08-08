@@ -168,8 +168,8 @@ function Login() {
   );
 
   return (
-    <div className="bg-white flex justify-center items-center h-screen">
-      <div className="login-form p-8 rounded-lg w-full max-w-sm h-screen flex flex-col justify-center">
+    <div className="bg-white h-screen flex justify-center">
+      <div className="login-form p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
         <AuthHeader
           title="Sign in"
           description=""
