@@ -74,6 +74,19 @@ function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) {
+      setEmailError("Email is required");
+      setEmailColor("danger");
+      setIsValidEmail(false);
+      return;
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      setPasswordColor("danger");
+      setIsValidPassword(false);
+      return;
+    }
+
     setHasSubmitted(true);
 
     const isEmailValid = email ? updateEmailValidation(email) : false;
@@ -81,21 +94,7 @@ function Login() {
 
     try {
       const response = await emailSignin(email, password);
-
-      if (response.code !== API_RESPONSE_CODES.LOGIN) {
-        setPasswordError(
-          response.message || TOAST_MESSAGES.INVALID_CREDENTIALS
-        );
-        setPasswordColor("danger");
-        setIsValidPassword(false);
-        setEmailColor("danger");
-        setIsValidEmail(false);
-        addToast({
-          title: response.message || TOAST_MESSAGES.INVALID_CREDENTIALS,
-          color: TOAST_COLORS.DANGER,
-          timeout: TOAST_TIMEOUT.MEDIUM,
-        });
-      } else {
+      if (response.code == API_RESPONSE_CODES.LOGIN) {
         setPasswordError("");
         setPasswordColor("default");
         setIsValidPassword(true);
@@ -105,25 +104,55 @@ function Login() {
           title: TOAST_MESSAGES.LOGIN_SUCCESS,
           color: TOAST_COLORS.SUCCESS,
         });
-
         localStorage.setItem("user", JSON.stringify(response.data.user));
         routeAfterLoginWithInvitation(router, response.data);
       }
-    } catch (error) {
-      console.error(error);
-      addToast({
-        title: TOAST_MESSAGES.LOGIN_ERROR,
-        color: TOAST_COLORS.DANGER,
-        timeout: TOAST_TIMEOUT.MEDIUM,
-      });
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setPasswordError(TOAST_MESSAGES.INVALID_CREDENTIALS);
+        setPasswordColor("danger");
+        setIsValidPassword(false);
+        setEmailColor("danger");
+        setIsValidEmail(false);
+        setEmail("");
+        setPassword("");
+        addToast({
+          title: TOAST_MESSAGES.INVALID_CREDENTIALS,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
+      } else {
+        console.error(error);
+        addToast({
+          title: TOAST_MESSAGES.LOGIN_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
+      }
     }
   };
+
+  useEffect(() => {
+    if (email) {
+      setEmailError("");
+      setEmailColor("default");
+      setIsValidEmail(true);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password) {
+      setPasswordError("");
+      setPasswordColor("default");
+      setIsValidPassword(true);
+    }
+  }, [password]);
 
   useEffect(() => {
     if (hasSubmitted && email) {
       updateEmailValidation(email);
     }
-  }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
+  }, [email, hasSubmitted, updateEmailValidation]);
 
   useEffect(() => {
     async function getUserAuthInfo() {
