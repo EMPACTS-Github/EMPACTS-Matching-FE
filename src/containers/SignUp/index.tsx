@@ -1,34 +1,39 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 import { addToast } from "@heroui/react";
-import { emailSignup } from '@/apis/auth';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
-import AuthHeader from '@/components/Header/AuthHeader';
-import { ROUTES } from '@/constants/link';
-import Input from '@/components/Input/Input';
-import Button from '@/components/Button/Button';
-import EmailVerification from '@/containers/SignUp/EmailVerification';
-import CreatePassword from '@/containers/SignUp/CreatePassword';
-import RegisterInfo from '@/containers/SignUp/RegisterInfo';
-import { checkEmailFormat } from '@/utils/checkValid';
-import AuthLink from '@/components/AuthLink';
-import FormFooterAction from '@/components/Form/FormFooterAction';
-import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
+import { emailSignup } from "@/apis/auth";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import AuthHeader from "@/components/Header/AuthHeader";
+import { ROUTES } from "@/constants/link";
+import Input from "@/components/Input/Input";
+import Button from "@/components/Button/Button";
+import EmailVerification from "@/containers/SignUp/EmailVerification";
+import CreatePassword from "@/containers/SignUp/CreatePassword";
+import RegisterInfo from "@/containers/SignUp/RegisterInfo";
+import { checkEmailFormat } from "@/utils/checkValid";
+import AuthLink from "@/components/AuthLink";
+import FormFooterAction from "@/components/Form/FormFooterAction";
+import {
+  API_RESPONSE_CODES,
+  TOAST_TIMEOUT,
+  TOAST_COLORS,
+  TOAST_MESSAGES,
+} from "@/constants/api";
 
 function SignUp() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentScreen = searchParams.get('stage');
-  const [email, setEmail] = useState(localStorage.getItem('email') || '');
+  const currentScreen = searchParams.get("stage");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
   const [isValidEmail, setIsValidEmail] = useState(true);
-  const [emailError, setEmailError] = useState('');
-  const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
+  const [emailError, setEmailError] = useState("");
+  const [emailColor, setEmailColor] = useState<"default" | "danger">("default");
 
   const updateEmailValidation = (email: string) => {
     const isValid = checkEmailFormat(email);
-    setEmailError(isValid ? '' : 'Invalid email format');
-    setEmailColor(isValid ? 'default' : 'danger');
+    setEmailError(isValid ? "" : "Invalid email format");
+    setEmailColor(isValid ? "default" : "danger");
     setIsValidEmail(isValid);
     return isValid;
   };
@@ -37,7 +42,7 @@ function SignUp() {
     e.preventDefault();
     const isEmailValid = updateEmailValidation(email);
     if (!isEmailValid) return;
-    
+
     try {
       const response = await emailSignup(email);
       if (response.code == API_RESPONSE_CODES.VERIFICATION_EMAIL_SENT) {
@@ -46,7 +51,7 @@ function SignUp() {
           color: TOAST_COLORS.SUCCESS,
           timeout: TOAST_TIMEOUT.SHORT,
         });
-        localStorage.setItem('email', email);
+        localStorage.setItem("email", email);
         router.push(`${ROUTES.AUTH.SIGNUP}?stage=verification`);
       } else {
         addToast({
@@ -67,18 +72,15 @@ function SignUp() {
   return (
     <div className="col-span-1 bg-white h-screen flex justify-center">
       <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
-        {currentScreen == 'verification' ? (
+        {currentScreen == "verification" ? (
           <EmailVerification />
-        ) : currentScreen == 'password' ? (
+        ) : currentScreen == "password" ? (
           <CreatePassword email={email} />
-        ) : currentScreen == 'registerinfo' ? (
+        ) : currentScreen == "registerinfo" ? (
           <RegisterInfo />
         ) : (
           <div>
-            <AuthHeader
-              title="Sign up"
-              description=""
-            />
+            <AuthHeader title="Sign up" description="" />
             <form onSubmit={handleSignup} className="space-y-4">
               <Input
                 label="Email"
@@ -88,18 +90,21 @@ function SignUp() {
                 isInvalid={!isValidEmail}
                 color={emailColor}
                 errorMessage={emailError}
-                required
+                required={true}
               />
-              <Button 
-                variant="submit-lg"
-              >
-                Sign up
-              </Button>
+              <Button variant="submit-lg-fullwidth">Sign up</Button>
             </form>
-            
+
             <FormFooterAction
               text="Already have an account?"
-              action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
+              action={
+                <AuthLink
+                  href={ROUTES.AUTH.LOGIN}
+                  className="text-md font-semibold text-primary"
+                >
+                  Sign in
+                </AuthLink>
+              }
             />
           </div>
         )}

@@ -1,27 +1,32 @@
-'use client';
-import React, { useState } from 'react';
-import { createNewPassword } from '@/apis/auth';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState } from "react";
+import { createNewPassword } from "@/apis/auth";
+import { useRouter } from "next/navigation";
 import { addToast } from "@heroui/react";
-import { ROUTES } from '@/constants/link';
-import Image from 'next/image';
-import Input from '@/components/Input/Input';
-import Button from '@/components/Button/Button';
-import EmpactsLogo from '/public/empacts-logo.png';
-import AuthLink from '@/components/AuthLink';
-import FormFooterAction from '@/components/Form/FormFooterAction';
-import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
+import { ROUTES } from "@/constants/link";
+import Image from "next/image";
+import Input from "@/components/Input/Input";
+import Button from "@/components/Button/Button";
+import EmpactsLogo from "/public/empacts-logo.png";
+import AuthLink from "@/components/AuthLink";
+import FormFooterAction from "@/components/Form/FormFooterAction";
+import {
+  API_RESPONSE_CODES,
+  TOAST_TIMEOUT,
+  TOAST_COLORS,
+  TOAST_MESSAGES,
+} from "@/constants/api";
 
 interface CreatePasswordProps {
   email?: string;
 }
 
 function CreatePassword({ email: propEmail }: CreatePasswordProps) {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
-  
-  const email = propEmail || localStorage.getItem('email');
+
+  const email = propEmail || localStorage.getItem("email");
 
   const handleCreatePassword = async () => {
     if (password !== confirmPassword) {
@@ -32,7 +37,7 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
       });
       return;
     }
-    
+
     if (password && email) {
       try {
         const response = await createNewPassword(email, password);
@@ -78,27 +83,33 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
           variant="password"
           value={password}
           onChange={setPassword}
+          required={true}
         />
         <Input
           variant="password"
           value={confirmPassword}
           onChange={setConfirmPassword}
           label="Confirm Password"
+          required={true}
         />
-        <Button 
-          onClick={handleCreatePassword} 
-          variant="action-lg"
-        >
+        <Button onClick={handleCreatePassword} variant="primary-lg-fullwidth">
           Continue
         </Button>
       </div>
 
       <FormFooterAction
         text="Already have an account?"
-        action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
+        action={
+          <AuthLink
+            href={ROUTES.AUTH.LOGIN}
+            className="text-md font-semibold text-primary"
+          >
+            Sign in
+          </AuthLink>
+        }
       />
     </div>
   );
 }
 
-export default CreatePassword; 
+export default CreatePassword;

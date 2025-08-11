@@ -1,5 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
 interface AuthLinkProps {
   href: string;
@@ -7,9 +7,8 @@ interface AuthLinkProps {
   className?: string;
 }
 
-function AuthLink({ href, children, className = '' }: AuthLinkProps) {
-  const defaultClasses = 'text-primary';
-  const finalClasses = `${defaultClasses} ${className}`;
+function AuthLink({ href, children, className = "" }: AuthLinkProps) {
+  const finalClasses = `${className}`;
 
   return (
     <Link href={href} className={finalClasses}>
