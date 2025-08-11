@@ -19,6 +19,7 @@ import {
   TOAST_TIMEOUT,
   TOAST_COLORS,
   TOAST_MESSAGES,
+  API_RESPONSE_NUMBER_CODES,
 } from "@/constants/api";
 import Image from "next/image";
 
@@ -108,7 +109,11 @@ function Login() {
         routeAfterLoginWithInvitation(router, response.data);
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
+      if (
+        error.response &&
+        error.response.status ===
+          API_RESPONSE_NUMBER_CODES.LOGIN_INVALID_CREDENTIALS
+      ) {
         setPasswordError(TOAST_MESSAGES.INVALID_CREDENTIALS);
         setPasswordColor("danger");
         setIsValidPassword(false);

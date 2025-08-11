@@ -67,3 +67,9 @@ export const TOAST_MESSAGES = {
   PROFILE_CREATE_ERROR: "An error occurred while creating profile",
   PASSWORD_RESET_FAILED: "Failed to reset password",
 } as const;
+
+// API Response Codes
+export const API_RESPONSE_NUMBER_CODES = {
+  // Auth related
+  LOGIN_INVALID_CREDENTIALS: 400,
+} as const;
