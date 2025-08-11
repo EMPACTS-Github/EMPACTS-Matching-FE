@@ -1,14 +1,18 @@
 'use client';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Input, Button, addToast } from "@heroui/react";
-import EnterEmail from '@/containers/ForgotPassword/EnterEmail';
+import { useState, useEffect, useCallback } from 'react';
+import { addToast } from "@heroui/react";
+import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
 import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
-import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { send_forgot_password_otp } from '@/apis/auth';
+import { sendForgotPasswordOTP } from '@/apis/auth';
 import AuthHeader from '@/components/Header/AuthHeader';
+import { ROUTES } from '@/constants/link';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import Image from 'next/image';
 import { checkEmailFormat } from '@/utils/checkValid';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -21,68 +25,67 @@ function ForgotPassword() {
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  // Function to validate email format
-  const validateEmailFormat = (email: string): boolean => {
-    if (!checkEmailFormat(email)) {
-      setEmailError('Invalid email format');
-      setEmailColor('danger');
-      setIsValidEmail(false);
-      return false;
-    }
-    setEmailError('');
-    setEmailColor('default');
-    setIsValidEmail(true);
-    return true;
-  };
+  const updateEmailValidation = useCallback((email: string) => {
+    const isValid = checkEmailFormat(email);
+    setEmailError(isValid ? '' : 'Invalid email format');
+    setEmailColor(isValid ? 'default' : 'danger');
+    setIsValidEmail(isValid);
+    return isValid;
+  }, []);
 
   const handleBackButton = () => {
     router.back()
   }
 
-  const handleSentCode = async (e: { preventDefault: () => void }) => {
+  const handleSentCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasSubmitted(true);
-    const isEmailValid = validateEmailFormat(email);
+    const isEmailValid = email ? updateEmailValidation(email) : false;
     if (isEmailValid) {
       try {
-        const response = await send_forgot_password_otp(email);
-        if (response.code === "FORGOT_PASSWORD_EMAIL_SENT") {
+        const response = await sendForgotPasswordOTP(email);
+        if (response.code === API_RESPONSE_CODES.FORGOT_PASSWORD_EMAIL_SENT) {
           addToast({
-            title: 'Verification code sent to your email',
-            color: 'success',
-            timeout: 3000,
+            title: TOAST_MESSAGES.VERIFICATION_EMAIL_SENT,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: TOAST_TIMEOUT.SHORT,
           });
           localStorage.setItem('email', email); // Store email in localStorage
-          router.push('/auth/forgot-password?stage=verification');
-        } else if (response.code === "EMAIL_ALREADY_SENT") {
+          router.push(`${ROUTES.AUTH.FORGOT_PASSWORD}?stage=verification`);
+        } else if (response.code === API_RESPONSE_CODES.EMAIL_ALREADY_SENT) {
           addToast({
-            title: 'Email already sent. Please wait 1 minutes before requesting again.',
-            color: 'danger',
-            timeout: 5000,
+            title: TOAST_MESSAGES.EMAIL_ALREADY_SENT,
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
           });
         } else {
           addToast({
             title: response.message,
-            color: 'danger',
-            timeout: 5000,
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
           });
         }
       } catch (error) {
-        console.error(error);
         addToast({
-          title: 'An error occurred while sending the verification code',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.FORGOT_PASSWORD_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
       }
     } else {
       addToast({
-        title: 'Invalid email format',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.INVALID_EMAIL_FORMAT,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
     }
   };
+
+  const BackButton = ({ onClick, className = 'absolute left-10 hover:bg-gray-300 rounded-lg' }: { onClick: () => void; className?: string }) => (
+    <div className={className} onClick={onClick}>
+      <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+    </div>
+  );
 
   useEffect(() => {
     // Get email from localStorage if available
@@ -91,45 +94,19 @@ function ForgotPassword() {
       setEmail(storedEmail);
     }
 
-    if (hasSubmitted && !isValidEmail) {
-      validateEmailFormat(email);
+    if (hasSubmitted && email) {
+      updateEmailValidation(email);
     }
-  }, [email, hasSubmitted, isValidEmail]);
+  }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
 
-  const renderForm = () => (
-    <form onSubmit={handleSentCode} className="space-y-4">
-      <Input
-        variant='underlined'
-        fullWidth
-        radius='none'
-        size="lg"
-        label="Email"
-        value={email}
-        isInvalid={!isValidEmail}
-        color={emailColor}
-        errorMessage={emailError}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <Button
-        type="submit"
-        color="primary"
-        size="lg"
-        className="!text-white w-full mt-4 rounded-lg bg-empacts border-empacts"
-      >
-        Continue
-      </Button>
-    </form>
-  );
+
 
   return (
-    <div className=" bg-white flex items-center justify-center h-full">
-      <div className="p-8 rounded-lg w-full max-w-sm h-3/4">
-        <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={handleBackButton}>
-          <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
-        </div>
+    <div className="bg-white h-full flex justify-center">
+      <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
+        <BackButton onClick={handleBackButton} />
         {currentScreen == 'verification' ? (
-          <EnterEmail
+          <EmailVerification
             email={email}
             setEmailSent={() => { }}
             setResetPasswordScreen={() => router.push('/auth/forgot-password?stage=reset')}
@@ -139,12 +116,29 @@ function ForgotPassword() {
         ) : currentScreen == 'reset' ? (
           <ResetPassword email={email} setOpenResetPasswordScreen={() => { }} />
         ) : (
-          <div>
+          <div className="space-y-[12.5%]">
             <AuthHeader
               title="Forgot password"
               description="Enter your email address and we will send you instructions to reset your password."
             />
-            {renderForm()}
+            <form onSubmit={handleSentCode} className="space-y-4">
+              <Input
+                label="Email"
+                variant="email"
+                value={email}
+                onChange={setEmail}
+                isInvalid={!isValidEmail}
+                color={emailColor}
+                errorMessage={emailError}
+                required
+              />
+              <Button 
+                variant="action-lg"
+                className="mt-4"
+              >
+                Continue
+              </Button>
+            </form>
           </div>
         )}
       </div>

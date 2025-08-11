@@ -1,12 +1,21 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Input, Button, addToast } from "@heroui/react";
-import Image from 'next/image';
-import { reset_password } from '@/apis/auth';
-import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import { addToast } from "@heroui/react";
+import { resetPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/link';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
+import Image from 'next/image';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
-const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0: boolean) => void }) => {
+interface ResetPasswordProps {
+  email: string;
+  setOpenResetPasswordScreen: (arg0: boolean) => void;
+}
+
+function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps) {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,59 +26,63 @@ const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
   const [confirmPasswordColor, setConfirmPasswordColor] = useState<'default' | 'danger'>('default');
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const handleResetPassword = async (e: { preventDefault: () => void }) => {
+  const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 9) {
-      setIsValidPassword(false);
-      setPasswordError('Password must contain at least 9 characters');
-      setPasswordColor('danger');
-      addToast({
-        title: 'Password must contain at least 9 characters',
-        color: 'danger',
-        timeout: 5000,
-      })
-    } else if (password !== confirmPassword) {
-      setPasswordError('');
-      setPasswordDescription('');
-      setIsValidPassword(false);
-      setPasswordColor('danger');
-      setIsValidConfirmPassword(false);
-      setConfirmPasswordColor('danger');
-      setConfirmPasswordError('Passwords do not match');
-      addToast({
-        title: 'Passwords do not match',
-        color: 'danger',
-        timeout: 5000,
-      })
-    } else {
-      try {
-        const response = await reset_password(props.email, password);
-        if (response.code === "PASSWORD_RESETED") {
-          addToast({
-            title: 'Password reset successful',
-            color: 'success',
-            timeout: 3000,
-          })
-          props.setOpenResetPasswordScreen(false);
-          router.push('/auth/login');
-        } else {
-          addToast({
-            title: response.message,
-            color: 'danger',
-            timeout: 5000,
-          })
-        }
-      } catch (error) {
-        console.error(error);
+    setHasSubmitted(true);
+
+    if (!isValidPassword) return;
+
+    try {
+      const response = await resetPassword(email, password);
+      if (response.code === API_RESPONSE_CODES.RESET_PASSWORD) {
         addToast({
-          title: 'An error occurred while resetting the password',
-          color: 'danger',
-          timeout: 5000,
-        })
+          title: TOAST_MESSAGES.PASSWORD_RESET_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+        });
+        router.push(ROUTES.AUTH.LOGIN);
+      } else {
+        addToast({
+          title: response.message || TOAST_MESSAGES.PASSWORD_RESET_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
       }
+    } catch (error) {
+      console.error(error);
+      addToast({
+        title: TOAST_MESSAGES.PASSWORD_RESET_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
+      });
     }
   };
+
+  const handleGoBack = () => {
+    setOpenResetPasswordScreen(false);
+  };
+
+  const BackButton = ({ onClick, className = 'absolute left-10 hover:bg-gray-300 rounded-lg' }: { onClick: () => void; className?: string }) => (
+    <div className={className} onClick={onClick}>
+      <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+    </div>
+  );
+
+  const LogoHeader = ({ title, logoSrc = '/empacts-logo.png', logoWidth = 0, logoHeight = 0, titleClassName = 'text-2xl font-bold mt-6 mb-6 text-black' }: { title: string; logoSrc?: string; logoWidth?: number; logoHeight?: number; titleClassName?: string }) => (
+    <div className="flex flex-col items-center text-center">
+      <Image
+        src={logoSrc}
+        alt="Logo"
+        width={logoWidth}
+        height={logoHeight}
+        sizes="100vw"
+        style={{ width: logoWidth === 0 ? '50%' : 'auto', height: 'auto' }}
+        priority
+      />
+      <h2 className={titleClassName}>{title}</h2>
+    </div>
+  );
 
   useEffect(() => {
     setPasswordError('');
@@ -84,54 +97,34 @@ const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0
   return (
     <div>
       <div className="flex flex-col items-center text-center h-3/4">
-        <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={() => props.setOpenResetPasswordScreen(false)}>
-          <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
-        </div>
-        <Image
-          src="/empacts-logo.png"
-          alt="Background image"
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: '50%', height: 'auto' }}
-          priority
-        />
-        <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Create new password</h2>
+        <BackButton onClick={handleGoBack} />
+        <LogoHeader title="Create new password" />
       </div>
       <div className="flex justify-center space-x-2 mt-6">
         <form onSubmit={handleResetPassword} className="space-y-6 w-full max-w-xs">
           <Input
-            variant='underlined'
             label="Password"
-            type="password"
-            radius='none'
+            variant="password"
+            value={password}
+            onChange={setPassword}
             isInvalid={!isValidPassword}
             color={passwordColor}
             errorMessage={passwordError}
             description={passwordDescription}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             required
-            size="lg"
           />
           <Input
-            variant='underlined'
             label="Confirm Password"
-            type="password"
-            radius='none'
+            variant="password"
+            value={confirmPassword}
+            onChange={setConfirmPassword}
             isInvalid={!isValidConfirmPassword}
             color={confirmPasswordColor}
             errorMessage={confirmPasswordError}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            size="lg"
           />
-          <Button
-            type="submit"
-            color="primary"
-            size="lg"
-            className="w-full mt-4 rounded-lg bg-empacts border-empacts"
+          <Button 
+            variant="submit-lg"
           >
             Reset Password
           </Button>
@@ -139,6 +132,6 @@ const ResetPassword = (props: { email: string, setOpenResetPasswordScreen: (arg0
       </div>
     </div>
   );
-};
+}
 
 export default ResetPassword;

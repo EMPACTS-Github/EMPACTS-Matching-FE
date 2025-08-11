@@ -7,14 +7,14 @@ export const loginWithGoogleAPI = () => {
 
 // base auth
 
-export const email_signup = async (email: string) => {
+export const emailSignup = async (email: string) => {
   const response = await axiosInstance.post("/base-auth/email-verification", {
     email,
   });
   return response.data;
 };
 
-export const create_new_password = async (email: string, password: string) => {
+export const createNewPassword = async (email: string, password: string) => {
   const response = await axiosInstance.post("/base-auth/new-password", {
     email,
     password,
@@ -22,7 +22,7 @@ export const create_new_password = async (email: string, password: string) => {
   return response.data;
 };
 
-export const verify_OTP = async (email: string, otpCode: string) => {
+export const verifyOTP = async (email: string, otpCode: string) => {
   const response = await axiosInstance.post("/base-auth/otp-verification", {
     email,
     otpCode,
@@ -30,7 +30,7 @@ export const verify_OTP = async (email: string, otpCode: string) => {
   return response.data;
 };
 
-export const create_new_profile = async (
+export const createNewProfile = async (
   email: string,
   avtUrl: string,
   name: string
@@ -44,7 +44,7 @@ export const create_new_profile = async (
 };
 
 // auth
-export const email_signin = async (email: string, password: string) => {
+export const emailSignin = async (email: string, password: string) => {
   const response = await axiosInstance.post("/auth/sign-in", {
     email,
     password,
@@ -52,7 +52,7 @@ export const email_signin = async (email: string, password: string) => {
   return response.data;
 };
 
-export const refresh_token = async () => {
+export const refreshToken = async () => {
   const response = await axiosInstance.post("/auth/refresh-token");
   return response.data;
 };
@@ -63,12 +63,12 @@ export const logout = async () => {
 };
 
 // password
-export const send_forgot_password_otp = async (email: string) => {
+export const sendForgotPasswordOTP = async (email: string) => {
   const response = await axiosInstance.post("/password/otp-email", { email });
   return response.data;
 };
 
-export const reset_password = async (email: string, password: string) => {
+export const resetPassword = async (email: string, password: string) => {
   const response = await axiosInstance.post("/password/reset", {
     email,
     password,
@@ -76,7 +76,7 @@ export const reset_password = async (email: string, password: string) => {
   return response.data;
 };
 
-export const verify_forgot_password_otp = async (
+export const verifyForgotPasswordOTP = async (
   email: string,
   otpCode: string
 ) => {

@@ -1,6 +1,6 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from "@heroui/react";
 import { useState, useEffect } from "react";
-import LabelWithTextarea from '@/components/FormInput/LabelWithTextarea';
+import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
 import { Member } from "@/interfaces/StartupProfile";
 import { Spinner } from "@heroui/spinner";
 

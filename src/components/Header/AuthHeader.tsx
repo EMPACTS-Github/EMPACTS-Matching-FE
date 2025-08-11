@@ -11,7 +11,7 @@ const LogoAndTitle = ({ title, description }: { title: string, description: stri
   };
 
   return (
-    <div className="flex flex-col items-center text-center">
+    <div className="flex flex-col items-center text-center space-y-[12.5%]">
       <Button
         isIconOnly
         aria-label="LogoEmpactsIcon"

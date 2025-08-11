@@ -1,98 +1,72 @@
 'use client';
 import React, { useState } from 'react';
-import { Input, Button, addToast } from "@heroui/react";
-import Link from 'next/link';
-import { email_signup } from '@/apis/auth';
+import { addToast } from "@heroui/react";
+import { emailSignup } from '@/apis/auth';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import AuthHeader from '@/components/Header/AuthHeader';
+import { ROUTES } from '@/constants/link';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
 import EmailVerification from '@/containers/SignUp/EmailVerification';
 import CreatePassword from '@/containers/SignUp/CreatePassword';
 import RegisterInfo from '@/containers/SignUp/RegisterInfo';
-import { useRouter } from 'next/navigation';
-import AuthHeader from '@/components/Header/AuthHeader';
-
-import { useSearchParams } from 'next/navigation';
 import { checkEmailFormat } from '@/utils/checkValid';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function SignUp() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentScreen = searchParams.get('stage');
   const [email, setEmail] = useState(localStorage.getItem('email') || '');
-
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [emailError, setEmailError] = useState('');
   const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
 
-  const validateEmailFormat = (email: string): boolean => {
-    if (!checkEmailFormat(email)) {
-      setEmailError('Invalid email format');
-      setEmailColor('danger');
-      setIsValidEmail(false);
-      return false;
-    }
-    setEmailError('');
-    setEmailColor('default');
-    setIsValidEmail(true);
-    return true;
+  const updateEmailValidation = (email: string) => {
+    const isValid = checkEmailFormat(email);
+    setEmailError(isValid ? '' : 'Invalid email format');
+    setEmailColor(isValid ? 'default' : 'danger');
+    setIsValidEmail(isValid);
+    return isValid;
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isEmailValid = validateEmailFormat(email);
+    const isEmailValid = updateEmailValidation(email);
     if (!isEmailValid) return;
+    
     try {
-      const response = await email_signup(email);
-      if (response.code == "VERIFICATION_EMAIL_SENT") {
+      const response = await emailSignup(email);
+      if (response.code == API_RESPONSE_CODES.VERIFICATION_EMAIL_SENT) {
         addToast({
-          title: 'Verification code sent to your email',
-          color: 'success',
-          timeout: 3000,
-        })
+          title: TOAST_MESSAGES.VERIFICATION_EMAIL_SENT,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: TOAST_TIMEOUT.SHORT,
+        });
         localStorage.setItem('email', email);
-        router.push('/auth/signup?stage=verification');
+        router.push(`${ROUTES.AUTH.SIGNUP}?stage=verification`);
       } else {
         addToast({
-          title: 'User already exist',
-          color: 'danger',
-          timeout: 5000,
-        })
+          title: TOAST_MESSAGES.USER_ALREADY_EXISTS,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
       }
     } catch (error) {
       addToast({
-        title: 'An error occurred while signing up',
-        color: 'danger',
-        timeout: 5000,
-      })
+        title: TOAST_MESSAGES.SIGNUP_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
+      });
     }
   };
 
-  const renderForm = () => (
-    <form onSubmit={handleSignup} className="space-y-4">
-      <Input
-        variant="underlined"
-        size="lg"
-        radius='none'
-        label="Email"
-        value={email}
-        isInvalid={!isValidEmail}
-        color={emailColor}
-        errorMessage={emailError}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <Button
-        type="submit"
-        color="primary"
-        size="lg"
-        className="!text-white w-full rounded-lg bg-empacts border-empacts"
-      >
-        Sign up
-      </Button>
-    </form>
-  );
-
   return (
-    <div className="col-span-1 bg-white flex items-center justify-center h-screen">
-      <div className="p-8 rounded-lg w-full max-w-sm h-screen flex flex-col justify-center">
+    <div className="col-span-1 bg-white h-screen flex justify-center">
+      <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
         {currentScreen == 'verification' ? (
           <EmailVerification />
         ) : currentScreen == 'password' ? (
@@ -105,14 +79,28 @@ function SignUp() {
               title="Sign up"
               description=""
             />
-            {renderForm()}
-            {/* Sign In Link */}
-            <div className="text-center mt-8">
-              <span className="text-gray-500">Already have an account? </span>
-              <Link href="/auth/login" color="secondary" className="text-empacts">
-                Sign in
-              </Link>
-            </div>
+            <form onSubmit={handleSignup} className="space-y-4">
+              <Input
+                label="Email"
+                variant="email"
+                value={email}
+                onChange={setEmail}
+                isInvalid={!isValidEmail}
+                color={emailColor}
+                errorMessage={emailError}
+                required
+              />
+              <Button 
+                variant="submit-lg"
+              >
+                Sign up
+              </Button>
+            </form>
+            
+            <FormFooterAction
+              text="Already have an account?"
+              action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
+            />
           </div>
         )}
       </div>

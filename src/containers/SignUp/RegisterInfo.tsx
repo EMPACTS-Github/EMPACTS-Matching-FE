@@ -1,20 +1,24 @@
-'use client'
-import Image from 'next/image'
-import React, { useState } from 'react'
-import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon'
-import FormTitle from '@/components/Form/FormTitle'
-import { addToast, Button, Form, Input } from '@heroui/react'
-import UserAvatar from '@/components/Form/UserAvatar'
-import FormLabel from '@/components/Form/FormLabel'
-import Link from 'next/link'
-import { updateAttachment, uploadAttachemt } from '@/apis/upload'
-import { create_new_profile } from '@/apis/auth'
-import { useRouter } from 'next/navigation'
-import { UPLOAD_OWNER_TYPE } from '@/constants/upload'
+'use client';
+import React, { useState } from 'react';
+import { addToast } from '@heroui/react';
+import { useRouter } from 'next/navigation';
+import { updateAttachment, uploadAttachemt } from '@/apis/upload';
+import { createNewProfile } from '@/apis/auth';
+import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
+import { ROUTES, getStartupInvitationUrl, DEFAULT_AVATAR_URL } from '@/constants/link';
+import { Form, Input } from '@heroui/react';
+import EmpactsLogoIcon from '@/components/Icons/EmpactsLogoIcon';
+import FormTitle from '@/components/Form/FormTitle';
+import UserAvatar from '@/components/Form/UserAvatar';
+import FormLabel from '@/components/Form/FormLabel';
+import Button from '@/components/Button/Button';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function RegisterInfo() {
-  const router = useRouter()
-  const [username, setUsername] = useState('')
+  const router = useRouter();
+  const [username, setUsername] = useState('');
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
   const [uploadAvatarId, setUploadAvatarId] = useState('');
 
@@ -23,37 +27,39 @@ function RegisterInfo() {
       const uploadResult = await uploadAttachemt({
         file: e.target.files[0],
         ownerType: UPLOAD_OWNER_TYPE.USER,
-      })
+      });
+      
       if (uploadResult.data.attachmentUrl) {
         setAvatarUrl(uploadResult.data.attachmentUrl);
-        setUploadAvatarId(uploadResult.data.id)
+        setUploadAvatarId(uploadResult.data.id);
         addToast({
-          title: 'Avatar uploaded',
-          timeout: 3000,
-        })
+          title: TOAST_MESSAGES.AVATAR_UPLOADED,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: TOAST_TIMEOUT.SHORT,
+        });
       } else {
         addToast({
-          title: 'An error occured while uploading avatar. Please try again.',
-          timeout: 3000,
-        })
+          title: TOAST_MESSAGES.AVATAR_UPLOAD_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.SHORT,
+        });
       }
-      e.target.files = null
+      e.target.files = null;
     }
-  }
+  };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
-  }
+  };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const email = localStorage.getItem('email')
-    const userProfileImgUrl = avatarUrl || 'https://startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com/avatar_placeholder.png'
-    console.log('🚀 ~ handleFormSubmit ~ userProfileImgUrl:', userProfileImgUrl)
-    console.log('🚀 ~ handleFormSubmit ~ userProfileImgUrl:', uploadAvatarId)
+    e.preventDefault();
+    const email = localStorage.getItem('email');
+    const userProfileImgUrl = avatarUrl || DEFAULT_AVATAR_URL;
+    
     if (email && username) {
       try {
-        const response = await create_new_profile(email, userProfileImgUrl, username);
+        const response = await createNewProfile(email, userProfileImgUrl, username);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.removeItem('email');
 
@@ -62,37 +68,37 @@ function RegisterInfo() {
           const invitationCode = localStorage.getItem('invitationCode');
           const invitedEmail = localStorage.getItem('invitedEmail');
           if (invitedEmail === email) {
-            router.push(`/startup-invitation?code=${invitationCode}&email=${invitedEmail}`);
+            router.push(getStartupInvitationUrl(invitationCode!, invitedEmail!));
           } else {
-            router.replace('/profiles/new');
+            router.replace(ROUTES.PROFILES.NEW);
           }
         } else {
-          router.replace('/profiles/new');
+          router.replace(ROUTES.PROFILES.NEW);
         }
+        
         if (uploadAvatarId) {
           updateAttachment({
             id: uploadAvatarId,
             ownerType: UPLOAD_OWNER_TYPE.USER,
             ownerId: response.data.user.id
-          })
+          });
         }
       } catch (error) {
-        console.log(error);
+        addToast({
+          title: TOAST_MESSAGES.PROFILE_CREATE_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.SHORT,
+        });
       }
     }
-  }
+  };
 
   return (
     <div className='flex flex-col items-center justify-center gap-12 w-full'>
       <div>
-        <Button
-          isIconOnly
-          aria-label="EMPACTS Logo Image"
-          className='w-48 p-1 bg-transparent'
-          radius='md'
-        >
+        <div className='w-48 p-1 bg-transparent'>
           <EmpactsLogoIcon />
-        </Button>
+        </div>
       </div>
       <div>
         <FormTitle className='font-bold text-2xl text-black' text='Complete your profile' />
@@ -118,22 +124,19 @@ function RegisterInfo() {
           onChange={handleUsernameChange}
         />
 
-        <Button
-          type="submit"
-          color="primary"
-          className="interceptor-loading w-4/5 rounded-lg bg-empacts border-empacts"
+        <Button 
+          variant="submit-lg"
+          className="w-4/5"
         >
           Sign up
         </Button>
       </Form>
-      <div className="text-center">
-        <span className="text-gray-500">Already have an account? </span>
-        <Link href="/auth/login" color="secondary" className="text-empacts font-bold">
-          Sign in
-        </Link>
-      </div>
+      <FormFooterAction
+        text="Already have an account?"
+        action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
+      />
     </div>
-  )
+  );
 }
 
-export default RegisterInfo
+export default RegisterInfo; 

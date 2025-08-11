@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import { uploadAttachemt, updateAttachment, getStartupDocuments } from "@/apis/upload";
 import { startup_profile_update, startup_profile_delete } from "@/apis/startup-profile";
 import { Startup } from "@/interfaces/StartupProfile";
-import LabelWithTextarea from "@/components/FormInput/LabelWithTextarea";
+import LabelWithTextarea from "@/components/Input/LabelWithTextarea";
 import ImageGallery from "./ImageGallery";
 import DocumentBody from "./DocumentBody";
 import LabelStartAndSwitchEnd from "@/components/Switch/LabelStartAndSwitchEnd";

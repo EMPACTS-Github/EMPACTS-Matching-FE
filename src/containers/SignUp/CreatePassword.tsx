@@ -1,51 +1,61 @@
-'use client'
-import { useState } from 'react';
-import { create_new_password } from '@/apis/auth';
+'use client';
+import React, { useState } from 'react';
+import { createNewPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
+import { addToast } from "@heroui/react";
+import { ROUTES } from '@/constants/link';
 import Image from 'next/image';
-import { Input, Button, addToast } from "@heroui/react";
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
 import EmpactsLogo from '/public/empacts-logo.png';
-import Link from 'next/link';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
-const CreatePassword = (props: { email: string }) => {
-  const email = localStorage.getItem('email');
+interface CreatePasswordProps {
+  email?: string;
+}
+
+function CreatePassword({ email: propEmail }: CreatePasswordProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
+  
+  const email = propEmail || localStorage.getItem('email');
 
   const handleCreatePassword = async () => {
     if (password !== confirmPassword) {
       addToast({
-        title: 'Passwords do not match',
-        color: 'danger',
-        timeout: 5000,
-      })
+        title: TOAST_MESSAGES.PASSWORD_MISMATCH,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
+      });
       return;
     }
+    
     if (password && email) {
       try {
-        const response = await create_new_password(email, password);
-        if (response.code === "PASSWORD_CREATED") {
+        const response = await createNewPassword(email, password);
+        if (response.code === API_RESPONSE_CODES.PASSWORD_CREATED) {
           addToast({
-            title: 'Password created successfully',
-            color: 'success',
-            timeout: 3000,
-          })
-          router.push('/auth/signup?stage=registerinfo')
+            title: TOAST_MESSAGES.PASSWORD_CREATED_SUCCESS,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: TOAST_TIMEOUT.SHORT,
+          });
+          router.push(`${ROUTES.AUTH.SIGNUP}?stage=registerinfo`);
         } else {
           addToast({
             title: response.message,
-            color: 'danger',
-            timeout: 5000,
-          })
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
+          });
         }
       } catch (error) {
-        console.error(error);
         addToast({
-          title: "An error occurred while creating the password",
-          color: 'danger',
-          timeout: 5000,
-        })
+          title: TOAST_MESSAGES.PASSWORD_CREATE_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
       }
     }
   };
@@ -64,45 +74,31 @@ const CreatePassword = (props: { email: string }) => {
       </div>
       <div className="space-y-4">
         <Input
-          variant="underlined"
-          radius='none'
-          size="lg"
-          type='password'
           label="Password"
+          variant="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          onChange={setPassword}
         />
         <Input
-          variant="underlined"
-          radius='none'
-          size="lg"
-          type='password'
-          label="Confirm Password"
+          variant="password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
+          onChange={setConfirmPassword}
+          label="Confirm Password"
         />
-        <Button
-          type="submit"
-          color="primary"
-          size="lg"
-          className="w-full rounded-lg bg-empacts border-empacts"
-          onClick={handleCreatePassword}
+        <Button 
+          onClick={handleCreatePassword} 
+          variant="action-lg"
         >
-          Sign up
+          Continue
         </Button>
       </div>
 
-      {/* Sign In Link */}
-      <div className="text-center mt-8">
-        <span className="text-gray-500">Already have an account? </span>
-        <Link href="/auth/login" color="secondary" className="text-empacts">
-          Sign in
-        </Link>
-      </div>
+      <FormFooterAction
+        text="Already have an account?"
+        action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
+      />
     </div>
   );
-};
+}
 
-export default CreatePassword;
+export default CreatePassword; 
