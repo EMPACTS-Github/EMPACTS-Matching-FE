@@ -1,17 +1,17 @@
-"use client";
+'use client';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
 import React, { useState, useEffect } from 'react';
-import { Tabs, Tab } from "@heroui/react";
+import { Tabs, Tab } from '@heroui/react';
 import CompassIcon from '@/components/Icons/CompassIcon';
 import { SuggestMentors } from '@/interfaces/startup';
 import { SuggestMentor } from '@/interfaces/MentorProfile';
-import { mentor_profile_detail } from "@/apis/mentor-profile";
+import { mentor_profile_detail } from '@/apis/mentor-profile';
 import ForyouSection from './Section/ForyouSection';
 import MatchingActivitySection from './Section/MatchingActivitySection';
 import SearchSection from './Section/SearchSection';
 import { useStartupIdStore } from '@/stores/startup-store';
-import { useMatchingStore } from "@/stores/matching-store";
-import { startup_matching_activity } from "@/apis/startup-matching";
+import { useMatchingStore } from '@/stores/matching-store';
+import { startup_matching_activity } from '@/apis/startup-matching';
 import { useErrorStore } from '@/stores/error-store';
 
 interface ExploreContainerProps {
@@ -26,8 +26,8 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
   const [mentor, setMentor] = useState<SuggestMentor[]>([]);
   const [selectedMentor, setSelectedMentor] = useState(mentor[0]);
   const startupId = useStartupIdStore((state) => state.startupId);
-  const setMatches = useMatchingStore(state => state.setMatches);
-  const setError = useErrorStore(state => state.setError);
+  const setMatches = useMatchingStore((state) => state.setMatches);
+  const setError = useErrorStore((state) => state.setError);
 
   const fetchMentors = async () => {
     if (!mentorList || mentorList.length === 0) return;
@@ -79,11 +79,11 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
         setMatches(null);
         if (
           err?.response?.status === 404 &&
-          err?.response?.data?.code === "MATCHING_ACTIVITY_NOT_FOUND"
+          err?.response?.data?.code === 'MATCHING_ACTIVITY_NOT_FOUND'
         ) {
-          setError("No matching activity found.");
+          setError('No matching activity found.');
         } else {
-          setError("Failed to fetch matching activity.");
+          setError('Failed to fetch matching activity.');
         }
       }
     };
@@ -108,11 +108,10 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
         location={location}
         onLocationChange={setLocation}
       />
-      <Tabs
-        aria-label="Explore" color="primary" variant="underlined" className='font-bold'>
+      <Tabs aria-label="Explore" color="primary" variant="underlined" className="font-bold">
         <Tab
           key="for-you"
-          className='h-full w-full'
+          className="h-full w-full"
           title={
             <div className="flex items-center space-x-2">
               <CompassIcon className="color-empacts" />
@@ -133,21 +132,14 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
             error={error}
           />
         </Tab>
-        <Tab
-          key="search"
-          title="Search"
-        >
+        <Tab key="search" title="Search">
           <SearchSection />
         </Tab>
-        <Tab
-          key="matching-activity"
-          title="Matching Activity"
-          className='h-full w-full'
-        >
+        <Tab key="matching-activity" title="Matching Activity" className="h-full w-full">
           <MatchingActivitySection startupId={startupId} />
         </Tab>
       </Tabs>
-    </div >
+    </div>
   );
 };
 

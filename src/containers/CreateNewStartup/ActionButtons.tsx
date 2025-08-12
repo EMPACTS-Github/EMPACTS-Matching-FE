@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from "@heroui/react";
+import { Button } from '@heroui/react';
 
 interface ActionButtonsProps {
   onCancel: () => void;
@@ -10,7 +10,7 @@ interface ActionButtonsProps {
 const ActionButtons: React.FC<ActionButtonsProps> = ({
   onCancel,
   onCreate,
-  accentColor = "#70a75c"
+  accentColor = '#70a75c',
 }) => {
   return (
     <div className="flex flex-row justify-between w-full gap-8 h-12" style={{ color: accentColor }}>
@@ -23,10 +23,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         </Button>
       </div>
       <div className="flex-1">
-        <Button
-          className="w-full h-[48px] rounded-lg bg-empacts text-white"
-          onPress={onCreate}
-        >
+        <Button className="w-full h-[48px] rounded-lg bg-empacts text-white" onPress={onCreate}>
           <span className="text-base font-medium">Create New</span>
         </Button>
       </div>

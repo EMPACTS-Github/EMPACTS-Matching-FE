@@ -21,9 +21,9 @@ function EmailVerification({
   setEmailSent,
   setResetPasswordScreen,
   title,
-  description
+  description,
 }: EmailVerificationProps) {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState('');
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(60);
 
@@ -48,13 +48,31 @@ function EmailVerification({
     // TODO: Implement resend OTP functionality
   };
 
-  const BackButton = ({ onClick, className = 'absolute left-10 hover:bg-gray-300 rounded-lg' }: { onClick: () => void; className?: string }) => (
+  const BackButton = ({
+    onClick,
+    className = 'absolute left-10 hover:bg-gray-300 rounded-lg',
+  }: {
+    onClick: () => void;
+    className?: string;
+  }) => (
     <div className={className} onClick={onClick}>
       <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
     </div>
   );
 
-  const LogoHeader = ({ title, logoSrc = '/empacts-logo.png', logoWidth = 0, logoHeight = 0, titleClassName = 'text-2xl font-bold mt-6 mb-6 text-black' }: { title: string; logoSrc?: string; logoWidth?: number; logoHeight?: number; titleClassName?: string }) => (
+  const LogoHeader = ({
+    title,
+    logoSrc = '/empacts-logo.png',
+    logoWidth = 0,
+    logoHeight = 0,
+    titleClassName = 'text-2xl font-bold mt-6 mb-6 text-black',
+  }: {
+    title: string;
+    logoSrc?: string;
+    logoWidth?: number;
+    logoHeight?: number;
+    titleClassName?: string;
+  }) => (
     <div className="flex flex-col items-center text-center">
       <Image
         src={logoSrc}
@@ -69,18 +87,25 @@ function EmailVerification({
     </div>
   );
 
-  const ResendCodeButton = ({ isDisabled, countdown = 0, onClick, className = '' }: { isDisabled: boolean; countdown?: number; onClick: () => void; className?: string }) => {
+  const ResendCodeButton = ({
+    isDisabled,
+    countdown = 0,
+    onClick,
+    className = '',
+  }: {
+    isDisabled: boolean;
+    countdown?: number;
+    onClick: () => void;
+    className?: string;
+  }) => {
     const baseClasses = 'cursor-pointer';
     const disabledClasses = 'text-purple-400 cursor-not-allowed';
     const enabledClasses = 'text-purple-600';
-    
+
     const finalClasses = `${baseClasses} ${isDisabled ? disabledClasses : enabledClasses} ${className}`;
-  
+
     return (
-      <span
-        onClick={isDisabled ? undefined : onClick}
-        className={finalClasses}
-      >
+      <span onClick={isDisabled ? undefined : onClick} className={finalClasses}>
         {isDisabled ? `Resend code(${countdown}s)` : 'Resend code'}
       </span>
     );
@@ -137,12 +162,7 @@ function EmailVerification({
       </div>
       <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
       <div className="flex justify-center space-x-2 mt-6">
-        <Input
-          variant="otp"
-          value={otp}
-          onChange={setOtp}
-          onComplete={handleSubmitOtp}
-        />
+        <Input variant="otp" value={otp} onChange={setOtp} onComplete={handleSubmitOtp} />
       </div>
       <div className="text-gray-500 mt-4">
         Did not receive code? <span> </span>

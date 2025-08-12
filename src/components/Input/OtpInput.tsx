@@ -1,27 +1,27 @@
-import React from "react";
-import { InputOtp as HeroInputOtp } from "@heroui/react";
+import React from 'react';
+import { InputOtp as HeroInputOtp } from '@heroui/react';
 
 // Complete preset configurations including both styling and button props
 export const otpInputPresets = {
   // underline otp input
-  "otp-underline-lg": {
-    variant: "underlined",
-    size: "lg" as const,
+  'otp-underline-lg': {
+    variant: 'underlined',
+    size: 'lg' as const,
   },
-  "otp-underline-md": {
-    variant: "underlined",
-    size: "md" as const,
+  'otp-underline-md': {
+    variant: 'underlined',
+    size: 'md' as const,
   },
-  "otp-underline-sm": {
-    variant: "underlined",
-    size: "sm" as const,
+  'otp-underline-sm': {
+    variant: 'underlined',
+    size: 'sm' as const,
   },
 } as const;
 
 // Type for button preset configuration
 type OtpInputPreset = {
-  variant: "underlined" | "bordered" | "flat" | "faded";
-  size?: "sm" | "md" | "lg";
+  variant: 'underlined' | 'bordered' | 'flat' | 'faded';
+  size?: 'sm' | 'md' | 'lg';
 };
 
 interface OtpInputProps {
@@ -43,9 +43,9 @@ const OtpInput = ({
   onValueChange,
   onComplete,
   isInvalid = false,
-  errorMessage = "",
+  errorMessage = '',
   required = false,
-  className = "",
+  className = '',
   length = 6,
   isReadOnly = false,
   variant,

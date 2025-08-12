@@ -1,8 +1,8 @@
-"use client";
-import StartupInvitationContainer from "@/containers/StartupInvitation";
+'use client';
+import StartupInvitationContainer from '@/containers/StartupInvitation';
 
 const StartupInvitation = () => {
-  return <StartupInvitationContainer />
-}
+  return <StartupInvitationContainer />;
+};
 
 export default StartupInvitation;

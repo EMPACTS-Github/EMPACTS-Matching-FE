@@ -21,4 +21,4 @@ export const getFileName = (fileOriginalName: string, maxLength: number = 30) =>
     return fileName.slice(0, maxLength) + '...';
   }
   return fileName;
-}
+};

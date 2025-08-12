@@ -1,45 +1,33 @@
-"use client";
-import { useEffect, useState } from "react";
-import { addToast } from "@heroui/react";
-import { resetPassword } from "@/apis/auth";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/link";
-import Input from "@/components/Input/Input";
-import Button from "@/components/Button/Button";
-import Image from "next/image";
-import ArrowLeftIcon from "/public/assets/arrow_left.svg";
-import {
-  API_RESPONSE_CODES,
-  TOAST_TIMEOUT,
-  TOAST_COLORS,
-  TOAST_MESSAGES,
-} from "@/constants/api";
+'use client';
+import { useEffect, useState } from 'react';
+import { addToast } from '@heroui/react';
+import { resetPassword } from '@/apis/auth';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/link';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
+import Image from 'next/image';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 interface ResetPasswordProps {
   email: string;
   setOpenResetPasswordScreen: (arg0: boolean) => void;
 }
 
-function ResetPassword({
-  email,
-  setOpenResetPasswordScreen,
-}: ResetPasswordProps) {
+function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps) {
   const router = useRouter();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
-  const [passwordError, setPasswordError] = useState("");
+  const [passwordError, setPasswordError] = useState('');
   const [passwordDescription, setPasswordDescription] = useState(
-    "Password must contain at least 12 characters"
+    'Password must contain at least 12 characters'
   );
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [passwordColor, setPasswordColor] = useState<"default" | "danger">(
-    "default"
-  );
-  const [confirmPasswordColor, setConfirmPasswordColor] = useState<
-    "default" | "danger"
-  >("default");
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
+  const [confirmPasswordColor, setConfirmPasswordColor] = useState<'default' | 'danger'>('default');
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -79,7 +67,7 @@ function ResetPassword({
 
   const BackButton = ({
     onClick,
-    className = "absolute left-10 hover:bg-gray-300 rounded-lg",
+    className = 'absolute left-10 hover:bg-gray-300 rounded-lg',
   }: {
     onClick: () => void;
     className?: string;
@@ -91,10 +79,10 @@ function ResetPassword({
 
   const LogoHeader = ({
     title,
-    logoSrc = "/empacts-logo.png",
+    logoSrc = '/empacts-logo.png',
     logoWidth = 0,
     logoHeight = 0,
-    titleClassName = "text-2xl font-bold mt-6 mb-6 text-black",
+    titleClassName = 'text-2xl font-bold mt-6 mb-6 text-black',
   }: {
     title: string;
     logoSrc?: string;
@@ -109,7 +97,7 @@ function ResetPassword({
         width={logoWidth}
         height={logoHeight}
         sizes="100vw"
-        style={{ width: logoWidth === 0 ? "50%" : "auto", height: "auto" }}
+        style={{ width: logoWidth === 0 ? '50%' : 'auto', height: 'auto' }}
         priority
       />
       <h2 className={titleClassName}>{title}</h2>
@@ -117,12 +105,12 @@ function ResetPassword({
   );
 
   useEffect(() => {
-    setPasswordError("");
-    setPasswordDescription("");
+    setPasswordError('');
+    setPasswordDescription('');
     setIsValidPassword(true);
-    setPasswordColor("default");
-    setConfirmPasswordError("");
-    setConfirmPasswordColor("default");
+    setPasswordColor('default');
+    setConfirmPasswordError('');
+    setConfirmPasswordColor('default');
     setIsValidConfirmPassword(true);
   }, [password, confirmPassword]);
 
@@ -133,10 +121,7 @@ function ResetPassword({
         <LogoHeader title="Create new password" />
       </div>
       <div className="flex justify-center space-x-2 mt-6">
-        <form
-          onSubmit={handleResetPassword}
-          className="space-y-6 w-full max-w-xs"
-        >
+        <form onSubmit={handleResetPassword} className="space-y-6 w-full max-w-xs">
           <Input
             label="Password"
             variant="password"

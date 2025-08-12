@@ -1,126 +1,126 @@
 [
-    {
-        "value": "EN",
-        "label": "English"
-    },
-    {
-        "value": "VI",
-        "label": "Vietnamese"
-    },
-    {
-        "value": "JA",
-        "label": "Japanese"
-    },
-    {
-        "value": "ZH",
-        "label": "Chinese"
-    },
-    {
-        "value": "KO",
-        "label": "Korean"
-    },
-    {
-        "value": "FR",
-        "label": "French"
-    },
-    {
-        "value": "DE",
-        "label": "German"
-    },
-    {
-        "value": "ES",
-        "label": "Spanish"
-    },
-    {
-        "value": "PT",
-        "label": "Portuguese"
-    },
-    {
-        "value": "RU",
-        "label": "Russian"
-    },
-    {
-        "value": "IT",
-        "label": "Italian"
-    },
-    {
-        "value": "AR",
-        "label": "Arabic"
-    },
-    {
-        "value": "HI",
-        "label": "Hindi"
-    },
-    {
-        "value": "TH",
-        "label": "Thai"
-    },
-    {
-        "value": "ID",
-        "label": "Indonesian"
-    },
-    {
-        "value": "TR",
-        "label": "Turkish"
-    },
-    {
-        "value": "NL",
-        "label": "Dutch"
-    },
-    {
-        "value": "PL",
-        "label": "Polish"
-    },
-    {
-        "value": "SV",
-        "label": "Swedish"
-    },
-    {
-        "value": "EL",
-        "label": "Greek"
-    },
-    {
-        "value": "HE",
-        "label": "Hebrew"
-    },
-    {
-        "value": "MS",
-        "label": "Malay"
-    },
-    {
-        "value": "BN",
-        "label": "Bengali"
-    },
-    {
-        "value": "UK",
-        "label": "Ukrainian"
-    },
-    {
-        "value": "RO",
-        "label": "Romanian"
-    },
-    {
-        "value": "CS",
-        "label": "Czech"
-    },
-    {
-        "value": "HU",
-        "label": "Hungarian"
-    },
-    {
-        "value": "SK",
-        "label": "Slovak"
-    },
-    {
-        "value": "FI",
-        "label": "Finnish"
-    },
-    {
-        "value": "NO",
-        "label": "Norwegian"
-    },
-    {
-        "value": "DA",
-        "label": "Danish"
-    }
+  {
+    "value": "EN",
+    "label": "English"
+  },
+  {
+    "value": "VI",
+    "label": "Vietnamese"
+  },
+  {
+    "value": "JA",
+    "label": "Japanese"
+  },
+  {
+    "value": "ZH",
+    "label": "Chinese"
+  },
+  {
+    "value": "KO",
+    "label": "Korean"
+  },
+  {
+    "value": "FR",
+    "label": "French"
+  },
+  {
+    "value": "DE",
+    "label": "German"
+  },
+  {
+    "value": "ES",
+    "label": "Spanish"
+  },
+  {
+    "value": "PT",
+    "label": "Portuguese"
+  },
+  {
+    "value": "RU",
+    "label": "Russian"
+  },
+  {
+    "value": "IT",
+    "label": "Italian"
+  },
+  {
+    "value": "AR",
+    "label": "Arabic"
+  },
+  {
+    "value": "HI",
+    "label": "Hindi"
+  },
+  {
+    "value": "TH",
+    "label": "Thai"
+  },
+  {
+    "value": "ID",
+    "label": "Indonesian"
+  },
+  {
+    "value": "TR",
+    "label": "Turkish"
+  },
+  {
+    "value": "NL",
+    "label": "Dutch"
+  },
+  {
+    "value": "PL",
+    "label": "Polish"
+  },
+  {
+    "value": "SV",
+    "label": "Swedish"
+  },
+  {
+    "value": "EL",
+    "label": "Greek"
+  },
+  {
+    "value": "HE",
+    "label": "Hebrew"
+  },
+  {
+    "value": "MS",
+    "label": "Malay"
+  },
+  {
+    "value": "BN",
+    "label": "Bengali"
+  },
+  {
+    "value": "UK",
+    "label": "Ukrainian"
+  },
+  {
+    "value": "RO",
+    "label": "Romanian"
+  },
+  {
+    "value": "CS",
+    "label": "Czech"
+  },
+  {
+    "value": "HU",
+    "label": "Hungarian"
+  },
+  {
+    "value": "SK",
+    "label": "Slovak"
+  },
+  {
+    "value": "FI",
+    "label": "Finnish"
+  },
+  {
+    "value": "NO",
+    "label": "Norwegian"
+  },
+  {
+    "value": "DA",
+    "label": "Danish"
+  }
 ]

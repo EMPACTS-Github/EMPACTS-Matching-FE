@@ -1,22 +1,22 @@
-import { STARTUP_INVITATION_RESPONSE } from '@/constants'
-import { Avatar, Button } from '@heroui/react'
-import React from 'react'
+import { STARTUP_INVITATION_RESPONSE } from '@/constants';
+import { Avatar, Button } from '@heroui/react';
+import React from 'react';
 
 type Props = {
-  onResponseInvitation: (response: string) => void,
-  onChangeInvitationResponse: (response: string) => void,
+  onResponseInvitation: (response: string) => void;
+  onChangeInvitationResponse: (response: string) => void;
   inivtationResponse: {
-    invitedEmail: string,
-    inviteCode: string,
-    response: string,
-  },
+    invitedEmail: string;
+    inviteCode: string;
+    response: string;
+  };
   invitationInfo: {
-    positionTitle: string,
-    startupAvt: string,
-    startupName: string,
-    startupGoal: string,
-  }
-}
+    positionTitle: string;
+    startupAvt: string;
+    startupName: string;
+    startupGoal: string;
+  };
+};
 
 const InvitationResponse = ({
   invitationInfo,
@@ -28,12 +28,12 @@ const InvitationResponse = ({
   const handleChangeInvitationResponse = (response: string) => {
     onChangeInvitationResponse(response);
     onResponseInvitation(response);
-  }
+  };
 
   const renderActionButton = () => {
     if (!inivtationResponse.response) {
       return (
-        <div className='flex gap-10'>
+        <div className="flex gap-10">
           <Button
             onPress={() => handleChangeInvitationResponse(STARTUP_INVITATION_RESPONSE.REJECTED)}
             variant="solid"
@@ -51,52 +51,56 @@ const InvitationResponse = ({
             Accept
           </Button>
         </div>
-      )
+      );
     }
     if (inivtationResponse.response === STARTUP_INVITATION_RESPONSE.ACCEPTED) {
       return (
         <div>
-          <p className="text-center">
-            You have accepted invitation
-          </p>
-          <p className="text-center">
-            Please wait and we will redirect you to startup homepage
-          </p>
+          <p className="text-center">You have accepted invitation</p>
+          <p className="text-center">Please wait and we will redirect you to startup homepage</p>
         </div>
-      )
+      );
     }
     return (
       <div>
-        <p className="text-center">
-          You have rejected this invitation
-        </p>
-        <p className="text-center">
-          Please wait and we will redirect you to homepage
-        </p>
+        <p className="text-center">You have rejected this invitation</p>
+        <p className="text-center">Please wait and we will redirect you to homepage</p>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="w-full flex justify-center items-center mt-10">
       <div className="rounded-xl p-8 bg-white flex flex-col gap-8 justify-center items-center shadow-lg">
         <div>
-          <p className="text-2xl text-center font-[600] text-[#09090B] mb-2">{"You're invited as"}</p>
-          <p className="text-2xl text-center font-[600] text-empacts">{invitationInfo.positionTitle}</p>
+          <p className="text-2xl text-center font-[600] text-[#09090B] mb-2">
+            {"You're invited as"}
+          </p>
+          <p className="text-2xl text-center font-[600] text-empacts">
+            {invitationInfo.positionTitle}
+          </p>
         </div>
         <div className="flex flex-col gap-4 justify-center items-center">
-          <Avatar src={invitationInfo.startupAvt} radius="full" className="bg-white w-24 h-24" isBordered color='primary' />
+          <Avatar
+            src={invitationInfo.startupAvt}
+            radius="full"
+            className="bg-white w-24 h-24"
+            isBordered
+            color="primary"
+          />
           <div>
-            <p className="text-xl text-center font-[600] text-[#09090B] mb-2">{invitationInfo.startupName}</p>
-            <p className="text-sm text-center font-[600] text-[#71717A]">{invitationInfo.startupGoal}</p>
+            <p className="text-xl text-center font-[600] text-[#09090B] mb-2">
+              {invitationInfo.startupName}
+            </p>
+            <p className="text-sm text-center font-[600] text-[#71717A]">
+              {invitationInfo.startupGoal}
+            </p>
           </div>
         </div>
-        <div>
-          {renderActionButton()}
-        </div>
+        <div>{renderActionButton()}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default InvitationResponse;

@@ -1,70 +1,70 @@
 [
-    {
-        "value": "NO_POVERTY",
-        "label": "No Poverty"
-    },
-    {
-        "value": "ZERO_HUNGER",
-        "label": "Zero Hunger"
-    },
-    {
-        "value": "GOOD_HEALTH_AND_WELL_BEING",
-        "label": "Good Health and Well-being"
-    },
-    {
-        "value": "QUALITY_EDUCATION",
-        "label": "Quality Education"
-    },
-    {
-        "value": "GENDER_EQUALITY",
-        "label": "Gender Equality"
-    },
-    {
-        "value": "CLEAN_WATER_AND_SANITATION",
-        "label": "Clean Water and Sanitation"
-    },
-    {
-        "value": "AFFORDABLE_AND_CLEAN_ENERGY",
-        "label": "Affordable and Clean Energy"
-    },
-    {
-        "value": "DECENT_WORK_AND_ECONOMIC_GROWTH",
-        "label": "Decent Work and Economic Growth"
-    },
-    {
-        "value": "INDUSTRY_INNOVATION_AND_INFRASTRUCTURE",
-        "label": "Industry, Innovation, and Infrastructure"
-    },
-    {
-        "value": "REDUCED_INEQUALITIES",
-        "label": "Reduced Inequalities"
-    },
-    {
-        "value": "SUSTAINABLE_CITIES_AND_COMMUNITIES",
-        "label": "Sustainable Cities and Communities"
-    },
-    {
-        "value": "RESPONSIBLE_CONSUMPTION_AND_PRODUCTION",
-        "label": "Responsible Consumption and Production"
-    },
-    {
-        "value": "CLIMATE_ACTION",
-        "label": "Climate Action"
-    },
-    {
-        "value": "LIFE_BELOW_WATER",
-        "label": "Life Below Water"
-    },
-    {
-        "value": "LIFE_ON_LAND",
-        "label": "Life on Land"
-    },
-    {
-        "value": "PEACE_JUSTICE_AND_STRONG_INSTITUTIONS",
-        "label": "Peace, Justice and Strong Institutions"
-    },
-    {
-        "value": "PARTNERSHIPS_FOR_THE_GOALS",
-        "label": "Partnerships for the Goals"
-    }
+  {
+    "value": "NO_POVERTY",
+    "label": "No Poverty"
+  },
+  {
+    "value": "ZERO_HUNGER",
+    "label": "Zero Hunger"
+  },
+  {
+    "value": "GOOD_HEALTH_AND_WELL_BEING",
+    "label": "Good Health and Well-being"
+  },
+  {
+    "value": "QUALITY_EDUCATION",
+    "label": "Quality Education"
+  },
+  {
+    "value": "GENDER_EQUALITY",
+    "label": "Gender Equality"
+  },
+  {
+    "value": "CLEAN_WATER_AND_SANITATION",
+    "label": "Clean Water and Sanitation"
+  },
+  {
+    "value": "AFFORDABLE_AND_CLEAN_ENERGY",
+    "label": "Affordable and Clean Energy"
+  },
+  {
+    "value": "DECENT_WORK_AND_ECONOMIC_GROWTH",
+    "label": "Decent Work and Economic Growth"
+  },
+  {
+    "value": "INDUSTRY_INNOVATION_AND_INFRASTRUCTURE",
+    "label": "Industry, Innovation, and Infrastructure"
+  },
+  {
+    "value": "REDUCED_INEQUALITIES",
+    "label": "Reduced Inequalities"
+  },
+  {
+    "value": "SUSTAINABLE_CITIES_AND_COMMUNITIES",
+    "label": "Sustainable Cities and Communities"
+  },
+  {
+    "value": "RESPONSIBLE_CONSUMPTION_AND_PRODUCTION",
+    "label": "Responsible Consumption and Production"
+  },
+  {
+    "value": "CLIMATE_ACTION",
+    "label": "Climate Action"
+  },
+  {
+    "value": "LIFE_BELOW_WATER",
+    "label": "Life Below Water"
+  },
+  {
+    "value": "LIFE_ON_LAND",
+    "label": "Life on Land"
+  },
+  {
+    "value": "PEACE_JUSTICE_AND_STRONG_INSTITUTIONS",
+    "label": "Peace, Justice and Strong Institutions"
+  },
+  {
+    "value": "PARTNERSHIPS_FOR_THE_GOALS",
+    "label": "Partnerships for the Goals"
+  }
 ]

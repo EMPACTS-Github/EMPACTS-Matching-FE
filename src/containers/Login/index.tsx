@@ -1,39 +1,37 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useCallback } from "react";
-import { addToast } from "@heroui/react";
-import { emailSignin, loginWithGoogleAPI } from "@/apis/auth";
-import { useSearchParams } from "next/navigation";
-import { getUserAuthInfoAPI } from "@/apis/user";
-import { useRouter } from "next/navigation";
-import AuthHeader from "@/components/Header/AuthHeader";
-import Input from "@/components/Input/Input";
-import Button from "@/components/Button/Button";
-import AuthLink from "@/components/AuthLink";
-import FormFooterAction from "@/components/Form/FormFooterAction";
-import { ROUTES } from "@/constants/link";
-import { getStartupInvitationUrl } from "@/constants/link";
-import { checkEmailFormat } from "@/utils/checkValid";
+import React, { useEffect, useState, useCallback } from 'react';
+import { addToast } from '@heroui/react';
+import { emailSignin, loginWithGoogleAPI } from '@/apis/auth';
+import { useSearchParams } from 'next/navigation';
+import { getUserAuthInfoAPI } from '@/apis/user';
+import { useRouter } from 'next/navigation';
+import AuthHeader from '@/components/Header/AuthHeader';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { ROUTES } from '@/constants/link';
+import { getStartupInvitationUrl } from '@/constants/link';
+import { checkEmailFormat } from '@/utils/checkValid';
 import {
   API_RESPONSE_CODES,
   TOAST_TIMEOUT,
   TOAST_COLORS,
   TOAST_MESSAGES,
   API_RESPONSE_NUMBER_CODES,
-} from "@/constants/api";
-import Image from "next/image";
+} from '@/constants/api';
+import Image from 'next/image';
 
 function routeAfterLoginWithInvitation(router: any, response: any) {
-  const hasInvitationStatus = localStorage.getItem("status");
+  const hasInvitationStatus = localStorage.getItem('status');
 
   if (hasInvitationStatus) {
-    const invitationCode = localStorage.getItem("invitationCode");
-    const invitedEmail = localStorage.getItem("invitedEmail");
+    const invitationCode = localStorage.getItem('invitationCode');
+    const invitedEmail = localStorage.getItem('invitedEmail');
 
     if (invitedEmail === response.email) {
-      router.push(
-        getStartupInvitationUrl(invitationCode || "", invitedEmail || "")
-      );
+      router.push(getStartupInvitationUrl(invitationCode || '', invitedEmail || ''));
     } else {
       router.push(ROUTES.PROFILES.NEW);
     }
@@ -50,25 +48,23 @@ function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [isValidEmail, setIsValidEmail] = useState(true);
-  const [emailError, setEmailError] = useState("");
-  const [emailColor, setEmailColor] = useState<"default" | "danger">("default");
+  const [emailError, setEmailError] = useState('');
+  const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
 
   const [isValidPassword, setIsValidPassword] = useState(true);
-  const [passwordError, setPasswordError] = useState("");
-  const [passwordColor, setPasswordColor] = useState<"default" | "danger">(
-    "default"
-  );
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const updateEmailValidation = useCallback((email: string) => {
     const isValid = checkEmailFormat(email);
-    setEmailError(isValid ? "" : "Invalid email format");
-    setEmailColor(isValid ? "default" : "danger");
+    setEmailError(isValid ? '' : 'Invalid email format');
+    setEmailColor(isValid ? 'default' : 'danger');
     setIsValidEmail(isValid);
     return isValid;
   }, []);
@@ -76,14 +72,14 @@ function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
-      setEmailError("Email is required");
-      setEmailColor("danger");
+      setEmailError('Email is required');
+      setEmailColor('danger');
       setIsValidEmail(false);
       return;
     }
     if (!password) {
-      setPasswordError("Password is required");
-      setPasswordColor("danger");
+      setPasswordError('Password is required');
+      setPasswordColor('danger');
       setIsValidPassword(false);
       return;
     }
@@ -96,31 +92,30 @@ function Login() {
     try {
       const response = await emailSignin(email, password);
       if (response.code == API_RESPONSE_CODES.LOGIN) {
-        setPasswordError("");
-        setPasswordColor("default");
+        setPasswordError('');
+        setPasswordColor('default');
         setIsValidPassword(true);
-        setEmailColor("default");
+        setEmailColor('default');
         setIsValidEmail(true);
         addToast({
           title: TOAST_MESSAGES.LOGIN_SUCCESS,
           color: TOAST_COLORS.SUCCESS,
         });
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         routeAfterLoginWithInvitation(router, response.data);
       }
     } catch (error: any) {
       if (
         error.response &&
-        error.response.status ===
-          API_RESPONSE_NUMBER_CODES.LOGIN_INVALID_CREDENTIALS
+        error.response.status === API_RESPONSE_NUMBER_CODES.LOGIN_INVALID_CREDENTIALS
       ) {
         setPasswordError(TOAST_MESSAGES.INVALID_CREDENTIALS);
-        setPasswordColor("danger");
+        setPasswordColor('danger');
         setIsValidPassword(false);
-        setEmailColor("danger");
+        setEmailColor('danger');
         setIsValidEmail(false);
-        setEmail("");
-        setPassword("");
+        setEmail('');
+        setPassword('');
         addToast({
           title: TOAST_MESSAGES.INVALID_CREDENTIALS,
           color: TOAST_COLORS.DANGER,
@@ -139,16 +134,16 @@ function Login() {
 
   useEffect(() => {
     if (email) {
-      setEmailError("");
-      setEmailColor("default");
+      setEmailError('');
+      setEmailColor('default');
       setIsValidEmail(true);
     }
   }, [email]);
 
   useEffect(() => {
     if (password) {
-      setPasswordError("");
-      setPasswordColor("default");
+      setPasswordError('');
+      setPasswordColor('default');
       setIsValidPassword(true);
     }
   }, [password]);
@@ -161,22 +156,22 @@ function Login() {
 
   useEffect(() => {
     async function getUserAuthInfo() {
-      const success = searchParams.get("success");
-      if (success === "true") {
+      const success = searchParams.get('success');
+      if (success === 'true') {
         try {
           const response = await getUserAuthInfoAPI();
-          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem('user', JSON.stringify(response.data));
 
           routeAfterLoginWithInvitation(router, response.data);
         } catch (error) {
-          console.error("Error fetching user auth info:", error);
+          console.error('Error fetching user auth info:', error);
           addToast({
             title: TOAST_MESSAGES.GOOGLE_LOGIN_FAILED,
             color: TOAST_COLORS.DANGER,
             timeout: TOAST_TIMEOUT.MEDIUM,
           });
         }
-      } else if (success == "false") {
+      } else if (success == 'false') {
         addToast({
           title: TOAST_MESSAGES.GOOGLE_LOGIN_FAILED,
           color: TOAST_COLORS.DANGER,
@@ -198,13 +193,7 @@ function Login() {
 
   const GoogleSignInButton = () => (
     <Button onClick={loginWithGoogleAPI} variant="google">
-      <Image
-        src="/google-icon.svg"
-        alt="Google icon"
-        width={20}
-        height={20}
-        className="mr-2"
-      />
+      <Image src="/google-icon.svg" alt="Google icon" width={20} height={20} className="mr-2" />
       Sign in with Google
     </Button>
   );
@@ -250,10 +239,7 @@ function Login() {
         <FormFooterAction
           text="Don't have an account?"
           action={
-            <AuthLink
-              href={ROUTES.AUTH.SIGNUP}
-              className="text-md font-semibold text-primary"
-            >
+            <AuthLink href={ROUTES.AUTH.SIGNUP} className="text-md font-semibold text-primary">
               Sign Up
             </AuthLink>
           }

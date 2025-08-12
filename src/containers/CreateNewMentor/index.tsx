@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import HeaderSection from './HeaderSection';
 import ProfilePictureUpload from './ProfilePictureUpload';
@@ -10,9 +10,9 @@ import { create_mentor_profile } from '@/apis/mentor';
 import { LanguagesSpoken } from '@/constants/common';
 import { SkillOffered } from '@/constants/skillOffered';
 import { addToast } from '@heroui/react';
-import * as changeCase from "change-case";
+import * as changeCase from 'change-case';
 import { PROVINCES } from '@/constants/provinces';
-import { updateAttachment } from "@/apis/upload";
+import { updateAttachment } from '@/apis/upload';
 import { useRouter } from 'next/navigation';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import LanguagesSpokenSection from './LanguagesSpokenSection';
@@ -35,29 +35,29 @@ function CreateNewMentor() {
 
   const handleCancelCreateProfile = () => {
     router.back();
-  }
+  };
 
   const handleChangeImage = (fileUrl: string, fileId: string) => {
     setProfilePicture(fileUrl);
     setUploadedPictureId(fileId);
-  }
+  };
 
   const handleChangeMentorUsername = (mentorName: string) => {
     const username = changeCase.snakeCase(mentorName);
     setMentorUsername('@' + username);
-  }
+  };
 
   const handleDescriptionChange = (newDescription: string) => {
     setDescription(newDescription);
-  }
+  };
 
   const handleLanguagesSpokenChange = (newLanguages: LanguagesSpoken) => {
     setLanguagesSpoken(newLanguages);
-  }
+  };
 
   const handleSkillOfferedChange = (newSkills: SkillOffered) => {
     setSkillOffered(newSkills);
-  }
+  };
 
   const handleCreateProfile = async () => {
     const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
@@ -71,14 +71,14 @@ function CreateNewMentor() {
       !skillOffered.length ||
       !selectedGoals.length
     ) {
-      console.log(mentorName.trim())
-      console.log(mentorUsername.trim())
-      console.log(location)
-      console.log(avtUrl)
-      console.log(description.trim())
-      console.log(languagesSpoken.length)
-      console.log(skillOffered.length)
-      console.log(selectedGoals.length)
+      console.log(mentorName.trim());
+      console.log(mentorUsername.trim());
+      console.log(location);
+      console.log(avtUrl);
+      console.log(description.trim());
+      console.log(languagesSpoken.length);
+      console.log(skillOffered.length);
+      console.log(selectedGoals.length);
       addToast({
         title: 'Please fill in all required fields.',
         color: 'danger',
@@ -113,7 +113,6 @@ function CreateNewMentor() {
         ownerId: response.data.newMentor.id,
         ownerType: UPLOAD_OWNER_TYPE.MENTOR,
       });
-
     } catch (error) {
       addToast({
         title: 'Error creating profile',
@@ -154,14 +153,11 @@ function CreateNewMentor() {
           skillOffered={skillOffered}
           onSkillOfferedChange={handleSkillOfferedChange}
         />
-        <SDGGoalSection
-          selectedGoals={selectedGoals}
-          onGoalsChange={setSelectedGoals}
-        />
+        <SDGGoalSection selectedGoals={selectedGoals} onGoalsChange={setSelectedGoals} />
         <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
       </div>
     </div>
-  )
+  );
 }
 
-export default CreateNewMentor
+export default CreateNewMentor;

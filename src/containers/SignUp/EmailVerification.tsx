@@ -1,24 +1,19 @@
-"use client";
-import React, { useState } from "react";
-import { addToast } from "@heroui/react";
-import { verifyOTP } from "@/apis/auth";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/constants/link";
-import Image from "next/image";
-import OtpInput from "@/components/Input/OtpInput";
-import ArrowLeftIcon from "/public/assets/arrow_left.svg";
-import FormFooterAction from "@/components/Form/FormFooterAction";
-import {
-  API_RESPONSE_CODES,
-  TOAST_TIMEOUT,
-  TOAST_COLORS,
-  TOAST_MESSAGES,
-} from "@/constants/api";
+'use client';
+import React, { useState } from 'react';
+import { addToast } from '@heroui/react';
+import { verifyOTP } from '@/apis/auth';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/link';
+import Image from 'next/image';
+import OtpInput from '@/components/Input/OtpInput';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function EmailVerification() {
   const router = useRouter();
-  const [otp, setOtp] = useState("");
-  const email = localStorage.getItem("email") || "";
+  const [otp, setOtp] = useState('');
+  const email = localStorage.getItem('email') || '';
 
   const handleSubmitOtp = async () => {
     if (email && otp) {
@@ -71,16 +66,8 @@ function EmailVerification() {
   return (
     <div className="text-center">
       <div className="flex flex-col items-center text-center">
-        <div
-          className="absolute left-10 hover:bg-gray-300 rounded-lg"
-          onClick={handleGoBack}
-        >
-          <Image
-            src={ArrowLeftIcon}
-            alt="Arrow left icon"
-            width={40}
-            height={40}
-          />
+        <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={handleGoBack}>
+          <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
         </div>
         <Image
           src="/empacts-logo.png"
@@ -88,16 +75,14 @@ function EmailVerification() {
           width={0}
           height={0}
           sizes="100vw"
-          style={{ width: "50%", height: "auto" }}
+          style={{ width: '50%', height: 'auto' }}
           priority
         />
-        <h2 className="text-2xl font-bold mt-6 mb-6 text-black">
-          Verification code
-        </h2>
+        <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Verification code</h2>
       </div>
       <p className="text-gray-600">
-        A verification code has been sent to <strong>{email}</strong>. Please
-        input your OTP code to finish the registration process.
+        A verification code has been sent to <strong>{email}</strong>. Please input your OTP code to
+        finish the registration process.
       </p>
       <div className="flex justify-center space-x-2 mt-6">
         <OtpInput
@@ -110,10 +95,7 @@ function EmailVerification() {
       <FormFooterAction
         text="Did not receive code?"
         action={
-          <span
-            className="text-purple-600 cursor-pointer"
-            onClick={handleResendCode}
-          >
+          <span className="text-purple-600 cursor-pointer" onClick={handleResendCode}>
             Resend code
           </span>
         }

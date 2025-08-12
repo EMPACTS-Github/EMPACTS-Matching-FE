@@ -1,13 +1,13 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { Button, Tabs, Tab, Spinner } from "@heroui/react";
-import { useRouter } from "next/navigation";
-import { Startup } from "@/interfaces/startup";
-import { Mentor } from "@/interfaces/mentor";
-import ProfileCard from "./ProfileCard";
-import { startup_list } from "@/apis/startup-profile";
-import { mentor_list } from "@/apis/mentor-profile";
-import { Divider } from "@heroui/react";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { Button, Tabs, Tab, Spinner } from '@heroui/react';
+import { useRouter } from 'next/navigation';
+import { Startup } from '@/interfaces/startup';
+import { Mentor } from '@/interfaces/mentor';
+import ProfileCard from './ProfileCard';
+import { startup_list } from '@/apis/startup-profile';
+import { mentor_list } from '@/apis/mentor-profile';
+import { Divider } from '@heroui/react';
 
 const ProfileList = () => {
   const router = useRouter();
@@ -18,7 +18,7 @@ const ProfileList = () => {
 
   const handleNavigateToCreateProfile = () => {
     router.push('/profiles/new');
-  }
+  };
 
   const fetchStartupProfileList = async () => {
     setIsLoadingStartup(true);
@@ -29,11 +29,11 @@ const ProfileList = () => {
         id: startupDetail.startupId,
         name: startupDetail.name,
         avtUrl: startupDetail.avtUrl,
-      }
-    })
+      };
+    });
     setStartupProfileList(modifiedResponse);
     setIsLoadingStartup(false);
-  }
+  };
 
   const fetchMentorProfileList = async () => {
     setIsLoadingMentor(true);
@@ -44,16 +44,16 @@ const ProfileList = () => {
         id: mentorDetail.mentorId,
         name: mentorDetail.name,
         avtUrl: mentorDetail.avtUrl,
-      }
-    })
+      };
+    });
     setMentorProfileList(modifiedResponse);
     setIsLoadingMentor(false);
-  }
+  };
 
   useEffect(() => {
     fetchStartupProfileList();
     fetchMentorProfileList();
-  }, [])
+  }, []);
 
   return (
     <div className="max-w-lg w-full mx-auto mt-8 p-8 rounded-lg shadow-lg bg-white flex flex-col h-[70vh]">
@@ -77,12 +77,12 @@ const ProfileList = () => {
                     <Divider className="w-full" />
                   </div>
                 ))}
-              </div>) : (
+              </div>
+            ) : (
               <div className="p-4 h-full flex items-center justify-center">
                 <p className="text-sm text-gray-500">No startup profiles available yet.</p>
               </div>
-            )
-            }
+            )}
           </Tab>
 
           <Tab key="mentors" title="Mentors">
@@ -98,12 +98,12 @@ const ProfileList = () => {
                     <Divider className="w-full" />
                   </div>
                 ))}
-              </div>) : (
+              </div>
+            ) : (
               <div className="p-4 h-full flex items-center justify-center">
                 <p className="text-sm text-gray-500">No mentor profiles available yet.</p>
               </div>
-            )
-            }
+            )}
           </Tab>
         </Tabs>
       </div>
@@ -122,7 +122,7 @@ const ProfileList = () => {
         Create new profile
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default ProfileList
+export default ProfileList;

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import HeaderSection from './HeaderSection';
 import ProfilePictureUpload from './ProfilePictureUpload';
@@ -11,8 +11,8 @@ import { create_startup_profile, invite_list_member } from '@/apis/startup';
 import { MemberForInvite } from '@/interfaces/startup';
 import { LanguagesSpoken } from '@/constants/common';
 import { addToast } from '@heroui/react';
-import * as changeCase from "change-case";
-import { updateAttachment } from "@/apis/upload";
+import * as changeCase from 'change-case';
+import { updateAttachment } from '@/apis/upload';
 import { useRouter } from 'next/navigation';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import LanguagesSpokenSection from './LanguagesSpokenSection';
@@ -22,8 +22,8 @@ import DescriptionSection from './DescriptionSection';
 function CreateNewStartup() {
   const [companyName, setCompanyName] = useState('');
   const [startupUsername, setStartupUsername] = useState('');
-  const [selectedGoal, setSelectedGoal] = useState("");
-  const [location, setLocation] = useState("");
+  const [selectedGoal, setSelectedGoal] = useState('');
+  const [location, setLocation] = useState('');
   const [profilePicture, setProfilePicture] = useState<string | undefined>('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
   const [members, setMembers] = useState<MemberForInvite[]>([]);
@@ -36,33 +36,33 @@ function CreateNewStartup() {
 
   const handleCancelCreateProfile = () => {
     router.back();
-  }
+  };
 
   const handleGoalChange = (newGoal: string) => {
     setSelectedGoal(newGoal);
-  }
+  };
 
   const handleChangeImage = (fileUrl: string, fileId: string) => {
     setProfilePicture(fileUrl);
     setUploadedPictureId(fileId);
-  }
+  };
 
   const handleChangeStartupUsername = (startupName: string) => {
     const username = changeCase.snakeCase(startupName);
     setStartupUsername('@' + username);
-  }
+  };
 
   const handleDescriptionChange = (newDescription: string) => {
     setDescription(newDescription);
-  }
+  };
 
   const handleFormedTimeChange = (newFormedTime: Date | null) => {
     setFormedTime(newFormedTime);
-  }
+  };
 
   const handleLanguagesSpokenChange = (newLanguages: LanguagesSpoken) => {
     setLanguagesSpoken(newLanguages);
-  }
+  };
 
   const handleCreateProfile = async () => {
     const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
@@ -110,7 +110,7 @@ function CreateNewStartup() {
         updateAttachment({
           id: uploadedPictureId,
           ownerId: undefined,
-          ownerType: UPLOAD_OWNER_TYPE.STARTUP
+          ownerType: UPLOAD_OWNER_TYPE.STARTUP,
         });
       }
 
@@ -119,19 +119,21 @@ function CreateNewStartup() {
           invitee: members,
           inviterEmail: inviterEmail,
           startupId: response.data.newStartup.id,
-        }).then(() => {
-          addToast({
-            title: 'Members invited successfully',
-            color: 'success',
-            timeout: 3000,
+        })
+          .then(() => {
+            addToast({
+              title: 'Members invited successfully',
+              color: 'success',
+              timeout: 3000,
+            });
+          })
+          .catch(() => {
+            addToast({
+              title: 'Error inviting members',
+              color: 'danger',
+              timeout: 5000,
+            });
           });
-        }).catch(() => {
-          addToast({
-            title: 'Error inviting members',
-            color: 'danger',
-            timeout: 5000,
-          });
-        });
       }
     } catch (error) {
       addToast({
@@ -161,9 +163,7 @@ function CreateNewStartup() {
           onChangeStartupUsername={handleChangeStartupUsername}
         />
         <LocationBasedSection selectedLocation={location} onChange={setLocation} />
-        <FormedTimeSection
-          formedTime={formedTime}
-          onFormedTimeSelect={handleFormedTimeChange} />
+        <FormedTimeSection formedTime={formedTime} onFormedTimeSelect={handleFormedTimeChange} />
         <DescriptionSection
           description={description}
           onDescriptionChange={handleDescriptionChange}
@@ -172,15 +172,12 @@ function CreateNewStartup() {
           languagesSpoken={languagesSpoken}
           onLanguagesSpokenChange={handleLanguagesSpokenChange}
         />
-        <SDGGoalSection
-          selectedGoal={selectedGoal}
-          onGoalChange={handleGoalChange}
-        />
+        <SDGGoalSection selectedGoal={selectedGoal} onGoalChange={handleGoalChange} />
         <AddMemberSection members={members} setMembers={setMembers} />
         <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
       </div>
     </div>
-  )
+  );
 }
 
-export default CreateNewStartup
+export default CreateNewStartup;

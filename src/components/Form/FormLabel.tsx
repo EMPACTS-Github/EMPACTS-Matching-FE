@@ -1,14 +1,12 @@
-import React from 'react'
+import React from 'react';
 
 type FormLabel = {
-  text: string,
-  className: string
-}
+  text: string;
+  className: string;
+};
 
 function FormLabel({ className, text }: FormLabel) {
-  return (
-    <p className={`${className}`}>{text}</p>
-  )
+  return <p className={`${className}`}>{text}</p>;
 }
 
-export default FormLabel
+export default FormLabel;

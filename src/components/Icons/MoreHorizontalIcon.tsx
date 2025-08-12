@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const MoreHorizontalIcon = () => {
   return (
@@ -7,8 +7,7 @@ const MoreHorizontalIcon = () => {
       <circle cx="6" cy="12" r="1" stroke="#33363F" stroke-width="2" stroke-linecap="round" />
       <circle cx="18" cy="12" r="1" stroke="#33363F" stroke-width="2" stroke-linecap="round" />
     </svg>
+  );
+};
 
-  )
-}
-
-export default MoreHorizontalIcon
+export default MoreHorizontalIcon;

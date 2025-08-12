@@ -1,9 +1,9 @@
-'use client'
+'use client';
 import Header from '@/components/Header';
 import { ROUTES } from '@/constants/route';
 import { checkIsSameRoute } from '@/utils/checkRoute';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 function HeaderDisplayHandler() {
   const pathname = usePathname();
@@ -18,16 +18,10 @@ function HeaderDisplayHandler() {
           setIsDisplayHeader(false);
         }
       }
-    })
-  }, [pathname])
+    });
+  }, [pathname]);
 
-  return (
-    <div>
-      {
-        isDisplayHeader ? <Header /> : null
-      }
-    </div>
-  )
+  return <div>{isDisplayHeader ? <Header /> : null}</div>;
 }
 
-export default HeaderDisplayHandler
+export default HeaderDisplayHandler;

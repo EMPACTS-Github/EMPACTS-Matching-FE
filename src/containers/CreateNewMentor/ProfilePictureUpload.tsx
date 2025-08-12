@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import UploadAvatar from "/public/assets/upload_avatar.svg";
-import { uploadAttachemt } from "@/apis/upload";
-import { addToast } from "@heroui/react";
-import { UPLOAD_OWNER_TYPE } from "@/constants/upload";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import UploadAvatar from '/public/assets/upload_avatar.svg';
+import { uploadAttachemt } from '@/apis/upload';
+import { addToast } from '@heroui/react';
+import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 
 interface ProfilePictureUploadProps {
   onImageUpload: (fileUrl: string, fileId: string) => void;
 }
 
-const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
-  onImageUpload,
-}) => {
+const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({ onImageUpload }) => {
   const [image, setImage] = useState<string>(UploadAvatar);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -31,7 +29,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
           timeout: 3000,
         });
       } catch (err) {
-        setError("Failed to upload the image. Please try again.");
+        setError('Failed to upload the image. Please try again.');
         addToast({
           title: 'Failed to upload the image',
           color: 'danger',
@@ -41,7 +39,7 @@ const ProfilePictureUpload: React.FC<ProfilePictureUploadProps> = ({
         setLoading(false);
       }
     } else {
-      setError("No file selected. Please choose an image file.");
+      setError('No file selected. Please choose an image file.');
       addToast({
         title: 'No file selected. Please choose an image file.',
         color: 'danger',
