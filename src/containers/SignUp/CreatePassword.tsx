@@ -72,16 +72,18 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
           variant="password"
           value={password}
           onChange={setPassword}
-          required={true}
+          preset="line-fill-sm"
+          isRequired={true}
         />
         <Input
           variant="password"
           value={confirmPassword}
           onChange={setConfirmPassword}
           label="Confirm Password"
-          required={true}
+          preset="line-fill-sm"
+          isRequired={true}
         />
-        <Button onClick={handleCreatePassword} variant="primary-lg-fullwidth">
+        <Button onClick={handleCreatePassword} variant="primary-full">
           Continue
         </Button>
       </div>

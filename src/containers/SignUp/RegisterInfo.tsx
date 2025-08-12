@@ -116,10 +116,11 @@ function RegisterInfo() {
           onChange={setUsername}
           errorMessage="Please enter your name"
           variant="text"
-          required={true}
+          preset="line-fill-sm"
+          isRequired={true}
         />
 
-        <Button variant="submit-lg-fullwidth" className="w-4/5">
+        <Button variant="primary-full" className="w-4/5">
           Sign up
         </Button>
       </Form>

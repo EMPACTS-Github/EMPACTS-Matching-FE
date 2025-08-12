@@ -23,12 +23,10 @@ function SignUp() {
   const [email, setEmail] = useState(localStorage.getItem('email') || '');
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [emailError, setEmailError] = useState('');
-  const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
 
   const updateEmailValidation = (email: string) => {
     const isValid = checkEmailFormat(email);
     setEmailError(isValid ? '' : 'Invalid email format');
-    setEmailColor(isValid ? 'default' : 'danger');
     setIsValidEmail(isValid);
     return isValid;
   };
@@ -83,11 +81,11 @@ function SignUp() {
                 value={email}
                 onChange={setEmail}
                 isInvalid={!isValidEmail}
-                color={emailColor}
+                preset="line-fill-sm"
                 errorMessage={emailError}
-                required={true}
+                isRequired={true}
               />
-              <Button variant="submit-lg-fullwidth">Sign up</Button>
+              <Button variant="primary-full">Sign up</Button>
             </form>
 
             <FormFooterAction
