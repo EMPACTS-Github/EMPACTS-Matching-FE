@@ -6,7 +6,6 @@ import { Button, Avatar } from '@heroui/react';
 import Label from '/public/assets/label.svg';
 import Star from '/public/assets/star.svg';
 import IconText from '@/components/common/IconText';
-import TitleWithDescription from '@/components/common/TitleWithDescription';
 import TextLine from '@/components/common/TextLine';
 import UserPlusIcon from '@/components/Icons/UserPlusIcon';
 import { getSDGGoal } from '@/utils/getSDGGoal';

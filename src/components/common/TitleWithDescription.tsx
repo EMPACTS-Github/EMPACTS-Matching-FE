@@ -1,5 +1,5 @@
 import React from 'react';
-import TextLine from './common/TextLine';
+import TextLine from './TextLine';
 
 interface TitleWithDescriptionProps {
   title: string;

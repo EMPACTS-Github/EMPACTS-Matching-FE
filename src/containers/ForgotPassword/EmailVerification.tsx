@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { sendForgotPasswordOTP, verifyForgotPasswordOTP } from '@/apis/auth';
 import { addToast } from '@heroui/react';
 import { ROUTES } from '@/constants/link';
-import Input from '@/components/Input/Input';
+import OtpInput from '@/components/Input/OtpInput';
 import Image from 'next/image';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
@@ -162,7 +162,12 @@ function EmailVerification({
       </div>
       <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
       <div className="flex justify-center space-x-2 mt-6">
-        <Input variant="otp" value={otp} onChange={setOtp} onComplete={handleSubmitOtp} />
+        <OtpInput
+          variant="otp-underline-lg"
+          value={otp}
+          onValueChange={setOtp}
+          onComplete={handleSubmitOtp}
+        />
       </div>
       <div className="text-gray-500 mt-4">
         Did not receive code? <span> </span>
