@@ -22,13 +22,11 @@ function ForgotPassword() {
 
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [emailError, setEmailError] = useState('');
-  const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const updateEmailValidation = useCallback((email: string) => {
     const isValid = checkEmailFormat(email);
     setEmailError(isValid ? '' : 'Invalid email format');
-    setEmailColor(isValid ? 'default' : 'danger');
     setIsValidEmail(isValid);
     return isValid;
   }, []);
@@ -132,11 +130,11 @@ function ForgotPassword() {
                 value={email}
                 onChange={setEmail}
                 isInvalid={!isValidEmail}
-                color={emailColor}
+                preset="line-fill-sm"
                 errorMessage={emailError}
-                required
+                isRequired
               />
-              <Button variant="submit-lg-fullwidth" className="mt-4">
+              <Button variant="primary-full" className="mt-4" type="submit">
                 Continue
               </Button>
             </form>

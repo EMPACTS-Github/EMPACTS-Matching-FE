@@ -26,8 +26,6 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
     'Password must contain at least 12 characters'
   );
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
-  const [confirmPasswordColor, setConfirmPasswordColor] = useState<'default' | 'danger'>('default');
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -108,9 +106,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
     setPasswordError('');
     setPasswordDescription('');
     setIsValidPassword(true);
-    setPasswordColor('default');
     setConfirmPasswordError('');
-    setConfirmPasswordColor('default');
     setIsValidConfirmPassword(true);
   }, [password, confirmPassword]);
 
@@ -128,10 +124,10 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             value={password}
             onChange={setPassword}
             isInvalid={!isValidPassword}
-            color={passwordColor}
+            preset="line-fill-sm"
             errorMessage={passwordError}
             description={passwordDescription}
-            required
+            isRequired
           />
           <Input
             label="Confirm Password"
@@ -139,11 +135,11 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             value={confirmPassword}
             onChange={setConfirmPassword}
             isInvalid={!isValidConfirmPassword}
-            color={confirmPasswordColor}
+            preset="line-fill-sm"
             errorMessage={confirmPasswordError}
-            required
+            isRequired
           />
-          <Button variant="submit-lg-fullwidth">Reset Password</Button>
+          <Button variant="primary-full">Reset Password</Button>
         </form>
       </div>
     </div>

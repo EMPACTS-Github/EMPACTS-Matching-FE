@@ -53,18 +53,15 @@ function Login() {
 
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [emailError, setEmailError] = useState('');
-  const [emailColor, setEmailColor] = useState<'default' | 'danger'>('default');
 
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [passwordError, setPasswordError] = useState('');
-  const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const updateEmailValidation = useCallback((email: string) => {
     const isValid = checkEmailFormat(email);
     setEmailError(isValid ? '' : 'Invalid email format');
-    setEmailColor(isValid ? 'default' : 'danger');
     setIsValidEmail(isValid);
     return isValid;
   }, []);
@@ -73,13 +70,11 @@ function Login() {
     e.preventDefault();
     if (!email) {
       setEmailError('Email is required');
-      setEmailColor('danger');
       setIsValidEmail(false);
       return;
     }
     if (!password) {
       setPasswordError('Password is required');
-      setPasswordColor('danger');
       setIsValidPassword(false);
       return;
     }
@@ -93,9 +88,7 @@ function Login() {
       const response = await emailSignin(email, password);
       if (response.code == API_RESPONSE_CODES.LOGIN) {
         setPasswordError('');
-        setPasswordColor('default');
         setIsValidPassword(true);
-        setEmailColor('default');
         setIsValidEmail(true);
         addToast({
           title: TOAST_MESSAGES.LOGIN_SUCCESS,
@@ -110,9 +103,7 @@ function Login() {
         error.response.status === API_RESPONSE_NUMBER_CODES.LOGIN_INVALID_CREDENTIALS
       ) {
         setPasswordError(TOAST_MESSAGES.INVALID_CREDENTIALS);
-        setPasswordColor('danger');
         setIsValidPassword(false);
-        setEmailColor('danger');
         setIsValidEmail(false);
         setEmail('');
         setPassword('');
@@ -135,7 +126,6 @@ function Login() {
   useEffect(() => {
     if (email) {
       setEmailError('');
-      setEmailColor('default');
       setIsValidEmail(true);
     }
   }, [email]);
@@ -143,7 +133,6 @@ function Login() {
   useEffect(() => {
     if (password) {
       setPasswordError('');
-      setPasswordColor('default');
       setIsValidPassword(true);
     }
   }, [password]);
@@ -202,14 +191,15 @@ function Login() {
     <div className="bg-white h-screen flex justify-center">
       <div className="login-form p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
         <AuthHeader title="Sign in" description="" />
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-6">
           <Input
             label="Email"
             variant="email"
+            type='email'
             value={email}
             onChange={setEmail}
             isInvalid={!isValidEmail}
-            color={emailColor}
+            preset="line-fill-sm"
             errorMessage={emailError}
           />
           <Input
@@ -218,7 +208,7 @@ function Login() {
             value={password}
             onChange={setPassword}
             isInvalid={!isValidPassword}
-            color={passwordColor}
+            preset="line-fill-sm"
             errorMessage={passwordError}
           />
           <div className="text-right !mt-1">
@@ -229,7 +219,7 @@ function Login() {
               Forgot your password?
             </AuthLink>
           </div>
-          <Button variant="submit-lg-fullwidth" className="mt-4">
+          <Button variant="primary-full" className="mt-4" type="submit">
             Sign in
           </Button>
         </form>

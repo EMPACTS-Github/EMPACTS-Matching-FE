@@ -4,183 +4,223 @@ import { cn } from '@heroui/react';
 
 // Complete preset configurations including both styling and button props
 export const buttonPresets = {
-  // Primary submit buttons (full width, large size)
-  'primary-lg-fullwidth': {
-    className: 'bg-primary text-white hover:bg-primary-80 active:bg-primary-100 w-full',
-    size: 'lg' as const,
-    fullWidth: true,
-    radius: 'lg' as const,
-  },
-  'primary-lg': {
-    className: 'bg-primary text-white hover:bg-primary-80 active:bg-primary-100',
-    size: 'lg' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+  // Primary Buttons - Purple background (#9200FE)
+  'primary-sm': {
+    className: 'bg-primary text-white hover:bg-primary-40 active:bg-primary-40 text-sm',
+    variant: 'solid' as const,
+    color: 'primary' as const,
+    size: 'sm' as const,
+    radius: 'md' as const,
   },
   'primary-md': {
-    className: 'bg-primary text-white hover:bg-primary-80 active:bg-primary-100',
+    className: 'bg-primary text-white hover:bg-primary-40 active:bg-primary-40',
+    variant: 'solid' as const,
+    color: 'primary' as const,
     size: 'md' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+    radius: 'md' as const,
   },
-  'primary-sm': {
-    className: 'bg-primary text-white hover:bg-primary-80 active:bg-primary-100 text-sm',
-    size: 'sm' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+  'primary-lg': {
+    className: 'bg-primary text-white hover:bg-primary-40 active:bg-primary-40',
+    variant: 'solid' as const,
+    color: 'primary' as const,
+    size: 'lg' as const,
+    radius: 'md' as const,
   },
 
-  // Submit buttons
-  'submit-lg-fullwidth': {
-    className: 'bg-primary text-white hover:bg-primary-80 active:bg-primary-100 w-full',
-    size: 'lg' as const,
-    fullWidth: true,
-    radius: 'lg' as const,
-    type: 'submit' as const, // Default type for submit buttons
-  },
-  'submit-lg': {
-    className: 'bg-primary text-white hover:bg-primary-80 active:bg-primary-100',
-    size: 'lg' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-    type: 'submit' as const, // Default type for submit buttons
-  },
-  'submit-md': {
-    className: 'bg-primary text-white hover:bg-primary-80 active:bg-primary-100',
-    size: 'md' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-    type: 'submit' as const, // Default type for submit buttons
-  },
-  'submit-sm': {
-    className: 'bg-primary text-white text-sm hover:bg-primary-80 active:bg-primary-100',
+  // Secondary Buttons - White background with purple border
+  'secondary-sm': {
+    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white text-sm',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
     size: 'sm' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-    type: 'submit' as const, // Default type for submit buttons
-  },
-
-  // Secondary buttons
-  'secondary-lg': {
-    className: 'border-2 border-primary text-primary hover:bg-primary-20 active:bg-primary-40',
-    size: 'lg' as const,
-    fullWidth: true,
-    radius: 'lg' as const,
+    radius: 'md' as const,
   },
   'secondary-md': {
-    className: 'border-2 border-primary text-primary hover:bg-primary-20 active:bg-primary-40',
+    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
     size: 'md' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+    radius: 'md' as const,
   },
-  'secondary-sm': {
-    className:
-      'border-2 border-primary text-primary hover:bg-primary-20 active:bg-primary-40 text-sm',
-    size: 'sm' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+  'secondary-lg': {
+    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'lg' as const,
+    radius: 'md' as const,
   },
 
-  // Light variants
-  'light-lg': {
-    className: 'bg-primary-20 text-primary hover:bg-primary-40 active:bg-primary-80',
-    size: 'lg' as const,
-    fullWidth: true,
-    radius: 'lg' as const,
-  },
-  'light-md': {
-    className: 'bg-primary-20 text-primary hover:bg-primary-40 active:bg-primary-80',
-    size: 'md' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-  },
-  'light-sm': {
-    className: 'bg-primary-20 text-primary hover:bg-primary-40 active:bg-primary-80 text-sm',
+  // Tertiary Buttons - Transparent with purple border
+  'tertiary-sm': {
+    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20 text-sm',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
     size: 'sm' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+    radius: 'md' as const,
+  },
+  'tertiary-md': {
+    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+  },
+  'tertiary-lg': {
+    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'lg' as const,
+    radius: 'md' as const,
+  },
+
+  // Ghost Buttons - Transparent with purple text
+  'ghost-sm': {
+    className: 'bg-transparent text-primary hover:bg-primary-20 text-sm',
+    variant: 'light' as const,
+    color: 'primary' as const,
+    size: 'sm' as const,
+    radius: 'md' as const,
+  },
+  'ghost-md': {
+    className: 'bg-transparent text-primary hover:bg-primary-20',
+    variant: 'light' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+  },
+  'ghost-lg': {
+    className: 'bg-transparent text-primary hover:bg-primary-20',
+    variant: 'light' as const,
+    color: 'primary' as const,
+    size: 'lg' as const,
+    radius: 'md' as const,
+  },
+
+  // Special Warning Buttons - Red background
+  'warning-sm': {
+    className: 'bg-error text-white hover:bg-error active:bg-error text-sm',
+    variant: 'solid' as const,
+    color: 'danger' as const,
+    size: 'sm' as const,
+    radius: 'md' as const,
+  },
+  'warning-md': {
+    className: 'bg-error text-white hover:bg-error active:bg-error',
+    variant: 'solid' as const,
+    color: 'danger' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+  },
+  'warning-lg': {
+    className: 'bg-error text-white hover:bg-error active:bg-error',
+    variant: 'solid' as const,
+    color: 'danger' as const,
+    size: 'lg' as const,
+    radius: 'md' as const,
+  },
+
+  // Full width variants (default to medium size)
+  'primary-full': {
+    className: 'bg-primary text-white hover:bg-primary-40 active:bg-primary-40 w-full',
+    variant: 'solid' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+    fullWidth: true,
+  },
+  'secondary-full': {
+    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white w-full',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+    fullWidth: true,
+  },
+  'tertiary-full': {
+    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20 w-full',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+    fullWidth: true,
+  },
+  'ghost-full': {
+    className: 'bg-transparent text-primary hover:bg-primary-20 w-full',
+    variant: 'light' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+    fullWidth: true,
+  },
+  'warning-full': {
+    className: 'bg-error text-white hover:bg-error active:bg-error w-full',
+    variant: 'solid' as const,
+    color: 'danger' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+    fullWidth: true,
   },
 
   // Google sign-in button
-  google: {
-    className: 'w-full mt-2 flex justify-center items-center bg-[#F4F4F4] text-black',
+  'google': {
+    className: 'w-full mt-2 flex justify-center items-center bg-neutral-40 text-black',
+    variant: 'solid' as const,
+    color: 'default' as const,
     size: 'lg' as const,
     fullWidth: true,
     radius: 'lg' as const,
   },
 
-  // Danger variants
-  'danger-lg': {
-    className: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
-    size: 'lg' as const,
-    fullWidth: true,
-    radius: 'lg' as const,
-  },
-  'danger-md': {
-    className: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
+  // Convenience presets with default medium size
+  'primary': {
+    className: 'bg-primary text-white hover:bg-primary-40 active:bg-primary-40',
+    variant: 'solid' as const,
+    color: 'primary' as const,
     size: 'md' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+    radius: 'md' as const,
   },
-  'danger-sm': {
-    className: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 text-sm',
-    size: 'sm' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-  },
-
-  // Success variants
-  'success-lg': {
-    className: 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800',
-    size: 'lg' as const,
-    fullWidth: true,
-    radius: 'lg' as const,
-  },
-  'success-md': {
-    className: 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800',
+  'secondary': {
+    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
     size: 'md' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
+    radius: 'md' as const,
   },
-  'success-sm': {
-    className: 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800 text-sm',
-    size: 'sm' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-  },
-
-  // Disabled state
-  'disabled-lg': {
-    disabled: true,
-    size: 'lg' as const,
-    fullWidth: true,
-    radius: 'lg' as const,
-    type: 'button' as const, // Default type for disabled buttons
-  },
-  'disabled-md': {
-    disabled: true,
+  'tertiary': {
+    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20',
+    variant: 'bordered' as const,
+    color: 'primary' as const,
     size: 'md' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-    type: 'button' as const, // Default type for disabled buttons
+    radius: 'md' as const,
   },
-  'disabled-sm': {
-    disabled: true,
-    size: 'sm' as const,
-    fullWidth: false,
-    radius: 'lg' as const,
-    type: 'button' as const, // Default type for disabled buttons
+  'ghost': {
+    className: 'bg-transparent text-primary hover:bg-primary-20',
+    variant: 'light' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+  },
+  'warning': {
+    className: 'bg-error text-white hover:bg-error active:bg-error',
+    variant: 'solid' as const,
+    color: 'danger' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
   },
 } as const;
 
 // Type for button preset configuration
 type ButtonPreset = {
   className?: string;
+  variant?: 'solid' | 'bordered' | 'light' | 'flat' | 'faded' | 'shadow' | 'ghost';
+  color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   radius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   type?: 'button' | 'submit' | 'reset';
-  disabled?: boolean;
+  isDisabled?: boolean;
+  startContent?: React.ReactNode;
+  endContent?: React.ReactNode;
 };
 
 interface ButtonProps {
@@ -191,6 +231,9 @@ interface ButtonProps {
   loading?: boolean;
   // New preset variant prop
   variant?: keyof typeof buttonPresets;
+  // Icon content props
+  startContent?: React.ReactNode;
+  endContent?: React.ReactNode;
   // Legacy props for backward compatibility
   size?: 'sm' | 'md' | 'lg';
   color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
@@ -205,6 +248,8 @@ const Button = ({
   type = 'button',
   loading = false,
   variant,
+  startContent,
+  endContent,
   // Legacy props
   size = 'lg',
   color = 'primary',
@@ -217,25 +262,29 @@ const Button = ({
   if (variant && buttonPresets[variant]) {
     const preset = buttonPresets[variant] as ButtonPreset;
 
+    // Handle disabled state automatically
+    const isDisabled = disabled || preset.isDisabled;
+    
+    // Handle loading state automatically
+    const isLoading = loading;
+
     // Combine preset classes with additional className
     const finalClasses = cn(preset.className, className);
 
     return (
       <HeroButton
-        type={preset.type || type} // Use preset type if available, otherwise fallback to type prop
+        type={preset.type || type}
+        variant={preset.variant}
+        color={preset.color}
         size={preset.size}
-        disabled={disabled}
-        isLoading={loading}
-        onPress={onClick}
-        className={`${finalClasses} data-[pressed=true]:scale-[0.97] transition-transform`}
         radius={preset.radius}
-        variant="solid"
-        style={{
-          background: 'transparent',
-          border: 'none',
-          color: 'inherit',
-          boxShadow: 'none',
-        }}
+        fullWidth={preset.fullWidth || fullWidth}
+        isDisabled={isDisabled}
+        isLoading={isLoading}
+        onPress={onClick}
+        startContent={startContent}
+        endContent={endContent}
+        className={`${finalClasses} data-[pressed=true]:scale-[0.97] transition-transform`}
       >
         {children}
       </HeroButton>
@@ -246,12 +295,14 @@ const Button = ({
   return (
     <HeroButton
       type={type}
+      variant="solid"
       color={color}
       size={size}
-      variant="solid"
       disabled={disabled}
       isLoading={loading}
       onPress={onClick}
+      startContent={startContent}
+      endContent={endContent}
       className={cn(fullWidth && 'w-full', className)}
       radius={radius}
     >
