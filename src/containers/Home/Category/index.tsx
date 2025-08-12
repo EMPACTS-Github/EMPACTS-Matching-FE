@@ -1,23 +1,22 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Button } from "@heroui/react";
-import { STARTUP_SDG_GOALS } from "@/constants/sdgs";
-import CategoryItem from "./CategoryItem";
-import { SdgGoal } from "@/interfaces/startup";
+import React, { useState } from 'react';
+import { Button } from '@heroui/react';
+import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
+import CategoryItem from './CategoryItem';
+import { SdgGoal } from '@/interfaces/startup';
 import ChevronDownIcon from '@/components/Icons/ChevronDownIcon';
-import ChevronUpIcon from "@/components/Icons/ChevronUpIcon";
+import ChevronUpIcon from '@/components/Icons/ChevronUpIcon';
 
 interface CategoryProps {
   selectedCategory?: string[];
   setSelectedCategory: (categories: string[]) => void;
 }
 
-const CategoryList: React.FC<CategoryProps> = ({
-  selectedCategory = [],
-  setSelectedCategory,
-}) => {
-  const allCategories: SdgGoal[] = (Object.keys(STARTUP_SDG_GOALS) as Array<keyof typeof STARTUP_SDG_GOALS>).map((key) => ({
+const CategoryList: React.FC<CategoryProps> = ({ selectedCategory = [], setSelectedCategory }) => {
+  const allCategories: SdgGoal[] = (
+    Object.keys(STARTUP_SDG_GOALS) as Array<keyof typeof STARTUP_SDG_GOALS>
+  ).map((key) => ({
     id: STARTUP_SDG_GOALS[key].textValue,
     label: STARTUP_SDG_GOALS[key].label,
   }));
@@ -47,7 +46,7 @@ const CategoryList: React.FC<CategoryProps> = ({
   const handleSelectAll = () => {
     setSelectAll(true);
     setSelectedCategory([]);
-  }
+  };
 
   return (
     <div className="w-full p-6">
@@ -55,18 +54,16 @@ const CategoryList: React.FC<CategoryProps> = ({
         <Button
           onPress={() => handleSelectAll()}
           size="md"
-          variant={selectAll ? "solid" : "ghost"}
+          variant={selectAll ? 'solid' : 'ghost'}
           radius="full"
           color="primary"
           style={{
-            whiteSpace: "normal", // Ensure full text is displayed
-            wordBreak: "break-word", // Break long words
+            whiteSpace: 'normal', // Ensure full text is displayed
+            wordBreak: 'break-word', // Break long words
           }}
-          className={!selectAll ? "border-empacts-grey-50 border-1" : ""}
+          className={!selectAll ? 'border-empacts-grey-50 border-1' : ''}
         >
-          <div className="text-sm">
-            All
-          </div>
+          <div className="text-sm">All</div>
         </Button>
         {initialCategories.map((category) => (
           <CategoryItem
@@ -76,19 +73,18 @@ const CategoryList: React.FC<CategoryProps> = ({
             handleSelectCategory={handleSelectCategory}
           />
         ))}
-        {!showMore && (<Button
-          onPress={() => setShowMore(!showMore)}
-          size="md"
-          variant="ghost"
-          radius="full"
-          color="primary"
-          className="border-empacts-grey-50 border-1"
-          endContent={<ChevronDownIcon className="color-empacts" />}
-        >
-          <div className="text-sm font-semibold">
-            More
-          </div>
-        </Button>
+        {!showMore && (
+          <Button
+            onPress={() => setShowMore(!showMore)}
+            size="md"
+            variant="ghost"
+            radius="full"
+            color="primary"
+            className="border-empacts-grey-50 border-1"
+            endContent={<ChevronDownIcon className="color-empacts" />}
+          >
+            <div className="text-sm font-semibold">More</div>
+          </Button>
         )}
       </div>
       {showMore && (
@@ -131,9 +127,7 @@ const CategoryList: React.FC<CategoryProps> = ({
               className="border-empacts-grey-50 border-1"
               endContent={<ChevronUpIcon className="color-empacts" />}
             >
-              <div className="text-sm font-semibold">
-                Less
-              </div>
+              <div className="text-sm font-semibold">Less</div>
             </Button>
           </div>
         </div>

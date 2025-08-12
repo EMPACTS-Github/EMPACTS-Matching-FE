@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
-import { addToast } from "@heroui/react";
+import { addToast } from '@heroui/react';
 import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
 import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -34,8 +34,8 @@ function ForgotPassword() {
   }, []);
 
   const handleBackButton = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   const handleSentCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +81,13 @@ function ForgotPassword() {
     }
   };
 
-  const BackButton = ({ onClick, className = 'absolute left-10 hover:bg-gray-300 rounded-lg' }: { onClick: () => void; className?: string }) => (
+  const BackButton = ({
+    onClick,
+    className = 'absolute left-10 hover:bg-gray-300 rounded-lg',
+  }: {
+    onClick: () => void;
+    className?: string;
+  }) => (
     <div className={className} onClick={onClick}>
       <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
     </div>
@@ -99,8 +105,6 @@ function ForgotPassword() {
     }
   }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
 
-
-
   return (
     <div className="bg-white h-full flex justify-center">
       <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
@@ -108,13 +112,13 @@ function ForgotPassword() {
         {currentScreen == 'verification' ? (
           <EmailVerification
             email={email}
-            setEmailSent={() => { }}
+            setEmailSent={() => {}}
             setResetPasswordScreen={() => router.push('/auth/forgot-password?stage=reset')}
             title="Verification code"
             description={`A verification code has been sent to <strong>${email}</strong>. Please input your OTP code to finish reset password.`}
           />
         ) : currentScreen == 'reset' ? (
-          <ResetPassword email={email} setOpenResetPasswordScreen={() => { }} />
+          <ResetPassword email={email} setOpenResetPasswordScreen={() => {}} />
         ) : (
           <div className="space-y-[12.5%]">
             <AuthHeader
@@ -132,10 +136,7 @@ function ForgotPassword() {
                 errorMessage={emailError}
                 required
               />
-              <Button 
-                variant="action-lg"
-                className="mt-4"
-              >
+              <Button variant="submit-lg-fullwidth" className="mt-4">
                 Continue
               </Button>
             </form>

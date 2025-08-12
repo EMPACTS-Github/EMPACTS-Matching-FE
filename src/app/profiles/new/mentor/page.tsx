@@ -1,7 +1,7 @@
-import CreateNewMentorContainer from "@/containers/CreateNewMentor";
+import CreateNewMentorContainer from '@/containers/CreateNewMentor';
 
 function CreateNewMentor() {
-    return <CreateNewMentorContainer />
-};
+  return <CreateNewMentorContainer />;
+}
 
 export default CreateNewMentor;

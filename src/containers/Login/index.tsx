@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { addToast } from "@heroui/react";
+import { addToast } from '@heroui/react';
 import { emailSignin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
@@ -14,20 +14,26 @@ import FormFooterAction from '@/components/Form/FormFooterAction';
 import { ROUTES } from '@/constants/link';
 import { getStartupInvitationUrl } from '@/constants/link';
 import { checkEmailFormat } from '@/utils/checkValid';
-import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
+import {
+  API_RESPONSE_CODES,
+  TOAST_TIMEOUT,
+  TOAST_COLORS,
+  TOAST_MESSAGES,
+  API_RESPONSE_NUMBER_CODES,
+} from '@/constants/api';
 import Image from 'next/image';
 
 function routeAfterLoginWithInvitation(router: any, response: any) {
-  const hasInvitationStatus = localStorage.getItem("status");
+  const hasInvitationStatus = localStorage.getItem('status');
 
   if (hasInvitationStatus) {
-    const invitationCode = localStorage.getItem("invitationCode");
-    const invitedEmail = localStorage.getItem("invitedEmail");
+    const invitationCode = localStorage.getItem('invitationCode');
+    const invitedEmail = localStorage.getItem('invitedEmail');
 
     if (invitedEmail === response.email) {
       router.push(getStartupInvitationUrl(invitationCode || '', invitedEmail || ''));
     } else {
-      router.push(ROUTES.PROFILES.NEW); 
+      router.push(ROUTES.PROFILES.NEW);
     }
   } else {
     if (response.user.hasProfile) {
@@ -65,6 +71,19 @@ function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email) {
+      setEmailError('Email is required');
+      setEmailColor('danger');
+      setIsValidEmail(false);
+      return;
+    }
+    if (!password) {
+      setPasswordError('Password is required');
+      setPasswordColor('danger');
+      setIsValidPassword(false);
+      return;
+    }
+
     setHasSubmitted(true);
 
     const isEmailValid = email ? updateEmailValidation(email) : false;
@@ -72,19 +91,7 @@ function Login() {
 
     try {
       const response = await emailSignin(email, password);
-
-      if (response.code !== API_RESPONSE_CODES.LOGIN) {
-        setPasswordError(response.message || TOAST_MESSAGES.INVALID_CREDENTIALS);
-        setPasswordColor('danger');
-        setIsValidPassword(false);
-        setEmailColor('danger');
-        setIsValidEmail(false);
-        addToast({
-          title: response.message || TOAST_MESSAGES.INVALID_CREDENTIALS,
-          color: TOAST_COLORS.DANGER,
-          timeout: TOAST_TIMEOUT.MEDIUM,
-        });
-      } else {
+      if (response.code == API_RESPONSE_CODES.LOGIN) {
         setPasswordError('');
         setPasswordColor('default');
         setIsValidPassword(true);
@@ -94,25 +101,58 @@ function Login() {
           title: TOAST_MESSAGES.LOGIN_SUCCESS,
           color: TOAST_COLORS.SUCCESS,
         });
-
         localStorage.setItem('user', JSON.stringify(response.data.user));
         routeAfterLoginWithInvitation(router, response.data);
       }
-    } catch (error) {
-      console.error(error);
-      addToast({
-        title: TOAST_MESSAGES.LOGIN_ERROR,
-        color: TOAST_COLORS.DANGER,
-        timeout: TOAST_TIMEOUT.MEDIUM,
-      });
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.status === API_RESPONSE_NUMBER_CODES.LOGIN_INVALID_CREDENTIALS
+      ) {
+        setPasswordError(TOAST_MESSAGES.INVALID_CREDENTIALS);
+        setPasswordColor('danger');
+        setIsValidPassword(false);
+        setEmailColor('danger');
+        setIsValidEmail(false);
+        setEmail('');
+        setPassword('');
+        addToast({
+          title: TOAST_MESSAGES.INVALID_CREDENTIALS,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
+      } else {
+        console.error(error);
+        addToast({
+          title: TOAST_MESSAGES.LOGIN_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
+      }
     }
   };
+
+  useEffect(() => {
+    if (email) {
+      setEmailError('');
+      setEmailColor('default');
+      setIsValidEmail(true);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password) {
+      setPasswordError('');
+      setPasswordColor('default');
+      setIsValidPassword(true);
+    }
+  }, [password]);
 
   useEffect(() => {
     if (hasSubmitted && email) {
       updateEmailValidation(email);
     }
-  }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
+  }, [email, hasSubmitted, updateEmailValidation]);
 
   useEffect(() => {
     async function getUserAuthInfo() {
@@ -139,12 +179,12 @@ function Login() {
         });
       }
     }
-    getUserAuthInfo()
+    getUserAuthInfo();
   }, [searchParams, router]);
 
   // Inline components
   const FormDivider = () => (
-    <div className="my-6 text-gray-500 flex items-center">
+    <div className="mt-6 mb-4 text-gray-500 flex items-center">
       <div className="flex-grow border-t border-gray-300"></div>
       <span className="mx-4 text-black text-sm">Or</span>
       <div className="flex-grow border-t border-gray-300"></div>
@@ -152,17 +192,8 @@ function Login() {
   );
 
   const GoogleSignInButton = () => (
-    <Button
-      onClick={loginWithGoogleAPI}
-      variant="google"
-    >
-      <Image
-        src="/google-icon.svg"
-        alt="Google icon"
-        width={20}
-        height={20}
-        className="mr-2"
-      />
+    <Button onClick={loginWithGoogleAPI} variant="google">
+      <Image src="/google-icon.svg" alt="Google icon" width={20} height={20} className="mr-2" />
       Sign in with Google
     </Button>
   );
@@ -170,10 +201,7 @@ function Login() {
   return (
     <div className="bg-white h-screen flex justify-center">
       <div className="login-form p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
-        <AuthHeader
-          title="Sign in"
-          description=""
-        />
+        <AuthHeader title="Sign in" description="" />
         <form onSubmit={handleLogin} className="space-y-4">
           <Input
             label="Email"
@@ -194,23 +222,27 @@ function Login() {
             errorMessage={passwordError}
           />
           <div className="text-right !mt-1">
-            <AuthLink href={ROUTES.AUTH.FORGOT_PASSWORD} className="text-sm font-bold text-[#1A1D1F]">
+            <AuthLink
+              href={ROUTES.AUTH.FORGOT_PASSWORD}
+              className="text-xs font-semibold text-black"
+            >
               Forgot your password?
             </AuthLink>
           </div>
-          <Button 
-            variant="submit-lg"
-            className="mt-4"
-          >
+          <Button variant="submit-lg-fullwidth" className="mt-4">
             Sign in
           </Button>
         </form>
-        
+
         <FormDivider />
         <GoogleSignInButton />
         <FormFooterAction
           text="Don't have an account?"
-          action={<AuthLink href={ROUTES.AUTH.SIGNUP}>Sign Up</AuthLink>}
+          action={
+            <AuthLink href={ROUTES.AUTH.SIGNUP} className="text-md font-semibold text-primary">
+              Sign Up
+            </AuthLink>
+          }
         />
       </div>
     </div>

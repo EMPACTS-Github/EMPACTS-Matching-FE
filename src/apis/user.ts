@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import axiosInstance from "."
+import axiosInstance from '.';
 
 export const getUserAuthInfoAPI = async () => {
   const response = await axiosInstance.get('/users/auth-info', {
-    withCredentials: true
-  })
-  return response.data
-}
+    withCredentials: true,
+  });
+  return response.data;
+};

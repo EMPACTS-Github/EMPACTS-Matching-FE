@@ -2,9 +2,7 @@
 import SignUpContainer from '@/containers/SignUp';
 
 function SignUp() {
-  return (
-    <SignUpContainer />
-  );
+  return <SignUpContainer />;
 }
 
 export default SignUp;

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { addToast } from "@heroui/react";
+import { addToast } from '@heroui/react';
 import { emailSignup } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
@@ -37,7 +37,7 @@ function SignUp() {
     e.preventDefault();
     const isEmailValid = updateEmailValidation(email);
     if (!isEmailValid) return;
-    
+
     try {
       const response = await emailSignup(email);
       if (response.code == API_RESPONSE_CODES.VERIFICATION_EMAIL_SENT) {
@@ -75,10 +75,7 @@ function SignUp() {
           <RegisterInfo />
         ) : (
           <div>
-            <AuthHeader
-              title="Sign up"
-              description=""
-            />
+            <AuthHeader title="Sign up" description="" />
             <form onSubmit={handleSignup} className="space-y-4">
               <Input
                 label="Email"
@@ -88,18 +85,18 @@ function SignUp() {
                 isInvalid={!isValidEmail}
                 color={emailColor}
                 errorMessage={emailError}
-                required
+                required={true}
               />
-              <Button 
-                variant="submit-lg"
-              >
-                Sign up
-              </Button>
+              <Button variant="submit-lg-fullwidth">Sign up</Button>
             </form>
-            
+
             <FormFooterAction
               text="Already have an account?"
-              action={<AuthLink href={ROUTES.AUTH.LOGIN}>Sign in</AuthLink>}
+              action={
+                <AuthLink href={ROUTES.AUTH.LOGIN} className="text-md font-semibold text-primary">
+                  Sign in
+                </AuthLink>
+              }
             />
           </div>
         )}

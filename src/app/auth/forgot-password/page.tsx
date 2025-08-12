@@ -1,9 +1,7 @@
-import ForgotPasswordContainer from "@/containers/ForgotPassword";
+import ForgotPasswordContainer from '@/containers/ForgotPassword';
 
 function ForgotPassword() {
-  return (
-    <ForgotPasswordContainer />
-  );
+  return <ForgotPasswordContainer />;
 }
 
 export default ForgotPassword;

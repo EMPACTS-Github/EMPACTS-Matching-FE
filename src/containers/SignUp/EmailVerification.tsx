@@ -5,14 +5,14 @@ import { verifyOTP } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
 import Image from 'next/image';
-import Input from '@/components/Input/Input';
+import OtpInput from '@/components/Input/OtpInput';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import FormFooterAction from '@/components/Form/FormFooterAction';
 import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function EmailVerification() {
   const router = useRouter();
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState('');
   const email = localStorage.getItem('email') || '';
 
   const handleSubmitOtp = async () => {
@@ -81,14 +81,14 @@ function EmailVerification() {
         <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Verification code</h2>
       </div>
       <p className="text-gray-600">
-        A verification code has been sent to <strong>{email}</strong>.
-        Please input your OTP code to finish the registration process.
+        A verification code has been sent to <strong>{email}</strong>. Please input your OTP code to
+        finish the registration process.
       </p>
       <div className="flex justify-center space-x-2 mt-6">
-        <Input
-          variant="otp"
+        <OtpInput
+          variant="otp-underline-lg"
           value={otp}
-          onChange={setOtp}
+          onValueChange={setOtp}
           onComplete={handleSubmitOtp}
         />
       </div>
@@ -104,4 +104,4 @@ function EmailVerification() {
   );
 }
 
-export default EmailVerification; 
+export default EmailVerification;

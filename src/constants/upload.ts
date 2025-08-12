@@ -22,11 +22,11 @@ export const ATTACHMENTS_TYPE_IMAGE = {
   JPG: 'jpg',
   JPEG: 'jpeg',
   PNG: 'png',
-}
+};
 
 export const ATTACHMENTS_TYPE_VIDEO = {
   MP4: 'mp4',
-}
+};
 
 export const ATTACHMENTS_TYPE_DOCUMENT = {
   PDF: 'pdf',
@@ -36,4 +36,4 @@ export const ATTACHMENTS_TYPE_DOCUMENT = {
   XLSX: 'xlsx',
   PPT: 'ppt',
   PPTX: 'pptx',
-}
+};

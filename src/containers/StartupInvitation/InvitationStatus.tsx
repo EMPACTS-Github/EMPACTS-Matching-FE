@@ -1,11 +1,11 @@
-"use client";
+'use client';
 import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type Props = {
-  message: string,
-}
+  message: string;
+};
 
 const InvitationStatus = ({ message }: Props) => {
   const router = useRouter();
@@ -20,7 +20,9 @@ const InvitationStatus = ({ message }: Props) => {
   return (
     <div className="w-full flex justify-center items-center mt-10">
       <div className="rounded-xl p-8 bg-white flex flex-col gap-2 justify-center items-center">
-        <p className="text-xl text-center font-[600] text-[#09090B]">{message} Please ask your inviter to resend the invitation</p>
+        <p className="text-xl text-center font-[600] text-[#09090B]">
+          {message} Please ask your inviter to resend the invitation
+        </p>
         <Button
           onPress={handleReturnToHome}
           variant="solid"
@@ -30,7 +32,7 @@ const InvitationStatus = ({ message }: Props) => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default InvitationStatus
+export default InvitationStatus;

@@ -1,12 +1,12 @@
 import UserAvatarPlaceholder from '/public/user-avatar-placeholder.svg';
-import { Input, Avatar } from "@heroui/react";
+import { Input, Avatar } from '@heroui/react';
 import Image from 'next/image';
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 
 type UserAvatarProps = {
-  avatarUrl?: string,
-  handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-}
+  avatarUrl?: string;
+  handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 function UserAvatar({ avatarUrl, handleAvatarChange }: UserAvatarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -16,27 +16,20 @@ function UserAvatar({ avatarUrl, handleAvatarChange }: UserAvatarProps) {
   };
 
   return (
-    <div
-      className="relative group cursor-pointer"
-      onClick={handleClick}
-    >
+    <div className="relative group cursor-pointer" onClick={handleClick}>
       <div className="relative">
-        {
-          avatarUrl ? (<Avatar
-            src={avatarUrl}
-            alt="User avatar"
-            className="w-[100px] h-[100px]"
-          />) : (
-            <Image
-              src={UserAvatarPlaceholder}
-              alt="User avatar placeholder"
-              width={100}
-              height={100}
-            />
-          )
-        }
+        {avatarUrl ? (
+          <Avatar src={avatarUrl} alt="User avatar" className="w-[100px] h-[100px]" />
+        ) : (
+          <Image
+            src={UserAvatarPlaceholder}
+            alt="User avatar placeholder"
+            width={100}
+            height={100}
+          />
+        )}
       </div>
-      
+
       <Input
         ref={fileInputRef}
         type="file"
@@ -45,7 +38,7 @@ function UserAvatar({ avatarUrl, handleAvatarChange }: UserAvatarProps) {
         aria-label="Upload avatar"
       />
     </div>
-  )
+  );
 }
 
-export default UserAvatar
+export default UserAvatar;

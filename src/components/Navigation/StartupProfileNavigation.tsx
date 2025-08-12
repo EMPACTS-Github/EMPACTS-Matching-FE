@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Tab, Tabs } from "@heroui/react";
-import { startup_profile_detail } from "@/apis/startup-profile"
-import { StartupProfileResponse } from "@/interfaces/StartupProfile";
+import { Tab, Tabs } from '@heroui/react';
+import { startup_profile_detail } from '@/apis/startup-profile';
+import { StartupProfileResponse } from '@/interfaces/StartupProfile';
 import ExploreContainer from '@/containers/Explore/ExploreContainer';
 import StartupMemberContainer from '@/containers/StartupMember/StartupMemberContainer';
 import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
-import { suggest_mentor_list } from "@/apis/suggest-mentor";
+import { suggest_mentor_list } from '@/apis/suggest-mentor';
 import { SuggestMentors } from '@/interfaces/startup';
 import { useStartupIdStore } from '@/stores/startup-store';
 
@@ -15,12 +15,12 @@ interface StartupProfileNavigationProps {
   startupId: string;
 }
 
-const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
-  startupId,
-}) => {
-  const [selected, setSelected] = useState("explore");
+const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ startupId }) => {
+  const [selected, setSelected] = useState('explore');
   const [startup_profile, setStartupProfile] = useState<StartupProfileResponse>();
-  const [suggestedMentors, setSuggestedMentors] = useState<SuggestMentors[]>([{} as SuggestMentors]);
+  const [suggestedMentors, setSuggestedMentors] = useState<SuggestMentors[]>([
+    {} as SuggestMentors,
+  ]);
   const [error, setError] = useState<string | null>(null);
   const setStartupId = useStartupIdStore((state) => state.setStartupId);
 
@@ -38,13 +38,10 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
       const suggestedMentorList = await suggest_mentor_list({ startupId: startupId });
       setSuggestedMentors(suggestedMentorList.data);
     } catch (err: any) {
-      if (
-        err?.response?.status === 404 &&
-        err?.response?.data?.code === "SUGGESTION_NOT_FOUND"
-      ) {
-        setError("No suggestion found");
+      if (err?.response?.status === 404 && err?.response?.data?.code === 'SUGGESTION_NOT_FOUND') {
+        setError('No suggestion found');
       } else {
-        setError("Failed to fetch suggestion mentor");
+        setError('Failed to fetch suggestion mentor');
       }
       console.error('Failed to fetch suggested mentors:', err);
     }
@@ -67,35 +64,29 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({
           onSelectionChange={setSelected as any}
           className="w-full font-bold bg-white xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
         >
-          <Tab
-            key="explore"
-            title="Explore"
-            className="pt-0 px-2"
-          >
+          <Tab key="explore" title="Explore" className="pt-0 px-2">
             <ExploreContainer mentorList={suggestedMentors} error={error} />
           </Tab>
-          <Tab
-            key="profile"
-            title="Profile"
-            className="pt-0 px-2"
-          >
+          <Tab key="profile" title="Profile" className="pt-0 px-2">
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-              <StartupProfileContainer onFetchStartupProfile={fetchStartupProfile} startup_profile={startup_profile} />
+              <StartupProfileContainer
+                onFetchStartupProfile={fetchStartupProfile}
+                startup_profile={startup_profile}
+              />
             </div>
           </Tab>
-          <Tab
-            key="member"
-            title="Member"
-            className="pt-0 px-2"
-          >
+          <Tab key="member" title="Member" className="pt-0 px-2">
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
-              <StartupMemberContainer onFetchStartupProfile={fetchStartupProfile} startup_profile={startup_profile} />
+              <StartupMemberContainer
+                onFetchStartupProfile={fetchStartupProfile}
+                startup_profile={startup_profile}
+              />
             </div>
           </Tab>
-        </Tabs >
-      </div >
-    </div >
+        </Tabs>
+      </div>
+    </div>
   );
 };
 
-export default StartupProfileNavigation; 
+export default StartupProfileNavigation;

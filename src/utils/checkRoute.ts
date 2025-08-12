@@ -6,9 +6,11 @@ export const checkIsSameRoute = (clientRoute: string, builtRoute: string): boole
 
   // Find the all index of params in the built in route
   // For example: '/hello/:id/world/:id2' --> ['hello', ':id', 'world', ':id2'] --> [1, 3]
-  const paramIndexes = builtRouteSegments.map((route, index) => {
-    if (route[0] === ':') return index;
-  }).filter((position) => position);
+  const paramIndexes = builtRouteSegments
+    .map((route, index) => {
+      if (route[0] === ':') return index;
+    })
+    .filter((position) => position);
 
   // Check if both array have the same length
   if (clientRouteSegments.length === builtRouteSegments.length) {
@@ -27,4 +29,4 @@ export const checkIsSameRoute = (clientRoute: string, builtRoute: string): boole
   }
 
   return false;
-}
+};

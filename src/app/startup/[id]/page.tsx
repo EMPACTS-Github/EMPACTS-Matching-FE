@@ -1,13 +1,13 @@
-"use client";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { startup_detail } from "@/apis/startup";
-import ProfileHeader from "@/components/StartupDetail/ProfileHeader";
-import TabsSection from "@/components/StartupDetail/TabsSection";
-import { Startup } from "@/interfaces/startup";
-import { PROVINCES } from "@/constants/provinces";
-import { Skeleton } from "@heroui/skeleton";
-import { Divider } from "@heroui/react";
+'use client';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { startup_detail } from '@/apis/startup';
+import ProfileHeader from '@/components/StartupDetail/ProfileHeader';
+import TabsSection from '@/components/StartupDetail/TabsSection';
+import { Startup } from '@/interfaces/startup';
+import { PROVINCES } from '@/constants/provinces';
+import { Skeleton } from '@heroui/skeleton';
+import { Divider } from '@heroui/react';
 
 const StartupDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,9 +19,7 @@ const StartupDetailPage = () => {
         const response = await startup_detail(id);
 
         if (response.data && response.data.locationBased) {
-          const province = PROVINCES.find(
-            (p) => p.key === response.data.locationBased
-          );
+          const province = PROVINCES.find((p) => p.key === response.data.locationBased);
 
           if (province) {
             response.data.locationBased = province.label;
@@ -30,7 +28,7 @@ const StartupDetailPage = () => {
 
         setStartup(response.data);
       } catch (error) {
-        console.error("Error fetching startup details:", error);
+        console.error('Error fetching startup details:', error);
       }
     };
 

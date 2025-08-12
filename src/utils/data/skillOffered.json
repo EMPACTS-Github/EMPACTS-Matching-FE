@@ -1,66 +1,66 @@
 [
-    {
-        "value": "BRANDING_AND_POSITIONING",
-        "label": "Branding and Positioning"
-    },
-    {
-        "value": "MARKET_RESEARCH_AND_COMPETITOR_ANALYSIS",
-        "label": "Market Research and Competitor Analysis"
-    },
-    {
-        "value": "PRODUCT_DEVELOPMENT",
-        "label": "Product Development"
-    },
-    {
-        "value": "GO_TO_MARKET_STRATEGY",
-        "label": "Go-to-Market Strategy"
-    },
-    {
-        "value": "SALES_AND_BUSINESS_DEVELOPMENT",
-        "label": "Sales and Business Development"
-    },
-    {
-        "value": "DIGITAL_MARKETING_AND_SEO_SEM",
-        "label": "Digital Marketing and SEO/SEM"
-    },
-    {
-        "value": "FUNDRAISING_STRATEGY_AND_PITCHING",
-        "label": "Fundraising Strategy and Pitching"
-    },
-    {
-        "value": "FINANCIAL_MODELING_AND_PROJECTIONS",
-        "label": "Financial Modeling and Projections"
-    },
-    {
-        "value": "TEAM_BUILDING_AND_HR_MANAGEMENT",
-        "label": "Team Building and HR Management"
-    },
-    {
-        "value": "OPERATIONS_AND_SCALABILITY",
-        "label": "Operations and Scalability"
-    },
-    {
-        "value": "TECHNOLOGY_STACK_AND_ARCHITECTURE_PRIMARILY_SOFTWARE_DIGITAL",
-        "label": "Technology Stack and Architecture (Primarily Software/Digital)"
-    },
-    {
-        "value": "GROWTH_HACKING",
-        "label": "Growth Hacking"
-    },
-    {
-        "value": "CUSTOMER_ACQUISITION_AND_RETENTION",
-        "label": "Customer Acquisition and Retention"
-    },
-    {
-        "value": "PARTNERSHIP_DEVELOPMENT",
-        "label": "Partnership Development"
-    },
-    {
-        "value": "MANUFACTURING_PROCESS_OPTIMIZATION",
-        "label": "Manufacturing Process Optimization"
-    },
-    {
-        "value": "INVENTORY_MANAGEMENT_BASICS",
-        "label": "Inventory Management Basics"
-    }
+  {
+    "value": "BRANDING_AND_POSITIONING",
+    "label": "Branding and Positioning"
+  },
+  {
+    "value": "MARKET_RESEARCH_AND_COMPETITOR_ANALYSIS",
+    "label": "Market Research and Competitor Analysis"
+  },
+  {
+    "value": "PRODUCT_DEVELOPMENT",
+    "label": "Product Development"
+  },
+  {
+    "value": "GO_TO_MARKET_STRATEGY",
+    "label": "Go-to-Market Strategy"
+  },
+  {
+    "value": "SALES_AND_BUSINESS_DEVELOPMENT",
+    "label": "Sales and Business Development"
+  },
+  {
+    "value": "DIGITAL_MARKETING_AND_SEO_SEM",
+    "label": "Digital Marketing and SEO/SEM"
+  },
+  {
+    "value": "FUNDRAISING_STRATEGY_AND_PITCHING",
+    "label": "Fundraising Strategy and Pitching"
+  },
+  {
+    "value": "FINANCIAL_MODELING_AND_PROJECTIONS",
+    "label": "Financial Modeling and Projections"
+  },
+  {
+    "value": "TEAM_BUILDING_AND_HR_MANAGEMENT",
+    "label": "Team Building and HR Management"
+  },
+  {
+    "value": "OPERATIONS_AND_SCALABILITY",
+    "label": "Operations and Scalability"
+  },
+  {
+    "value": "TECHNOLOGY_STACK_AND_ARCHITECTURE_PRIMARILY_SOFTWARE_DIGITAL",
+    "label": "Technology Stack and Architecture (Primarily Software/Digital)"
+  },
+  {
+    "value": "GROWTH_HACKING",
+    "label": "Growth Hacking"
+  },
+  {
+    "value": "CUSTOMER_ACQUISITION_AND_RETENTION",
+    "label": "Customer Acquisition and Retention"
+  },
+  {
+    "value": "PARTNERSHIP_DEVELOPMENT",
+    "label": "Partnership Development"
+  },
+  {
+    "value": "MANUFACTURING_PROCESS_OPTIMIZATION",
+    "label": "Manufacturing Process Optimization"
+  },
+  {
+    "value": "INVENTORY_MANAGEMENT_BASICS",
+    "label": "Inventory Management Basics"
+  }
 ]

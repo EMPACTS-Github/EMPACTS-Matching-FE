@@ -1,4 +1,4 @@
-import axiosInstance from ".";
+import axiosInstance from '.';
 
 interface ICheckInvitationStatus {
   inviteCode: string;

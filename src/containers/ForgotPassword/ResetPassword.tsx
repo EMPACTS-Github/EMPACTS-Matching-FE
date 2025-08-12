@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { addToast } from "@heroui/react";
+import { addToast } from '@heroui/react';
 import { resetPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
@@ -22,7 +22,9 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
   const [isValidPassword, setIsValidPassword] = useState(true);
   const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(true);
   const [passwordError, setPasswordError] = useState('');
-  const [passwordDescription, setPasswordDescription] = useState('Password must contain at least 12 characters');
+  const [passwordDescription, setPasswordDescription] = useState(
+    'Password must contain at least 12 characters'
+  );
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [passwordColor, setPasswordColor] = useState<'default' | 'danger'>('default');
   const [confirmPasswordColor, setConfirmPasswordColor] = useState<'default' | 'danger'>('default');
@@ -63,13 +65,31 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
     setOpenResetPasswordScreen(false);
   };
 
-  const BackButton = ({ onClick, className = 'absolute left-10 hover:bg-gray-300 rounded-lg' }: { onClick: () => void; className?: string }) => (
+  const BackButton = ({
+    onClick,
+    className = 'absolute left-10 hover:bg-gray-300 rounded-lg',
+  }: {
+    onClick: () => void;
+    className?: string;
+  }) => (
     <div className={className} onClick={onClick}>
       <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
     </div>
   );
 
-  const LogoHeader = ({ title, logoSrc = '/empacts-logo.png', logoWidth = 0, logoHeight = 0, titleClassName = 'text-2xl font-bold mt-6 mb-6 text-black' }: { title: string; logoSrc?: string; logoWidth?: number; logoHeight?: number; titleClassName?: string }) => (
+  const LogoHeader = ({
+    title,
+    logoSrc = '/empacts-logo.png',
+    logoWidth = 0,
+    logoHeight = 0,
+    titleClassName = 'text-2xl font-bold mt-6 mb-6 text-black',
+  }: {
+    title: string;
+    logoSrc?: string;
+    logoWidth?: number;
+    logoHeight?: number;
+    titleClassName?: string;
+  }) => (
     <div className="flex flex-col items-center text-center">
       <Image
         src={logoSrc}
@@ -123,11 +143,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             errorMessage={confirmPasswordError}
             required
           />
-          <Button 
-            variant="submit-lg"
-          >
-            Reset Password
-          </Button>
+          <Button variant="submit-lg-fullwidth">Reset Password</Button>
         </form>
       </div>
     </div>

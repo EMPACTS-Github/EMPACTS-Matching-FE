@@ -1,8 +1,8 @@
-import { Avatar } from "@heroui/react";
+import { Avatar } from '@heroui/react';
 import Image from 'next/image';
 import GroupIcon from '/public/assets/group.png';
 import LabelIcon from '/public/assets/label.png';
-import { Startup } from "@/interfaces/startup";
+import { Startup } from '@/interfaces/startup';
 
 interface ProfileHeaderProps {
   startup: Startup;
@@ -12,12 +12,16 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ startup }) => {
   return (
     <div className="flex flex-col gap-7">
       <div className="flex gap-3 items-center">
-        <Avatar isBordered color="primary" className="w-[60px] h-[60px] bg-white" radius="md" src={startup.avtUrl} />
+        <Avatar
+          isBordered
+          color="primary"
+          className="w-[60px] h-[60px] bg-white"
+          radius="md"
+          src={startup.avtUrl}
+        />
         <div>
           <h1 className="text-2xl font-bold text-gray-800">{startup?.name}</h1>
-          <p className="text-gray-600">
-            {startup?.locationBased || "Location not specified"}
-          </p>
+          <p className="text-gray-600">{startup?.locationBased || 'Location not specified'}</p>
         </div>
       </div>
       <div className="flex gap-7">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input as HeroInput, InputOtp } from '@heroui/react';
+import { Input as HeroInput } from '@heroui/react';
 
 // Predefined input variants based on custom colors
 export const inputVariants = {
@@ -18,6 +18,7 @@ interface BaseInputProps {
   size?: 'sm' | 'md' | 'lg';
   description?: string;
   className?: string;
+  labelPlacement?: 'inside' | 'outside' | 'outside-left' | 'outside-top';
   // Custom variant props for predefined styles
   customVariant?: keyof typeof inputVariants;
   customStyle?: 'underlined' | 'bordered' | 'filled';
@@ -28,16 +29,7 @@ interface TextInputProps extends BaseInputProps {
   type?: 'text' | 'email' | 'password';
 }
 
-interface OTPInputProps extends BaseInputProps {
-  variant: 'otp';
-  onComplete?: () => void;
-  length?: number;
-  otpVariant?: 'flat' | 'bordered' | 'underlined' | 'faded';
-}
-
-type InputProps = TextInputProps | OTPInputProps;
-
-function Input(props: InputProps) {
+const Input = (props: TextInputProps) => {
   const {
     value,
     onChange,
@@ -50,52 +42,29 @@ function Input(props: InputProps) {
     size = 'lg',
     description,
     className,
+    labelPlacement,
     customVariant,
-    customStyle = 'underlined'
+    customStyle = 'underlined',
   } = props;
 
   // Get custom variant classes if specified
-  const customVariantClass = customVariant && customStyle 
-    ? inputVariants[customVariant][customStyle] 
-    : '';
-
-  // Handle OTP Input
-  if (props.variant === 'otp') {
-    const { onComplete, length = 6, otpVariant = 'underlined' } = props;
-    
-    const finalOtpClasses = [
-      customVariantClass,
-      className
-    ].filter(Boolean).join(' ');
-
-    return (
-      <InputOtp
-        length={length}
-        value={value}
-        onValueChange={onChange}
-        onComplete={onComplete}
-        variant={otpVariant}
-        className={finalOtpClasses}
-      />
-    );
-  }
+  const customVariantClass =
+    customVariant && customStyle ? inputVariants[customVariant][customStyle] : '';
 
   // Handle Text Inputs (text, email, password)
   const { variant, type } = props;
-  
-  // Determine input type based on variant
-  const inputType = type || (variant === 'email' ? 'email' : variant === 'password' ? 'password' : 'text');
 
-  const finalClasses = [
-    customVariantClass,
-    className
-  ].filter(Boolean).join(' ');
+  // Determine input type based on variant
+  const inputType =
+    type || (variant === 'email' ? 'email' : variant === 'password' ? 'password' : 'text');
+
+  const finalClasses = [customVariantClass, className].filter(Boolean).join(' ');
 
   // If using custom variant, apply custom styling with better override support
   if (customVariant) {
-    const heroVariant = customStyle === 'filled' ? 'flat' : 
-                       customStyle === 'bordered' ? 'bordered' : 'underlined';
-    
+    const heroVariant =
+      customStyle === 'filled' ? 'flat' : customStyle === 'bordered' ? 'bordered' : 'underlined';
+
     return (
       <HeroInput
         type={inputType}
@@ -109,7 +78,7 @@ function Input(props: InputProps) {
         errorMessage={errorMessage}
         description={description}
         onChange={(e) => onChange(e.target.value)}
-        required={required}
+        isRequired={required}
         className={finalClasses}
         classNames={{
           base: 'group',
@@ -128,11 +97,13 @@ function Input(props: InputProps) {
           errorMessage: 'text-inherit',
           description: 'text-inherit/70',
         }}
-        style={{
-          // Reset default styles to allow full customization
-          '--input-color': 'inherit',
-          '--input-bg': 'transparent',
-        } as React.CSSProperties}
+        style={
+          {
+            // Reset default styles to allow full customization
+            '--input-color': 'inherit',
+            '--input-bg': 'transparent',
+          } as React.CSSProperties
+        }
       />
     );
   }
@@ -152,10 +123,10 @@ function Input(props: InputProps) {
       errorMessage={errorMessage}
       description={description}
       onChange={(e) => onChange(e.target.value)}
-      required={required}
+      isRequired={required}
       className={finalClasses}
     />
   );
-}
+};
 
-export default Input; 
+export default Input;
