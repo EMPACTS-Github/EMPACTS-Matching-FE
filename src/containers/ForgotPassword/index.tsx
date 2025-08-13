@@ -1,18 +1,20 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
-import { addToast } from '@heroui/react';
-import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
-import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState, useEffect, useCallback } from 'react';
+import { addToast, Form } from '@heroui/react';
 import { sendForgotPasswordOTP } from '@/apis/auth';
-import AuthHeader from '@/components/Header/AuthHeader';
+import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
+import AuthHeader from '@/components/Header/AuthHeader';
 import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
+import FormFooterAction from '@/components/Form/FormFooterAction';
+import { TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES, API_RESPONSE_CODES } from '@/constants/api';
+import { checkEmailFormat } from '@/utils/checkValid';
+import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
+import ResetPassword from '@/containers/ForgotPassword/ResetPassword';
+import { useSearchParams } from 'next/navigation';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 import Image from 'next/image';
-import { checkEmailFormat } from '@/utils/checkValid';
-import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 
 function ForgotPassword() {
   const router = useRouter();
@@ -97,11 +99,13 @@ function ForgotPassword() {
     if (storedEmail) {
       setEmail(storedEmail);
     }
+  }, []);
 
+  useEffect(() => {
     if (hasSubmitted && email) {
       updateEmailValidation(email);
     }
-  }, [email, hasSubmitted, isValidEmail, updateEmailValidation]);
+  }, [email, hasSubmitted, updateEmailValidation]);
 
   return (
     <div className="bg-white h-full flex justify-center">
@@ -123,7 +127,7 @@ function ForgotPassword() {
               title="Forgot password"
               description="Enter your email address and we will send you instructions to reset your password."
             />
-            <form onSubmit={handleSentCode} className="space-y-4">
+            <Form onSubmit={handleSentCode} className="space-y-4">
               <Input
                 label="Email"
                 variant="email"
@@ -137,7 +141,7 @@ function ForgotPassword() {
               <Button variant="primary-full" className="mt-4" type="submit">
                 Continue
               </Button>
-            </form>
+            </Form>
           </div>
         )}
       </div>

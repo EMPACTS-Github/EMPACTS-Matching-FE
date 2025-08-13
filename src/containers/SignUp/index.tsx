@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { addToast } from '@heroui/react';
+import { addToast, Form } from '@heroui/react';
 import { emailSignup } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
@@ -74,7 +74,7 @@ function SignUp() {
         ) : (
           <div>
             <AuthHeader title="Sign up" description="" />
-            <form onSubmit={handleSignup} className="space-y-4">
+            <Form onSubmit={handleSignup} className="space-y-4">
               <Input
                 label="Email"
                 variant="email"
@@ -85,8 +85,10 @@ function SignUp() {
                 errorMessage={emailError}
                 isRequired={true}
               />
-              <Button variant="primary-full">Sign up</Button>
-            </form>
+              <Button variant="primary-full" type="submit">
+                Sign up
+              </Button>
+            </Form>
 
             <FormFooterAction
               text="Already have an account?"

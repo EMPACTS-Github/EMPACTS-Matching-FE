@@ -120,7 +120,7 @@ function RegisterInfo() {
           isRequired={true}
         />
 
-        <Button variant="primary-full" className="w-4/5">
+        <Button variant="primary-full" className="w-4/5" type="submit">
           Sign up
         </Button>
       </Form>

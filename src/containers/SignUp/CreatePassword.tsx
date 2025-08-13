@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { createNewPassword } from '@/apis/auth';
 import { useRouter } from 'next/navigation';
-import { addToast } from '@heroui/react';
+import { addToast, Form } from '@heroui/react';
 import { ROUTES } from '@/constants/link';
 import Image from 'next/image';
 import Input from '@/components/Input/Input';
@@ -66,27 +66,32 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
         <Image src={EmpactsLogo} alt="EMPACTS Logo Image" priority width={120} height={120} />
         <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign up</h2>
       </div>
-      <div className="space-y-4">
-        <Input
-          label="Password"
-          variant="password"
-          value={password}
-          onChange={setPassword}
-          preset="line-fill-sm"
-          isRequired={true}
-        />
-        <Input
-          variant="password"
-          value={confirmPassword}
-          onChange={setConfirmPassword}
-          label="Confirm Password"
-          preset="line-fill-sm"
-          isRequired={true}
-        />
+      <Form
+        className="flex flex-col items-center justify-center w-full gap-10"
+        onSubmit={handleCreatePassword}
+      >
+        <div className="space-y-4">
+          <Input
+            label="Password"
+            variant="password"
+            value={password}
+            onChange={setPassword}
+            preset="line-fill-sm"
+            isRequired={true}
+          />
+          <Input
+            variant="password"
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            label="Confirm Password"
+            preset="line-fill-sm"
+            isRequired={true}
+          />
+        </div>
         <Button onClick={handleCreatePassword} variant="primary-full">
           Continue
         </Button>
-      </div>
+      </Form>
 
       <FormFooterAction
         text="Already have an account?"

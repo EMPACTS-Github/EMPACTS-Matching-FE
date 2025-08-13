@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { addToast } from '@heroui/react';
+import { addToast, Form } from '@heroui/react';
 import { emailSignin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
 import { getUserAuthInfoAPI } from '@/apis/user';
@@ -191,11 +191,11 @@ function Login() {
     <div className="bg-white h-screen flex justify-center">
       <div className="login-form p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
         <AuthHeader title="Sign in" description="" />
-        <form onSubmit={handleLogin} className="space-y-6">
+        <Form onSubmit={handleLogin} className="space-y-6">
           <Input
             label="Email"
             variant="email"
-            type='email'
+            type="email"
             value={email}
             onChange={setEmail}
             isInvalid={!isValidEmail}
@@ -211,7 +211,7 @@ function Login() {
             preset="line-fill-sm"
             errorMessage={passwordError}
           />
-          <div className="text-right !mt-1">
+          <div className="text-right !mt-1 w-full">
             <AuthLink
               href={ROUTES.AUTH.FORGOT_PASSWORD}
               className="text-xs font-semibold text-black"
@@ -222,7 +222,7 @@ function Login() {
           <Button variant="primary-full" className="mt-4" type="submit">
             Sign in
           </Button>
-        </form>
+        </Form>
 
         <FormDivider />
         <GoogleSignInButton />
