@@ -1,14 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { addToast } from '@heroui/react';
+import React, { useState, useEffect } from 'react';
+import { addToast, Form } from '@heroui/react';
 import { resetPassword } from '@/apis/auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
+import EmpactsLogo from '/public/empacts-logo.png';
+import Image from 'next/image';
 import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
-import Image from 'next/image';
-import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/Form/FormFooterAction';
 import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
 interface ResetPasswordProps {
   email: string;
@@ -117,7 +120,10 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
         <LogoHeader title="Create new password" />
       </div>
       <div className="flex justify-center space-x-2 mt-6">
-        <form onSubmit={handleResetPassword} className="space-y-6 w-full max-w-xs">
+        <Form
+          className="flex flex-col items-center justify-center w-full gap-10"
+          onSubmit={handleResetPassword}
+        >
           <Input
             label="Password"
             variant="password"
@@ -140,7 +146,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
             isRequired
           />
           <Button variant="primary-full">Reset Password</Button>
-        </form>
+        </Form>
       </div>
     </div>
   );

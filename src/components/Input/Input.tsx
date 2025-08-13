@@ -5,113 +5,21 @@ import { Input as HeroInput } from '@heroui/react';
 export const inputPresets = {
   // Default Input variants with sizes
   'default-sm': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-sm',
+    className: 'bg-white text-sm',
     variant: 'bordered' as const,
     color: 'default' as const,
     size: 'sm' as const,
     radius: 'md' as const,
   },
   'default-md': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
+    className: 'bg-white',
     variant: 'bordered' as const,
     color: 'default' as const,
     size: 'md' as const,
     radius: 'md' as const,
   },
   'default-lg': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-lg',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'lg' as const,
-    radius: 'md' as const,
-  },
-
-  // With Label variants with sizes
-  'with-label-sm': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-sm',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'sm' as const,
-    radius: 'md' as const,
-  },
-  'with-label-md': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-label-lg': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-lg',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'lg' as const,
-    radius: 'md' as const,
-  },
-
-  // With Icons variants with sizes
-  'with-icons-sm': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-sm',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'sm' as const,
-    radius: 'md' as const,
-  },
-  'with-icons-md': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-icons-lg': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-lg',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'lg' as const,
-    radius: 'md' as const,
-  },
-
-  // With Icons + Labels variants with sizes
-  'with-icons-labels-sm': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-sm',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'sm' as const,
-    radius: 'md' as const,
-  },
-  'with-icons-labels-md': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-icons-labels-lg': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-lg',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'lg' as const,
-    radius: 'md' as const,
-  },
-
-  // With Helper Text variants with sizes
-  'with-helper-sm': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-sm',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'sm' as const,
-    radius: 'md' as const,
-  },
-  'with-helper-md': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-helper-lg': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50 text-lg',
+    className: 'bg-white text-lg',
     variant: 'bordered' as const,
     color: 'default' as const,
     size: 'lg' as const,
@@ -120,70 +28,27 @@ export const inputPresets = {
 
   // Line Fill variants with sizes (underlined style)
   'line-fill-sm': {
-    className: 'bg-white border-b border-neutral-50 text-neutral-80 placeholder:text-neutral-50 rounded-none text-sm',
+    className: 'bg-white border-neutral-50 rounded-none text-sm',
     variant: 'underlined' as const,
     color: 'default' as const,
     size: 'sm' as const,
     radius: 'none' as const,
   },
   'line-fill-md': {
-    className: 'bg-white border-b border-neutral-50 text-neutral-80 placeholder:text-neutral-50 rounded-none',
+    className: 'bg-white border-neutral-50 rounded-none',
     variant: 'underlined' as const,
     color: 'default' as const,
     size: 'md' as const,
     radius: 'none' as const,
   },
   'line-fill-lg': {
-    className: 'bg-white border-b border-neutral-50 text-neutral-80 placeholder:text-neutral-50 rounded-none text-lg',
+    className: 'bg-white border-neutral-50 rounded-none text-lg',
     variant: 'underlined' as const,
     color: 'default' as const,
     size: 'lg' as const,
     radius: 'none' as const,
-  },
+  }, 
 
-  // Convenience presets with default medium size
-  'default': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-label': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-icons': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-icons-labels': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'with-helper': {
-    className: 'bg-white border border-neutral-50 text-neutral-80 placeholder:text-neutral-50',
-    variant: 'bordered' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'line-fill': {
-    className: 'bg-white border-b border-neutral-50 text-neutral-80 placeholder:text-neutral-50 rounded-none',
-    variant: 'underlined' as const,
-    color: 'default' as const,
-    size: 'md' as const,
-    radius: 'none' as const,
-  },
 } as const;
 
 // Type for input preset configuration
@@ -328,21 +193,6 @@ const Input = (props: TextInputProps) => {
         baseRef={baseRef}
         disableAnimation={disableAnimation}
         className={finalClasses}
-        classNames={{
-          base: 'group',
-          mainWrapper: 'h-full',
-          inputWrapper: [
-            'bg-transparent border-inherit transition-all duration-200',
-            '!bg-transparent !border-inherit',
-          ],
-          input: [
-            'text-inherit placeholder:text-inherit/60',
-            'data-[has-value=true]:text-inherit',
-          ],
-          label: 'text-inherit/80 group-data-[filled-within=true]:text-inherit',
-          errorMessage: 'text-inherit',
-          description: 'text-inherit/70',
-        }}
       />
     );
   }

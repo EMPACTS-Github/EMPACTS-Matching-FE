@@ -171,42 +171,6 @@ export const buttonPresets = {
     radius: 'lg' as const,
   },
 
-  // Convenience presets with default medium size
-  'primary': {
-    className: 'bg-primary text-white hover:bg-primary-40 active:bg-primary-40',
-    variant: 'solid' as const,
-    color: 'primary' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'secondary': {
-    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white',
-    variant: 'bordered' as const,
-    color: 'primary' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'tertiary': {
-    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20',
-    variant: 'bordered' as const,
-    color: 'primary' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'ghost': {
-    className: 'bg-transparent text-primary hover:bg-primary-20',
-    variant: 'light' as const,
-    color: 'primary' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
-  'warning': {
-    className: 'bg-error text-white hover:bg-error active:bg-error',
-    variant: 'solid' as const,
-    color: 'danger' as const,
-    size: 'md' as const,
-    radius: 'md' as const,
-  },
 } as const;
 
 // Type for button preset configuration
@@ -284,7 +248,7 @@ const Button = ({
         onPress={onClick}
         startContent={startContent}
         endContent={endContent}
-        className={`${finalClasses} data-[pressed=true]:scale-[0.97] transition-transform`}
+        className={`${finalClasses}`}
       >
         {children}
       </HeroButton>

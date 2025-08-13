@@ -1,12 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { addToast, Form } from '@heroui/react';
 import { sendForgotPasswordOTP, verifyForgotPasswordOTP } from '@/apis/auth';
-import { addToast } from '@heroui/react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
-import OtpInput from '@/components/Input/OtpInput';
+import EmpactsLogo from '/public/empacts-logo.png';
 import Image from 'next/image';
-import ArrowLeftIcon from '/public/assets/arrow_left.svg';
+import OtpInput from '@/components/Input/OtpInput';
+import Button from '@/components/Button/Button';
+import AuthLink from '@/components/AuthLink';
+import FormFooterAction from '@/components/Form/FormFooterAction';
 import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
+import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
 interface EmailVerificationProps {
   email: string;
@@ -111,7 +116,7 @@ function EmailVerification({
     );
   };
 
-  const handleSubmitOtp = async () => {
+  const handleVerifyOTP = async () => {
     try {
       const response = await verifyForgotPasswordOTP(email, otp);
       if (response.code === API_RESPONSE_CODES.OTP_VERIFIED) {
@@ -161,14 +166,19 @@ function EmailVerification({
         <LogoHeader title={title} />
       </div>
       <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
-      <div className="flex justify-center space-x-2 mt-6">
+      <Form
+        className="flex flex-col items-center justify-center w-full gap-10"
+        onSubmit={handleVerifyOTP}
+      >
         <OtpInput
-          variant="otp-underline-lg"
           value={otp}
           onValueChange={setOtp}
-          onComplete={handleSubmitOtp}
+          onComplete={handleVerifyOTP}
+          length={6}
+          className="w-full max-w-xs"
         />
-      </div>
+        <Button variant="primary-full" type="submit">Verify</Button>
+      </Form>
       <div className="text-gray-500 mt-4">
         Did not receive code? <span> </span>
         <ResendCodeButton
