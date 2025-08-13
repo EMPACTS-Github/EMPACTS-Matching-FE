@@ -1,14 +1,13 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { addToast, Form } from '@heroui/react';
 import { verifyOTP } from '@/apis/auth';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/link';
 import EmpactsLogo from '/public/empacts-logo.png';
 import Image from 'next/image';
 import OtpInput from '@/components/Input/OtpInput';
 import Button from '@/components/Button/Button';
-import AuthLink from '@/components/AuthLink';
 import FormFooterAction from '@/components/Form/FormFooterAction';
 import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
