@@ -113,7 +113,6 @@ function Login() {
           timeout: TOAST_TIMEOUT.MEDIUM,
         });
       } else {
-        console.error(error);
         addToast({
           title: TOAST_MESSAGES.LOGIN_ERROR,
           color: TOAST_COLORS.DANGER,
@@ -153,7 +152,6 @@ function Login() {
 
           routeAfterLoginWithInvitation(router, response.data);
         } catch (error) {
-          console.error('Error fetching user auth info:', error);
           addToast({
             title: TOAST_MESSAGES.GOOGLE_LOGIN_FAILED,
             color: TOAST_COLORS.DANGER,
