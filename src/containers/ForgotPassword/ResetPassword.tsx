@@ -50,7 +50,6 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
         });
       }
     } catch (error) {
-      console.error(error);
       addToast({
         title: TOAST_MESSAGES.PASSWORD_RESET_ERROR,
         color: TOAST_COLORS.DANGER,
