@@ -7,7 +7,6 @@ import { ROUTES } from '@/constants/link';
 import AuthHeader from '@/components/Header/AuthHeader';
 import Input from '@/components/Input/Input';
 import Button from '@/components/Button/Button';
-import FormFooterAction from '@/components/Form/FormFooterAction';
 import { TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES, API_RESPONSE_CODES } from '@/constants/api';
 import { checkEmailFormat } from '@/utils/checkValid';
 import EmailVerification from '@/containers/ForgotPassword/EmailVerification';
