@@ -29,21 +29,21 @@ export const buttonPresets = {
 
   // Secondary Buttons - White background with purple border
   'secondary-sm': {
-    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white text-sm',
+    className: 'bg-white text-white hover:bg-secondary-80 hover:text-white text-sm',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'sm' as const,
     radius: 'md' as const,
   },
   'secondary-md': {
-    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white',
+    className: 'bg-white text-white hover:bg-secondary-80 hover:text-white',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
     radius: 'md' as const,
   },
   'secondary-lg': {
-    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white',
+    className: 'bg-white text-white hover:bg-secondary-80 hover:text-white',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'lg' as const,
@@ -52,21 +52,21 @@ export const buttonPresets = {
 
   // Tertiary Buttons - Transparent with purple border
   'tertiary-sm': {
-    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20 text-sm',
+    className: 'bg-transparent text-primary hover:bg-primary-20 text-sm',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'sm' as const,
     radius: 'md' as const,
   },
   'tertiary-md': {
-    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20',
+    className: 'bg-transparent text-primary hover:bg-primary-20',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
     radius: 'md' as const,
   },
   'tertiary-lg': {
-    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20',
+    className: 'bg-transparent text-primary hover:bg-primary-20',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'lg' as const,
@@ -129,7 +129,7 @@ export const buttonPresets = {
     fullWidth: true,
   },
   'secondary-full': {
-    className: 'bg-white border border-primary text-primary hover:bg-secondary-80 hover:text-white w-full',
+    className: 'bg-white text-primary hover:bg-secondary-80 hover:text-white w-full',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
@@ -137,7 +137,7 @@ export const buttonPresets = {
     fullWidth: true,
   },
   'tertiary-full': {
-    className: 'bg-transparent border border-primary text-primary hover:bg-primary-20 w-full',
+    className: 'bg-transparent text-primary hover:bg-primary-20 w-full',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
@@ -183,6 +183,7 @@ type ButtonPreset = {
   radius?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   type?: 'button' | 'submit' | 'reset';
   isDisabled?: boolean;
+  isIconOnly?: boolean;
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
 };
@@ -198,6 +199,8 @@ interface ButtonProps {
   // Icon content props
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
+  // Icon-only button support
+  isIconOnly?: boolean;
   // Legacy props for backward compatibility
   size?: 'sm' | 'md' | 'lg';
   color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
@@ -214,6 +217,7 @@ const Button = ({
   variant,
   startContent,
   endContent,
+  isIconOnly = false,
   // Legacy props
   size = 'lg',
   color = 'primary',
@@ -245,6 +249,7 @@ const Button = ({
         fullWidth={preset.fullWidth || fullWidth}
         isDisabled={isDisabled}
         isLoading={isLoading}
+        isIconOnly={preset.isIconOnly || isIconOnly}
         onPress={onClick}
         startContent={startContent}
         endContent={endContent}
@@ -264,6 +269,7 @@ const Button = ({
       size={size}
       disabled={disabled}
       isLoading={loading}
+      isIconOnly={isIconOnly}
       onPress={onClick}
       startContent={startContent}
       endContent={endContent}
