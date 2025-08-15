@@ -17,7 +17,7 @@ import provinces from '@/utils/data/provinces.json';
 import sdgGoals from '@/utils/data/sdgGoals.json';
 
 
-function CreateNewStartup() {
+const CreateNewStartup = () => {
   const [companyName, setCompanyName] = useState('');
   const [startupUsername, setStartupUsername] = useState('');
   const [selectedGoal, setSelectedGoal] = useState('');
