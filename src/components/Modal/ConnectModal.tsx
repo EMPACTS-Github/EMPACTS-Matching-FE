@@ -9,6 +9,7 @@ import { request_matching_to_mentor } from '@/apis/startup-matching';
 import { Spinner } from '@heroui/spinner';
 import Button from '@/components/Button/Button';
 import Avatar from '@/components/Avatar/Avatar';
+import { TOAST_MESSAGES, TOAST_COLORS, TOAST_TIMEOUT } from '@/constants/api';
 
 interface ConnectModalProps {
   startupId: string;
@@ -47,9 +48,9 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
   const handleConnect = async () => {
     if (!selectedDate || !selectedTime) {
       addToast({
-        title: 'Select a date time to connect',
-        color: 'danger',
-        timeout: 5000,
+        title: TOAST_MESSAGES.SELECT_DATE_TIME,
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.MEDIUM,
       });
       return;
     }
@@ -62,9 +63,9 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
     try {
       if (!startupId) {
         addToast({
-          title: 'Startup ID is not available',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.STARTUP_ID_NOT_AVAILABLE,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
         setIsLoading(false);
         return;
@@ -74,9 +75,9 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
       if (response.code === 'CONNECT_REQUEST_SENT') {
         setIsLoading(false);
         addToast({
-          title: 'Request sent',
-          color: 'success',
-          timeout: 5000,
+          title: TOAST_MESSAGES.CONNECT_REQUEST_SENT,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
         setSelectedDate(null);
         setSelectedTime('');
@@ -91,9 +92,9 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
       if (errData.code === 'USER_HAS_NO_PERMISSION' && errData.statusCode === 400) {
         setIsLoading(false);
         addToast({
-          title: 'You have no permission to connect with this mentor',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.USER_HAS_NO_PERMISSION,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
         setSelectedDate(null);
         setSelectedTime('');
@@ -101,9 +102,9 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
         onClose();
       } else {
         addToast({
-          title: 'Request failed',
-          color: 'danger',
-          timeout: 5000,
+          title: TOAST_MESSAGES.REQUEST_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
         });
         setIsLoading(false);
       }

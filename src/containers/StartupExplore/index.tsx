@@ -13,6 +13,7 @@ import { useStartupIdStore } from '@/stores/startup-store';
 import { useMatchingStore } from '@/stores/matching-store';
 import { startup_matching_activity } from '@/apis/startup-matching';
 import { useErrorStore } from '@/stores/error-store';
+import { API_RESPONSE_CODES, API_RESPONSE_NUMBER_CODES } from '@/constants/api';
 
 interface StartupExploreProps {
   mentorList: SuggestMentors[] | undefined;
@@ -78,8 +79,8 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) =>
       } catch (err: any) {
         setMatches(null);
         if (
-          err?.response?.status === 404 &&
-          err?.response?.data?.code === 'MATCHING_ACTIVITY_NOT_FOUND'
+          err?.response?.status === API_RESPONSE_NUMBER_CODES.MATCHING_ACTIVITY_NOT_FOUND &&
+          err?.response?.data?.code === API_RESPONSE_CODES.MATCHING_ACTIVITY_NOT_FOUND
         ) {
           setError('No matching activity found.');
         } else {
