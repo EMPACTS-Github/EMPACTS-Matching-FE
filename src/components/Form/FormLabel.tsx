@@ -5,8 +5,8 @@ type FormLabel = {
   className: string;
 };
 
-function FormLabel({ className, text }: FormLabel) {
+const FormLabel = ({ className, text }: FormLabel) => {
   return <p className={`${className}`}>{text}</p>;
-}
+};
 
 export default FormLabel;

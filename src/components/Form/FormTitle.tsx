@@ -5,8 +5,8 @@ type FormHeaderProps = {
   className: string;
 };
 
-function FormTitle({ text, className }: FormHeaderProps) {
+const FormTitle = ({ text, className }: FormHeaderProps) => {
   return <p className={`${className}`}>{text}</p>;
-}
+};
 
 export default FormTitle;
