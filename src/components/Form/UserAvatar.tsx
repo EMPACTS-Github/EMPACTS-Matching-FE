@@ -8,7 +8,7 @@ type UserAvatarProps = {
   handleAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function UserAvatar({ avatarUrl, handleAvatarChange }: UserAvatarProps) {
+const UserAvatar = ({ avatarUrl, handleAvatarChange }: UserAvatarProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -39,6 +39,6 @@ function UserAvatar({ avatarUrl, handleAvatarChange }: UserAvatarProps) {
       />
     </div>
   );
-}
+};
 
 export default UserAvatar;

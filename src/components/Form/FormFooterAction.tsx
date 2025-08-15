@@ -6,13 +6,13 @@ interface FormFooterActionProps {
   className?: string;
 }
 
-function FormFooterAction({ text, action, className = '' }: FormFooterActionProps) {
+const FormFooterAction = ({ text, action, className = '' }: FormFooterActionProps) => {
   return (
     <div className={`text-center mt-4 ${className}`}>
       <span className="text-gray-500">{text} </span>
       {action}
     </div>
   );
-}
+};
 
 export default FormFooterAction;
