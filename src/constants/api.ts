@@ -15,6 +15,9 @@ export const API_RESPONSE_CODES = {
   EMAIL_ALREADY_SENT: 'EMAIL_ALREADY_SENT',
   FORGOT_PASSWORD: 'FORGOT_PASSWORD',
   OTP_VERIFIED: 'OTP_VERIFIED',
+
+  // Matching related
+  MATCHING_ACTIVITY_NOT_FOUND: 'MATCHING_ACTIVITY_NOT_FOUND',
 } as const;
 
 // Toast timeout values (in milliseconds)
@@ -44,6 +47,7 @@ export const TOAST_MESSAGES = {
   PASSWORD_RESET_SUCCESS: 'Password reset successfully',
   VERIFICATION_EMAIL_SENT: 'Verification code sent to your email',
   AVATAR_UPLOADED: 'Avatar uploaded',
+  CONNECT_REQUEST_SENT: 'Connect request sent successfully',
 
   // Error messages
   INVALID_CREDENTIALS: 'Invalid credentials',
@@ -63,10 +67,16 @@ export const TOAST_MESSAGES = {
   AVATAR_UPLOAD_ERROR: 'An error occured while uploading avatar. Please try again.',
   PROFILE_CREATE_ERROR: 'An error occurred while creating profile',
   PASSWORD_RESET_FAILED: 'Failed to reset password',
+  SELECT_DATE_TIME: 'Select a date time to connect',
+  STARTUP_ID_NOT_AVAILABLE: 'Startup ID is not available',
+  USER_HAS_NO_PERMISSION: 'You have no permission to connect with this mentor',
+  REQUEST_FAILED: 'Request failed. Please try again later.',
 } as const;
 
 // API Response Codes
 export const API_RESPONSE_NUMBER_CODES = {
   // Auth related
   LOGIN_INVALID_CREDENTIALS: 400,
+  // Not found matching
+  MATCHING_ACTIVITY_NOT_FOUND: 404,
 } as const;
