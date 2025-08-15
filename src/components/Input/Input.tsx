@@ -47,8 +47,7 @@ export const inputPresets = {
     color: 'default' as const,
     size: 'lg' as const,
     radius: 'none' as const,
-  }, 
-
+  },
 } as const;
 
 // Type for input preset configuration
@@ -134,7 +133,9 @@ const Input = (props: TextInputProps) => {
   } = props;
 
   // Determine input type based on variant
-  const inputType = props.type || (props.variant === 'email' ? 'email' : props.variant === 'password' ? 'password' : 'text');
+  const inputType =
+    props.type ||
+    (props.variant === 'email' ? 'email' : props.variant === 'password' ? 'password' : 'text');
 
   // If using preset variant, apply complete preset configuration
   if (presetVariant && inputPresets[presetVariant]) {
@@ -200,7 +201,8 @@ const Input = (props: TextInputProps) => {
   // Legacy custom variant support
   if (customVariant && inputPresets[customVariant]) {
     const preset = inputPresets[customVariant] as InputPreset;
-    const heroVariant = customStyle === 'filled' ? 'flat' : customStyle === 'bordered' ? 'bordered' : 'underlined';
+    const heroVariant =
+      customStyle === 'filled' ? 'flat' : customStyle === 'bordered' ? 'bordered' : 'underlined';
     const finalClasses = [preset.className, className].filter(Boolean).join(' ');
 
     return (
@@ -237,10 +239,7 @@ const Input = (props: TextInputProps) => {
             'bg-transparent border-inherit transition-all duration-200',
             '!bg-transparent !border-inherit',
           ],
-          input: [
-            'text-inherit placeholder:text-inherit/60',
-            'data-[has-value=true]:text-inherit',
-          ],
+          input: ['text-inherit placeholder:text-inherit/60', 'data-[has-value=true]:text-inherit'],
           label: 'text-inherit/80 group-data-[filled-within=true]:text-inherit',
           errorMessage: 'text-inherit',
           description: 'text-inherit/70',

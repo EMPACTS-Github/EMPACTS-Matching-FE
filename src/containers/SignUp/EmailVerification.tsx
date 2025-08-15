@@ -103,12 +103,11 @@ function EmailVerification() {
           length={6}
           className="w-full max-w-xs"
         />
-        <Button variant="primary-full" type="submit">Verify</Button>
+        <Button variant="primary-full" type="submit">
+          Verify
+        </Button>
       </Form>
-      <FormFooterAction
-        text="Did not receive code?"
-        action={<ResendAction />}
-      />
+      <FormFooterAction text="Did not receive code?" action={<ResendAction />} />
     </div>
   );
 }

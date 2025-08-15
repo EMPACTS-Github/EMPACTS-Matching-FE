@@ -1,6 +1,6 @@
 import React from 'react';
-import MentorCard from '@/components/Card/MentorCard';
-import ProfileInfoCard from '@/components/Card/ProfileInfoCard';
+import SuggestMentorSmallCard from '@/components/Card/SuggestMentorSmallCard';
+import SuggestMentorDetailCard from '@/components/Card/SuggestMentorDetailCard';
 import ConnectModal from '@/components/Modal/ConnectModal';
 import { Spinner } from '@heroui/react';
 import { getProvince } from '@/utils/getProvince';
@@ -38,10 +38,10 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
     );
   }
   return mentor.length !== 0 ? (
-    <div className="flex justify-between gap-4 p-4 flex-1 overflow-hidden">
-      <div className="flex flex-col gap-4 w-[30%] overflow-y-auto h-full pr-2 custom-scrollbar">
+    <div className="flex justify-between gap-4 flex-1 overflow-hidden">
+      <div className="flex flex-col gap-4 w-[34%] overflow-y-auto h-full pr-2 custom-scrollbar">
         {mentor.map((mentor, index) => (
-          <MentorCard
+          <SuggestMentorSmallCard
             key={index}
             name={mentor.name}
             location={getProvince(mentor?.locationBased || '')}
@@ -54,8 +54,8 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
           />
         ))}
       </div>
-      <ProfileInfoCard
-        className="w-[70%]"
+      <SuggestMentorDetailCard
+        className="w-[66%]"
         title={selectedMentor?.name || ''}
         location={getProvince(selectedMentor?.locationBased || '')}
         description={selectedMentor?.description || ''}

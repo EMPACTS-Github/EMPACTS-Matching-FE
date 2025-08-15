@@ -172,7 +172,9 @@ function EmailVerification({
           length={6}
           className="w-full max-w-xs"
         />
-        <Button variant="primary-full" type="submit">Verify</Button>
+        <Button variant="primary-full" type="submit">
+          Verify
+        </Button>
       </Form>
       <div className="text-gray-500 mt-4">
         Did not receive code? <span> </span>

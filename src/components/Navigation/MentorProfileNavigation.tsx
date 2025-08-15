@@ -72,10 +72,10 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mento
           variant="underlined"
           selectedKey={selectedTab}
           onSelectionChange={setSelectedTab as any}
-          className="w-full font-bold bg-white xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
+          className="w-full font-bold bg-white 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
         >
           <Tab key="explore" title="Explore" className="pt-0 px-2">
-            <div className="flex flex-col items-center w-full h-screen 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-y-2">
+            <div className="flex flex-col items-center w-full h-screen 2xl:px-[20%] 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-y-2">
               <MentorExploreContainer mentorId={mentorId} />
             </div>
           </Tab>
