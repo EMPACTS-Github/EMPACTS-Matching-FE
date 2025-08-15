@@ -46,7 +46,7 @@ const CreateNewMentor = () => {
       const uploadResponse = await uploadProfilePicture(file, 'MENTOR');
       const fileUrl = uploadResponse.data.attachmentUrl;
       const fileId = uploadResponse.data.id;
-      
+
       setProfilePicture(fileUrl);
       setUploadedPictureId(fileId);
     } catch (error) {
@@ -168,13 +168,19 @@ const CreateNewMentor = () => {
         <label htmlFor="profile-picture" className="cursor-pointer">
           <div className="w-[90px] h-[90px] rounded-full bg-gray-200 flex items-center justify-center overflow-hidden hover:bg-gray-300 transition-colors">
             {profilePicture ? (
-              <Image src={profilePicture} alt="Profile" width={90} height={90} className="w-full h-full object-cover" />
+              <Image
+                src={profilePicture}
+                alt="Profile"
+                width={90}
+                height={90}
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="w-6 h-6 text-black">
                 {/* Camera icon placeholder */}
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z"/>
-                  <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                  <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
+                  <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
                 </svg>
               </div>
             )}
@@ -204,10 +210,8 @@ const CreateNewMentor = () => {
       />
       <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
         Your profile could be found with username{' '}
-        <span className="text-primary">
-          {mentorUsername || '@mentor_name'}
-        </span>
-        . You can change it later in Settings
+        <span className="text-primary">{mentorUsername || '@mentor_name'}</span>. You can change it
+        later in Settings
       </p>
     </div>
   );
@@ -228,7 +232,7 @@ const CreateNewMentor = () => {
 
   // Inline LocationBasedSection component using Select component
   const LocationBasedSection = () => {
-    const locationItems = provinces.map(province => ({
+    const locationItems = provinces.map((province) => ({
       key: province.value,
       label: province.label,
       value: province.value,
@@ -283,7 +287,7 @@ const CreateNewMentor = () => {
       { key: 'ES', label: 'Spanish', value: 'ES' },
       { key: 'CN', label: 'Chinese', value: 'CN' },
       { key: 'JP', label: 'Japanese', value: 'JP' },
-      { key: 'KR', label: 'Korean', value: 'KR' }
+      { key: 'KR', label: 'Korean', value: 'KR' },
     ];
 
     return (
@@ -313,7 +317,7 @@ const CreateNewMentor = () => {
       { key: 'Finance', label: 'Finance', value: 'Finance' },
       { key: 'Technology', label: 'Technology', value: 'Technology' },
       { key: 'Operations', label: 'Operations', value: 'Operations' },
-      { key: 'Sales', label: 'Sales', value: 'Sales' }
+      { key: 'Sales', label: 'Sales', value: 'Sales' },
     ];
 
     return (
@@ -337,7 +341,7 @@ const CreateNewMentor = () => {
 
   // Inline SDGGoalSection component
   const SDGGoalSection = () => {
-    const goalItems = sdgGoals.map(goal => ({
+    const goalItems = sdgGoals.map((goal) => ({
       key: goal.value,
       label: goal.label,
       value: goal.value,
@@ -360,7 +364,7 @@ const CreateNewMentor = () => {
         />
         {selectedGoals.length > 0 && (
           <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
-            Selected: {selectedGoals.map(goal => getSDGGoal(goal)).join(', ')}
+            Selected: {selectedGoals.map((goal) => getSDGGoal(goal)).join(', ')}
           </p>
         )}
       </div>
@@ -371,8 +375,8 @@ const CreateNewMentor = () => {
   const ActionButtons = () => (
     <div className="flex flex-row justify-between w-full gap-4 h-12">
       <div className="flex-1">
-        <Button 
-          variant="secondary-full" 
+        <Button
+          variant="secondary-full"
           onClick={handleCancelCreateProfile}
           className="border border-primary text-primary bg-white hover:bg-gray-50"
         >
@@ -380,8 +384,8 @@ const CreateNewMentor = () => {
         </Button>
       </div>
       <div className="flex-1">
-        <Button 
-          variant="primary-full" 
+        <Button
+          variant="primary-full"
           onClick={handleCreateProfile}
           className="bg-primary text-white hover:bg-primary-80"
         >
@@ -414,6 +418,6 @@ const CreateNewMentor = () => {
       </div>
     </div>
   );
-}
+};
 
 export default CreateNewMentor;

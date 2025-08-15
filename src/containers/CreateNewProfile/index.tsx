@@ -19,7 +19,15 @@ const CreateNewProfile = () => {
     </div>
   );
 
-  const ProfileOption = ({ title, description, link }: { title: string; description: string; link: string }) => (
+  const ProfileOption = ({
+    title,
+    description,
+    link,
+  }: {
+    title: string;
+    description: string;
+    link: string;
+  }) => (
     <Button
       variant="ghost-full"
       className="justify-between p-4 py-8 border-b border-gray-200 hover:bg-gray-50"
@@ -31,12 +39,12 @@ const CreateNewProfile = () => {
           <p className="text-sm text-gray-500">{description}</p>
         </div>
       </div>
-      <Image 
-        src={RightArrow} 
-        className="text-gray-400 text-lg" 
-        alt="Arrow right" 
-        width={24} 
-        height={24} 
+      <Image
+        src={RightArrow}
+        className="text-gray-400 text-lg"
+        alt="Arrow right"
+        width={24}
+        height={24}
       />
     </Button>
   );
@@ -60,6 +68,6 @@ const CreateNewProfile = () => {
       </div>
     </div>
   );
-}
+};
 
 export default CreateNewProfile;
