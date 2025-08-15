@@ -1,23 +1,21 @@
 'use client';
 import React, { useState } from 'react';
-import HeaderSection from './HeaderSection';
-import ProfilePictureUpload from './ProfilePictureUpload';
-import StartupNameSection from './StartupNameSection';
-import LocationBasedSection from './LocationBasedSection';
-import SDGGoalSection from './SDGGoalSection';
-import AddMemberSection from './AddMemberSection';
-import ActionButtons from './ActionButtons';
-import { create_startup_profile, invite_list_member } from '@/apis/startup';
-import { MemberForInvite } from '@/interfaces/startup';
+import { create_startup_profile } from '@/apis/startup';
 import { LanguagesSpoken } from '@/constants/common';
 import { addToast } from '@heroui/react';
 import * as changeCase from 'change-case';
 import { updateAttachment } from '@/apis/upload';
 import { useRouter } from 'next/navigation';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
-import LanguagesSpokenSection from './LanguagesSpokenSection';
-import FormedTimeSection from './FormedTimeSection';
-import DescriptionSection from './DescriptionSection';
+import Button from '@/components/Button/Button';
+import Input from '@/components/Input/Input';
+import Select from '@/components/Select/Select';
+import Image from 'next/image';
+import { getProvince } from '@/utils/getProvince';
+import { getSDGGoal } from '@/utils/getSDGGoal';
+import provinces from '@/utils/data/provinces.json';
+import sdgGoals from '@/utils/data/sdgGoals.json';
+
 
 function CreateNewStartup() {
   const [companyName, setCompanyName] = useState('');
@@ -26,20 +24,15 @@ function CreateNewStartup() {
   const [location, setLocation] = useState('');
   const [profilePicture, setProfilePicture] = useState<string | undefined>('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
-  const [members, setMembers] = useState<MemberForInvite[]>([]);
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState('');
   const [formedTime, setFormedTime] = useState<Date | null>(null);
+  const [description, setDescription] = useState('');
   const [languagesSpoken, setLanguagesSpoken] = useState<LanguagesSpoken>(['EN']);
 
   const router = useRouter();
 
   const handleCancelCreateProfile = () => {
     router.back();
-  };
-
-  const handleGoalChange = (newGoal: string) => {
-    setSelectedGoal(newGoal);
   };
 
   const handleChangeImage = (fileUrl: string, fileId: string) => {
@@ -52,18 +45,6 @@ function CreateNewStartup() {
     setStartupUsername('@' + username);
   };
 
-  const handleDescriptionChange = (newDescription: string) => {
-    setDescription(newDescription);
-  };
-
-  const handleFormedTimeChange = (newFormedTime: Date | null) => {
-    setFormedTime(newFormedTime);
-  };
-
-  const handleLanguagesSpokenChange = (newLanguages: LanguagesSpoken) => {
-    setLanguagesSpoken(newLanguages);
-  };
-
   const handleCreateProfile = async () => {
     const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
     if (
@@ -71,8 +52,6 @@ function CreateNewStartup() {
       !startupUsername.trim() ||
       !location ||
       !avtUrl ||
-      !description.trim() ||
-      !languagesSpoken.length ||
       !formedTime
     ) {
       addToast({
@@ -82,16 +61,18 @@ function CreateNewStartup() {
       });
       return;
     }
+    
     const requestBody = {
       name: companyName,
       startupUsername: startupUsername,
       locationBased: location,
       sdgGoal: selectedGoal,
-      avtUrl: avtUrl,
       description: description,
+      avtUrl: avtUrl,
       formedTime: formedTime,
       languagesSpoken: languagesSpoken,
     };
+    
     setLoading(true);
 
     try {
@@ -102,38 +83,13 @@ function CreateNewStartup() {
         timeout: 3000,
       });
       router.push(`/startup-detail/${response.data.newStartup.id}`);
-      const user = localStorage.getItem('user');
-      const userObj = user ? JSON.parse(user) : {};
-      const inviterEmail = userObj.email;
 
       if (uploadedPictureId) {
         updateAttachment({
           id: uploadedPictureId,
-          ownerId: undefined,
+          ownerId: response.data.newStartup.id,
           ownerType: UPLOAD_OWNER_TYPE.STARTUP,
         });
-      }
-
-      if (members.length !== 0) {
-        invite_list_member({
-          invitee: members,
-          inviterEmail: inviterEmail,
-          startupId: response.data.newStartup.id,
-        })
-          .then(() => {
-            addToast({
-              title: 'Members invited successfully',
-              color: 'success',
-              timeout: 3000,
-            });
-          })
-          .catch(() => {
-            addToast({
-              title: 'Error inviting members',
-              color: 'danger',
-              timeout: 5000,
-            });
-          });
       }
     } catch (error) {
       addToast({
@@ -146,6 +102,188 @@ function CreateNewStartup() {
     }
   };
 
+  // Inline HeaderSection component
+  const HeaderSection = () => (
+    <div className="flex flex-col items-center gap-2 w-full">
+      <h1 className="text-[32px] font-bold text-black leading-[175%] text-center">
+        Startup profile
+      </h1>
+      <p className="text-[20px] font-bold text-[#666666] leading-[160%] text-center">
+        Access to your desired company
+      </p>
+    </div>
+  );
+
+  // Inline ProfilePictureUpload component
+  const ProfilePictureUpload = ({ onImageUpload }: { onImageUpload: (fileUrl: string, fileId: string) => void }) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        // TODO: Implement file upload logic
+        const mockFileUrl = URL.createObjectURL(file);
+        const mockFileId = 'temp-id';
+        onImageUpload(mockFileUrl, mockFileId);
+      }
+    };
+
+    return (
+      <div className="flex flex-col items-center gap-5">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+          id="profile-picture"
+        />
+        <label htmlFor="profile-picture" className="cursor-pointer">
+          <div className="w-[90px] h-[90px] rounded-full bg-gray-200 flex items-center justify-center overflow-hidden hover:bg-gray-300 transition-colors">
+            {profilePicture ? (
+              <Image src={profilePicture} alt="Profile" width={90} height={90} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-6 h-6 text-black">
+                {/* Camera icon placeholder */}
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z"/>
+                  <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                </svg>
+              </div>
+            )}
+          </div>
+        </label>
+        <p className="text-[16px] font-bold text-[#010B23] leading-[150%] text-center">
+          Upload your profile picture
+        </p>
+      </div>
+    );
+  };
+
+  // Inline StartupNameSection component using Input component
+  const StartupNameSection = () => (
+    <div className="space-y-2">
+      <label className="text-[16px] font-bold text-black leading-[150%]">Startup name</label>
+      <Input
+        variant="text"
+        preset="default-md"
+        value={companyName}
+        onChange={(value) => {
+          setCompanyName(value);
+          handleChangeStartupUsername(value);
+        }}
+        placeholder="Enter name company"
+        isRequired
+      />
+      <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
+        Your profile could be found with username{' '}
+        <span className="text-primary">
+          {startupUsername || '@company_name'}
+        </span>
+        . You can change it later in Settings
+      </p>
+    </div>
+  );
+
+  // Inline LocationBasedSection component using Select component
+  const LocationBasedSection = () => {
+    const locationItems = provinces.map(province => ({
+      key: province.value,
+      label: province.label,
+      value: province.value,
+    }));
+
+    return (
+      <div className="space-y-2">
+        <label className="text-[16px] font-bold text-black leading-[150%]">Location based</label>
+        <Select
+          variant="form-field"
+          placeholder="Search location"
+          items={locationItems}
+          selectedKeys={location ? [location] : []}
+          onSelectionChange={(keys) => {
+            if (keys !== 'all' && keys.size > 0) {
+              const selectedKey = Array.from(keys)[0];
+              setLocation(selectedKey.toString());
+            }
+          }}
+          isRequired
+        />
+        {location && (
+          <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
+            Selected: {getProvince(location)}
+          </p>
+        )}
+      </div>
+    );
+  };
+
+  // Inline DateEstablishedSection component
+  const DateEstablishedSection = () => (
+    <div className="space-y-2">
+      <label className="text-[16px] font-bold text-black leading-[150%]">Date established</label>
+      <input
+        type="date"
+        value={formedTime ? formedTime.toISOString().split('T')[0] : ''}
+        onChange={(e) => setFormedTime(e.target.value ? new Date(e.target.value) : null)}
+        className="h-12 border border-[#A3A3A3] bg-white rounded-lg px-3 text-[16px] w-full"
+      />
+    </div>
+  );
+
+  // Inline SDGGoalSection component using Select component
+  const SDGGoalSection = () => {
+    const goalItems = sdgGoals.map(goal => ({
+      key: goal.value,
+      label: goal.label,
+      value: goal.value,
+    }));
+
+    return (
+      <div className="space-y-2">
+        <label className="text-[16px] font-bold text-black leading-[150%]">SDG Goal</label>
+        <Select
+          variant="form-field"
+          placeholder="Search goal"
+          items={goalItems}
+          selectedKeys={selectedGoal ? [selectedGoal] : []}
+          onSelectionChange={(keys) => {
+            if (keys !== 'all' && keys.size > 0) {
+              const selectedKey = Array.from(keys)[0];
+              setSelectedGoal(selectedKey.toString());
+            }
+          }}
+        />
+        {selectedGoal && (
+          <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
+            Selected: {getSDGGoal(selectedGoal)}
+          </p>
+        )}
+      </div>
+    );
+  };
+
+  // Inline ActionButtons component using Button component
+  const ActionButtons = () => (
+    <div className="flex flex-row justify-between w-full gap-4 h-12">
+      <div className="flex-1">
+        <Button 
+          variant="secondary-full" 
+          onClick={handleCancelCreateProfile}
+          className="border border-primary text-primary bg-white hover:bg-gray-50"
+        >
+          Back
+        </Button>
+      </div>
+      <div className="flex-1">
+        <Button 
+          variant="primary-full" 
+          onClick={handleCreateProfile}
+          className="bg-primary text-white hover:bg-primary-80"
+        >
+          Continue
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-full flex justify-center items-center min-h-screen relative">
       {loading && (
@@ -153,28 +291,16 @@ function CreateNewStartup() {
           <div className="loader"></div>
         </div>
       )}
-      <div className="flex flex-col w-2/3 p-8 bg-white rounded-lg shadow-md space-y-4">
+      <div className="flex flex-col w-[736px] p-8 bg-white rounded-xl shadow-md space-y-8">
         <HeaderSection />
         <ProfilePictureUpload onImageUpload={handleChangeImage} />
-        <StartupNameSection
-          companyName={companyName}
-          startupUsername={startupUsername}
-          onCompanyNameChange={setCompanyName}
-          onChangeStartupUsername={handleChangeStartupUsername}
-        />
-        <LocationBasedSection selectedLocation={location} onChange={setLocation} />
-        <FormedTimeSection formedTime={formedTime} onFormedTimeSelect={handleFormedTimeChange} />
-        <DescriptionSection
-          description={description}
-          onDescriptionChange={handleDescriptionChange}
-        />
-        <LanguagesSpokenSection
-          languagesSpoken={languagesSpoken}
-          onLanguagesSpokenChange={handleLanguagesSpokenChange}
-        />
-        <SDGGoalSection selectedGoal={selectedGoal} onGoalChange={handleGoalChange} />
-        <AddMemberSection members={members} setMembers={setMembers} />
-        <ActionButtons onCancel={handleCancelCreateProfile} onCreate={handleCreateProfile} />
+        <div className="space-y-6">
+          <StartupNameSection />
+          <LocationBasedSection />
+          <DateEstablishedSection />
+          <SDGGoalSection />
+        </div>
+        <ActionButtons />
       </div>
     </div>
   );
