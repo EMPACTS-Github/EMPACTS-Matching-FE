@@ -5,7 +5,7 @@ import RightArrow from '/public/assets/arrow-right.svg';
 import Image from 'next/image';
 import Button from '@/components/Button/Button';
 
-function CreateNewProfile() {
+const CreateNewProfile = () => {
   const router = useRouter();
 
   const handleChooseOption = (link: string) => {
