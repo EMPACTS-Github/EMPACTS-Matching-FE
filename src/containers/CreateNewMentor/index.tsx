@@ -18,6 +18,7 @@ import { getProvince } from '@/utils/getProvince';
 import { getSDGGoal } from '@/utils/getSDGGoal';
 import provinces from '@/utils/data/provinces.json';
 import sdgGoals from '@/utils/data/sdgGoals.json';
+import { uploadProfilePicture } from '@/apis/upload';
 
 const CreateNewMentor = () => {
   const [mentorName, setMentorName] = useState('');
@@ -30,6 +31,7 @@ const CreateNewMentor = () => {
   const [languagesSpoken, setLanguagesSpoken] = useState<LanguagesSpoken>(['EN']);
   const [skillOffered, setSkillOffered] = useState<SkillOffered>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [phone, setPhone] = useState('');
 
   const router = useRouter();
 
@@ -37,9 +39,32 @@ const CreateNewMentor = () => {
     router.back();
   };
 
-  const handleChangeImage = (fileUrl: string, fileId: string) => {
-    setProfilePicture(fileUrl);
-    setUploadedPictureId(fileId);
+  const handleChangeImage = async (file: File) => {
+    try {
+      setLoading(true);
+      // Upload the file first
+      const uploadResponse = await uploadProfilePicture(file, 'MENTOR');
+      const fileUrl = uploadResponse.data.attachmentUrl;
+      const fileId = uploadResponse.data.id;
+      
+      setProfilePicture(fileUrl);
+      setUploadedPictureId(fileId);
+    } catch (error) {
+      addToast({
+        title: 'Error uploading image',
+        color: TOAST_COLORS.DANGER,
+        timeout: TOAST_TIMEOUT.SHORT,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      await handleChangeImage(file);
+    }
   };
 
   const handleChangeMentorUsername = (mentorName: string) => {
@@ -89,6 +114,7 @@ const CreateNewMentor = () => {
       description: description,
       skillOffered: skillOffered,
       languagesSpoken: languagesSpoken,
+      phone: phone || undefined,
     };
 
     try {
@@ -100,11 +126,14 @@ const CreateNewMentor = () => {
       });
       router.push(`/mentor-detail/${response.data.newMentor.id}`);
 
-      updateAttachment({
-        id: uploadedPictureId,
-        ownerId: response.data.newMentor.id,
-        ownerType: UPLOAD_OWNER_TYPE.MENTOR,
-      });
+      // Update attachment ownership if we uploaded a new picture
+      if (uploadedPictureId) {
+        updateAttachment({
+          id: uploadedPictureId,
+          ownerId: response.data.newMentor.id,
+          ownerType: UPLOAD_OWNER_TYPE.MENTOR,
+        });
+      }
     } catch (error) {
       addToast({
         title: TOAST_MESSAGES.PROFILE_CREATE_ERROR,
@@ -126,17 +155,7 @@ const CreateNewMentor = () => {
   );
 
   // Inline ProfilePictureUpload component
-  const ProfilePictureUpload = ({ onImageUpload }: { onImageUpload: (fileUrl: string, fileId: string) => void }) => {
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        // TODO: Implement file upload logic
-        const mockFileUrl = URL.createObjectURL(file);
-        const mockFileId = 'temp-id';
-        onImageUpload(mockFileUrl, mockFileId);
-      }
-    };
-
+  const ProfilePictureUpload = () => {
     return (
       <div className="flex flex-col items-center gap-5">
         <input
@@ -190,6 +209,20 @@ const CreateNewMentor = () => {
         </span>
         . You can change it later in Settings
       </p>
+    </div>
+  );
+
+  // Inline PhoneSection component
+  const PhoneSection = () => (
+    <div className="space-y-2">
+      <label className="text-[16px] font-bold text-black leading-[150%]">Phone</label>
+      <Input
+        variant="text"
+        preset="default-md"
+        value={phone}
+        onChange={setPhone}
+        placeholder="Enter phone number"
+      />
     </div>
   );
 
@@ -367,9 +400,10 @@ const CreateNewMentor = () => {
       )}
       <div className="flex flex-col w-[736px] p-8 bg-white rounded-xl shadow-md space-y-8">
         <HeaderSection />
-        <ProfilePictureUpload onImageUpload={handleChangeImage} />
+        <ProfilePictureUpload />
         <div className="space-y-6">
           <MentorNameSection />
+          <PhoneSection />
           <LocationBasedSection />
           <DescriptionSection />
           <LanguagesSpokenSection />

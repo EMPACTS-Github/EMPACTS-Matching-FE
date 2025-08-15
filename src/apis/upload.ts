@@ -18,6 +18,22 @@ export const uploadAttachemt = async (uploadData: IUploadData) => {
   return response.data;
 };
 
+export const uploadProfilePicture = async (file: File, ownerType: string, ownerId?: string) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('ownerType', ownerType);
+  if (ownerId) {
+    formData.append('ownerId', ownerId);
+  }
+  
+  const response = await axiosInstance.post('/attachments/file', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data;
+};
+
 export const updateAttachment = async (updateData: IUpdateAttachmentData) => {
   const response = await axiosInstance.put('/attachments/file', updateData);
   return response.data;
