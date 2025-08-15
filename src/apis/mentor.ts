@@ -30,6 +30,7 @@ export const create_mentor_profile = async (data: {
   skillOffered: string[];
   avtUrl: string | null;
   languagesSpoken: LanguagesSpoken;
+  phone?: string;
 }) => {
   const response = await axiosInstance.post(`/mentor`, data);
   return response.data;

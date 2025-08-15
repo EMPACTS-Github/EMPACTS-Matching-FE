@@ -32,7 +32,13 @@ export const create_startup_profile = async (data: {
   formedTime: Date | null;
   languagesSpoken: LanguagesSpoken;
 }) => {
-  const response = await axiosInstance.post('/startups', data);
+  // Transform the data to match the API expectations
+  const transformedData = {
+    ...data,
+    formedTime: data.formedTime ? data.formedTime.toISOString().split('T')[0] : null,
+  };
+  
+  const response = await axiosInstance.post('/startups', transformedData);
   return response.data;
 };
 

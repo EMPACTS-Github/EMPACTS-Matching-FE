@@ -15,6 +15,7 @@ import { getProvince } from '@/utils/getProvince';
 import { getSDGGoal } from '@/utils/getSDGGoal';
 import provinces from '@/utils/data/provinces.json';
 import sdgGoals from '@/utils/data/sdgGoals.json';
+import { uploadProfilePicture } from '@/apis/upload';
 
 
 const CreateNewStartup = () => {
@@ -35,9 +36,32 @@ const CreateNewStartup = () => {
     router.back();
   };
 
-  const handleChangeImage = (fileUrl: string, fileId: string) => {
-    setProfilePicture(fileUrl);
-    setUploadedPictureId(fileId);
+  const handleChangeImage = async (file: File) => {
+    try {
+      setLoading(true);
+      // Upload the file first
+      const uploadResponse = await uploadProfilePicture(file, 'STARTUP');
+      const fileUrl = uploadResponse.data.attachmentUrl;
+      const fileId = uploadResponse.data.id;
+      
+      setProfilePicture(fileUrl);
+      setUploadedPictureId(fileId);
+    } catch (error) {
+      addToast({
+        title: 'Error uploading image',
+        color: 'danger',
+        timeout: 3000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      await handleChangeImage(file);
+    }
   };
 
   const handleChangeStartupUsername = (startupName: string) => {
@@ -84,6 +108,7 @@ const CreateNewStartup = () => {
       });
       router.push(`/startup-detail/${response.data.newStartup.id}`);
 
+      // Update attachment ownership if we uploaded a new picture
       if (uploadedPictureId) {
         updateAttachment({
           id: uploadedPictureId,
@@ -115,17 +140,7 @@ const CreateNewStartup = () => {
   );
 
   // Inline ProfilePictureUpload component
-  const ProfilePictureUpload = ({ onImageUpload }: { onImageUpload: (fileUrl: string, fileId: string) => void }) => {
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        // TODO: Implement file upload logic
-        const mockFileUrl = URL.createObjectURL(file);
-        const mockFileId = 'temp-id';
-        onImageUpload(mockFileUrl, mockFileId);
-      }
-    };
-
+  const ProfilePictureUpload = () => {
     return (
       <div className="flex flex-col items-center gap-5">
         <input
@@ -293,7 +308,7 @@ const CreateNewStartup = () => {
       )}
       <div className="flex flex-col w-[736px] p-8 bg-white rounded-xl shadow-md space-y-8">
         <HeaderSection />
-        <ProfilePictureUpload onImageUpload={handleChangeImage} />
+        <ProfilePictureUpload />
         <div className="space-y-6">
           <StartupNameSection />
           <LocationBasedSection />
