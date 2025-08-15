@@ -6,20 +6,20 @@ import CompassIcon from '@/components/Icons/CompassIcon';
 import { SuggestMentors } from '@/interfaces/startup';
 import { SuggestMentor } from '@/interfaces/MentorProfile';
 import { mentor_profile_detail } from '@/apis/mentor-profile';
-import ForyouSection from './Section/ForyouSection';
-import MatchingActivitySection from './Section/MatchingActivitySection';
-import SearchSection from './Section/SearchSection';
+import ForyouSection from '@/containers/StartupExplore/Section/ForyouSection';
+import MatchingActivitySection from '@/containers/StartupExplore/Section/MatchingActivitySection';
+import SearchSection from '@/containers/StartupExplore/Section/SearchSection';
 import { useStartupIdStore } from '@/stores/startup-store';
 import { useMatchingStore } from '@/stores/matching-store';
 import { startup_matching_activity } from '@/apis/startup-matching';
 import { useErrorStore } from '@/stores/error-store';
 
-interface ExploreContainerProps {
+interface StartupExploreProps {
   mentorList: SuggestMentors[] | undefined;
   error: string | null;
 }
 
-const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }) => {
+const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) => {
   const [location, setLocation] = useState<string>('');
   const [isFavourite, setIsFavourite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -143,4 +143,4 @@ const ExploreContainer: React.FC<ExploreContainerProps> = ({ mentorList, error }
   );
 };
 
-export default ExploreContainer;
+export default StartupExplore;

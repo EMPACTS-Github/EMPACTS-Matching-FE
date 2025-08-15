@@ -2,7 +2,8 @@ import Image from 'next/image';
 import React from 'react';
 import FavoriteIcon from '/public/assets/favorite-icon.svg';
 import FavoriteFilledIcon from '/public/assets/favorite-filled-icon.svg';
-import { Button, Avatar } from '@heroui/react';
+import Button from '@/components/Button/Button';
+import Avatar from '@/components/Avatar/Avatar';
 import Label from '/public/assets/label.svg';
 import Star from '/public/assets/star.svg';
 import IconText from '@/components/common/IconText';
@@ -12,7 +13,7 @@ import { getSDGGoal } from '@/utils/getSDGGoal';
 import { Chip } from '@heroui/chip';
 import skills from '@/utils/data/skillOffered.json';
 
-interface ProfileInfoCardProps {
+interface SuggestMentorDetailCardProps {
   title: string;
   location: string | undefined;
   description: string;
@@ -26,7 +27,7 @@ interface ProfileInfoCardProps {
   mentorProfile?: any;
 }
 
-const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
+const SuggestMentorDetailCard: React.FC<SuggestMentorDetailCardProps> = ({
   title,
   location,
   description,
@@ -40,42 +41,30 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
   mentorProfile,
 }) => {
   return (
-    <div className={`bg-white rounded-lg shadow-xl p-6 gap-y-6 flex flex-col h-fit ${className}`}>
+    <div className={`bg-white rounded-lg shadow-xl p-7 gap-y-6 flex flex-col h-fit ${className}`}>
       <div className="flex justify-start items-center">
-        <Avatar
-          src={avtUrl}
-          alt={title}
-          color="primary"
-          isBordered
-          size="lg"
-          radius="full"
-          className="mr-6 bg-white"
-        />
+        <Avatar src={avtUrl} alt={title} variant="default-lg" className="mr-6" />
         <div className="items-center justify-between flex-grow">
           <div className="flex items-center justify-between">
             <h3 className="text-[28px] font-semibold text-black">{title}</h3>
             <div className="flex items-center gap-2">
               <IconText icon={Star} text={rating} alt="Rating" />
-              <Image
-                onClick={onFavoriteClick}
-                src={isFavorite ? FavoriteFilledIcon : FavoriteIcon}
-                alt="Favorite"
-                width={24}
-                height={24}
-                className="cursor-pointer"
-              />
+              <Button isIconOnly onClick={onFavoriteClick} className="bg-transparent">
+                {isFavorite ? (
+                  <Image src={FavoriteFilledIcon} alt="Unfavorite" width={24} height={24} />
+                ) : (
+                  <Image src={FavoriteIcon} alt="Favorite" width={24} height={24} />
+                )}
+              </Button>
             </div>
           </div>
           <div className="flex items-center justify-between">
             <TextLine text={location} className="text-black text-[20px]" />
             <Button
               type="submit"
-              color="primary"
-              size="md"
-              variant="solid"
-              radius="md"
+              variant="primary-md"
               startContent={<UserPlusIcon className="text-white" />}
-              onPress={onClickButton}
+              onClick={onClickButton}
             >
               Connect
             </Button>
@@ -203,4 +192,4 @@ const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
   );
 };
 
-export default ProfileInfoCard;
+export default SuggestMentorDetailCard;

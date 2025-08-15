@@ -118,6 +118,25 @@ export const buttonPresets = {
     size: 'lg' as const,
     radius: 'md' as const,
   },
+  // Border Buttons - Transparent background
+  'bordered-sm': {
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'sm' as const,
+    radius: 'md' as const,
+  },
+  'bordered-md': {
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'md' as const,
+    radius: 'md' as const,
+  },
+  'bordered-lg': {
+    variant: 'bordered' as const,
+    color: 'primary' as const,
+    size: 'lg' as const,
+    radius: 'md' as const,
+  },
 
   // Full width variants (default to medium size)
   'primary-full': {
@@ -162,7 +181,7 @@ export const buttonPresets = {
   },
 
   // Google sign-in button
-  'google': {
+  google: {
     className: 'w-full mt-2 flex justify-center items-center bg-neutral-40 text-black',
     variant: 'solid' as const,
     color: 'default' as const,
@@ -170,7 +189,6 @@ export const buttonPresets = {
     fullWidth: true,
     radius: 'lg' as const,
   },
-
 } as const;
 
 // Type for button preset configuration
@@ -232,7 +250,7 @@ const Button = ({
 
     // Handle disabled state automatically
     const isDisabled = disabled || preset.isDisabled;
-    
+
     // Handle loading state automatically
     const isLoading = loading;
 

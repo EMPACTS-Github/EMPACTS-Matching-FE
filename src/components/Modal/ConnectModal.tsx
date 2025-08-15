@@ -1,14 +1,4 @@
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Avatar,
-} from '@heroui/react';
-import Image from 'next/image';
-import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/react';
 import { useState, useMemo } from 'react';
 import { DatePicker, addToast } from '@heroui/react';
 import { getLocalTimeZone, today, CalendarDate } from '@internationalized/date';
@@ -17,6 +7,8 @@ import ClockIcon from '@/components/Icons/ClockIcon';
 import CalendarIcon from '@/components/Icons/CalendarIcon';
 import { request_matching_to_mentor } from '@/apis/startup-matching';
 import { Spinner } from '@heroui/spinner';
+import Button from '@/components/Button/Button';
+import Avatar from '@/components/Avatar/Avatar';
 
 interface ConnectModalProps {
   startupId: string;
@@ -124,15 +116,7 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
           <>
             <ModalHeader className="flex gap-4 items-center">
               <div className="w-[10%]">
-                <Avatar
-                  alt="mentor's avatar"
-                  src={avtUrl}
-                  size="lg"
-                  radius="full"
-                  isBordered
-                  color="primary"
-                  className="bg-white"
-                />
+                <Avatar alt="mentor's avatar" src={avtUrl} variant="default-lg" />
               </div>
               <div className="w-[90%]">
                 <h3 className="text-lg text-black font-semibold">
@@ -170,8 +154,8 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
                     ))}
                   </Select>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm text-gray-700 mb-1">Note</label>
+                <div className="flex flex-col gap-1 py-2">
+                  <label className="text-md text-gray-700 mb-1 font-bold">Note</label>
                   <textarea
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
@@ -183,10 +167,10 @@ const ConnectModal: React.FC<ConnectModalProps> = ({
               </div>
             </ModalBody>
             <ModalFooter className="flex justify-between mt-20">
-              <Button className="w-1/2 border-2" variant="light" onPress={onClose}>
+              <Button variant="bordered-md" className="w-1/2 border-2" onClick={onClose}>
                 Cancel
               </Button>
-              <Button className="bg-empacts text-white w-1/2" onPress={handleConnect}>
+              <Button variant="primary-md" className="w-1/2" onClick={handleConnect}>
                 {isLoading ? <Spinner size="sm" color="white" /> : 'Connect'}
               </Button>
             </ModalFooter>

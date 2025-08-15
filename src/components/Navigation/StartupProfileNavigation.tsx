@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from '@heroui/react';
 import { startup_profile_detail } from '@/apis/startup-profile';
 import { StartupProfileResponse } from '@/interfaces/StartupProfile';
-import ExploreContainer from '@/containers/Explore/ExploreContainer';
+import StartupExploreContainer from '@/containers/StartupExplore';
 import StartupMemberContainer from '@/containers/StartupMember/StartupMemberContainer';
 import StartupProfileContainer from '@/containers/StartupProfile/StartupProfileContainer';
 import { suggest_mentor_list } from '@/apis/suggest-mentor';
@@ -62,10 +62,10 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
           variant="underlined"
           selectedKey={selected}
           onSelectionChange={setSelected as any}
-          className="w-full font-bold bg-white xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
+          className="w-full font-bold bg-white 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
         >
           <Tab key="explore" title="Explore" className="pt-0 px-2">
-            <ExploreContainer mentorList={suggestedMentors} error={error} />
+            <StartupExploreContainer mentorList={suggestedMentors} error={error} />
           </Tab>
           <Tab key="profile" title="Profile" className="pt-0 px-2">
             <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
