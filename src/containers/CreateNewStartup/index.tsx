@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { create_startup_profile } from '@/apis/startup';
-import { LanguagesSpoken } from '@/constants/common';
+import { LanguagesSpoken, LANGUAGE_SPOKEN } from '@/constants/common';
 import { addToast } from '@heroui/react';
 import * as changeCase from 'change-case';
 import { updateAttachment } from '@/apis/upload';
@@ -12,10 +12,10 @@ import Input from '@/components/Input/Input';
 import Select from '@/components/Select/Select';
 import Image from 'next/image';
 import { getProvince } from '@/utils/getProvince';
-import { getSDGGoal } from '@/utils/getSDGGoal';
 import provinces from '@/utils/data/provinces.json';
-import sdgGoals from '@/utils/data/sdgGoals.json';
 import { uploadProfilePicture } from '@/apis/upload';
+import FormLabel from '@/components/Form/FormLabel';
+import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
 
 const CreateNewStartup = () => {
   const [companyName, setCompanyName] = useState('');
@@ -120,6 +120,11 @@ const CreateNewStartup = () => {
     }
   };
 
+  const getSDGGoalLabel = (goalKey: string) => {
+    const goal = Object.values(STARTUP_SDG_GOALS).find(g => g.textValue === goalKey);
+    return goal?.label || goalKey;
+  };
+
   // Inline HeaderSection component
   const HeaderSection = () => (
     <div className="flex flex-col items-center gap-2 w-full">
@@ -174,7 +179,7 @@ const CreateNewStartup = () => {
   // Inline StartupNameSection component using Input component
   const StartupNameSection = () => (
     <div className="space-y-2">
-      <label className="text-[16px] font-bold text-black leading-[150%]">Startup name</label>
+      <FormLabel text="Startup name" className="text-[16px] font-bold text-black leading-[150%]" />
       <Input
         variant="text"
         preset="default-md"
@@ -204,7 +209,7 @@ const CreateNewStartup = () => {
 
     return (
       <div className="space-y-2">
-        <label className="text-[16px] font-bold text-black leading-[150%]">Location based</label>
+        <FormLabel text="Location based" className="text-[16px] font-bold text-black leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Search location"
@@ -230,7 +235,7 @@ const CreateNewStartup = () => {
   // Inline DateEstablishedSection component
   const DateEstablishedSection = () => (
     <div className="space-y-2">
-      <label className="text-[16px] font-bold text-black leading-[150%]">Date established</label>
+      <FormLabel text="Date established" className="text-[16px] font-bold text-black leading-[150%]" />
       <input
         type="date"
         value={formedTime ? formedTime.toISOString().split('T')[0] : ''}
@@ -242,15 +247,15 @@ const CreateNewStartup = () => {
 
   // Inline SDGGoalSection component using Select component
   const SDGGoalSection = () => {
-    const goalItems = sdgGoals.map((goal) => ({
-      key: goal.value,
+    const goalItems = Object.entries(STARTUP_SDG_GOALS).map(([key, goal]) => ({
+      key: goal.textValue,
       label: goal.label,
-      value: goal.value,
+      value: goal.textValue,
     }));
 
     return (
       <div className="space-y-2">
-        <label className="text-[16px] font-bold text-black leading-[150%]">SDG Goal</label>
+        <FormLabel text="SDG Goal" className="text-[16px] font-bold text-black leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Search goal"
@@ -265,9 +270,50 @@ const CreateNewStartup = () => {
         />
         {selectedGoal && (
           <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
-            Selected: {getSDGGoal(selectedGoal)}
+            Selected: {getSDGGoalLabel(selectedGoal)}
           </p>
         )}
+      </div>
+    );
+  };
+
+  // Inline DescriptionSection component
+  const DescriptionSection = () => (
+    <div className="space-y-2">
+      <FormLabel text="Description" className="text-[16px] font-bold text-black leading-[150%]" />
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Enter company description"
+        className="h-24 border border-[#A3A3A3] bg-white rounded-lg px-3 py-2 text-[16px] w-full resize-none"
+        rows={4}
+      />
+    </div>
+  );
+
+  // Inline LanguagesSpokenSection component
+  const LanguagesSpokenSection = () => {
+    const languageItems = Object.entries(LANGUAGE_SPOKEN).map(([key, label]) => ({
+      key,
+      label,
+      value: key,
+    }));
+
+    return (
+      <div className="space-y-2">
+        <FormLabel text="Languages Spoken" className="text-[16px] font-bold text-black leading-[150%]" />
+        <Select
+          variant="form-field"
+          placeholder="Select languages"
+          items={languageItems}
+          selectedKeys={languagesSpoken}
+          onSelectionChange={(keys) => {
+            if (keys !== 'all') {
+              setLanguagesSpoken(Array.from(keys) as LanguagesSpoken);
+            }
+          }}
+          selectionMode="multiple"
+        />
       </div>
     );
   };
@@ -311,6 +357,8 @@ const CreateNewStartup = () => {
           <LocationBasedSection />
           <DateEstablishedSection />
           <SDGGoalSection />
+          <DescriptionSection />
+          <LanguagesSpokenSection />
         </div>
         <ActionButtons />
       </div>
