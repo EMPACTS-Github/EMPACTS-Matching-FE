@@ -153,7 +153,7 @@ const CreateNewMentor = () => {
   // Inline HeaderSection component
   const HeaderSection = () => (
     <div className="flex flex-col items-center gap-2 w-full">
-      <h1 className="text-[32px] font-bold text-black leading-[175%] text-center">
+      <h1 className="text-large font-bold text-secondary leading-[175%] text-center">
         Mentor profile
       </h1>
     </div>
@@ -171,7 +171,7 @@ const CreateNewMentor = () => {
           id="profile-picture"
         />
         <label htmlFor="profile-picture" className="cursor-pointer">
-          <div className="w-[90px] h-[90px] rounded-full bg-gray-200 flex items-center justify-center overflow-hidden hover:bg-gray-300 transition-colors">
+          <div className="w-[90px] h-[90px] rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
             {profilePicture ? (
               <Image
                 src={profilePicture}
@@ -181,7 +181,7 @@ const CreateNewMentor = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-6 h-6 text-black">
+              <div className="w-6 h-6 text-secondary">
                 {/* Camera icon placeholder */}
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
@@ -191,7 +191,7 @@ const CreateNewMentor = () => {
             )}
           </div>
         </label>
-        <p className="text-[16px] font-bold text-[#010B23] leading-[150%] text-center">
+        <p className="text-regular font-bold text-secondary leading-[150%] text-center">
           Upload your profile picture
         </p>
       </div>
@@ -201,7 +201,7 @@ const CreateNewMentor = () => {
   // Inline MentorNameSection component using Input component
   const MentorNameSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Mentor name" className="text-[16px] font-bold text-black leading-[150%]" />
+      <FormLabel text="Mentor name" className="text-regular font-bold text-secondary leading-[150%]" />
       <Input
         variant="text"
         preset="default-md"
@@ -213,7 +213,7 @@ const CreateNewMentor = () => {
         placeholder="Mentor name"
         isRequired
       />
-      <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
+      <p className="text-small font-normal text-neutral-80 leading-[143%]">
         Your profile could be found with username{' '}
         <span className="text-primary">{mentorUsername || '@mentor_name'}</span>. You can change
         it later in Settings
@@ -224,7 +224,7 @@ const CreateNewMentor = () => {
   // Inline PhoneSection component
   const PhoneSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Phone" className="text-[16px] font-bold text-black leading-[150%]" />
+      <FormLabel text="Phone" className="text-regular font-bold text-secondary leading-[150%]" />
       <Input
         variant="text"
         preset="default-md"
@@ -245,7 +245,7 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Location Based" className="text-[16px] font-bold text-black leading-[150%]" />
+        <FormLabel text="Location Based" className="text-regular font-bold text-secondary leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select a location"
@@ -260,7 +260,7 @@ const CreateNewMentor = () => {
           isRequired
         />
         {location && (
-          <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
+          <p className="text-small font-normal text-neutral-80 leading-[143%]">
             Selected: {getProvince(location)}
           </p>
         )}
@@ -271,7 +271,7 @@ const CreateNewMentor = () => {
   // Inline DescriptionSection component using LabelWithTextarea
   const DescriptionSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Description" className="text-[16px] font-bold text-black leading-[150%]" />
+      <FormLabel text="Description" className="text-regular font-bold text-secondary leading-[150%]" />
       <LabelWithTextarea
         label="Description"
         content={description}
@@ -292,7 +292,7 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Languages Spoken" className="text-[16px] font-bold text-black leading-[150%]" />
+        <FormLabel text="Languages Spoken" className="text-regular font-bold text-secondary leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select languages"
@@ -320,7 +320,7 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Skill Offered" className="text-[16px] font-bold text-black leading-[150%]" />
+        <FormLabel text="Skill Offered" className="text-regular font-bold text-secondary leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select Skill Offered"
@@ -348,7 +348,7 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="SDG Goals" className="text-[16px] font-bold text-black leading-[150%]" />
+        <FormLabel text="SDG Goals" className="text-regular font-bold text-secondary leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select SDG Goals"
@@ -363,7 +363,7 @@ const CreateNewMentor = () => {
           isRequired
         />
         {selectedGoals.length > 0 && (
-          <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
+          <p className="text-small font-normal text-neutral-80 leading-[143%]">
             Selected: {selectedGoals.map((goal) => getSDGGoalLabel(goal)).join(', ')}
           </p>
         )}
@@ -378,7 +378,7 @@ const CreateNewMentor = () => {
         <Button
           variant="secondary-full"
           onClick={handleCancelCreateProfile}
-          className="border border-primary text-primary bg-white hover:bg-gray-50"
+          className="border border-primary text-primary bg-neutral-20 hover:bg-neutral-40"
         >
           Cancel
         </Button>
@@ -387,7 +387,7 @@ const CreateNewMentor = () => {
         <Button
           variant="primary-full"
           onClick={handleCreateProfile}
-          className="bg-primary text-white hover:bg-primary-80"
+          className="bg-primary text-neutral-20 hover:bg-primary-80"
         >
           Continue
         </Button>
@@ -398,11 +398,11 @@ const CreateNewMentor = () => {
   return (
     <div className="w-full flex justify-center items-center min-h-screen relative">
       {loading && (
-        <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+        <div className="absolute inset-0 flex justify-center items-center bg-neutral-20 bg-opacity-75 z-50">
           <div className="loader"></div>
         </div>
       )}
-      <div className="flex flex-col w-[736px] p-8 bg-white rounded-xl shadow-md space-y-8">
+      <div className="flex flex-col w-[736px] p-8 bg-neutral-20 rounded-xl shadow-md space-y-8">
         <HeaderSection />
         <ProfilePictureUpload />
         <div className="space-y-6">
