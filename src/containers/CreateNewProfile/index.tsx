@@ -1,9 +1,8 @@
 'use client';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import RightArrow from '/public/assets/arrow-right.svg';
-import Image from 'next/image';
 import Button from '@/components/Button/Button';
+import ArrowRightIcon from '@/components/Icons/ArrowRightIcon';
 
 const CreateNewProfile = () => {
   const router = useRouter();
@@ -39,13 +38,7 @@ const CreateNewProfile = () => {
           <p className="text-sm text-gray-500">{description}</p>
         </div>
       </div>
-      <Image
-        src={RightArrow}
-        className="text-gray-400 text-lg"
-        alt="Arrow right"
-        width={24}
-        height={24}
-      />
+      <ArrowRightIcon className="text-gray-400 text-lg" width={24} height={24} />
     </Button>
   );
 

@@ -1,8 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import { create_mentor_profile } from '@/apis/mentor';
-import { LanguagesSpoken } from '@/constants/common';
-import { SkillOffered } from '@/constants/skillOffered';
+import { LanguagesSpoken, LANGUAGE_SPOKEN, SDGS } from '@/constants/common';
+import { MENTOR_SKILL_OFFERED, SkillOffered } from '@/constants/skillOffered';
+import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
 import { addToast } from '@heroui/react';
 import * as changeCase from 'change-case';
 import { updateAttachment } from '@/apis/upload';
@@ -15,10 +16,9 @@ import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
 import { TOAST_COLORS, TOAST_MESSAGES, TOAST_TIMEOUT } from '@/constants/api';
 import Image from 'next/image';
 import { getProvince } from '@/utils/getProvince';
-import { getSDGGoal } from '@/utils/getSDGGoal';
 import provinces from '@/utils/data/provinces.json';
-import sdgGoals from '@/utils/data/sdgGoals.json';
 import { uploadProfilePicture } from '@/apis/upload';
+import FormLabel from '@/components/Form/FormLabel';
 
 const CreateNewMentor = () => {
   const [mentorName, setMentorName] = useState('');
@@ -145,6 +145,11 @@ const CreateNewMentor = () => {
     }
   };
 
+  const getSDGGoalLabel = (goalKey: string) => {
+    const goal = Object.values(STARTUP_SDG_GOALS).find(g => g.textValue === goalKey);
+    return goal?.label || goalKey;
+  };
+
   // Inline HeaderSection component
   const HeaderSection = () => (
     <div className="flex flex-col items-center gap-2 w-full">
@@ -196,7 +201,7 @@ const CreateNewMentor = () => {
   // Inline MentorNameSection component using Input component
   const MentorNameSection = () => (
     <div className="space-y-2">
-      <label className="text-[16px] font-bold text-black leading-[150%]">Mentor name</label>
+      <FormLabel text="Mentor name" className="text-[16px] font-bold text-black leading-[150%]" />
       <Input
         variant="text"
         preset="default-md"
@@ -210,8 +215,8 @@ const CreateNewMentor = () => {
       />
       <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
         Your profile could be found with username{' '}
-        <span className="text-primary">{mentorUsername || '@mentor_name'}</span>. You can change it
-        later in Settings
+        <span className="text-primary">{mentorUsername || '@mentor_name'}</span>. You can change
+        it later in Settings
       </p>
     </div>
   );
@@ -219,7 +224,7 @@ const CreateNewMentor = () => {
   // Inline PhoneSection component
   const PhoneSection = () => (
     <div className="space-y-2">
-      <label className="text-[16px] font-bold text-black leading-[150%]">Phone</label>
+      <FormLabel text="Phone" className="text-[16px] font-bold text-black leading-[150%]" />
       <Input
         variant="text"
         preset="default-md"
@@ -240,7 +245,7 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <label className="text-[16px] font-bold text-black leading-[150%]">Location Based</label>
+        <FormLabel text="Location Based" className="text-[16px] font-bold text-black leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select a location"
@@ -266,7 +271,7 @@ const CreateNewMentor = () => {
   // Inline DescriptionSection component using LabelWithTextarea
   const DescriptionSection = () => (
     <div className="space-y-2">
-      <label className="text-[16px] font-bold text-black leading-[150%]">Description</label>
+      <FormLabel text="Description" className="text-[16px] font-bold text-black leading-[150%]" />
       <LabelWithTextarea
         label="Description"
         content={description}
@@ -279,20 +284,15 @@ const CreateNewMentor = () => {
 
   // Inline LanguagesSpokenSection component
   const LanguagesSpokenSection = () => {
-    const languageItems = [
-      { key: 'EN', label: 'English', value: 'EN' },
-      { key: 'VI', label: 'Vietnamese', value: 'VI' },
-      { key: 'FR', label: 'French', value: 'FR' },
-      { key: 'DE', label: 'German', value: 'DE' },
-      { key: 'ES', label: 'Spanish', value: 'ES' },
-      { key: 'CN', label: 'Chinese', value: 'CN' },
-      { key: 'JP', label: 'Japanese', value: 'JP' },
-      { key: 'KR', label: 'Korean', value: 'KR' },
-    ];
+    const languageItems = Object.entries(LANGUAGE_SPOKEN).map(([key, label]) => ({
+      key,
+      label,
+      value: key,
+    }));
 
     return (
       <div className="space-y-2">
-        <label className="text-[16px] font-bold text-black leading-[150%]">Languages Spoken</label>
+        <FormLabel text="Languages Spoken" className="text-[16px] font-bold text-black leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select languages"
@@ -303,6 +303,7 @@ const CreateNewMentor = () => {
               setLanguagesSpoken(Array.from(keys) as LanguagesSpoken);
             }
           }}
+          selectionMode="multiple"
           isRequired
         />
       </div>
@@ -311,18 +312,15 @@ const CreateNewMentor = () => {
 
   // Inline SkillOfferedSection component
   const SkillOfferedSection = () => {
-    const skillItems = [
-      { key: 'Business Strategy', label: 'Business Strategy', value: 'Business Strategy' },
-      { key: 'Marketing', label: 'Marketing', value: 'Marketing' },
-      { key: 'Finance', label: 'Finance', value: 'Finance' },
-      { key: 'Technology', label: 'Technology', value: 'Technology' },
-      { key: 'Operations', label: 'Operations', value: 'Operations' },
-      { key: 'Sales', label: 'Sales', value: 'Sales' },
-    ];
+    const skillItems = Object.entries(MENTOR_SKILL_OFFERED).map(([key, label]) => ({
+      key,
+      label,
+      value: key,
+    }));
 
     return (
       <div className="space-y-2">
-        <label className="text-[16px] font-bold text-black leading-[150%]">Skill Offered</label>
+        <FormLabel text="Skill Offered" className="text-[16px] font-bold text-black leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select Skill Offered"
@@ -333,6 +331,7 @@ const CreateNewMentor = () => {
               setSkillOffered(Array.from(keys) as SkillOffered);
             }
           }}
+          selectionMode="multiple"
           isRequired
         />
       </div>
@@ -341,15 +340,15 @@ const CreateNewMentor = () => {
 
   // Inline SDGGoalSection component
   const SDGGoalSection = () => {
-    const goalItems = sdgGoals.map((goal) => ({
-      key: goal.value,
+    const goalItems = Object.entries(STARTUP_SDG_GOALS).map(([key, goal]) => ({
+      key: goal.textValue,
       label: goal.label,
-      value: goal.value,
+      value: goal.textValue,
     }));
 
     return (
       <div className="space-y-2">
-        <label className="text-[16px] font-bold text-black leading-[150%]">SDG Goals</label>
+        <FormLabel text="SDG Goals" className="text-[16px] font-bold text-black leading-[150%]" />
         <Select
           variant="form-field"
           placeholder="Select SDG Goals"
@@ -360,11 +359,12 @@ const CreateNewMentor = () => {
               setSelectedGoals(Array.from(keys) as string[]);
             }
           }}
+          selectionMode="multiple"
           isRequired
         />
         {selectedGoals.length > 0 && (
           <p className="text-[14px] font-normal text-[#71717A] leading-[143%]">
-            Selected: {selectedGoals.map((goal) => getSDGGoal(goal)).join(', ')}
+            Selected: {selectedGoals.map((goal) => getSDGGoalLabel(goal)).join(', ')}
           </p>
         )}
       </div>
