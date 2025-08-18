@@ -146,9 +146,19 @@ const CreateNewMentor = () => {
   };
 
   const getSDGGoalLabel = (goalKey: string) => {
-    const goal = Object.values(STARTUP_SDG_GOALS).find(g => g.textValue === goalKey);
+    const goal = Object.values(STARTUP_SDG_GOALS).find((g) => g.textValue === goalKey);
     return goal?.label || goalKey;
   };
+
+  const CameraIcon = () => (
+    <div className="w-6 h-6 text-secondary">
+      {/* Camera icon placeholder */}
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
+        <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
+      </svg>
+    </div>
+  );
 
   // Inline HeaderSection component
   const HeaderSection = () => (
@@ -171,7 +181,7 @@ const CreateNewMentor = () => {
           id="profile-picture"
         />
         <label htmlFor="profile-picture" className="cursor-pointer">
-          <div className="w-[90px] h-[90px] rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
+          <div className="w-[12%] h-[12%] min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
             {profilePicture ? (
               <Image
                 src={profilePicture}
@@ -181,13 +191,7 @@ const CreateNewMentor = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-6 h-6 text-secondary">
-                {/* Camera icon placeholder */}
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
-                  <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
-                </svg>
-              </div>
+              <CameraIcon />
             )}
           </div>
         </label>
@@ -201,7 +205,10 @@ const CreateNewMentor = () => {
   // Inline MentorNameSection component using Input component
   const MentorNameSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Mentor name" className="text-regular font-bold text-secondary leading-[150%]" />
+      <FormLabel
+        text="Mentor name"
+        className="text-regular font-bold text-secondary leading-[150%]"
+      />
       <Input
         variant="text"
         preset="default-md"
@@ -215,8 +222,8 @@ const CreateNewMentor = () => {
       />
       <p className="text-small font-normal text-neutral-80 leading-[143%]">
         Your profile could be found with username{' '}
-        <span className="text-primary">{mentorUsername || '@mentor_name'}</span>. You can change
-        it later in Settings
+        <span className="text-primary">{mentorUsername || '@mentor_name'}</span>. You can change it
+        later in Settings
       </p>
     </div>
   );
@@ -245,7 +252,10 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Location Based" className="text-regular font-bold text-secondary leading-[150%]" />
+        <FormLabel
+          text="Location Based"
+          className="text-regular font-bold text-secondary leading-[150%]"
+        />
         <Select
           variant="form-field"
           placeholder="Select a location"
@@ -271,7 +281,10 @@ const CreateNewMentor = () => {
   // Inline DescriptionSection component using LabelWithTextarea
   const DescriptionSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Description" className="text-regular font-bold text-secondary leading-[150%]" />
+      <FormLabel
+        text="Description"
+        className="text-regular font-bold text-secondary leading-[150%]"
+      />
       <LabelWithTextarea
         label="Description"
         content={description}
@@ -292,7 +305,10 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Languages Spoken" className="text-regular font-bold text-secondary leading-[150%]" />
+        <FormLabel
+          text="Languages Spoken"
+          className="text-regular font-bold text-secondary leading-[150%]"
+        />
         <Select
           variant="form-field"
           placeholder="Select languages"
@@ -320,7 +336,10 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Skill Offered" className="text-regular font-bold text-secondary leading-[150%]" />
+        <FormLabel
+          text="Skill Offered"
+          className="text-regular font-bold text-secondary leading-[150%]"
+        />
         <Select
           variant="form-field"
           placeholder="Select Skill Offered"
@@ -348,7 +367,10 @@ const CreateNewMentor = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="SDG Goals" className="text-regular font-bold text-secondary leading-[150%]" />
+        <FormLabel
+          text="SDG Goals"
+          className="text-regular font-bold text-secondary leading-[150%]"
+        />
         <Select
           variant="form-field"
           placeholder="Select SDG Goals"
