@@ -121,7 +121,7 @@ const CreateNewStartup = () => {
   };
 
   const getSDGGoalLabel = (goalKey: string) => {
-    const goal = Object.values(STARTUP_SDG_GOALS).find(g => g.textValue === goalKey);
+    const goal = Object.values(STARTUP_SDG_GOALS).find((g) => g.textValue === goalKey);
     return goal?.label || goalKey;
   };
 
@@ -137,6 +137,16 @@ const CreateNewStartup = () => {
     </div>
   );
 
+  const CameraIcon = () => (
+    <div className="w-6 h-6 text-secondary">
+      {/* Camera icon placeholder */}
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
+        <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
+      </svg>
+    </div>
+  );
+
   // Inline ProfilePictureUpload component
   const ProfilePictureUpload = () => {
     return (
@@ -149,7 +159,7 @@ const CreateNewStartup = () => {
           id="profile-picture"
         />
         <label htmlFor="profile-picture" className="cursor-pointer">
-          <div className="w-[90px] h-[90px] rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
+          <div className="w-[12%] h-[12%] min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
             {profilePicture ? (
               <Image
                 src={profilePicture}
@@ -159,13 +169,7 @@ const CreateNewStartup = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-6 h-6 text-secondary">
-                {/* Camera icon placeholder */}
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
-                  <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
-                </svg>
-              </div>
+              <CameraIcon />
             )}
           </div>
         </label>
@@ -179,7 +183,10 @@ const CreateNewStartup = () => {
   // Inline StartupNameSection component using Input component
   const StartupNameSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Startup name" className="text-regular font-bold text-secondary leading-[150%]" />
+      <FormLabel
+        text="Startup name"
+        className="text-regular font-bold text-secondary leading-[150%]"
+      />
       <Input
         variant="text"
         preset="default-md"
@@ -209,7 +216,10 @@ const CreateNewStartup = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Location based" className="text-regular font-bold text-secondary leading-[150%]" />
+        <FormLabel
+          text="Location based"
+          className="text-regular font-bold text-secondary leading-[150%]"
+        />
         <Select
           variant="form-field"
           placeholder="Search location"
@@ -235,7 +245,10 @@ const CreateNewStartup = () => {
   // Inline DateEstablishedSection component
   const DateEstablishedSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Date established" className="text-regular font-bold text-secondary leading-[150%]" />
+      <FormLabel
+        text="Date established"
+        className="text-regular font-bold text-secondary leading-[150%]"
+      />
       <input
         type="date"
         value={formedTime ? formedTime.toISOString().split('T')[0] : ''}
@@ -255,7 +268,10 @@ const CreateNewStartup = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="SDG Goal" className="text-regular font-bold text-secondary leading-[150%]" />
+        <FormLabel
+          text="SDG Goal"
+          className="text-regular font-bold text-secondary leading-[150%]"
+        />
         <Select
           variant="form-field"
           placeholder="Search goal"
@@ -280,7 +296,10 @@ const CreateNewStartup = () => {
   // Inline DescriptionSection component
   const DescriptionSection = () => (
     <div className="space-y-2">
-      <FormLabel text="Description" className="text-regular font-bold text-secondary leading-[150%]" />
+      <FormLabel
+        text="Description"
+        className="text-regular font-bold text-secondary leading-[150%]"
+      />
       <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -301,7 +320,10 @@ const CreateNewStartup = () => {
 
     return (
       <div className="space-y-2">
-        <FormLabel text="Languages Spoken" className="text-regular font-bold text-secondary leading-[150%]" />
+        <FormLabel
+          text="Languages Spoken"
+          className="text-regular font-bold text-secondary leading-[150%]"
+        />
         <Select
           variant="form-field"
           placeholder="Select languages"
