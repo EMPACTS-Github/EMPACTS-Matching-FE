@@ -46,10 +46,10 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({
           <>
             <ModalHeader className="items-center ">
               <div>
-                <h3 className="text-lg text-black mb-1">
-                  Edit position title for <span className="text-empacts">{member?.user.name}</span>
+                <h3 className="text-lg text-secondary mb-1">
+                  Edit position title for <span className="text-primary">{member?.user.name}</span>
                 </h3>
-                <div className="font-normal text-gray-400 text-xs">
+                <div className="font-normal text-neutral-50 text-xs">
                   We take certain actions for the safety of our users
                 </div>
               </div>
@@ -73,7 +73,7 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({
                 Cancel
               </Button>
               <Button
-                className="bg-empacts text-white w-1/2"
+                className="bg-primary text-neutral-20 w-1/2"
                 onPress={editTitle}
                 isDisabled={isLoading}
               >

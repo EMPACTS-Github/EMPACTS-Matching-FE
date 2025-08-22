@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { Tabs, Tab, Button, Divider, Avatar, addToast, useDisclosure } from '@heroui/react';
+import { Tabs, Tab, Divider, Avatar, addToast, useDisclosure } from '@heroui/react';
 import { Autocomplete, AutocompleteItem } from '@heroui/autocomplete';
 import React, { useState, useEffect } from 'react';
 import { uploadAttachemt } from '@/apis/upload';
@@ -11,12 +11,15 @@ import sdgGoals from '@/utils/data/sdgGoals.json';
 import provinces from '@/utils/data/provinces.json';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { LanguagesSpoken, SDGs } from '@/constants/common';
+import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import languages from '@/utils/data/languages.json';
 import { SkillOffered } from '@/constants/skillOffered';
 import skills from '@/utils/data/skillOffered.json';
 import { Select, SelectItem } from '@heroui/react';
 import DeleteProfileModal from './DeleteProfileModal';
 import HideProfileModal from './HideProfileModal';
+import Button from '@/components/Button/Button';
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/modal';
 
@@ -151,17 +154,17 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       try {
         await mentor_profile_update(mentor.id, requestBody);
         addToast({
-          title: 'Profile updated successfully',
-          color: 'success',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_UPDATED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
         await onFetchMentorProfile();
       } catch (err) {
-        setError('Failed to update the profile. Please try again.');
+        setError(PROFILE_MESSAGES.PROFILE_UPDATE_FAILED);
         addToast({
-          title: 'Failed to update the profile',
-          color: 'danger',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_UPDATE_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
         setLoading(false);
@@ -181,29 +184,29 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
         await mentor_profile_update(mentor.id, requestBody);
         if (requestBody.isHide) {
           addToast({
-            title: 'Profile has been hidden successfully',
-            color: 'success',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_HIDDEN_SUCCESS,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         } else {
           addToast({
-            title: 'Profile has been unhidden successfully',
-            color: 'success',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_UNHIDDEN_SUCCESS,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         }
       } catch (err) {
         if (requestBody.isHide) {
           addToast({
-            title: 'Failed to hide the profile',
-            color: 'danger',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_HIDE_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         } else {
           addToast({
-            title: 'Failed to unhide the profile',
-            color: 'danger',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_UNHIDE_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         }
       } finally {
@@ -219,15 +222,15 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       try {
         await mentor_profile_delete(mentor.id);
         addToast({
-          title: 'Profile has been deleted successfully',
-          color: 'success',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_DELETED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } catch (err) {
         addToast({
-          title: 'Failed to delete the profile',
-          color: 'danger',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_DELETE_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
         setLoading(false);
@@ -251,27 +254,27 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
         setError(null);
         onImageUpload(response.data.attachmentUrl, response.data.id);
         addToast({
-          title: 'Image uploaded successfully',
-          color: 'success',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.IMAGE_UPLOADED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } catch (err) {
-        setError('Failed to upload the image. Please try again.');
+        setError(PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED);
         addToast({
-          title: 'Failed to upload the image',
-          color: 'danger',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
         setLoading(false);
         event.target.files = null;
       }
     } else {
-      setError('No file selected. Please choose an image file.');
+      setError(PROFILE_MESSAGES.NO_FILE_SELECTED);
       addToast({
-        title: 'No file selected. Please choose an image file.',
-        color: 'danger',
-        timeout: 3000,
+        title: PROFILE_MESSAGES.NO_FILE_SELECTED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
     }
   };
@@ -297,11 +300,11 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                   radius="full"
                   isBordered
                   color="primary"
-                  className="bg-white"
+                  className="bg-neutral-20"
                 />
                 <div className="flex flex-col justify-center">
-                  <p className="font-semibold text-lg text-gray-800">{mentor?.name}</p>
-                  <p className="text-gray-400 font-normal text-md">Mentor Setting</p>
+                  <p className="font-semibold text-lg text-secondary">{mentor?.name}</p>
+                  <p className="text-neutral-50 font-normal text-md">{UI_LABELS.MENTOR_SETTING}</p>
                 </div>
               </div>
             </ModalHeader>
@@ -312,10 +315,10 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                 variant="light"
                 color="primary"
                 isVertical={true}
-                className="py-2 pr-4 mr-4 border-r-1 border-gray-200"
+                className="py-2 pr-4 mr-4 border-r-1 border-neutral-40"
               >
-                <Tab key="general" title="General" className="w-full flex flex-col gap-2 py-2">
-                  <div className="font-semibold text-lg text-empacts">Basic information</div>
+                <Tab key="general" title={UI_LABELS.GENERAL} className="w-full flex flex-col gap-2 py-2">
+                  <div className="font-semibold text-lg text-primary">{UI_LABELS.BASIC_INFORMATION}</div>
                   <Divider />
                   <div className="flex gap-4">
                     <Avatar
@@ -325,11 +328,11 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                       radius="full"
                       isBordered
                       color="primary"
-                      className="bg-white"
+                      className="bg-neutral-20"
                     />
                     <div className="flex flex-col justify-center items-center">
                       <label htmlFor="profile-upload" className="cursor-pointer">
-                        <p className="font-semibold text-sm text-[#3979DA]">Change profile photo</p>
+                        <p className="font-semibold text-sm text-primary">{UI_LABELS.CHANGE_PROFILE_PHOTO}</p>
                       </label>
                       <input
                         id="profile-upload"
@@ -341,24 +344,24 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                     </div>
                   </div>
                   <LabelWithTextarea
-                    label="Mentor name"
+                    label={UI_LABELS.MENTOR_NAME}
                     content={mentorName}
                     setContent={setMentorName}
                     minRows={1}
-                    placeholder="Mentor name"
+                    placeholder={UI_LABELS.MENTOR_NAME}
                   />
                   <LabelWithTextarea
-                    label="Mentor username"
+                    label={UI_LABELS.MENTOR_USERNAME}
                     content={mentorUsername}
                     setContent={setMentorUsername}
                     minRows={1}
-                    placeholder="Mentor username"
+                    placeholder={UI_LABELS.MENTOR_USERNAME}
                   />
                   <Autocomplete
                     isVirtualized={false}
                     labelPlacement="outside"
-                    label="Location"
-                    placeholder="Select your location"
+                    label={UI_LABELS.LOCATION}
+                    placeholder={UI_LABELS.SELECT_LOCATION}
                     onSelectionChange={() => setLocation}
                     defaultItems={provinces}
                     variant="bordered"
@@ -367,7 +370,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                     {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
                   </Autocomplete>
                   <Select
-                    label="Languages Spoken"
+                    label={UI_LABELS.LANGUAGES_SPOKEN}
                     labelPlacement="outside"
                     aria-label="Select Languages Spoken"
                     variant="bordered"
@@ -377,15 +380,15 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                       setLanguagesSpoken(Array.from(keys).map(String) as LanguagesSpoken)
                     }
                     className="w-full"
-                    placeholder="Select languages"
+                    placeholder={UI_LABELS.SELECT_LANGUAGES}
                   >
                     {languages.map((lang) => (
                       <SelectItem
                         key={lang.value}
                         className={`${
                           (languagesSpoken as string[]).includes(lang.value)
-                            ? 'text-empacts'
-                            : 'text-gray-700 hover:text-gray-900'
+                            ? 'text-primary'
+                            : 'text-neutral-80 hover:text-secondary'
                         }`}
                       >
                         {lang.label}
@@ -394,7 +397,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                   </Select>
 
                   <Select
-                    label="Skill Offered"
+                    label={UI_LABELS.SKILL_OFFERED}
                     labelPlacement="outside"
                     aria-label="Select Skill Offered"
                     variant="bordered"
@@ -404,15 +407,15 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                       setSkillOffered(Array.from(keys).map(String) as SkillOffered)
                     }
                     className="w-full"
-                    placeholder="Select Skill Offered"
+                    placeholder={UI_LABELS.SELECT_SKILL_OFFERED}
                   >
                     {skills.map((skill) => (
                       <SelectItem
                         key={skill.value}
                         className={`${
                           (skillOffered as string[]).includes(skill.value)
-                            ? 'text-empacts'
-                            : 'text-gray-700 hover:text-gray-900'
+                            ? 'text-primary'
+                            : 'text-neutral-80 hover:text-secondary'
                         }`}
                       >
                         {skill.label}
@@ -421,7 +424,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                   </Select>
 
                   <Select
-                    label="SDGs Focus Expertises"
+                    label={UI_LABELS.SDGS_FOCUS_EXPERTISES}
                     labelPlacement="outside"
                     aria-label="Select SDGs Focus Expertises"
                     variant="bordered"
@@ -431,15 +434,15 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                       setSdgFocusExpertises(Array.from(keys).map(String) as SDGs)
                     }
                     className="w-full"
-                    placeholder="Select SDGs Focus Expertises"
+                    placeholder={UI_LABELS.SELECT_SDGS_EXPERTISES}
                   >
                     {sdgGoals.map((sdg) => (
                       <SelectItem
                         key={sdg.value}
                         className={`${
                           (sdgFocusExpertises as string[]).includes(sdg.value)
-                            ? 'text-empacts'
-                            : 'text-gray-700 hover:text-gray-900'
+                            ? 'text-primary'
+                            : 'text-neutral-80 hover:text-secondary'
                         }`}
                       >
                         {sdg.label}
@@ -448,59 +451,39 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                   </Select>
 
                   <div className="flex flex-col gap-1">
-                    <label className="text-sm text-gray-700 mb-1">Description</label>
+                    <label className="text-sm text-neutral-80 mb-1">{UI_LABELS.DESCRIPTION}</label>
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       rows={5}
-                      className="border border-gray-200 rounded-lg min-h-[120px] p-3 bg-white text-black text-sm resize-none focus:outline-none focus:border-black transition-colors"
-                      placeholder="Description"
+                      className="border border-neutral-40 rounded-lg min-h-[120px] p-3 bg-neutral-20 text-secondary text-sm resize-none focus:outline-none focus:border-secondary transition-colors"
+                      placeholder={UI_LABELS.DESCRIPTION}
                     />
                   </div>
 
-                  {/* <div className="font-semibold text-lg text-empacts">Advanced Information</div>
-                                    <Divider /> */}
-
                   <div className="flex justify-end gap-4">
-                    <Button className="border-2" variant="light" onPress={onOpenChange}>
-                      Cancel
+                    <Button variant="secondary-md" onClick={onOpenChange}>
+                      {UI_LABELS.CANCEL}
                     </Button>
-                    <Button className="bg-success text-white" onPress={onUpdateProfileClick}>
-                      Update profile
+                    <Button variant="primary-md" onClick={onUpdateProfileClick}>
+                      {UI_LABELS.UPDATE_PROFILE}
                     </Button>
                   </div>
                 </Tab>
-                <Tab key="advanced" title="Advanced" className="w-full flex flex-col gap-2 py-3">
-                  {/* {!mentor.isHide ? (
-                                        <div className="flex justify-between">
-                                            <div className="flex flex-col justify-center">
-                                                <p className="font-semibold text-sm text-gray-800">Hide Profile</p>
-                                                <p className="text-gray-400 font-normal text-xs">Hide your profile from search results across entire platform.</p>
-                                            </div>
-                                            <Button className="bg-tertiary text-white w-32" variant="solid" onPress={onOpenHideProfileModal}>Hide profile</Button>
-                                        </div>
-                                    ) : (
-                                        <div className="flex justify-between">
-                                            <div className="flex flex-col justify-center">
-                                                <p className="font-semibold text-sm text-gray-800">Profile is hidden</p>
-                                                <p className="text-gray-400 font-normal text-xs">Your profile is currently hidden from search results.</p>
-                                            </div>
-                                            <Button className="bg-empacts text-white w-32" variant="solid" onPress={onOpenHideProfileModal}>Unhide profile</Button>
-                                        </div>
-                                    )} */}
+                <Tab key="advanced" title={UI_LABELS.ADVANCED} className="w-full flex flex-col gap-2 py-3">
                   <div className="flex justify-between">
                     <div className="flex flex-col justify-center">
-                      <p className="font-semibold text-sm text-gray-800">Delete Profile</p>
-                      <p className="text-gray-400 font-normal text-xs">
-                        Once deleted, it will be gone forever. Please be certain.
+                      <p className="font-semibold text-sm text-secondary">{UI_LABELS.DELETE_PROFILE}</p>
+                      <p className="text-neutral-50 font-normal text-xs">
+                        {UI_LABELS.DELETE_PROFILE_DESCRIPTION}
                       </p>
                     </div>
                     <Button
-                      className="bg-tertiary text-white w-32"
-                      variant="solid"
-                      onPress={onOpenDeleteProfileModal}
+                      variant="warning-md"
+                      onClick={onOpenDeleteProfileModal}
+                      className="w-32"
                     >
-                      Delete profile
+                      {UI_LABELS.DELETE_PROFILE}
                     </Button>
                   </div>
                   <HideProfileModal

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import { Tabs, Tab, Button, Divider, Avatar, addToast, useDisclosure } from '@heroui/react';
+import { Tabs, Tab, Divider, Avatar, addToast, useDisclosure } from '@heroui/react';
 import { Autocomplete, AutocompleteItem } from '@heroui/autocomplete';
 import React, { useState, useEffect } from 'react';
 import { uploadAttachemt, updateAttachment, getStartupDocuments } from '@/apis/upload';
@@ -13,8 +13,11 @@ import LabelStartAndSwitchEnd from '@/components/Switch/LabelStartAndSwitchEnd';
 import sdgGoals from '@/utils/data/sdgGoals.json';
 import provinces from '@/utils/data/provinces.json';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
+import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import DeleteProfileModal from './DeleteProfileModal';
 import HideProfileModal from './HideProfileModal';
+import Button from '@/components/Button/Button';
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/modal';
 import { isDocumentFile, isImageFile } from '@/services/upload';
@@ -103,16 +106,16 @@ const SettingModal: React.FC<SettingModalProps> = ({
       try {
         await startup_profile_update(startup.id, requestBody);
         addToast({
-          title: 'Profile updated successfully',
-          color: 'success',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_UPDATED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
         await onFetchStartupProfile();
       } catch (err) {
         addToast({
-          title: 'Failed to update profile',
-          color: 'danger',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_UPDATE_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
         setLoading(false);
@@ -132,30 +135,30 @@ const SettingModal: React.FC<SettingModalProps> = ({
         await startup_profile_update(startup.id, requestBody);
         if (requestBody.isHide) {
           addToast({
-            title: 'Profile has been hidden successfully',
-            color: 'success',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_HIDDEN_SUCCESS,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         } else {
           addToast({
-            title: 'Profile has been unhidden successfully',
-            color: 'success',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_UNHIDDEN_SUCCESS,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         }
         await onFetchStartupProfile();
       } catch (err) {
         if (requestBody.isHide) {
           addToast({
-            title: 'Failed to hide the profile',
-            color: 'danger',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_HIDE_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         } else {
           addToast({
-            title: 'Failed to unhide the profile',
-            color: 'danger',
-            timeout: 3000,
+            title: PROFILE_MESSAGES.PROFILE_UNHIDE_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
           });
         }
       } finally {
@@ -171,15 +174,15 @@ const SettingModal: React.FC<SettingModalProps> = ({
       try {
         await startup_profile_delete(startup.id);
         addToast({
-          title: 'Profile has been deleted successfully',
-          color: 'success',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_DELETED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } catch (err) {
         addToast({
-          title: 'Failed to delete the profile',
-          color: 'danger',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.PROFILE_DELETE_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
         setLoading(false);
@@ -207,27 +210,27 @@ const SettingModal: React.FC<SettingModalProps> = ({
         setError(null);
         onImageUpload(response.data.attachmentUrl, response.data.id);
         addToast({
-          title: 'Image uploaded successfully',
-          color: 'success',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.IMAGE_UPLOADED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } catch (err) {
-        setError('Failed to upload the image. Please try again.');
+        setError(PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED);
         addToast({
-          title: 'Failed to upload the image',
-          color: 'danger',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
         setLoading(false);
         event.target.files = null;
       }
     } else {
-      setError('No file selected. Please choose an image file.');
+      setError(PROFILE_MESSAGES.NO_FILE_SELECTED);
       addToast({
-        title: 'No file selected. Please choose an image file.',
-        color: 'danger',
-        timeout: 3000,
+        title: PROFILE_MESSAGES.NO_FILE_SELECTED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
     }
   };
@@ -242,9 +245,9 @@ const SettingModal: React.FC<SettingModalProps> = ({
           ownerType: UPLOAD_OWNER_TYPE.STARTUP,
         });
         addToast({
-          title: 'Attachement uploaded successfully',
-          color: 'success',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.ATTACHMENT_UPLOADED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
         const newDocument: IDocument = {
           id: response.data.id,
@@ -266,9 +269,9 @@ const SettingModal: React.FC<SettingModalProps> = ({
         await onFetchStartupDocuments();
       } catch (err) {
         addToast({
-          title: 'Failed to upload the image',
-          color: 'danger',
-          timeout: 3000,
+          title: PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
         event.target.files = null;
@@ -303,15 +306,15 @@ const SettingModal: React.FC<SettingModalProps> = ({
         setSelectedDocument(newStartupDocuments[0] || null);
       }
       addToast({
-        title: 'Attachment deleted successfully',
-        color: 'success',
-        timeout: 3000,
+        title: PROFILE_MESSAGES.ATTACHMENT_DELETED_SUCCESS,
+        color: TOAST_COLORS.SUCCESS,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
     } catch (error) {
       addToast({
-        title: 'Failed to delete the attachment',
-        color: 'danger',
-        timeout: 3000,
+        title: PROFILE_MESSAGES.ATTACHMENT_DELETE_FAILED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
     }
   };
@@ -333,9 +336,9 @@ const SettingModal: React.FC<SettingModalProps> = ({
       setSelectedDocument(documents[0] || null);
     } catch (error) {
       addToast({
-        title: 'Oops! Something went wrong',
-        color: 'danger',
-        timeout: 3000,
+        title: PROFILE_MESSAGES.GENERAL_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
     }
   };
@@ -372,11 +375,11 @@ const SettingModal: React.FC<SettingModalProps> = ({
                   radius="full"
                   isBordered
                   color="primary"
-                  className="bg-white"
+                  className="bg-neutral-20"
                 />
                 <div className="flex flex-col justify-center">
-                  <p className="font-semibold text-lg text-gray-800">{startup?.name}</p>
-                  <p className="text-gray-400 font-normal text-md">Startup Setting</p>
+                  <p className="font-semibold text-lg text-secondary">{startup?.name}</p>
+                  <p className="text-neutral-50 font-normal text-md">{UI_LABELS.STARTUP_SETTING}</p>
                 </div>
               </div>
             </ModalHeader>
@@ -387,10 +390,10 @@ const SettingModal: React.FC<SettingModalProps> = ({
                 variant="light"
                 color="primary"
                 isVertical={true}
-                className="py-2 pr-4 mr-4 border-r-1 border-gray-200"
+                className="py-2 pr-4 mr-4 border-r-1 border-neutral-40"
               >
-                <Tab key="general" title="General" className="w-full flex flex-col gap-2 py-2">
-                  <div className="font-semibold text-lg text-empacts">Basic information</div>
+                <Tab key="general" title={UI_LABELS.GENERAL} className="w-full flex flex-col gap-2 py-2">
+                  <div className="font-semibold text-lg text-primary">{UI_LABELS.BASIC_INFORMATION}</div>
                   <Divider />
                   <div className="flex gap-4">
                     <Avatar
@@ -400,11 +403,11 @@ const SettingModal: React.FC<SettingModalProps> = ({
                       radius="full"
                       isBordered
                       color="primary"
-                      className="bg-white"
+                      className="bg-neutral-20"
                     />
                     <div className="flex flex-col justify-center items-center">
                       <label htmlFor="profile-upload" className="cursor-pointer">
-                        <p className="font-semibold text-sm text-[#3979DA]">Change profile photo</p>
+                        <p className="font-semibold text-sm text-primary">{UI_LABELS.CHANGE_PROFILE_PHOTO}</p>
                       </label>
                       <input
                         id="profile-upload"
@@ -416,24 +419,24 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     </div>
                   </div>
                   <LabelWithTextarea
-                    label="Startup name"
+                    label={UI_LABELS.STARTUP_NAME}
                     content={startupName}
                     setContent={setStartupName}
                     minRows={1}
-                    placeholder="Startup name"
+                    placeholder={UI_LABELS.STARTUP_NAME}
                   />
                   <LabelWithTextarea
-                    label="Startup username"
+                    label={UI_LABELS.STARTUP_USERNAME}
                     content={startupUsername}
                     setContent={setStartupUsername}
                     minRows={1}
-                    placeholder="Startup username"
+                    placeholder={UI_LABELS.STARTUP_USERNAME}
                   />
                   <Autocomplete
                     isVirtualized={false}
                     labelPlacement="outside"
-                    label="Location"
-                    placeholder="Select your location"
+                    label={UI_LABELS.LOCATION}
+                    placeholder={UI_LABELS.SELECT_LOCATION}
                     onSelectionChange={(key) => {
                       let selectedLocation = provinces.find((province) => province.value === key);
                       setLocation(selectedLocation?.value || '');
@@ -446,8 +449,8 @@ const SettingModal: React.FC<SettingModalProps> = ({
                   </Autocomplete>
                   <Autocomplete
                     labelPlacement="outside"
-                    label="SDG Goals"
-                    placeholder="Select SDG Goals"
+                    label={UI_LABELS.SDG_GOALS}
+                    placeholder={UI_LABELS.SELECT_SDG_GOALS}
                     onSelectionChange={(key) => {
                       let selectedSdgGoal = sdgGoals.find((sdgGoal) => sdgGoal.value === key);
                       setSdgGoal(selectedSdgGoal?.value || '');
@@ -459,17 +462,17 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
                   </Autocomplete>
                   <div className="flex flex-col gap-1">
-                    <label className="text-sm text-gray-700 mb-1">Description</label>
+                    <label className="text-sm text-neutral-80 mb-1">{UI_LABELS.DESCRIPTION}</label>
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       rows={5}
-                      className="border border-gray-200 rounded-lg min-h-[120px] p-3 bg-white text-black resize-none focus:outline-none focus:border-black transition-colors"
-                      placeholder="Description"
+                      className="border border-neutral-40 rounded-lg min-h-[120px] p-3 bg-neutral-20 text-secondary resize-none focus:outline-none focus:border-secondary transition-colors"
+                      placeholder={UI_LABELS.DESCRIPTION}
                     />
                   </div>
 
-                  <div className="font-semibold text-lg text-empacts">Media</div>
+                  <div className="font-semibold text-lg text-primary">{UI_LABELS.MEDIA}</div>
                   <Divider />
                   <ImageGallery
                     images={startupImages}
@@ -479,7 +482,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     onDeleteAttachment={handleDeleteAttachment}
                   />
 
-                  <div className="font-semibold text-lg text-empacts">Documentation</div>
+                  <div className="font-semibold text-lg text-primary">{UI_LABELS.DOCUMENTATION}</div>
                   <Divider />
                   <DocumentBody
                     files={startupDocuments}
@@ -489,90 +492,90 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     onUploadNewFile={handleUploadNewStartupAttachment}
                   />
 
-                  <div className="font-semibold text-lg text-empacts">Advanced Information</div>
+                  <div className="font-semibold text-lg text-primary">{UI_LABELS.ADVANCED_INFORMATION}</div>
                   <Divider />
                   <LabelStartAndSwitchEnd
-                    label="Active user"
+                    label={UI_LABELS.ACTIVE_USER}
                     checked={startup.haveActiveUse ? true : false}
                     onChange={() => {}}
                   />
                   <LabelStartAndSwitchEnd
-                    label="Lastest Revenue"
+                    label={UI_LABELS.LATEST_REVENUE}
                     checked={startup.revenue ? true : false}
                     onChange={() => {}}
                   />
                   <LabelStartAndSwitchEnd
-                    label="Legal Equity"
+                    label={UI_LABELS.LEGAL_EQUITY}
                     checked={startup.legalEquityDetail ? true : false}
                     onChange={() => {}}
                   />
                   <LabelStartAndSwitchEnd
-                    label="Investment"
+                    label={UI_LABELS.INVESTMENT}
                     checked={startup.investmentDetail ? true : false}
                     onChange={() => {}}
                   />
                   <LabelStartAndSwitchEnd
-                    label="Fundraising"
+                    label={UI_LABELS.FUNDRAISING}
                     checked={startup.fundraisingDetail ? true : false}
                     onChange={() => {}}
                   />
                   <Divider />
                   <div className="flex justify-end gap-4">
-                    <Button className="border-2" variant="light" onPress={onOpenChange}>
-                      Cancel
+                    <Button variant="secondary-md" onClick={onOpenChange}>
+                      {UI_LABELS.CANCEL}
                     </Button>
-                    <Button className="bg-success text-white" onPress={onUpdateProfileClick}>
-                      Update profile
+                    <Button variant="primary-md" onClick={onUpdateProfileClick}>
+                      {UI_LABELS.UPDATE_PROFILE}
                     </Button>
                   </div>
                 </Tab>
-                <Tab key="advanced" title="Advanced" className="w-full flex flex-col gap-2 py-3">
+                <Tab key="advanced" title={UI_LABELS.ADVANCED} className="w-full flex flex-col gap-2 py-3">
                   {!startup.isHide ? (
                     <div className="flex justify-between">
                       <div className="flex flex-col justify-center">
-                        <p className="font-semibold text-sm text-gray-800">Hide Profile</p>
-                        <p className="text-gray-400 font-normal text-xs">
-                          Hide your profile from search results across entire platform.
+                        <p className="font-semibold text-sm text-secondary">{UI_LABELS.HIDE_PROFILE}</p>
+                        <p className="text-neutral-50 font-normal text-xs">
+                          {UI_LABELS.HIDE_PROFILE_DESCRIPTION}
                         </p>
                       </div>
                       <Button
-                        className="bg-tertiary text-white w-32"
-                        variant="solid"
-                        onPress={onOpenHideProfileModal}
+                        variant="tertiary-md"
+                        onClick={onOpenHideProfileModal}
+                        className="w-32"
                       >
-                        Hide profile
+                        {UI_LABELS.HIDE_PROFILE}
                       </Button>
                     </div>
                   ) : (
                     <div className="flex justify-between">
                       <div className="flex flex-col justify-center">
-                        <p className="font-semibold text-sm text-gray-800">Profile is hidden</p>
-                        <p className="text-gray-400 font-normal text-xs">
-                          Your profile is currently hidden from search results.
+                        <p className="font-semibold text-sm text-secondary">Profile is hidden</p>
+                        <p className="text-neutral-50 font-normal text-xs">
+                          {UI_LABELS.PROFILE_HIDDEN_DESCRIPTION}
                         </p>
                       </div>
                       <Button
-                        className="bg-empacts text-white w-32"
-                        variant="solid"
-                        onPress={onOpenHideProfileModal}
+                        variant="primary-md"
+                        onClick={onOpenHideProfileModal}
+                        className="w-32"
                       >
-                        Unhide profile
+                        {UI_LABELS.UNHIDE_PROFILE}
                       </Button>
                     </div>
                   )}
                   <div className="flex justify-between">
                     <div className="flex flex-col justify-center">
-                      <p className="font-semibold text-sm text-gray-800">Delete Profile</p>
-                      <p className="text-gray-400 font-normal text-xs">
-                        Once deleted, it will be gone forever. Please be certain.
+                      <p className="font-semibold text-sm text-secondary">{UI_LABELS.DELETE_PROFILE}</p>
+                      <p className="text-neutral-50 font-normal text-xs">
+                        {UI_LABELS.DELETE_PROFILE_DESCRIPTION}
                       </p>
                     </div>
                     <Button
-                      className="bg-tertiary text-white w-32"
-                      variant="solid"
-                      onPress={onOpenDeleteProfileModal}
+                      variant="warning-md"
+                      onClick={onOpenDeleteProfileModal}
+                      className="w-32"
                     >
-                      Delete profile
+                      {UI_LABELS.DELETE_PROFILE}
                     </Button>
                   </div>
                   <HideProfileModal

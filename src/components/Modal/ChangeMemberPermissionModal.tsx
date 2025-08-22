@@ -45,8 +45,8 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({
           <>
             <ModalHeader className="items-center pb-0">
               <div>
-                <h3 className="text-lg text-black mb-1">
-                  Choose new role for <span className="text-empacts">{member?.user.name}</span>
+                <h3 className="text-lg text-secondary mb-1">
+                  Choose new role for <span className="text-primary">{member?.user.name}</span>
                 </h3>
               </div>
             </ModalHeader>
@@ -84,7 +84,7 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({
                 Cancel
               </Button>
               <Button
-                className="bg-empacts text-white w-1/2"
+                className="bg-primary text-neutral-20 w-1/2"
                 onPress={changeRole}
                 isDisabled={isLoading}
               >
