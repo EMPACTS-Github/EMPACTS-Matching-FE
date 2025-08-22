@@ -8,3 +8,6 @@ export const STARTUP_INVITATION_RESPONSE = {
 };
 
 export const FETCH_MENTOR_LIMIT = 9;
+
+// Export messages
+export * from './messages';

@@ -90,8 +90,8 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
             <ModalHeader className="items-center ">
               <div className="flex">
                 <div>
-                  <h3 className="text-lg text-black mb-1">Invite new member to your startup</h3>
-                  <div className="font-normal text-gray-400 text-sm">
+                  <h3 className="text-lg text-secondary mb-1">Invite new member to your startup</h3>
+                  <div className="font-normal text-neutral-50 text-sm">
                     Invite member into your interesting journey!
                   </div>
                 </div>
@@ -99,7 +99,7 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
             </ModalHeader>
             <ModalBody>
               <div className="flex flex-col w-full gap-2">
-                <div className="text-sm font-semibold text-[#09090b]">Add member</div>
+                <div className="text-sm font-semibold text-secondary">Add member</div>
                 <div className="flex flex-col md:flex-row gap-4 w-full">
                   <Input
                     value={newMemberInfo.email}
@@ -125,7 +125,7 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
                   />
                   <Button
                     onPress={handleAddMember}
-                    className="w-full md:w-[100px] h-[40px] bg-[#09090b] text-white rounded-lg text-base font-medium"
+                    className="w-full md:w-[100px] h-[40px] bg-secondary text-neutral-20 rounded-lg text-base font-medium"
                   >
                     Add
                   </Button>
@@ -136,17 +136,17 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
                     Please note that member is invited with member permission as default!
                   </span>
                 </div>
-                {error && <div className="text-[#EA4335] text-xs">{error}</div>}
+                {error && <div className="text-error text-xs">{error}</div>}
 
                 <div className="flex flex-row flex-wrap gap-4 mt-4">
                   {members.map((member, index) => (
                     <div
                       key={index}
-                      className="flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto bg-empacts-light"
+                      className="flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto bg-primary-20"
                     >
                       <div className="flex flex-col gap-1">
-                        <div className="text-sm font-medium text-empacts">{member.title}</div>
-                        <div className="text-sm text-gray-500">{member.email}</div>
+                        <div className="text-sm font-medium text-primary">{member.title}</div>
+                        <div className="text-sm text-neutral-80">{member.email}</div>
                       </div>
                       <button
                         onClick={() => handleRemoveMember(index)}
@@ -169,7 +169,7 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
                 Cancel
               </Button>
               <Button
-                className="bg-empacts text-white w-1/2"
+                className="bg-primary text-neutral-20 w-1/2"
                 onPress={handleSaveButton}
                 isDisabled={isLoading}
               >
