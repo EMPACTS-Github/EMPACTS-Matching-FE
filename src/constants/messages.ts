@@ -21,6 +21,57 @@ export const PROFILE_MESSAGES = {
 
   // General messages
   GENERAL_ERROR: 'Oops! Something went wrong',
+
+  // Invitation error messages
+  ERROR_CHECKING_INVITATION: 'Error in checking invitation status',
+  ERROR_RESPONDING_INVITATION: 'Error in responsing invitation',
+
+  // Matching messages
+  ACCEPTED_MATCHING_REQUEST: 'Accepted Matching Request',
+  REJECTED_MATCHING_REQUEST: 'Rejected Matching Request',
+  RESPONSE_MATCHING_FAILED: 'Response Matching Request failed',
+  FAILED_FETCH_STARTUP_DETAILS: 'Failed to fetch Startup details.',
+  FAILED_FETCH_STARTUP_DOCUMENTS: 'Failed to fetch startup documents:',
+  FINDING_MATCHING_REQUEST: 'The system is finding your matching reuquest. Please wait...',
+
+  // Matching status labels
+  STATUS: 'Status:',
+  ALL: 'All',
+  ACCEPTED: 'Accepted',
+  PENDING: 'Pending',
+  REJECT: 'Reject',
+  ACCEPT: 'Accept',
+  MEMBER: 'Member',
+
+  // Form labels
+  NOTE: 'Note',
+  NO_NOTE_PROVIDED: 'No note provided',
+  JOIN_GOOGLE_MEET: 'Join with Google Meet',
+
+  // Tab labels
+  REQUEST_DETAIL: 'Request detail',
+  STARTUP_INFORMATION: 'Startup information',
+  ADVANCED: 'Advanced',
+
+  // Section labels
+  DESCRIPTION: 'Description',
+  NO_DESCRIPTION_AVAILABLE: 'No description available',
+  PROFILE_LINK: 'Profile Link',
+  NO_DATA: 'No Data',
+  DOCUMENTATION: 'Documentation',
+  MEDIA: 'Media',
+
+  // Advanced section labels
+  ACTIVE_USER: 'Active user',
+  LATEST_REVENUE: 'Lastest Revenue',
+  STARTUP_STATE: 'Startup State - State',
+  LEGAL_EQUITY: 'Legal Equity',
+  INVESTMENT: 'Investment',
+  FUNDRAISING: 'Fundraising',
+
+  // Data labels
+  YES: 'Yes',
+  NOT_YET: 'Not yet',
 } as const;
 
 // UI Labels and Text
@@ -80,6 +131,33 @@ export const UI_LABELS = {
   LEGAL_EQUITY: 'Legal Equity',
   INVESTMENT: 'Investment',
   FUNDRAISING: 'Fundraising',
+
+  // Profile card labels
+  SETTINGS: 'SETTINGS',
+  MEMBERS: 'Members',
+  MATCH: 'Match',
+  MATCHES: 'Matches',
+
+  // Status labels
+  ACTIVE: 'Active',
+  ARCHIVED: 'Archived',
+  DEACTIVATED: 'Deactivated',
+
+  // Invitation labels
+  YOURE_INVITED_AS: "You're invited as",
+  DECLINE: 'Decline',
+  ACCEPT: 'Accept',
+  ACCEPTED_INVITATION: 'You have accepted invitation',
+  WAIT_REDIRECT_STARTUP: 'Please wait and we will redirect you to startup homepage',
+  REJECTED_INVITATION: 'You have rejected this invitation',
+  WAIT_REDIRECT_HOME: 'Please wait and we will redirect you to homepage',
+  INVITATION_EXPIRED: 'Invitation expired!',
+  PLEASE_ASK_RESEND: 'Please ask your inviter to resend the invitation',
+  RETURN_TO_HOME: 'Return to home',
+  YOURE_LOGIN_AS: "You're login as",
+  PLEASE_LOGIN_AS: 'Please login as',
+  TO_CONTINUE: 'to continue',
+  LOGIN_IN_AS: 'Login in as',
 } as const;
 
 // Error codes and messages for suggestions

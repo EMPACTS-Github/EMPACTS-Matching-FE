@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { Avatar, Button, TimeInput, addToast, Card, CardBody } from '@heroui/react';
+import { TimeInput, addToast, Card, CardBody } from '@heroui/react';
 import TextLine from '@/components/common/TextLine';
+import Avatar from '@/components/Avatar/Avatar';
+import Button from '@/components/Button/Button';
 import { MATCHING_STATUS } from '@/constants/matching';
 import UserRightIcon from '@/components/Icons/UserRightIcon';
 import { DateInput } from '@heroui/react';
@@ -25,6 +27,8 @@ import DocumentEmptyStateLogo from '/public/assets/document-empty-state-logo.svg
 import MediaEmptyStateLogo from '/public/assets/media-empty-state-logo.svg';
 import { getFileName, handleDocumentDownload } from '@/services/file';
 import { IDocument } from '@/interfaces/upload';
+import { PROFILE_MESSAGES } from '@/constants';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 
 interface MatchingRequestInfoCardProps {
   connectRequestCode: string;
@@ -93,9 +97,9 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
       );
       if (response.code === 'RESPONSE_REQUEST_SENT') {
         addToast({
-          title: 'Accepted Matching Request',
-          color: 'success',
-          timeout: 5000,
+          title: PROFILE_MESSAGES.ACCEPTED_MATCHING_REQUEST,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       }
       setTimeout(() => {
@@ -104,9 +108,9 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
     } catch (error) {
       console.error('Failed to accept request:', error);
       addToast({
-        title: 'Response Matching Request failed',
-        color: 'danger',
-        timeout: 5000,
+        title: PROFILE_MESSAGES.RESPONSE_MATCHING_FAILED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
       setIsLoading(false);
     }
@@ -122,9 +126,9 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
       );
       if (response.code === 'RESPONSE_REQUEST_SENT') {
         addToast({
-          title: 'Rejected Matching Request',
-          color: 'success',
-          timeout: 5000,
+          title: PROFILE_MESSAGES.REJECTED_MATCHING_REQUEST,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
         });
       }
       setTimeout(() => {
@@ -133,86 +137,73 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
     } catch (error) {
       console.error('Failed to reject request:', error);
       addToast({
-        title: 'Response Matching Request failed',
-        color: 'danger',
-        timeout: 5000,
+        title: PROFILE_MESSAGES.RESPONSE_MATCHING_FAILED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
       setIsLoading(false);
     }
   };
   return (
-    <div className={`bg-white rounded-lg shadow-xl py-6 px-8 gap-y-4 flex flex-col`}>
+    <div className={`bg-neutral-20 rounded-lg shadow-xl py-medium px-large gap-y-regular flex flex-col`}>
       <div className="flex justify-between items-end">
-        <div className="flex justify-start  items-center">
+        <div className="flex justify-start items-center">
           <Avatar
+            variant="default-lg"
             src={avtUrl}
             alt={title}
-            className="mr-6 bg-white"
-            color="primary"
-            isBordered
-            size="lg"
-            radius="full"
+            className="mr-medium"
           />
           <div className="items-center justify-between flex-grow">
             <div className="flex items-center justify-between">
-              <h3
-                className="text-[28px] font-semibold text-black hover:underline cursor-pointer"
-                tabIndex={0}
-              >
-                {title}
-              </h3>
+              <TextLine
+                text={title}
+                className="text-2xl font-semibold text-secondary hover:underline cursor-pointer"
+              />
             </div>
             <div className="flex items-center justify-between">
-              <TextLine text={location} className="text-black text-[20px]" />
+              <TextLine text={location} className="text-secondary text-xl" />
             </div>
           </div>
         </div>
         {status === MATCHING_STATUS.PENDING && !isLoading && (
-          <div className="flex gap-x-2">
+          <div className="flex gap-x-small">
             <Button
-              type="submit"
-              color="primary"
-              size="sm"
-              variant="bordered"
-              radius="md"
-              startContent={<UserRightIcon className="text-empacts" />}
-              onPress={handleAcceptRequestClick}
+              variant="tertiary-sm"
+              startContent={<UserRightIcon className="text-primary" />}
+              onClick={handleAcceptRequestClick}
             >
-              Accept
+              {PROFILE_MESSAGES.ACCEPT}
             </Button>
             <Button
-              type="submit"
-              color="danger"
-              size="sm"
-              variant="bordered"
-              radius="md"
+              variant="warning-sm"
               startContent={<UserRightIcon className="text-error" />}
-              onPress={handleRejectRequestClick}
+              onClick={handleRejectRequestClick}
             >
-              Reject
+              {PROFILE_MESSAGES.REJECT}
             </Button>
           </div>
         )}
       </div>
       <div className="flex items-center gap-1 overflow-hidden">
         <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
-        <span className="font-inter font-semibold text-base text-black text-center truncate">
-          {getSDGGoal(startup?.sdgGoal || '')}
-        </span>
+        <TextLine
+          text={getSDGGoal(startup?.sdgGoal || '')}
+          className="font-inter font-semibold text-base text-secondary text-center truncate"
+        />
       </div>
       <Tabs aria-label="Request Tabs" variant="underlined" color="primary" className="font-bold">
-        <Tab key="request_detail" title="Request detail" className="flex flex-col gap-y-4">
-          <div className="flex gap-x-2 items-center">
-            <div className="font-semibold">Status:</div>
-            <div
+        <Tab key="request_detail" title={PROFILE_MESSAGES.REQUEST_DETAIL} className="flex flex-col gap-y-regular">
+          <div className="flex gap-x-small items-center">
+            <TextLine text={PROFILE_MESSAGES.STATUS} className="font-semibold text-secondary" />
+            <TextLine
+              text={capitalizeFirstLetter(status)}
               className={
                 status === MATCHING_STATUS.ACCEPTED
                   ? 'text-success font-semibold'
-                  : 'text-gray-500 font-semibold'
+                  : 'text-neutral-50 font-semibold'
               }
-            >
-              {capitalizeFirstLetter(status)}
-            </div>
+            />
           </div>
           {status === MATCHING_STATUS.ACCEPTED ? (
             <div className="flex w-full gap-2">
@@ -231,14 +222,12 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                   className="w-1/2"
                 />
               </div>
-              <div className="flex flex-col w-[40%] gap-2">
+              <div className="flex flex-col w-[40%] gap-small">
                 <Button
-                  color="primary"
-                  variant="solid"
-                  className="w-full"
-                  onPress={onMeetingButtonClick}
+                  variant="primary-full"
+                  onClick={onMeetingButtonClick}
                 >
-                  Join with Google Meet
+                  {PROFILE_MESSAGES.JOIN_GOOGLE_MEET}
                 </Button>
                 <Snippet
                   hideSymbol
@@ -270,49 +259,46 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
 
           <div className="flex flex-col gap-y-3">
             <div className={`flex flex-col gap-1`}>
-              <label className="text-sm text-gray-700 mb-1">Note</label>
+              <TextLine text={PROFILE_MESSAGES.NOTE} className="text-sm text-neutral-80 mb-1" />
               <textarea
                 readOnly
                 value={note}
-                placeholder="No note provided"
+                placeholder={PROFILE_MESSAGES.NO_NOTE_PROVIDED}
                 rows={5}
-                className="border border-gray-50 rounded-lg min-h-[120px] p-3 bg-gray-50 text-gray-700 resize-none focus:outline-none"
+                className="border border-neutral-40 rounded-lg min-h-[120px] p-3 bg-neutral-40 text-neutral-80 resize-none focus:outline-none"
               />
             </div>
           </div>
         </Tab>
-        <Tab key="startup_infomation" title="Startup information">
-          <div className="space-y-4">
+        <Tab key="startup_infomation" title={PROFILE_MESSAGES.STARTUP_INFORMATION}>
+          <div className="space-y-regular">
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Description</h4>
-              <p className="text-gray-500 text-sm whitespace-pre-line">
-                {startup?.description || 'No description available'}
-              </p>
+              <TextLine text={PROFILE_MESSAGES.DESCRIPTION} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup?.description || PROFILE_MESSAGES.NO_DESCRIPTION_AVAILABLE}
+                className="text-neutral-50 text-sm whitespace-pre-line"
+              />
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Member</h4>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-8 py-4">
+              <TextLine text={PROFILE_MESSAGES.MEMBER} className="text-lg font-semibold text-secondary" />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-medium gap-y-large py-regular">
                 {startupMembers.map((member, index) => (
                   <div className="flex justify-start" key={member.id || index}>
                     <Avatar
+                      variant="default-md"
                       src={member.user.avtUrl}
                       alt={member.user.name}
-                      className="mr-6 bg-white"
-                      isBordered
-                      size="md"
-                      radius="full"
+                      className="mr-medium"
                     />
                     <div className="items-center justify-between flex-grow">
                       <div className="flex items-center justify-between">
-                        <h3
-                          className="text-md font-semibold text-black hover:underline cursor-pointer"
-                          tabIndex={0}
-                        >
-                          {member.user.name}
-                        </h3>
+                        <TextLine
+                          text={member.user.name}
+                          className="text-md font-semibold text-secondary hover:underline cursor-pointer"
+                        />
                       </div>
                       <div className="flex items-center justify-between">
-                        <TextLine text={member.positionTitle} className="text-black text-sm" />
+                        <TextLine text={member.positionTitle} className="text-secondary text-sm" />
                       </div>
                     </div>
                   </div>
@@ -320,18 +306,19 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
               </div>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Profile Link</h4>
-              <p className="text-gray-500 text-sm whitespace-pre-line">
-                {startup?.startupLink || 'No data'}
-              </p>
+              <TextLine text={PROFILE_MESSAGES.PROFILE_LINK} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup?.startupLink || PROFILE_MESSAGES.NO_DATA}
+                className="text-neutral-50 text-sm whitespace-pre-line"
+              />
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Documentation</h4>
-              <div className="space-y-4">
+              <TextLine text={PROFILE_MESSAGES.DOCUMENTATION} className="text-lg font-semibold text-secondary" />
+              <div className="space-y-regular">
                 {documents.length > 0 ? (
                   <Card className="flex gap-3 shadow-none m-0 p-0">
                     <CardBody className="m-0 p-1">
-                      <div className="space-y-4">
+                      <div className="space-y-regular">
                         {documents.map((document, index) => (
                           <div key={index} className="flex items-center gap-4">
                             <button
@@ -373,22 +360,22 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                     </CardBody>
                   </Card>
                 ) : (
-                  <div className="flex flex-col items-center justify-center mt-4">
+                  <div className="flex flex-col items-center justify-center mt-regular">
                     <Image
                       src={DocumentEmptyStateLogo}
                       alt="Media Empty State Logo"
                       className="w-24 h-auto"
                     />
-                    <div className="flex flex-col items-center justify-center mb-4">
-                      <p className="text-md text-gray-500 mb-2">No Data</p>
+                    <div className="flex flex-col items-center justify-center mb-regular">
+                      <TextLine text={PROFILE_MESSAGES.NO_DATA} className="text-md text-neutral-50 mb-small" />
                     </div>
                   </div>
                 )}
               </div>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Media</h4>
-              <div className="flex flex-col w-full my-4">
+              <TextLine text={PROFILE_MESSAGES.MEDIA} className="text-lg font-semibold text-secondary" />
+              <div className="flex flex-col w-full my-regular">
                 {images.length > 0 ? (
                   <div>
                     <div className="w-full h-auto mb-4">
@@ -410,7 +397,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                             width={56}
                             height={56}
                             className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${
-                              selectedIndex == index ? 'border-empacts' : 'border-transparent'
+                              selectedIndex == index ? 'border-primary' : 'border-transparent'
                             } rounded-lg`}
                           />
                         </div>
@@ -418,14 +405,14 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center mt-4">
+                  <div className="flex flex-col items-center justify-center mt-regular">
                     <Image
                       src={MediaEmptyStateLogo}
                       alt="Media Empty State Logo"
                       className="w-24 h-auto"
                     />
-                    <div className="flex flex-col items-center justify-center mb-4">
-                      <p className="text-md text-gray-500 mb-2">No Data</p>
+                    <div className="flex flex-col items-center justify-center mb-regular">
+                      <TextLine text={PROFILE_MESSAGES.NO_DATA} className="text-md text-neutral-50 mb-small" />
                     </div>
                   </div>
                 )}
@@ -433,47 +420,53 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
             </div>
           </div>
         </Tab>
-        <Tab key="advanced" title="Advanced">
-          <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-10 w-1/2">
-              <div className="col-span-2 text-lg font-semibold text-gray-800">Active User</div>
-              <p className="text-gray-500 text-sm">
-                {startup.haveActiveUse == null
-                  ? 'No data'
+        <Tab key="advanced" title={PROFILE_MESSAGES.ADVANCED}>
+          <div className="space-y-medium">
+            <div className="grid grid-cols-3 gap-large w-1/2">
+              <TextLine text={PROFILE_MESSAGES.ACTIVE_USER} className="col-span-2 text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup.haveActiveUse == null
+                  ? PROFILE_MESSAGES.NO_DATA
                   : startup.haveActiveUse
-                    ? 'Yes'
-                    : 'Not yet'}
-              </p>
+                    ? PROFILE_MESSAGES.YES
+                    : PROFILE_MESSAGES.NOT_YET}
+                className="text-neutral-50 text-sm"
+              />
             </div>
-            <div className="grid grid-cols-3 gap-10 w-1/2">
-              <div className="col-span-2 text-lg font-semibold text-gray-800">Lastest Revenue</div>
-              <p className="text-gray-500 text-sm">
-                {startup?.revenue == null ? 'No data' : startup.revenue}
-              </p>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold text-gray-800">Startup State - State</h4>
-              <p className="text-gray-500 text-sm">
-                {startup.startupFundingStage == null ? 'No data' : startup.startupFundingStage}
-              </p>
+            <div className="grid grid-cols-3 gap-large w-1/2">
+              <TextLine text={PROFILE_MESSAGES.LATEST_REVENUE} className="col-span-2 text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup?.revenue == null ? PROFILE_MESSAGES.NO_DATA : startup.revenue.toString()}
+                className="text-neutral-50 text-sm"
+              />
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Legal Equity</h4>
-              <p className="text-gray-500 text-sm">
-                {startup.legalEquityDetail == null ? 'No data' : startup.legalEquityDetail}
-              </p>
+              <TextLine text={PROFILE_MESSAGES.STARTUP_STATE} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup.startupFundingStage == null ? PROFILE_MESSAGES.NO_DATA : startup.startupFundingStage}
+                className="text-neutral-50 text-sm"
+              />
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Investment</h4>
-              <p className="text-gray-500 text-sm">
-                {startup.investmentDetail == null ? 'No data' : startup.investmentDetail}
-              </p>
+              <TextLine text={PROFILE_MESSAGES.LEGAL_EQUITY} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup.legalEquityDetail == null ? PROFILE_MESSAGES.NO_DATA : startup.legalEquityDetail}
+                className="text-neutral-50 text-sm"
+              />
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-800">Fundraising</h4>
-              <p className="text-gray-500 text-sm">
-                {startup.fundraisingDetail == null ? 'No data' : startup.fundraisingDetail}
-              </p>
+              <TextLine text={PROFILE_MESSAGES.INVESTMENT} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup.investmentDetail == null ? PROFILE_MESSAGES.NO_DATA : startup.investmentDetail}
+                className="text-neutral-50 text-sm"
+              />
+            </div>
+            <div>
+              <TextLine text={PROFILE_MESSAGES.FUNDRAISING} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={startup.fundraisingDetail == null ? PROFILE_MESSAGES.NO_DATA : startup.fundraisingDetail}
+                className="text-neutral-50 text-sm"
+              />
             </div>
           </div>
         </Tab>

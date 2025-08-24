@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spinner, Button } from '@heroui/react';
+import { Spinner } from '@heroui/react';
 import { Spacer } from '@heroui/spacer';
 import { startup_profile_detail } from '@/apis/mentor';
 import { Startup } from '@/interfaces/StartupProfile';
@@ -15,7 +15,9 @@ import { isDocumentFile } from '@/services/upload';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { getStartupDocuments } from '@/apis/upload';
 import { IDocument } from '@/interfaces/upload';
-import { match } from 'assert';
+import Button from '@/components/Button/Button';
+import TextLine from '@/components/common/TextLine';
+import { PROFILE_MESSAGES } from '@/constants';
 
 interface MentorExploreContainerProps {
   mentorId?: string | undefined;
@@ -93,7 +95,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
       } catch (err) {
         setStartupList([]);
         setStartupMembersList([]);
-        setError('Failed to fetch Startup details.');
+        setError(PROFILE_MESSAGES.FAILED_FETCH_STARTUP_DETAILS);
       }
     };
     fetchAllStartupDetails();
@@ -115,7 +117,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
     } catch (error) {
       setStartupImages([]);
       setStartupDocuments([]);
-      console.error('Failed to fetch startup documents:', error);
+      console.error(PROFILE_MESSAGES.FAILED_FETCH_STARTUP_DOCUMENTS, error);
     }
   };
 
@@ -132,56 +134,37 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
   if (error) {
     return (
       <div className="flex justify-center items-center h-[50%]">
-        <span className="text-gray-500 text-lg">{error}</span>
+        <TextLine text={error} className="text-neutral-50 text-lg" />
       </div>
     );
   }
 
   return startupList.length > 0 ? (
-    <div className="flex w-full px-4 relative z-10 gap-0 mt-6">
+    <div className="flex w-full px-regular relative z-10 gap-0 mt-medium">
       <div className="mx-0 w-[33%] flex flex-col justify-start">
-        <div className="flex flex-col gap-2 overflow-y-auto h-full pr-2 custom-scrollbar">
-          <div className="flex justify-between items-center mb-4">
-            <div className="space-x-2">
+        <div className="flex flex-col gap-small overflow-y-auto h-full pr-small custom-scrollbar">
+          <div className="flex justify-between items-center mb-regular">
+            <div className="flex gap-small">
               <Button
-                size="sm"
-                color="primary"
-                className={
-                  filterMode === 'ALL' ? 'font-bold' : 'border-empacts-grey-50 border-1 font-bold'
-                }
-                variant={filterMode === 'ALL' ? 'solid' : 'bordered'}
-                radius="full"
-                onPress={() => setFilterMode('ALL')}
+                variant={filterMode === 'ALL' ? 'primary-sm' : 'tertiary-sm'}
+                onClick={() => setFilterMode('ALL')}
+                className="rounded-full"
               >
-                All
+                {PROFILE_MESSAGES.ALL}
               </Button>
               <Button
-                size="sm"
-                color="primary"
-                className={
-                  filterMode === 'ACCEPTED'
-                    ? 'font-bold'
-                    : 'border-empacts-grey-50 border-1 font-bold'
-                }
-                variant={filterMode === 'ACCEPTED' ? 'solid' : 'bordered'}
-                radius="full"
-                onPress={() => setFilterMode('ACCEPTED')}
+                variant={filterMode === 'ACCEPTED' ? 'primary-sm' : 'tertiary-sm'}
+                onClick={() => setFilterMode('ACCEPTED')}
+                className="rounded-full"
               >
-                Accepted
+                {PROFILE_MESSAGES.ACCEPTED}
               </Button>
               <Button
-                size="sm"
-                color="primary"
-                className={
-                  filterMode === 'PENDING'
-                    ? 'font-bold'
-                    : 'border-empacts-grey-50 border-1 font-bold'
-                }
-                variant={filterMode === 'PENDING' ? 'solid' : 'bordered'}
-                radius="full"
-                onPress={() => setFilterMode('PENDING')}
+                variant={filterMode === 'PENDING' ? 'primary-sm' : 'tertiary-sm'}
+                onClick={() => setFilterMode('PENDING')}
+                className="rounded-full"
               >
-                Pending
+                {PROFILE_MESSAGES.PENDING}
               </Button>
             </div>
           </div>
@@ -227,7 +210,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
     <div className="flex justify-center items-center h-[50%]">
       <Spinner
         classNames={{ label: 'text-foreground mt-4' }}
-        label="The system is finding your matching reuquest. Please wait..."
+        label={PROFILE_MESSAGES.FINDING_MATCHING_REQUEST}
         variant="wave"
       />
     </div>
