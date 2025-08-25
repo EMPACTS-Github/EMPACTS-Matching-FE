@@ -4,13 +4,13 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   RadioGroup,
   Radio,
 } from '@heroui/react';
 import { Member } from '@/interfaces/StartupProfile';
 import { useState, useEffect } from 'react';
 import { Spinner } from '@heroui/spinner';
+import Button from '@/components/Button/Button';
 
 interface ChangePermissionModalProps {
   isOpen: boolean;
@@ -76,17 +76,18 @@ const ChangePermissionModal: React.FC<ChangePermissionModalProps> = ({
             </ModalBody>
             <ModalFooter className="flex justify-between">
               <Button
+                variant="ghost-md"
                 className="w-1/2 border-2"
-                variant="light"
-                onPress={onOpenChange}
-                isDisabled={isLoading}
+                onClick={onOpenChange}
+                disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
-                className="bg-primary text-neutral-20 w-1/2"
-                onPress={changeRole}
-                isDisabled={isLoading}
+                variant="primary-md"
+                className="w-1/2"
+                onClick={changeRole}
+                disabled={isLoading}
               >
                 {isLoading ? <Spinner size="sm" color="white" /> : 'Save'}
               </Button>
