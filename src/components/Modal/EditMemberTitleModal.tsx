@@ -1,8 +1,9 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@heroui/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/react';
 import { useState, useEffect } from 'react';
 import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
 import { Member } from '@/interfaces/StartupProfile';
 import { Spinner } from '@heroui/spinner';
+import Button from '@/components/Button/Button';
 
 interface EditMemberTitleModalProps {
   isOpen: boolean;
@@ -65,17 +66,18 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({
             </ModalBody>
             <ModalFooter className="flex justify-between mt-20">
               <Button
+                variant="ghost-md"
                 className="w-1/2 border-2"
-                variant="light"
-                onPress={onOpenChange}
-                isDisabled={isLoading}
+                onClick={onOpenChange}
+                disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
-                className="bg-primary text-neutral-20 w-1/2"
-                onPress={editTitle}
-                isDisabled={isLoading}
+                variant="primary-md"
+                className="w-1/2"
+                onClick={editTitle}
+                disabled={isLoading}
               >
                 {isLoading ? <Spinner size="sm" color="white" /> : 'Save'}
               </Button>

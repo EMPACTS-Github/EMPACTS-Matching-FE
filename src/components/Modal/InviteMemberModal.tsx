@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Input,
-  Button,
   ModalBody,
   Modal,
   ModalContent,
@@ -13,6 +12,7 @@ import Image from 'next/image';
 import CloseXIcon from '/public/assets/icons/close-x-icon.svg';
 import { Spinner } from '@heroui/spinner';
 import InfoInCircleIcon from '@/components/Icons/InfoInCircleIcon';
+import Button from '@/components/Button/Button';
 
 interface InviteMemberModalProps {
   isOpen: boolean;
@@ -124,8 +124,9 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
                     }}
                   />
                   <Button
-                    onPress={handleAddMember}
-                    className="w-full md:w-[100px] h-[40px] bg-secondary text-neutral-20 rounded-lg text-base font-medium"
+                    variant="secondary-md"
+                    className="w-full md:w-[100px] h-[40px]"
+                    onClick={handleAddMember}
                   >
                     Add
                   </Button>
@@ -161,17 +162,18 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
             </ModalBody>
             <ModalFooter className="flex justify-between">
               <Button
+                variant="ghost-md"
                 className="w-1/2 border-2"
-                variant="light"
-                onPress={onOpenChange}
-                isDisabled={isLoading}
+                onClick={onOpenChange}
+                disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
-                className="bg-primary text-neutral-20 w-1/2"
-                onPress={handleSaveButton}
-                isDisabled={isLoading}
+                variant="primary-md"
+                className="w-1/2"
+                onClick={handleSaveButton}
+                disabled={isLoading}
               >
                 {isLoading ? <Spinner size="sm" color="white" /> : 'Save'}
               </Button>
