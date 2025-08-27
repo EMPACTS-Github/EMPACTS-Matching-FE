@@ -184,7 +184,7 @@ export const selectPresets = {
   },
 
   // Search/filter variants
-  'search': {
+  search: {
     className: 'w-full bg-white border border-gray-300 focus:border-primary rounded-lg',
     variant: 'bordered' as const,
     color: 'primary' as const,
@@ -192,7 +192,7 @@ export const selectPresets = {
     radius: 'lg' as const,
     fullWidth: true,
   },
-  'filter': {
+  filter: {
     className: 'min-w-[200px] border border-gray-300 focus:border-primary',
     variant: 'bordered' as const,
     color: 'primary' as const,
@@ -200,7 +200,6 @@ export const selectPresets = {
     radius: 'md' as const,
     fullWidth: false,
   },
-
 } as const;
 
 // Type for select preset configuration
@@ -236,20 +235,22 @@ export interface SelectItemType {
 interface SelectProps {
   // Required preset variant prop
   variant: keyof typeof selectPresets;
-  
+
   // Basic props
   items?: SelectItemType[];
   selectedKeys?: 'all' | Iterable<Key>;
   defaultSelectedKeys?: 'all' | Iterable<Key>;
   disabledKeys?: Iterable<Key>;
   selectionMode?: 'single' | 'multiple';
-  
+
   // Event handlers
-  onSelectionChange?: (keys: "all" | Set<Key> & {anchorKey?: string; currentKey?: string}) => void;
+  onSelectionChange?: (
+    keys: 'all' | (Set<Key> & { anchorKey?: string; currentKey?: string })
+  ) => void;
   onOpenChange?: (isOpen: boolean) => void;
   onClose?: () => void;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
-  
+
   // Content props
   placeholder?: string;
   label?: React.ReactNode;
@@ -258,7 +259,7 @@ interface SelectProps {
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
   selectorIcon?: React.ReactNode;
-  
+
   // Additional customization
   className?: string;
   isDisabled?: boolean;

@@ -1,7 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Spacer, Skeleton, addToast, Card, CardBody, Divider, Avatar, Tab, Tabs, Link } from '@heroui/react';
+import {
+  Spacer,
+  Skeleton,
+  addToast,
+  Card,
+  CardBody,
+  Divider,
+  Avatar,
+  Tab,
+  Tabs,
+  Link,
+} from '@heroui/react';
 import ProfileInfoSubCard from '@/components/Card/ProfileInfoSubCard';
 import { StartupProfileResponse, Startup } from '@/interfaces/StartupProfile';
 import { startup_matching_activity } from '@/apis/startup-matching';
@@ -308,7 +319,15 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({
   );
 
   // Inline TabsSection component
-  const TabsSection = ({ startup, images, documents }: { startup: Startup; images: IDocument[]; documents: IDocument[] }) => (
+  const TabsSection = ({
+    startup,
+    images,
+    documents,
+  }: {
+    startup: Startup;
+    images: IDocument[];
+    documents: IDocument[];
+  }) => (
     <div className="flex-1">
       <Tabs aria-label="Startup Tabs" variant="underlined" color="primary" className="font-bold">
         <Tab key="overview" title="Overview">

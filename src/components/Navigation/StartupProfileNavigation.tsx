@@ -39,7 +39,10 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
       const suggestedMentorList = await suggest_mentor_list({ startupId: startupId });
       setSuggestedMentors(suggestedMentorList.data);
     } catch (err: any) {
-      if (err?.response?.status === 404 && err?.response?.data?.code === API_ERROR_CODES.SUGGESTION_NOT_FOUND) {
+      if (
+        err?.response?.status === 404 &&
+        err?.response?.data?.code === API_ERROR_CODES.SUGGESTION_NOT_FOUND
+      ) {
         setError(SUGGESTION_MESSAGES.NO_SUGGESTION_FOUND);
       } else {
         setError(SUGGESTION_MESSAGES.FETCH_SUGGESTION_FAILED);

@@ -1,19 +1,19 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { 
-  Spacer, 
-  Skeleton, 
-  addToast, 
-  Card, 
-  CardBody, 
-  Divider, 
-  Avatar, 
+import {
+  Spacer,
+  Skeleton,
+  addToast,
+  Card,
+  CardBody,
+  Divider,
+  Avatar,
   useDisclosure,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  cn
+  cn,
 } from '@heroui/react';
 import { Chip } from '@heroui/chip';
 import ProfileInfoSubCard from '@/components/Card/ProfileInfoSubCard';
@@ -96,7 +96,8 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
     onOpenChange: onInviteOpenChange,
   } = useDisclosure();
 
-  const iconClasses = 'text-xl text-neutral-80 hover:text-neutral-20 pointer-events-none flex-shrink-0';
+  const iconClasses =
+    'text-xl text-neutral-80 hover:text-neutral-20 pointer-events-none flex-shrink-0';
 
   useEffect(() => {
     if (!startup_profile?.startup?.id) return;
@@ -290,9 +291,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
       size="sm"
       color="primary"
       variant={role === 'OWNER' ? 'faded' : 'bordered'}
-      className={
-        role === 'OWNER' ? 'border-primary border-1 bg-primary-20 capitalize' : 'border-1'
-      }
+      className={role === 'OWNER' ? 'border-primary border-1 bg-primary-20 capitalize' : 'border-1'}
     >
       {role === 'OWNER' ? 'Owner' : role === 'MEMBER' ? 'Member' : role}
     </Chip>
@@ -307,10 +306,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
             variant={filterMode === 'ALL' ? 'primary-sm' : 'bordered-sm'}
             radius="full"
             onClick={() => setFilterMode('ALL')}
-            className={cn(
-              'font-bold',
-              filterMode !== 'ALL' && 'border-neutral-50 border-1'
-            )}
+            className={cn('font-bold', filterMode !== 'ALL' && 'border-neutral-50 border-1')}
           >
             All
           </Button>
@@ -318,10 +314,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
             variant={filterMode === 'OWNER' ? 'primary-sm' : 'bordered-sm'}
             radius="full"
             onClick={() => setFilterMode('OWNER')}
-            className={cn(
-              'font-bold',
-              filterMode !== 'OWNER' && 'border-neutral-50 border-1'
-            )}
+            className={cn('font-bold', filterMode !== 'OWNER' && 'border-neutral-50 border-1')}
           >
             Owner
           </Button>
@@ -329,16 +322,13 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
             variant={filterMode === 'MEMBER' ? 'primary-sm' : 'bordered-sm'}
             radius="full"
             onClick={() => setFilterMode('MEMBER')}
-            className={cn(
-              'font-bold',
-              filterMode !== 'MEMBER' && 'border-neutral-50 border-1'
-            )}
+            className={cn('font-bold', filterMode !== 'MEMBER' && 'border-neutral-50 border-1')}
           >
             Member
           </Button>
         </div>
         {accessAction.canInvite && (
-          <Button 
+          <Button
             variant="primary-sm"
             onClick={onInviteOpen}
             className="bg-primary text-neutral-20 px-regular"
@@ -347,11 +337,14 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
           </Button>
         )}
       </div>
-      
+
       {/* Member List */}
       <div className="space-y-small">
         {filteredMembers.map((member, idx) => (
-          <div key={idx} className="flex justify-between p-regular bg-neutral-20 shadow-lg rounded-lg w-full">
+          <div
+            key={idx}
+            className="flex justify-between p-regular bg-neutral-20 shadow-lg rounded-lg w-full"
+          >
             <div className="flex items-center gap-semi-regular">
               <Avatar
                 src={member.user.avtUrl}
@@ -457,10 +450,20 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
           <Button variant="primary-sm" radius="full" disabled>
             All
           </Button>
-          <Button variant="bordered-sm" radius="full" disabled className="border-neutral-50 border-1">
+          <Button
+            variant="bordered-sm"
+            radius="full"
+            disabled
+            className="border-neutral-50 border-1"
+          >
             Owner
           </Button>
-          <Button variant="bordered-sm" radius="full" disabled className="border-neutral-50 border-1">
+          <Button
+            variant="bordered-sm"
+            radius="full"
+            disabled
+            className="border-neutral-50 border-1"
+          >
             Member
           </Button>
         </div>

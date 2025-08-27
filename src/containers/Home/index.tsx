@@ -335,7 +335,9 @@ const Home = () => {
         </div>
         <div className="flex items-start gap-1 overflow-hidden">
           <Image src={LabelIcon} alt="Project" width={24} height={24} className="object-cover" />
-          <span className="font-inter font-semibold text-base text-secondary text-wrap">{sdgGoal}</span>
+          <span className="font-inter font-semibold text-base text-secondary text-wrap">
+            {sdgGoal}
+          </span>
         </div>
       </div>
     </div>
@@ -365,10 +367,7 @@ const Home = () => {
           onClick={handleSelectAll}
           variant={selectAll ? 'primary-md' : 'bordered-md'}
           radius="full"
-          className={cn(
-            'text-sm',
-            !selectAll && 'border-neutral-50 border-1'
-          )}
+          className={cn('text-sm', !selectAll && 'border-neutral-50 border-1')}
         >
           <div className="text-sm">All</div>
         </Button>
@@ -426,9 +425,7 @@ const Home = () => {
         <CategoryList />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-regular gap-y-large mb-large">
           {startups.length > 0
-            ? startups.map((card, index) => (
-                <StartupCard key={index} {...card} />
-              ))
+            ? startups.map((card, index) => <StartupCard key={index} {...card} />)
             : !loading && (
                 <div className="text-center mt-large text-secondary md:col-span-2 lg:col-span-4">
                   No result found

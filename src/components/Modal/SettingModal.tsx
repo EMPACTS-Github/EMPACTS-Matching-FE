@@ -392,8 +392,14 @@ const SettingModal: React.FC<SettingModalProps> = ({
                 isVertical={true}
                 className="py-2 pr-4 mr-4 border-r-1 border-neutral-40"
               >
-                <Tab key="general" title={UI_LABELS.GENERAL} className="w-full flex flex-col gap-2 py-2">
-                  <div className="font-semibold text-lg text-primary">{UI_LABELS.BASIC_INFORMATION}</div>
+                <Tab
+                  key="general"
+                  title={UI_LABELS.GENERAL}
+                  className="w-full flex flex-col gap-2 py-2"
+                >
+                  <div className="font-semibold text-lg text-primary">
+                    {UI_LABELS.BASIC_INFORMATION}
+                  </div>
                   <Divider />
                   <div className="flex gap-4">
                     <Avatar
@@ -407,7 +413,9 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     />
                     <div className="flex flex-col justify-center items-center">
                       <label htmlFor="profile-upload" className="cursor-pointer">
-                        <p className="font-semibold text-sm text-primary">{UI_LABELS.CHANGE_PROFILE_PHOTO}</p>
+                        <p className="font-semibold text-sm text-primary">
+                          {UI_LABELS.CHANGE_PROFILE_PHOTO}
+                        </p>
                       </label>
                       <input
                         id="profile-upload"
@@ -482,7 +490,9 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     onDeleteAttachment={handleDeleteAttachment}
                   />
 
-                  <div className="font-semibold text-lg text-primary">{UI_LABELS.DOCUMENTATION}</div>
+                  <div className="font-semibold text-lg text-primary">
+                    {UI_LABELS.DOCUMENTATION}
+                  </div>
                   <Divider />
                   <DocumentBody
                     files={startupDocuments}
@@ -492,7 +502,9 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     onUploadNewFile={handleUploadNewStartupAttachment}
                   />
 
-                  <div className="font-semibold text-lg text-primary">{UI_LABELS.ADVANCED_INFORMATION}</div>
+                  <div className="font-semibold text-lg text-primary">
+                    {UI_LABELS.ADVANCED_INFORMATION}
+                  </div>
                   <Divider />
                   <LabelStartAndSwitchEnd
                     label={UI_LABELS.ACTIVE_USER}
@@ -529,11 +541,17 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     </Button>
                   </div>
                 </Tab>
-                <Tab key="advanced" title={UI_LABELS.ADVANCED} className="w-full flex flex-col gap-2 py-3">
+                <Tab
+                  key="advanced"
+                  title={UI_LABELS.ADVANCED}
+                  className="w-full flex flex-col gap-2 py-3"
+                >
                   {!startup.isHide ? (
                     <div className="flex justify-between">
                       <div className="flex flex-col justify-center">
-                        <p className="font-semibold text-sm text-secondary">{UI_LABELS.HIDE_PROFILE}</p>
+                        <p className="font-semibold text-sm text-secondary">
+                          {UI_LABELS.HIDE_PROFILE}
+                        </p>
                         <p className="text-neutral-50 font-normal text-xs">
                           {UI_LABELS.HIDE_PROFILE_DESCRIPTION}
                         </p>
@@ -565,7 +583,9 @@ const SettingModal: React.FC<SettingModalProps> = ({
                   )}
                   <div className="flex justify-between">
                     <div className="flex flex-col justify-center">
-                      <p className="font-semibold text-sm text-secondary">{UI_LABELS.DELETE_PROFILE}</p>
+                      <p className="font-semibold text-sm text-secondary">
+                        {UI_LABELS.DELETE_PROFILE}
+                      </p>
                       <p className="text-neutral-50 font-normal text-xs">
                         {UI_LABELS.DELETE_PROFILE_DESCRIPTION}
                       </p>

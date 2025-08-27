@@ -145,15 +145,12 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
     }
   };
   return (
-    <div className={`bg-neutral-20 rounded-lg shadow-xl py-medium px-large gap-y-regular flex flex-col`}>
+    <div
+      className={`bg-neutral-20 rounded-lg shadow-xl py-medium px-large gap-y-regular flex flex-col`}
+    >
       <div className="flex justify-between items-end">
         <div className="flex justify-start items-center">
-          <Avatar
-            variant="default-lg"
-            src={avtUrl}
-            alt={title}
-            className="mr-medium"
-          />
+          <Avatar variant="default-lg" src={avtUrl} alt={title} className="mr-medium" />
           <div className="items-center justify-between flex-grow">
             <div className="flex items-center justify-between">
               <TextLine
@@ -193,7 +190,11 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
         />
       </div>
       <Tabs aria-label="Request Tabs" variant="underlined" color="primary" className="font-bold">
-        <Tab key="request_detail" title={PROFILE_MESSAGES.REQUEST_DETAIL} className="flex flex-col gap-y-regular">
+        <Tab
+          key="request_detail"
+          title={PROFILE_MESSAGES.REQUEST_DETAIL}
+          className="flex flex-col gap-y-regular"
+        >
           <div className="flex gap-x-small items-center">
             <TextLine text={PROFILE_MESSAGES.STATUS} className="font-semibold text-secondary" />
             <TextLine
@@ -223,10 +224,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                 />
               </div>
               <div className="flex flex-col w-[40%] gap-small">
-                <Button
-                  variant="primary-full"
-                  onClick={onMeetingButtonClick}
-                >
+                <Button variant="primary-full" onClick={onMeetingButtonClick}>
                   {PROFILE_MESSAGES.JOIN_GOOGLE_MEET}
                 </Button>
                 <Snippet
@@ -273,14 +271,20 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
         <Tab key="startup_infomation" title={PROFILE_MESSAGES.STARTUP_INFORMATION}>
           <div className="space-y-regular">
             <div>
-              <TextLine text={PROFILE_MESSAGES.DESCRIPTION} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={PROFILE_MESSAGES.DESCRIPTION}
+                className="text-lg font-semibold text-secondary"
+              />
               <TextLine
                 text={startup?.description || PROFILE_MESSAGES.NO_DESCRIPTION_AVAILABLE}
                 className="text-neutral-50 text-sm whitespace-pre-line"
               />
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.MEMBER} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={PROFILE_MESSAGES.MEMBER}
+                className="text-lg font-semibold text-secondary"
+              />
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-medium gap-y-large py-regular">
                 {startupMembers.map((member, index) => (
                   <div className="flex justify-start" key={member.id || index}>
@@ -306,14 +310,20 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
               </div>
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.PROFILE_LINK} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={PROFILE_MESSAGES.PROFILE_LINK}
+                className="text-lg font-semibold text-secondary"
+              />
               <TextLine
                 text={startup?.startupLink || PROFILE_MESSAGES.NO_DATA}
                 className="text-neutral-50 text-sm whitespace-pre-line"
               />
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.DOCUMENTATION} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={PROFILE_MESSAGES.DOCUMENTATION}
+                className="text-lg font-semibold text-secondary"
+              />
               <div className="space-y-regular">
                 {documents.length > 0 ? (
                   <Card className="flex gap-3 shadow-none m-0 p-0">
@@ -367,14 +377,20 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                       className="w-24 h-auto"
                     />
                     <div className="flex flex-col items-center justify-center mb-regular">
-                      <TextLine text={PROFILE_MESSAGES.NO_DATA} className="text-md text-neutral-50 mb-small" />
+                      <TextLine
+                        text={PROFILE_MESSAGES.NO_DATA}
+                        className="text-md text-neutral-50 mb-small"
+                      />
                     </div>
                   </div>
                 )}
               </div>
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.MEDIA} className="text-lg font-semibold text-secondary" />
+              <TextLine
+                text={PROFILE_MESSAGES.MEDIA}
+                className="text-lg font-semibold text-secondary"
+              />
               <div className="flex flex-col w-full my-regular">
                 {images.length > 0 ? (
                   <div>
@@ -412,7 +428,10 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
                       className="w-24 h-auto"
                     />
                     <div className="flex flex-col items-center justify-center mb-regular">
-                      <TextLine text={PROFILE_MESSAGES.NO_DATA} className="text-md text-neutral-50 mb-small" />
+                      <TextLine
+                        text={PROFILE_MESSAGES.NO_DATA}
+                        className="text-md text-neutral-50 mb-small"
+                      />
                     </div>
                   </div>
                 )}
@@ -423,48 +442,86 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
         <Tab key="advanced" title={PROFILE_MESSAGES.ADVANCED}>
           <div className="space-y-medium">
             <div className="grid grid-cols-3 gap-large w-1/2">
-              <TextLine text={PROFILE_MESSAGES.ACTIVE_USER} className="col-span-2 text-lg font-semibold text-secondary" />
               <TextLine
-                text={startup.haveActiveUse == null
-                  ? PROFILE_MESSAGES.NO_DATA
-                  : startup.haveActiveUse
-                    ? PROFILE_MESSAGES.YES
-                    : PROFILE_MESSAGES.NOT_YET}
+                text={PROFILE_MESSAGES.ACTIVE_USER}
+                className="col-span-2 text-lg font-semibold text-secondary"
+              />
+              <TextLine
+                text={
+                  startup.haveActiveUse == null
+                    ? PROFILE_MESSAGES.NO_DATA
+                    : startup.haveActiveUse
+                      ? PROFILE_MESSAGES.YES
+                      : PROFILE_MESSAGES.NOT_YET
+                }
                 className="text-neutral-50 text-sm"
               />
             </div>
             <div className="grid grid-cols-3 gap-large w-1/2">
-              <TextLine text={PROFILE_MESSAGES.LATEST_REVENUE} className="col-span-2 text-lg font-semibold text-secondary" />
               <TextLine
-                text={startup?.revenue == null ? PROFILE_MESSAGES.NO_DATA : startup.revenue.toString()}
+                text={PROFILE_MESSAGES.LATEST_REVENUE}
+                className="col-span-2 text-lg font-semibold text-secondary"
+              />
+              <TextLine
+                text={
+                  startup?.revenue == null ? PROFILE_MESSAGES.NO_DATA : startup.revenue.toString()
+                }
                 className="text-neutral-50 text-sm"
               />
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.STARTUP_STATE} className="text-lg font-semibold text-secondary" />
               <TextLine
-                text={startup.startupFundingStage == null ? PROFILE_MESSAGES.NO_DATA : startup.startupFundingStage}
+                text={PROFILE_MESSAGES.STARTUP_STATE}
+                className="text-lg font-semibold text-secondary"
+              />
+              <TextLine
+                text={
+                  startup.startupFundingStage == null
+                    ? PROFILE_MESSAGES.NO_DATA
+                    : startup.startupFundingStage
+                }
                 className="text-neutral-50 text-sm"
               />
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.LEGAL_EQUITY} className="text-lg font-semibold text-secondary" />
               <TextLine
-                text={startup.legalEquityDetail == null ? PROFILE_MESSAGES.NO_DATA : startup.legalEquityDetail}
+                text={PROFILE_MESSAGES.LEGAL_EQUITY}
+                className="text-lg font-semibold text-secondary"
+              />
+              <TextLine
+                text={
+                  startup.legalEquityDetail == null
+                    ? PROFILE_MESSAGES.NO_DATA
+                    : startup.legalEquityDetail
+                }
                 className="text-neutral-50 text-sm"
               />
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.INVESTMENT} className="text-lg font-semibold text-secondary" />
               <TextLine
-                text={startup.investmentDetail == null ? PROFILE_MESSAGES.NO_DATA : startup.investmentDetail}
+                text={PROFILE_MESSAGES.INVESTMENT}
+                className="text-lg font-semibold text-secondary"
+              />
+              <TextLine
+                text={
+                  startup.investmentDetail == null
+                    ? PROFILE_MESSAGES.NO_DATA
+                    : startup.investmentDetail
+                }
                 className="text-neutral-50 text-sm"
               />
             </div>
             <div>
-              <TextLine text={PROFILE_MESSAGES.FUNDRAISING} className="text-lg font-semibold text-secondary" />
               <TextLine
-                text={startup.fundraisingDetail == null ? PROFILE_MESSAGES.NO_DATA : startup.fundraisingDetail}
+                text={PROFILE_MESSAGES.FUNDRAISING}
+                className="text-lg font-semibold text-secondary"
+              />
+              <TextLine
+                text={
+                  startup.fundraisingDetail == null
+                    ? PROFILE_MESSAGES.NO_DATA
+                    : startup.fundraisingDetail
+                }
                 className="text-neutral-50 text-sm"
               />
             </div>

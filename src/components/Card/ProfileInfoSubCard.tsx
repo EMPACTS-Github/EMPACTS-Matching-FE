@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  useDisclosure,
-} from '@heroui/react';
+import { Card, CardHeader, CardBody, CardFooter, Divider, useDisclosure } from '@heroui/react';
 import SettingModal from '@/components/Modal/SettingModal';
 import { Startup } from '@/interfaces/StartupProfile';
 import Button from '@/components/Button/Button';
@@ -39,18 +32,15 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
   };
 
   return (
-    <TextLine 
-      text={getStatusText()} 
-      className={`text-sm font-semibold ${getStatusColor()}`} 
-    />
+    <TextLine text={getStatusText()} className={`text-sm font-semibold ${getStatusColor()}`} />
   );
 };
 
 // Statistics Item Component
-const StatisticItem: React.FC<{ value: number; label: string; pluralLabel: string }> = ({ 
-  value, 
-  label, 
-  pluralLabel 
+const StatisticItem: React.FC<{ value: number; label: string; pluralLabel: string }> = ({
+  value,
+  label,
+  pluralLabel,
 }) => (
   <div className="flex flex-col justify-center items-center">
     <TextLine text={value.toString()} className="font-semibold text-lg text-secondary py-1" />
@@ -89,26 +79,22 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({
       <CardBody className="py-0">
         <Divider />
         <div className="flex justify-around items-center p-small">
-          <StatisticItem 
-            value={startup.memberQty} 
-            label={UI_LABELS.MEMBER} 
-            pluralLabel={UI_LABELS.MEMBERS} 
+          <StatisticItem
+            value={startup.memberQty}
+            label={UI_LABELS.MEMBER}
+            pluralLabel={UI_LABELS.MEMBERS}
           />
           <Divider orientation="vertical" className="h-14" />
-          <StatisticItem 
-            value={countMatches} 
-            label={UI_LABELS.MATCH} 
-            pluralLabel={UI_LABELS.MATCHES} 
+          <StatisticItem
+            value={countMatches}
+            label={UI_LABELS.MATCH}
+            pluralLabel={UI_LABELS.MATCHES}
           />
         </div>
         <Divider />
       </CardBody>
       <CardFooter className="pt-regular">
-        <Button
-          onClick={onOpen}
-          variant="tertiary-full"
-          disabled={!isOwner}
-        >
+        <Button onClick={onOpen} variant="tertiary-full" disabled={!isOwner}>
           {UI_LABELS.SETTINGS}
         </Button>
         <SettingModal

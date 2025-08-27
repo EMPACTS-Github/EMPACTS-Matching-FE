@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Input,
-  ModalBody,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-} from '@heroui/react';
+import { Input, ModalBody, Modal, ModalContent, ModalHeader, ModalFooter } from '@heroui/react';
 import { MemberForInvite } from '@/interfaces/startup';
 import Image from 'next/image';
 import CloseXIcon from '/public/assets/icons/close-x-icon.svg';

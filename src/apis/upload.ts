@@ -25,7 +25,7 @@ export const uploadProfilePicture = async (file: File, ownerType: string, ownerI
   if (ownerId) {
     formData.append('ownerId', ownerId);
   }
-  
+
   const response = await axiosInstance.post('/attachments/file', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',

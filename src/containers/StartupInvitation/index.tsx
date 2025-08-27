@@ -31,35 +31,26 @@ const AlertLoginAs: React.FC<{
 }> = ({ email, inviteeEmail, onLoginAsDifferentAccount, onCancelLoginAsDifferentAccount }) => (
   <div className="w-full flex justify-center items-center mt-large">
     <div className="rounded-xl p-large bg-neutral-20 flex flex-col gap-small justify-center items-center">
-      <TextLine 
+      <TextLine
         text={`${UI_LABELS.YOURE_LOGIN_AS} `}
         className="text-xl text-center font-semibold text-secondary"
       />
-      <TextLine 
-        text={email}
-        className="text-xl text-center font-semibold text-primary"
-      />
+      <TextLine text={email} className="text-xl text-center font-semibold text-primary" />
       <div className="flex flex-col items-center">
-        <TextLine 
+        <TextLine
           text={`${UI_LABELS.PLEASE_LOGIN_AS} `}
           className="text-medium text-center font-semibold text-secondary"
         />
-        <TextLine 
+        <TextLine
           text={`${inviteeEmail} ${UI_LABELS.TO_CONTINUE}`}
           className="text-medium text-center font-semibold text-primary"
         />
       </div>
       <div className="flex gap-small">
-        <Button
-          onClick={onCancelLoginAsDifferentAccount}
-          variant="secondary-md"
-        >
+        <Button onClick={onCancelLoginAsDifferentAccount} variant="secondary-md">
           {UI_LABELS.CANCEL}
         </Button>
-        <Button
-          onClick={onLoginAsDifferentAccount}
-          variant="primary-md"
-        >
+        <Button onClick={onLoginAsDifferentAccount} variant="primary-md">
           {`${UI_LABELS.LOGIN_IN_AS} ${inviteeEmail}`}
         </Button>
       </div>
@@ -81,14 +72,11 @@ const InvitationStatus: React.FC<{ message: string }> = ({ message }) => {
   return (
     <div className="w-full flex justify-center items-center mt-large">
       <div className="rounded-xl p-large bg-neutral-20 flex flex-col gap-small justify-center items-center">
-        <TextLine 
+        <TextLine
           text={`${message} ${UI_LABELS.PLEASE_ASK_RESEND}`}
           className="text-xl text-center font-semibold text-secondary"
         />
-        <Button
-          onClick={handleReturnToHome}
-          variant="primary-md"
-        >
+        <Button onClick={handleReturnToHome} variant="primary-md">
           {UI_LABELS.RETURN_TO_HOME}
         </Button>
       </div>
@@ -136,27 +124,15 @@ const InvitationResponse: React.FC<{
     if (inivtationResponse.response === STARTUP_INVITATION_RESPONSE.ACCEPTED) {
       return (
         <div className="flex flex-col items-center">
-          <TextLine 
-            text={UI_LABELS.ACCEPTED_INVITATION}
-            className="text-center text-secondary"
-          />
-          <TextLine 
-            text={UI_LABELS.WAIT_REDIRECT_STARTUP}
-            className="text-center text-secondary"
-          />
+          <TextLine text={UI_LABELS.ACCEPTED_INVITATION} className="text-center text-secondary" />
+          <TextLine text={UI_LABELS.WAIT_REDIRECT_STARTUP} className="text-center text-secondary" />
         </div>
       );
     }
     return (
       <div className="flex flex-col items-center">
-        <TextLine 
-          text={UI_LABELS.REJECTED_INVITATION}
-          className="text-center text-secondary"
-        />
-        <TextLine 
-          text={UI_LABELS.WAIT_REDIRECT_HOME}
-          className="text-center text-secondary"
-        />
+        <TextLine text={UI_LABELS.REJECTED_INVITATION} className="text-center text-secondary" />
+        <TextLine text={UI_LABELS.WAIT_REDIRECT_HOME} className="text-center text-secondary" />
       </div>
     );
   };
@@ -165,11 +141,11 @@ const InvitationResponse: React.FC<{
     <div className="w-full flex justify-center items-center mt-large">
       <div className="rounded-xl p-large bg-neutral-20 flex flex-col gap-large justify-center items-center shadow-lg">
         <div>
-          <TextLine 
+          <TextLine
             text={UI_LABELS.YOURE_INVITED_AS}
             className="text-2xl text-center font-semibold text-secondary mb-small"
           />
-          <TextLine 
+          <TextLine
             text={invitationInfo.positionTitle}
             className="text-2xl text-center font-semibold text-primary"
           />
@@ -182,11 +158,11 @@ const InvitationResponse: React.FC<{
             className="w-24 h-24"
           />
           <div>
-            <TextLine 
+            <TextLine
               text={invitationInfo.startupName}
               className="text-xl text-center font-semibold text-secondary mb-small"
             />
-            <TextLine 
+            <TextLine
               text={invitationInfo.startupGoal}
               className="text-sm text-center font-semibold text-neutral-50"
             />

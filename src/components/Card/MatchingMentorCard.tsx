@@ -29,11 +29,7 @@ const MatchingMentorCard: React.FC<MatchingMentorCardProps> = ({
       onPress={onCardClick}
     >
       <div className="w-[25%]">
-        <Avatar
-          variant="default-lg"
-          src={avatarUrl}
-          alt={`${name}'s avatar`}
-        />
+        <Avatar variant="default-lg" src={avatarUrl} alt={`${name}'s avatar`} />
       </div>
       <div className="flex flex-col justify-start w-[75%]">
         <TextLine text={name} className="text-lg font-semibold text-secondary text-left" />
