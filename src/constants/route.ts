@@ -40,7 +40,7 @@ export const ROUTES: Route[] = [
     name: 'ChooseCreateNewProfile',
     pathname: '/profiles/new',
     isPrivate: true,
-    hasHeader: true,
+    hasHeader: false,
   },
   {
     name: 'CreateNewStartupProfile',
