@@ -19,6 +19,7 @@ import { getProvince } from '@/utils/getProvince';
 import provinces from '@/utils/data/provinces.json';
 import { uploadProfilePicture } from '@/apis/upload';
 import FormLabel from '@/components/Form/FormLabel';
+import TextLine from '@/components/common/TextLine';
 
 const CreateNewMentor = () => {
   const [mentorName, setMentorName] = useState('');
@@ -166,6 +167,10 @@ const CreateNewMentor = () => {
       <h1 className="text-large font-bold text-secondary leading-[175%] text-center">
         Mentor profile
       </h1>
+      <TextLine
+        text="Bring your knowledge to the world"
+        className="text-neutral-500 text-small font-normal"
+      />
     </div>
   );
 
