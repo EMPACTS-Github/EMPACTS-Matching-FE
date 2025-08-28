@@ -6,6 +6,8 @@ export interface StepperStep {
   label: string;
   isActive?: boolean;
   isCompleted?: boolean;
+  icon?: React.ReactNode;
+  customContent?: React.ReactNode;
 }
 
 export interface StepperProps {
@@ -15,6 +17,13 @@ export interface StepperProps {
   showNumbers?: boolean;
   showLabels?: boolean;
   variant?: 'default' | 'compact';
+  stepSize?: 'sm' | 'md' | 'lg';
+  stepShape?: 'circle' | 'square' | 'rounded';
+  lineColor?: string;
+  activeColor?: string;
+  completedColor?: string;
+  pendingColor?: string;
+  completedIcon?: React.ReactNode;
 }
 
 const Stepper: React.FC<StepperProps> = ({
@@ -23,7 +32,14 @@ const Stepper: React.FC<StepperProps> = ({
   className = '',
   showNumbers = true,
   showLabels = true,
-  variant = 'default'
+  variant = 'default',
+  stepSize = 'md',
+  stepShape = 'circle',
+  lineColor = 'bg-primary',
+  activeColor = 'bg-primary',
+  completedColor = 'bg-purple-100',
+  pendingColor = 'bg-purple-100',
+  completedIcon
 }) => {
   const getStepStatus = (index: number) => {
     if (index === currentStep) return 'active';
@@ -31,16 +47,40 @@ const Stepper: React.FC<StepperProps> = ({
     return 'pending';
   };
 
+  const getStepSize = () => {
+    switch (stepSize) {
+      case 'sm':
+        return 'w-8 h-8 text-sm';
+      case 'lg':
+        return 'w-16 h-16 text-2xl';
+      default:
+        return 'w-12 h-12 text-xl';
+    }
+  };
+
+  const getStepShape = () => {
+    switch (stepShape) {
+      case 'square':
+        return '';
+      case 'rounded':
+        return 'rounded-lg';
+      default:
+        return 'rounded-full';
+    }
+  };
+
   const getStepStyles = (status: string) => {
-    const baseStyles = 'w-12 h-12 rounded-full border border-primary flex items-center justify-center font-bold text-xl transition-all duration-200';
+    const sizeClasses = getStepSize();
+    const shapeClasses = getStepShape();
+    const baseStyles = `${sizeClasses} ${shapeClasses} border border-primary flex items-center justify-center font-bold transition-all duration-200`;
     
     switch (status) {
       case 'active':
-        return `${baseStyles} bg-primary text-white`;
+        return `${baseStyles} ${activeColor} text-white`;
       case 'completed':
-        return `${baseStyles} bg-purple-100 text-black`;
+        return `${baseStyles} ${completedColor} text-black`;
       case 'pending':
-        return `${baseStyles} bg-purple-100 text-black`;
+        return `${baseStyles} ${pendingColor} text-black`;
       default:
         return baseStyles;
     }
@@ -72,13 +112,19 @@ const Stepper: React.FC<StepperProps> = ({
             
             return (
               <React.Fragment key={step.id}>
-                {/* Step Number */}
+                {/* Step Content */}
                 {showNumbers && (
                   <div className={getStepStyles(status)}>
-                    {step.isCompleted ? (
-                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
+                    {step.customContent ? (
+                      step.customContent
+                    ) : step.isCompleted ? (
+                      completedIcon || (
+                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )
+                    ) : step.icon ? (
+                      step.icon
                     ) : (
                       index + 1
                     )}
@@ -87,7 +133,7 @@ const Stepper: React.FC<StepperProps> = ({
                 
                 {/* Connecting Line */}
                 {!isLast && (
-                  <div className="w-32 h-0.5 bg-primary" />
+                  <div className={`w-32 h-0.5 ${lineColor}`} />
                 )}
               </React.Fragment>
             );
@@ -103,7 +149,7 @@ const Stepper: React.FC<StepperProps> = ({
               
               return (
                 <React.Fragment key={`label-${step.id}`}>
-                  <div className={`w-12 flex justify-center ${getLabelStyles(status)}`}>
+                  <div className={`${getStepSize().split(' ')[0]} flex justify-center ${getLabelStyles(status)}`}>
                     {step.label}
                   </div>
                   
