@@ -19,6 +19,7 @@ import { getProvince } from '@/utils/getProvince';
 import provinces from '@/utils/data/provinces.json';
 import { uploadProfilePicture } from '@/apis/upload';
 import FormLabel from '@/components/Form/FormLabel';
+import TimeArability from '@/components/TimeAvailable/TimeArability';
 
 const CreateNewMentor = () => {
   const [mentorName, setMentorName] = useState('');
@@ -32,6 +33,8 @@ const CreateNewMentor = () => {
   const [skillOffered, setSkillOffered] = useState<SkillOffered>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [phone, setPhone] = useState('');
+  const [switchState, setSwitchState] = useState(true);
+  const [fromToValue, setFromToValue] = useState<string[][]>([['', '']]);
 
   const router = useRouter();
 
@@ -435,6 +438,13 @@ const CreateNewMentor = () => {
           <LanguagesSpokenSection />
           <SkillOfferedSection />
           <SDGGoalSection />
+          <TimeArability
+            dayOfWeek="Monday"
+            switchState={switchState}
+            setSwitchState={setSwitchState}
+            fromToValue={fromToValue}
+            setFromToValue={setFromToValue}
+          />
         </div>
         <ActionButtons />
       </div>
