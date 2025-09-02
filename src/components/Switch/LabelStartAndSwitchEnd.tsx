@@ -1,3 +1,4 @@
+import React from 'react';
 import { Switch } from '@heroui/react';
 
 interface LabelStartAndSwitchEndProps {
@@ -12,7 +13,7 @@ const LabelStartAndSwitchEnd: React.FC<LabelStartAndSwitchEndProps> = ({
   onChange,
 }) => {
   return (
-    <Switch checked={checked} color="primary" onValueChange={onChange} endContent>
+    <Switch isSelected={checked} color="primary" onValueChange={onChange}>
       {label}
     </Switch>
   );
