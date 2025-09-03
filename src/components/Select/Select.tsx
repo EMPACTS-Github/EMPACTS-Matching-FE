@@ -33,7 +33,7 @@ export const selectPresets = {
 
   // Bordered variant presets
   'bordered-sm': {
-    className: 'text-sm border border-gray-300 focus:border-primary',
+    className: 'text-sm focus:border-primary',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'sm' as const,
@@ -41,7 +41,7 @@ export const selectPresets = {
     fullWidth: true,
   },
   'bordered-md': {
-    className: 'border border-gray-300 focus:border-primary',
+    className: 'focus:border-primary',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
@@ -49,7 +49,7 @@ export const selectPresets = {
     fullWidth: true,
   },
   'bordered-lg': {
-    className: 'border border-gray-300 focus:border-primary',
+    className: 'focus:border-primary',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'lg' as const,
@@ -85,7 +85,7 @@ export const selectPresets = {
 
   // Underlined variant presets
   'underlined-sm': {
-    className: 'text-sm border-b-2 border-gray-300 focus:border-primary',
+    className: 'text-sm focus:border-primary',
     variant: 'underlined' as const,
     color: 'primary' as const,
     size: 'sm' as const,
@@ -93,7 +93,7 @@ export const selectPresets = {
     fullWidth: true,
   },
   'underlined-md': {
-    className: 'border-b-2 border-gray-300 focus:border-primary',
+    className: 'focus:border-primary',
     variant: 'underlined' as const,
     color: 'primary' as const,
     size: 'md' as const,
@@ -101,7 +101,7 @@ export const selectPresets = {
     fullWidth: true,
   },
   'underlined-lg': {
-    className: 'border-b-2 border-gray-300 focus:border-primary',
+    className: 'focus:border-primary',
     variant: 'underlined' as const,
     color: 'primary' as const,
     size: 'lg' as const,
@@ -165,7 +165,7 @@ export const selectPresets = {
 
   // Form field variants
   'form-field': {
-    className: 'w-full border border-gray-300 focus:border-primary rounded-md',
+    className: 'w-full focus:border-primary rounded-md',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
@@ -174,7 +174,7 @@ export const selectPresets = {
     labelPlacement: 'outside' as const,
   },
   'form-field-sm': {
-    className: 'w-full text-sm border border-gray-300 focus:border-primary rounded-md',
+    className: 'w-full text-sm focus:border-primary rounded-md',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'sm' as const,
@@ -185,7 +185,7 @@ export const selectPresets = {
 
   // Search/filter variants
   search: {
-    className: 'w-full bg-white border border-gray-300 focus:border-primary rounded-lg',
+    className: 'w-full bg-white focus:border-primary rounded-lg',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
@@ -193,7 +193,7 @@ export const selectPresets = {
     fullWidth: true,
   },
   filter: {
-    className: 'min-w-[200px] border border-gray-300 focus:border-primary',
+    className: 'min-w-[200px] focus:border-primary',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'sm' as const,
@@ -294,7 +294,46 @@ const Select = ({
 
   // Combine preset classes with additional className
   const finalClasses = cn(preset.className, className);
-
+  if (items.length > 50) {
+    // Implement virtualization or a "load more" feature
+    return (
+      <HeroSelect
+        isVirtualized={false}
+        items={items}
+        selectedKeys={selectedKeys}
+        defaultSelectedKeys={defaultSelectedKeys}
+        disabledKeys={disabledKeys}
+        selectionMode={selectionMode}
+        onSelectionChange={onSelectionChange}
+        onOpenChange={onOpenChange}
+        onClose={onClose}
+        onChange={onChange}
+        placeholder={preset.placeholder || placeholder}
+        label={preset.label || label}
+        description={preset.description || description}
+        errorMessage={preset.errorMessage || errorMessage}
+        startContent={preset.startContent || startContent}
+        endContent={preset.endContent || endContent}
+        selectorIcon={preset.selectorIcon || selectorIcon}
+        variant={preset.variant}
+        color={preset.color}
+        size={preset.size}
+        radius={preset.radius}
+        fullWidth={preset.fullWidth}
+        labelPlacement={preset.labelPlacement}
+        isRequired={preset.isRequired || isRequired}
+        isDisabled={preset.isDisabled || isDisabled}
+        isInvalid={preset.isInvalid || isInvalid}
+        className={finalClasses}
+      >
+        {(item) => (
+          <SelectItem key={item.key} isDisabled={item.disabled}>
+            {item.label}
+          </SelectItem>
+        )}
+      </HeroSelect>
+    );
+  }
   return (
     <HeroSelect
       items={items}

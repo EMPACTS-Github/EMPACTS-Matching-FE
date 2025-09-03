@@ -27,6 +27,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
 }) => {
   return (
     <Select
+      isVirtualized={false}
       isRequired={isRequired ? true : false}
       className={`${className}`}
       variant="bordered"

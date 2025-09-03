@@ -34,7 +34,7 @@ const TimeArability: React.FC<TimeArabilityProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-4 items-start">
       <div className="text-md">{dayOfWeek}</div>
       <LabelStartAndSwitchEnd
         label="Available"
@@ -62,7 +62,7 @@ const TimeArability: React.FC<TimeArabilityProps> = ({
             </div>
           ))}
           <Button variant="ghost-sm" onClick={handleAddTimeRange} isIconOnly={true}>
-            <PlusSquareIcon />
+            <PlusSquareIcon className="text-primary" />
           </Button>
         </div>
       )}
