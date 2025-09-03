@@ -259,12 +259,16 @@ interface SelectProps {
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
   selectorIcon?: React.ReactNode;
+  renderValue?: (items: any[]) => React.ReactNode;
 
   // Additional customization
   className?: string;
+  itemHeight?: number;
   isDisabled?: boolean;
   isRequired?: boolean;
   isInvalid?: boolean;
+
+  isVirtualized?: boolean;
 }
 
 const Select = ({
@@ -285,10 +289,13 @@ const Select = ({
   startContent,
   endContent,
   selectorIcon,
+  renderValue,
+  itemHeight,
   className = '',
   isDisabled = false,
   isRequired = false,
   isInvalid = false,
+  isVirtualized = false,
 }: SelectProps) => {
   const preset = selectPresets[variant] as SelectPreset;
 
@@ -313,6 +320,7 @@ const Select = ({
       startContent={preset.startContent || startContent}
       endContent={preset.endContent || endContent}
       selectorIcon={preset.selectorIcon || selectorIcon}
+      renderValue={renderValue}
       variant={preset.variant}
       color={preset.color}
       size={preset.size}
@@ -322,6 +330,8 @@ const Select = ({
       isRequired={preset.isRequired || isRequired}
       isDisabled={preset.isDisabled || isDisabled}
       isInvalid={preset.isInvalid || isInvalid}
+      isVirtualized={isVirtualized}
+      itemHeight={itemHeight}
       className={finalClasses}
     >
       {(item) => (
