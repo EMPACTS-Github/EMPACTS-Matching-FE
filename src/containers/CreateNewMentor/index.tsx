@@ -575,7 +575,6 @@ const CreateNewMentor = () => {
         <Button
           variant="secondary-full"
           onClick={currentStep === 0 ? handleCancelCreateProfile : handleBack}
-          className="border border-primary text-primary bg-neutral-20 hover:bg-neutral-40"
         >
           {currentStep === 0 ? 'Cancel' : 'Back'}
         </Button>
