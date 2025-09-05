@@ -13,8 +13,8 @@ const LabelStartAndSwitchEnd: React.FC<LabelStartAndSwitchEndProps> = ({
   onChange,
 }) => {
   return (
-    <Switch isSelected={checked} color="primary" onValueChange={onChange}>
-      {label}
+    <Switch isSelected={checked} color="primary" onValueChange={onChange} className="p-1">
+      <div className="text-sm">{label}</div>
     </Switch>
   );
 };

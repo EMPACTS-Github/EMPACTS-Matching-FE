@@ -90,13 +90,25 @@ const CreateNewMentor = () => {
   const [skillOffered, setSkillOffered] = useState<SkillOffered>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [phone, setPhone] = useState('');
-  const [switchState, setSwitchState] = useState(true);
-  const [fromToValue, setFromToValue] = useState<string[][]>([['', '']]);
   const [yearOfExperience, setYearOfExperience] = useState('');
   const [currentPosition, setCurrentPosition] = useState('');
   const [currentWorkplace, setCurrentWorkplace] = useState('');
   const [industry, setIndustry] = useState('');
   const [marketFocus, setMarketFocus] = useState('');
+  const [switchState, setSwitchState] = useState(true);
+  const [fromToValue, setFromToValue] = useState<string[][]>([['', '']]);
+  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const [availability, setAvailability] = useState<
+    Record<string, { switchState: boolean; fromToValue: string[][] }>
+  >(() =>
+    Object.fromEntries(
+      weekDays.map((day) =>
+        ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].includes(day)
+          ? [day, { switchState: true, fromToValue: [['09:00', '17:00']] }]
+          : [day, { switchState: false, fromToValue: [['', '']] }]
+      )
+    )
+  );
 
   const router = useRouter();
 
@@ -166,6 +178,16 @@ const CreateNewMentor = () => {
   const handleSkillOfferedChange = useCallback((newSkills: SkillOffered) => {
     setSkillOffered(newSkills);
   }, []);
+
+  const handleDayChange = (day: string, field: 'switchState' | 'fromToValue', value: any) => {
+    setAvailability((prev) => ({
+      ...prev,
+      [day]: {
+        ...prev[day],
+        [field]: value,
+      },
+    }));
+  };
 
   const handleCreateProfile = async () => {
     const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
@@ -514,14 +536,26 @@ const CreateNewMentor = () => {
   );
 
   // Step 4: Availability
-  const AvailabilityStep = () => (
-    <TimeArability
-      dayOfWeek="Monday"
-      switchState={switchState}
-      setSwitchState={setSwitchState}
-      fromToValue={fromToValue}
-      setFromToValue={setFromToValue}
-    />
+  const AvailabilityStep = useMemo(
+    () => (
+      <div className="space-y-6 w-full">
+        <div className="flex flex-col">
+          <div className="text-md font-semibold">Time Availability</div>
+          <div className="text-sm">This step is optional</div>
+        </div>
+        {weekDays.map((day) => (
+          <TimeArability
+            key={day}
+            dayOfWeek={day}
+            switchState={availability[day].switchState}
+            setSwitchState={(state) => handleDayChange(day, 'switchState', state)}
+            fromToValue={availability[day].fromToValue}
+            setFromToValue={(value) => handleDayChange(day, 'fromToValue', value)}
+          />
+        ))}
+      </div>
+    ),
+    [availability]
   );
 
   // Action Buttons
@@ -557,7 +591,7 @@ const CreateNewMentor = () => {
       case 2:
         return MentorshipStep;
       case 3:
-        return <AvailabilityStep />;
+        return AvailabilityStep;
       default:
         return ProfileStep;
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import LabelStartAndSwitchEnd from '@/components/Switch/LabelStartAndSwitchEnd';
 import TimeInput from '@/components/Input/TimeInput';
 import { PlusSquareIcon } from '@/components/Icons/PlusSquareIcon';
+import DeleteIcon from '@/components/Icons/DeleteIcon';
 import Button from '@/components/Button/Button';
 
 interface TimeArabilityProps {
@@ -24,6 +25,13 @@ const TimeArability: React.FC<TimeArabilityProps> = ({
     setFromToValue?.([...fromToValue, ['', '']]);
   };
 
+  // Xoá một cặp from-to
+  const handleDeleteTimeRange = (idx: number) => {
+    if (!setFromToValue) return;
+    const updated = fromToValue.filter((_, i) => i !== idx);
+    setFromToValue(updated);
+  };
+
   // Cập nhật giá trị từng cặp
   const handleChangeTime = (idx: number, type: 'from' | 'to', value: string) => {
     if (!setFromToValue) return;
@@ -34,17 +42,17 @@ const TimeArability: React.FC<TimeArabilityProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-4 gap-4 items-start">
-      <div className="text-md">{dayOfWeek}</div>
+    <div className="grid grid-cols-5 gap-4 items-start">
+      <div className="text-md p-1">{dayOfWeek}</div>
       <LabelStartAndSwitchEnd
         label="Available"
         checked={switchState}
         onChange={setSwitchState ?? (() => {})}
       />
       {switchState && (
-        <div className="flex flex-col gap-2 col-span-2">
+        <div className="flex flex-col gap-2 col-span-3">
           {fromToValue.map(([fromTime, toTime], idx) => (
-            <div className="flex gap-2" key={idx}>
+            <div className="flex gap-2 items-center" key={idx}>
               <TimeInput
                 selectedTime={fromTime}
                 setSelectedTime={(time) => handleChangeTime(idx, 'from', time)}
@@ -59,11 +67,27 @@ const TimeArability: React.FC<TimeArabilityProps> = ({
                 label="To"
                 labelPlacement="outside-left"
               />
+              {idx === 0 ? (
+                <Button
+                  variant="ghost-sm"
+                  onClick={handleAddTimeRange}
+                  isIconOnly={true}
+                  aria-label="Add time range"
+                >
+                  <PlusSquareIcon className="text-primary" />
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost-sm"
+                  onClick={() => handleDeleteTimeRange(idx)}
+                  isIconOnly={true}
+                  aria-label="Delete time range"
+                >
+                  <DeleteIcon className="text-error" />
+                </Button>
+              )}
             </div>
           ))}
-          <Button variant="ghost-sm" onClick={handleAddTimeRange} isIconOnly={true}>
-            <PlusSquareIcon className="text-primary" />
-          </Button>
         </div>
       )}
     </div>
