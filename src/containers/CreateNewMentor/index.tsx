@@ -21,6 +21,7 @@ import { uploadProfilePicture } from '@/apis/upload';
 import FormLabel from '@/components/Form/FormLabel';
 import TextLine from '@/components/common/TextLine';
 import Stepper from '@/components/Stepper/Stepper';
+import TimeArability from '@/components/TimeAvailable/TimeArability';
 
 // Location Select Render Value
 const renderPurpleValue = (items: any[]) => {
@@ -89,6 +90,8 @@ const CreateNewMentor = () => {
   const [skillOffered, setSkillOffered] = useState<SkillOffered>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [phone, setPhone] = useState('');
+  const [switchState, setSwitchState] = useState(true);
+  const [fromToValue, setFromToValue] = useState<string[][]>([['', '']]);
   const [yearOfExperience, setYearOfExperience] = useState('');
   const [currentPosition, setCurrentPosition] = useState('');
   const [currentWorkplace, setCurrentWorkplace] = useState('');
@@ -512,60 +515,13 @@ const CreateNewMentor = () => {
 
   // Step 4: Availability
   const AvailabilityStep = () => (
-    <div className="space-y-6 w-full">
-      {/* Market Focus */}
-      <div className="space-y-2">
-        <FormLabel
-          text="Market Focus*"
-          className="text-sm font-semibold text-secondary leading-[150%]"
-        />
-        <Select
-          variant="form-field"
-          placeholder="Search country"
-          items={[
-            { key: 'global', label: 'Global', value: 'global' },
-            { key: 'asia', label: 'Asia', value: 'asia' },
-            { key: 'europe', label: 'Europe', value: 'europe' },
-            { key: 'north-america', label: 'North America', value: 'north-america' },
-            { key: 'south-america', label: 'South America', value: 'south-america' },
-            { key: 'africa', label: 'Africa', value: 'africa' },
-            { key: 'australia', label: 'Australia', value: 'australia' },
-          ]}
-          selectedKeys={marketFocus ? [marketFocus] : []}
-          onSelectionChange={(keys) => {
-            if (keys !== 'all' && keys.size > 0) {
-              const selectedKey = Array.from(keys)[0];
-              setMarketFocus(selectedKey.toString());
-            }
-          }}
-        />
-      </div>
-
-      {/* Skill Offered (Review) */}
-      <div className="space-y-2">
-        <FormLabel
-          text="Skill offered*"
-          className="text-sm font-semibold text-secondary leading-[150%]"
-        />
-        <Select
-          variant="form-field"
-          placeholder="Search skill"
-          items={Object.entries(MENTOR_SKILL_OFFERED).map(([key, label]) => ({
-            key,
-            label,
-            value: key,
-          }))}
-          selectedKeys={skillOffered}
-          onSelectionChange={(keys) => {
-            if (keys !== 'all') {
-              setSkillOffered(Array.from(keys) as SkillOffered);
-            }
-          }}
-          selectionMode="multiple"
-          isRequired
-        />
-      </div>
-    </div>
+    <TimeArability
+      dayOfWeek="Monday"
+      switchState={switchState}
+      setSwitchState={setSwitchState}
+      fromToValue={fromToValue}
+      setFromToValue={setFromToValue}
+    />
   );
 
   // Action Buttons

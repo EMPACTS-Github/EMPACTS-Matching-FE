@@ -1,9 +1,10 @@
+import React from 'react';
 import { Switch } from '@heroui/react';
 
 interface LabelStartAndSwitchEndProps {
   label: string;
   checked: boolean;
-  onChange?: (checked: boolean) => void;
+  onChange: (checked: boolean) => void;
 }
 
 const LabelStartAndSwitchEnd: React.FC<LabelStartAndSwitchEndProps> = ({
@@ -12,10 +13,9 @@ const LabelStartAndSwitchEnd: React.FC<LabelStartAndSwitchEndProps> = ({
   onChange,
 }) => {
   return (
-    <div className="flex justify-between">
-      <div className="font-semibold text-gray-500 text-sm mr-2">{label}</div>
-      <Switch checked={checked} color="secondary"></Switch>
-    </div>
+    <Switch isSelected={checked} color="primary" onValueChange={onChange}>
+      {label}
+    </Switch>
   );
 };
 
