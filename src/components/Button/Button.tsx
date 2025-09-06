@@ -29,21 +29,18 @@ export const buttonPresets = {
 
   // Secondary Buttons - White background with purple border
   'secondary-sm': {
-    className: 'bg-white text-white hover:bg-secondary-80 hover:text-white text-sm',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'sm' as const,
     radius: 'md' as const,
   },
   'secondary-md': {
-    className: 'bg-white text-white hover:bg-secondary-80 hover:text-white',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,
     radius: 'md' as const,
   },
   'secondary-lg': {
-    className: 'bg-white text-white hover:bg-secondary-80 hover:text-white',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'lg' as const,
@@ -148,7 +145,6 @@ export const buttonPresets = {
     fullWidth: true,
   },
   'secondary-full': {
-    className: 'bg-white text-primary hover:bg-secondary-80 hover:text-white w-full',
     variant: 'bordered' as const,
     color: 'primary' as const,
     size: 'md' as const,

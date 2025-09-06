@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { create_mentor_profile } from '@/apis/mentor';
 import { LanguagesSpoken, LANGUAGE_SPOKEN, SDGS } from '@/constants/common';
 import { MENTOR_SKILL_OFFERED, SkillOffered } from '@/constants/skillOffered';
@@ -20,8 +20,65 @@ import provinces from '@/utils/data/provinces.json';
 import { uploadProfilePicture } from '@/apis/upload';
 import FormLabel from '@/components/Form/FormLabel';
 import TextLine from '@/components/common/TextLine';
+import Stepper from '@/components/Stepper/Stepper';
+import TimeArability from '@/components/TimeAvailable/TimeArability';
+
+// Location Select Render Value
+const renderPurpleValue = (items: any[]) => {
+  return items.map((item) => (
+    <span key={item.key} className="text-primary font-medium">
+      {item.data?.label || item.textValue}
+    </span>
+  ));
+};
+
+// Generic Multi-Select Render Value with Chips
+const createChipsRenderValue = <T extends string[]>(
+  selectedItems: T,
+  setSelectedItems: (items: T) => void
+) => {
+  return (items: any[]) => {
+    if (items.length === 0) return null;
+
+    const handleRemoveItem = (itemToRemove: string) => {
+      const updatedItems = selectedItems.filter((item) => item !== itemToRemove) as T;
+      setSelectedItems(updatedItems);
+    };
+
+    return (
+      <div className="flex flex-wrap gap-1 py-1">
+        {items.map((item) => (
+          <span
+            key={item.key}
+            className="inline-flex items-center justify-center gap-1 px-3 py-2 h-8 bg-primary-20 border border-primary-40 rounded-lg text-sm text-primary font-medium"
+          >
+            <span>{item.data?.label || item.textValue}</span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemoveItem(item.key as string);
+              }}
+              className="w-4 h-4 flex items-center justify-center rounded hover:bg-primary-40 transition-colors"
+              aria-label={`Remove ${item.data?.label || item.textValue}`}
+            >
+              <svg className="w-3 h-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </span>
+        ))}
+      </div>
+    );
+  };
+};
 
 const CreateNewMentor = () => {
+  const [currentStep, setCurrentStep] = useState(0);
   const [mentorName, setMentorName] = useState('');
   const [mentorUsername, setMentorUsername] = useState('');
   const [location, setLocation] = useState('');
@@ -33,17 +90,42 @@ const CreateNewMentor = () => {
   const [skillOffered, setSkillOffered] = useState<SkillOffered>([]);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [phone, setPhone] = useState('');
+  const [switchState, setSwitchState] = useState(true);
+  const [fromToValue, setFromToValue] = useState<string[][]>([['', '']]);
+  const [yearOfExperience, setYearOfExperience] = useState('');
+  const [currentPosition, setCurrentPosition] = useState('');
+  const [currentWorkplace, setCurrentWorkplace] = useState('');
+  const [industry, setIndustry] = useState('');
+  const [marketFocus, setMarketFocus] = useState('');
 
   const router = useRouter();
 
-  const handleCancelCreateProfile = () => {
+  const steps = [
+    { id: 1, label: 'Profile' },
+    { id: 2, label: 'Career' },
+    { id: 3, label: 'Mentorship' },
+    { id: 4, label: 'Availability' },
+  ];
+
+  const handleNext = useCallback(() => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  }, [currentStep, steps.length]);
+
+  const handleBack = useCallback(() => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  }, [currentStep]);
+
+  const handleCancelCreateProfile = useCallback(() => {
     router.back();
-  };
+  }, [router]);
 
   const handleChangeImage = async (file: File) => {
     try {
       setLoading(true);
-      // Upload the file first
       const uploadResponse = await uploadProfilePicture(file, 'MENTOR');
       const fileUrl = uploadResponse.data.attachmentUrl;
       const fileId = uploadResponse.data.id;
@@ -61,29 +143,29 @@ const CreateNewMentor = () => {
     }
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       await handleChangeImage(file);
     }
-  };
+  }, []);
 
-  const handleChangeMentorUsername = (mentorName: string) => {
+  const handleChangeMentorUsername = useCallback((mentorName: string) => {
     const username = changeCase.snakeCase(mentorName);
     setMentorUsername('@' + username);
-  };
+  }, []);
 
-  const handleDescriptionChange = (newDescription: string) => {
+  const handleDescriptionChange = useCallback((newDescription: string) => {
     setDescription(newDescription);
-  };
+  }, []);
 
-  const handleLanguagesSpokenChange = (newLanguages: LanguagesSpoken) => {
+  const handleLanguagesSpokenChange = useCallback((newLanguages: LanguagesSpoken) => {
     setLanguagesSpoken(newLanguages);
-  };
+  }, []);
 
-  const handleSkillOfferedChange = (newSkills: SkillOffered) => {
+  const handleSkillOfferedChange = useCallback((newSkills: SkillOffered) => {
     setSkillOffered(newSkills);
-  };
+  }, []);
 
   const handleCreateProfile = async () => {
     const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
@@ -92,10 +174,9 @@ const CreateNewMentor = () => {
       !mentorUsername.trim() ||
       !location ||
       !avtUrl ||
-      !description.trim() ||
+      !selectedGoals.length ||
       !languagesSpoken.length ||
-      !skillOffered.length ||
-      !selectedGoals.length
+      !skillOffered.length
     ) {
       addToast({
         title: TOAST_MESSAGES.PROFILE_CREATE_ERROR,
@@ -112,7 +193,7 @@ const CreateNewMentor = () => {
       locationBased: location,
       sdgFocusExpertises: selectedGoals,
       avtUrl: avtUrl,
-      description: description,
+      description: 'Mentor profile', // Default description since field is not in UI
       skillOffered: skillOffered,
       languagesSpoken: languagesSpoken,
       phone: phone || undefined,
@@ -127,7 +208,6 @@ const CreateNewMentor = () => {
       });
       router.push(`/mentor-detail/${response.data.newMentor.id}`);
 
-      // Update attachment ownership if we uploaded a new picture
       if (uploadedPictureId) {
         updateAttachment({
           id: uploadedPictureId,
@@ -153,7 +233,6 @@ const CreateNewMentor = () => {
 
   const CameraIcon = () => (
     <div className="w-6 h-6 text-secondary">
-      {/* Camera icon placeholder */}
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
         <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
@@ -161,266 +240,328 @@ const CreateNewMentor = () => {
     </div>
   );
 
-  // Inline HeaderSection component
+  // Header Section
   const HeaderSection = () => (
     <div className="flex flex-col items-center gap-2 w-full">
-      <h1 className="text-large font-bold text-secondary leading-[175%] text-center">
+      <h1 className="text-2xl font-bold text-secondary leading-[175%] text-center">
         Mentor profile
       </h1>
       <TextLine
         text="Bring your knowledge to the world"
-        className="text-neutral-500 text-small font-normal"
+        className="text-neutral-500 text-sm font-normal"
       />
     </div>
   );
 
-  // Inline ProfilePictureUpload component
-  const ProfilePictureUpload = () => {
-    return (
-      <div className="flex flex-col items-center gap-5">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-          id="profile-picture"
-        />
-        <label htmlFor="profile-picture" className="cursor-pointer">
-          <div className="w-[12%] h-[12%] min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
-            {profilePicture ? (
-              <Image
-                src={profilePicture}
-                alt="Profile"
-                width={90}
-                height={90}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <CameraIcon />
-            )}
-          </div>
-        </label>
-        <p className="text-regular font-bold text-secondary leading-[150%] text-center">
-          Upload your profile picture
-        </p>
-      </div>
-    );
-  };
-
-  // Inline MentorNameSection component using Input component
-  const MentorNameSection = () => (
-    <div className="space-y-2">
-      <FormLabel
-        text="Mentor name"
-        className="text-regular font-bold text-secondary leading-[150%]"
-      />
-      <Input
-        variant="text"
-        preset="default-md"
-        value={mentorName}
-        onChange={(value) => {
-          setMentorName(value);
-          handleChangeMentorUsername(value);
-        }}
-        placeholder="Mentor name"
-        isRequired
-      />
-      <p className="text-small font-normal text-neutral-80 leading-[143%]">
-        Your profile could be found with username{' '}
-        <span className="text-primary">{mentorUsername || '@mentor_name'}</span>. You can change it
-        later in Settings
-      </p>
-    </div>
-  );
-
-  // Inline PhoneSection component
-  const PhoneSection = () => (
-    <div className="space-y-2">
-      <FormLabel text="Phone" className="text-regular font-bold text-secondary leading-[150%]" />
-      <Input
-        variant="text"
-        preset="default-md"
-        value={phone}
-        onChange={setPhone}
-        placeholder="Enter phone number"
-      />
-    </div>
-  );
-
-  // Inline LocationBasedSection component using Select component
-  const LocationBasedSection = () => {
-    const locationItems = provinces.map((province) => ({
-      key: province.value,
-      label: province.label,
-      value: province.value,
-    }));
-
-    return (
-      <div className="space-y-2">
-        <FormLabel
-          text="Location Based"
-          className="text-regular font-bold text-secondary leading-[150%]"
-        />
-        <Select
-          variant="form-field"
-          placeholder="Select a location"
-          items={locationItems}
-          selectedKeys={location ? [location] : []}
-          onSelectionChange={(keys) => {
-            if (keys !== 'all' && keys.size > 0) {
-              const selectedKey = Array.from(keys)[0];
-              setLocation(selectedKey.toString());
-            }
-          }}
-          isRequired
-        />
-        {location && (
-          <p className="text-small font-normal text-neutral-80 leading-[143%]">
-            Selected: {getProvince(location)}
+  // Step 1: Profile
+  const ProfileStep = useMemo(
+    () => (
+      <div className="space-y-6 w-full">
+        {/* Profile Picture Upload */}
+        <div className="flex flex-col items-center gap-5">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+            id="profile-picture"
+          />
+          <label htmlFor="profile-picture" className="cursor-pointer">
+            <div className="w-20 h-20 min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
+              {profilePicture ? (
+                <Image
+                  src={profilePicture}
+                  alt="Profile"
+                  width={90}
+                  height={90}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <CameraIcon />
+              )}
+            </div>
+          </label>
+          <p className="text-lg font-normal text-secondary leading-[150%] text-center">
+            Upload your profile picture
           </p>
-        )}
-      </div>
-    );
-  };
+        </div>
 
-  // Inline DescriptionSection component using LabelWithTextarea
-  const DescriptionSection = () => (
-    <div className="space-y-2">
-      <FormLabel
-        text="Description"
-        className="text-regular font-bold text-secondary leading-[150%]"
-      />
-      <LabelWithTextarea
-        label="Description"
-        content={description}
-        placeholder="Add your description here..."
-        setContent={handleDescriptionChange}
-        minRows={4}
-      />
-    </div>
+        {/* Mentor Name */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Mentor name"
+            className="text-base font-bold text-secondary leading-[150%]"
+          />
+          <Input
+            variant="text"
+            preset="default-lg"
+            value={mentorName}
+            onChange={(value) => {
+              setMentorName(value);
+              // handleChangeMentorUsername(value);
+            }}
+            placeholder="Enter your preferred name as a mentor"
+            isRequired
+          />
+        </div>
+
+        {/* Location */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Location based"
+            className="text-base font-bold text-secondary leading-[150%]"
+          />
+          <Select
+            isVirtualized={false}
+            variant="form-field"
+            placeholder="Search location"
+            items={provinces.map((province) => ({
+              key: province.value,
+              label: province.label,
+              value: province.value,
+            }))}
+            selectedKeys={location ? [location] : []}
+            onSelectionChange={(keys) => {
+              if (keys !== 'all' && keys.size > 0) {
+                const selectedKey = Array.from(keys)[0];
+                setLocation(selectedKey.toString());
+              }
+            }}
+            className="[&_button]:h-12 [&_button]:min-h-12"
+            renderValue={renderPurpleValue}
+            isRequired
+          />
+        </div>
+
+        {/* SDG Goal */}
+        <div className="space-y-2">
+          <FormLabel
+            text="SDG Goal"
+            className="text-base font-bold text-secondary leading-[150%]"
+          />
+          <Select
+            variant="form-field"
+            placeholder="Search goal"
+            items={Object.entries(STARTUP_SDG_GOALS).map(([key, goal]) => ({
+              key: goal.textValue,
+              label: goal.label,
+              value: goal.textValue,
+            }))}
+            selectedKeys={selectedGoals}
+            onSelectionChange={(keys) => {
+              if (keys !== 'all') {
+                setSelectedGoals(Array.from(keys) as string[]);
+              }
+            }}
+            itemHeight={32}
+            selectionMode="multiple"
+            className="[&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
+            renderValue={createChipsRenderValue(selectedGoals, setSelectedGoals)}
+            isRequired
+          />
+        </div>
+      </div>
+    ),
+    [profilePicture, mentorName, location, selectedGoals, handleFileChange]
   );
 
-  // Inline LanguagesSpokenSection component
-  const LanguagesSpokenSection = () => {
-    const languageItems = Object.entries(LANGUAGE_SPOKEN).map(([key, label]) => ({
-      key,
-      label,
-      value: key,
-    }));
+  // Step 2: Career
+  const CareerStep = useMemo(
+    () => (
+      <div className="space-y-6 w-full">
+        {/* Year of Experience */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Year of Experience"
+            className="text-sm font-semibold text-secondary leading-[150%]"
+          />
+          <Input
+            variant="text"
+            preset="default-lg"
+            value={yearOfExperience}
+            onChange={setYearOfExperience}
+            placeholder="Enter year"
+          />
+        </div>
 
-    return (
-      <div className="space-y-2">
-        <FormLabel
-          text="Languages Spoken"
-          className="text-regular font-bold text-secondary leading-[150%]"
-        />
-        <Select
-          variant="form-field"
-          placeholder="Select languages"
-          items={languageItems}
-          selectedKeys={languagesSpoken}
-          onSelectionChange={(keys) => {
-            if (keys !== 'all') {
-              setLanguagesSpoken(Array.from(keys) as LanguagesSpoken);
-            }
-          }}
-          selectionMode="multiple"
-          isRequired
-        />
+        {/* Current Position */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Current Position"
+            className="text-sm font-semibold text-secondary leading-[150%]"
+          />
+          <Input
+            variant="text"
+            preset="default-lg"
+            value={currentPosition}
+            onChange={setCurrentPosition}
+            placeholder="Enter your current position"
+          />
+        </div>
+
+        {/* Current Workplace */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Current Workplace"
+            className="text-sm font-semibold text-secondary leading-[150%]"
+          />
+          <Input
+            variant="text"
+            preset="default-lg"
+            value={currentWorkplace}
+            onChange={setCurrentWorkplace}
+            placeholder="Enter your current workplace"
+          />
+        </div>
+
+        {/* Industry */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Industry"
+            className="text-sm font-semibold text-secondary leading-[150%]"
+          />
+          <Select
+            variant="form-field"
+            placeholder="Search Industry"
+            items={[
+              { key: 'tech', label: 'Technology', value: 'tech' },
+              { key: 'finance', label: 'Finance', value: 'finance' },
+              { key: 'healthcare', label: 'Healthcare', value: 'healthcare' },
+              { key: 'education', label: 'Education', value: 'education' },
+              { key: 'retail', label: 'Retail', value: 'retail' },
+              { key: 'manufacturing', label: 'Manufacturing', value: 'manufacturing' },
+              { key: 'other', label: 'Other', value: 'other' },
+            ]}
+            selectedKeys={industry ? [industry] : []}
+            onSelectionChange={(keys) => {
+              if (keys !== 'all' && keys.size > 0) {
+                const selectedKey = Array.from(keys)[0];
+                setIndustry(selectedKey.toString());
+              }
+            }}
+            className="[&_button]:h-12 [&_button]:min-h-12"
+            renderValue={renderPurpleValue}
+          />
+        </div>
       </div>
-    );
-  };
+    ),
+    [yearOfExperience, currentPosition, currentWorkplace, industry]
+  );
 
-  // Inline SkillOfferedSection component
-  const SkillOfferedSection = () => {
-    const skillItems = Object.entries(MENTOR_SKILL_OFFERED).map(([key, label]) => ({
-      key,
-      label,
-      value: key,
-    }));
+  // Step 3: Mentorship
+  const MentorshipStep = useMemo(
+    () => (
+      <div className="space-y-6 w-full">
+        {/* Market Focus */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Market Focus*"
+            className="text-sm font-semibold text-secondary leading-[150%]"
+          />
+          <Select
+            variant="form-field"
+            placeholder="Search country"
+            items={[
+              { key: 'global', label: 'Global', value: 'global' },
+              { key: 'asia', label: 'Asia', value: 'asia' },
+              { key: 'europe', label: 'Europe', value: 'europe' },
+              { key: 'north-america', label: 'North America', value: 'north-america' },
+              { key: 'south-america', label: 'South America', value: 'south-america' },
+              { key: 'africa', label: 'Africa', value: 'africa' },
+              { key: 'australia', label: 'Australia', value: 'australia' },
+            ]}
+            selectedKeys={marketFocus ? [marketFocus] : []}
+            onSelectionChange={(keys) => {
+              if (keys !== 'all' && keys.size > 0) {
+                const selectedKey = Array.from(keys)[0];
+                setMarketFocus(selectedKey.toString());
+              }
+            }}
+            className="[&_button]:h-12 [&_button]:min-h-12"
+            renderValue={renderPurpleValue}
+          />
+        </div>
 
-    return (
-      <div className="space-y-2">
-        <FormLabel
-          text="Skill Offered"
-          className="text-regular font-bold text-secondary leading-[150%]"
-        />
-        <Select
-          variant="form-field"
-          placeholder="Select Skill Offered"
-          items={skillItems}
-          selectedKeys={skillOffered}
-          onSelectionChange={(keys) => {
-            if (keys !== 'all') {
-              setSkillOffered(Array.from(keys) as SkillOffered);
-            }
-          }}
-          selectionMode="multiple"
-          isRequired
-        />
+        {/* Skill Offered (Review) */}
+        <div className="space-y-2">
+          <FormLabel
+            text="Skill offered*"
+            className="text-sm font-semibold text-secondary leading-[150%]"
+          />
+          <Select
+            variant="form-field"
+            placeholder="Search skill"
+            items={Object.entries(MENTOR_SKILL_OFFERED).map(([key, label]) => ({
+              key,
+              label,
+              value: key,
+            }))}
+            selectedKeys={skillOffered}
+            onSelectionChange={(keys) => {
+              if (keys !== 'all') {
+                setSkillOffered(Array.from(keys) as SkillOffered);
+              }
+            }}
+            selectionMode="multiple"
+            className="[&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
+            renderValue={createChipsRenderValue(skillOffered, setSkillOffered)}
+            isRequired
+          />
+        </div>
       </div>
-    );
-  };
+    ),
+    [marketFocus, skillOffered]
+  );
 
-  // Inline SDGGoalSection component
-  const SDGGoalSection = () => {
-    const goalItems = Object.entries(STARTUP_SDG_GOALS).map(([key, goal]) => ({
-      key: goal.textValue,
-      label: goal.label,
-      value: goal.textValue,
-    }));
+  // Step 4: Availability
+  const AvailabilityStep = () => (
+    <TimeArability
+      dayOfWeek="Monday"
+      switchState={switchState}
+      setSwitchState={setSwitchState}
+      fromToValue={fromToValue}
+      setFromToValue={setFromToValue}
+    />
+  );
 
-    return (
-      <div className="space-y-2">
-        <FormLabel
-          text="SDG Goals"
-          className="text-regular font-bold text-secondary leading-[150%]"
-        />
-        <Select
-          variant="form-field"
-          placeholder="Select SDG Goals"
-          items={goalItems}
-          selectedKeys={selectedGoals}
-          onSelectionChange={(keys) => {
-            if (keys !== 'all') {
-              setSelectedGoals(Array.from(keys) as string[]);
-            }
-          }}
-          selectionMode="multiple"
-          isRequired
-        />
-        {selectedGoals.length > 0 && (
-          <p className="text-small font-normal text-neutral-80 leading-[143%]">
-            Selected: {selectedGoals.map((goal) => getSDGGoalLabel(goal)).join(', ')}
-          </p>
-        )}
-      </div>
-    );
-  };
-
-  // Inline ActionButtons component using Button component
+  // Action Buttons
   const ActionButtons = () => (
-    <div className="flex flex-row justify-between w-full gap-4 h-12">
+    <div className="flex flex-row justify-between w-full gap-8 h-12">
       <div className="flex-1">
         <Button
           variant="secondary-full"
-          onClick={handleCancelCreateProfile}
-          className="border border-primary text-primary bg-neutral-20 hover:bg-neutral-40"
+          onClick={currentStep === 0 ? handleCancelCreateProfile : handleBack}
         >
-          Cancel
+          {currentStep === 0 ? 'Cancel' : 'Back'}
         </Button>
       </div>
       <div className="flex-1">
         <Button
           variant="primary-full"
-          onClick={handleCreateProfile}
+          onClick={currentStep === steps.length - 1 ? handleCreateProfile : handleNext}
           className="bg-primary text-neutral-20 hover:bg-primary-80"
         >
-          Continue
+          {currentStep === steps.length - 1 ? 'Continue' : 'Continue'}
         </Button>
       </div>
     </div>
   );
+
+  // Render current step content
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 0:
+        return ProfileStep;
+      case 1:
+        return CareerStep;
+      case 2:
+        return MentorshipStep;
+      case 3:
+        return <AvailabilityStep />;
+      default:
+        return ProfileStep;
+    }
+  };
 
   return (
     <div className="w-full flex justify-center items-center min-h-screen relative">
@@ -429,18 +570,15 @@ const CreateNewMentor = () => {
           <div className="loader"></div>
         </div>
       )}
-      <div className="flex flex-col w-[736px] p-8 bg-neutral-20 rounded-xl shadow-md space-y-8">
+      <div className="flex flex-col w-full max-w-[940px] p-8 bg-neutral-20 rounded-xl shadow-md space-y-8">
         <HeaderSection />
-        <ProfilePictureUpload />
-        <div className="space-y-6">
-          <MentorNameSection />
-          <PhoneSection />
-          <LocationBasedSection />
-          <DescriptionSection />
-          <LanguagesSpokenSection />
-          <SkillOfferedSection />
-          <SDGGoalSection />
-        </div>
+
+        {/* Stepper */}
+        <Stepper steps={steps} currentStep={currentStep} className="mb-8" />
+
+        {/* Step Content */}
+        <div className="w-full">{renderStepContent()}</div>
+
         <ActionButtons />
       </div>
     </div>
