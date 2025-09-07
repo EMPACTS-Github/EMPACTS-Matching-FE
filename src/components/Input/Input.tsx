@@ -209,7 +209,7 @@ const Input = (props: TextInputProps) => {
       <HeroInput
         type={inputType}
         variant={heroVariant}
-        radius="none"
+        radius='none'
         size={size}
         label={label}
         placeholder={placeholder}
@@ -252,8 +252,8 @@ const Input = (props: TextInputProps) => {
   return (
     <HeroInput
       type={inputType}
-      variant="bordered"
-      radius="md"
+      variant='bordered'
+      radius='md'
       size={size}
       label={label}
       placeholder={placeholder}

@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Spacer,
   Skeleton,
@@ -115,7 +115,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
     fetchMatching();
   }, [startup_profile?.startup?.id]);
 
-  const fetchStartupDocuments = async () => {
+  const fetchStartupDocuments = useCallback(async () => {
     try {
       const response = await getStartupDocuments({
         ownerId: startup_profile?.startup.id || '',
@@ -135,11 +135,13 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
         timeout: 3000,
       });
     }
-  };
+  }, [startup_profile?.startup?.id]);
 
   useEffect(() => {
-    fetchStartupDocuments();
-  }, []);
+    if (startup_profile?.startup?.id) {
+      fetchStartupDocuments();
+    }
+  }, [startup_profile?.startup?.id, fetchStartupDocuments]);
 
   // Member list effects
   useEffect(() => {
@@ -288,8 +290,8 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
   // Inline RoleChip component
   const RoleChip = ({ role }: { role: string }) => (
     <Chip
-      size="sm"
-      color="primary"
+      size='sm'
+      color='primary'
       variant={role === 'OWNER' ? 'faded' : 'bordered'}
       className={role === 'OWNER' ? 'border-primary border-1 bg-primary-20 capitalize' : 'border-1'}
     >
@@ -299,12 +301,12 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
 
   // Inline MemberListContainer component
   const MemberListContainer = () => (
-    <div className="w-full">
-      <div className="flex justify-between items-center mb-regular">
-        <div className="space-x-small">
+    <div className='w-full'>
+      <div className='flex justify-between items-center mb-regular'>
+        <div className='space-x-small'>
           <Button
             variant={filterMode === 'ALL' ? 'primary-sm' : 'bordered-sm'}
-            radius="full"
+            radius='full'
             onClick={() => setFilterMode('ALL')}
             className={cn('font-bold', filterMode !== 'ALL' && 'border-neutral-50 border-1')}
           >
@@ -312,7 +314,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
           </Button>
           <Button
             variant={filterMode === 'OWNER' ? 'primary-sm' : 'bordered-sm'}
-            radius="full"
+            radius='full'
             onClick={() => setFilterMode('OWNER')}
             className={cn('font-bold', filterMode !== 'OWNER' && 'border-neutral-50 border-1')}
           >
@@ -320,7 +322,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
           </Button>
           <Button
             variant={filterMode === 'MEMBER' ? 'primary-sm' : 'bordered-sm'}
-            radius="full"
+            radius='full'
             onClick={() => setFilterMode('MEMBER')}
             className={cn('font-bold', filterMode !== 'MEMBER' && 'border-neutral-50 border-1')}
           >
@@ -329,9 +331,9 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
         </div>
         {accessAction.canInvite && (
           <Button
-            variant="primary-sm"
+            variant='primary-sm'
             onClick={onInviteOpen}
-            className="bg-primary text-neutral-20 px-regular"
+            className='bg-primary text-neutral-20 px-regular'
           >
             INVITE
           </Button>
@@ -339,43 +341,43 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
       </div>
 
       {/* Member List */}
-      <div className="space-y-small">
+      <div className='space-y-small'>
         {filteredMembers.map((member, idx) => (
           <div
             key={idx}
-            className="flex justify-between p-regular bg-neutral-20 shadow-lg rounded-lg w-full"
+            className='flex justify-between p-regular bg-neutral-20 shadow-lg rounded-lg w-full'
           >
-            <div className="flex items-center gap-semi-regular">
+            <div className='flex items-center gap-semi-regular'>
               <Avatar
                 src={member.user.avtUrl}
-                alt="User Avatar"
-                className="rounded-lg bg-neutral-20"
-                size="md"
-                radius="sm"
+                alt='User Avatar'
+                className='rounded-lg bg-neutral-20'
+                size='md'
+                radius='sm'
                 isBordered
               />
               <div>
-                <div className="font-semibold flex items-center gap-small">
+                <div className='font-semibold flex items-center gap-small'>
                   {member.user.name}
                   <RoleChip role={member.role} />
                 </div>
-                <div className="text-sm text-neutral-80">{member.positionTitle}</div>
+                <div className='text-sm text-neutral-80'>{member.positionTitle}</div>
               </div>
             </div>
             {accessAction.canEdit && (
-              <Dropdown placement="bottom-end">
+              <Dropdown placement='bottom-end'>
                 <DropdownTrigger>
                   <Image
                     src={MenuIcon}
-                    alt="Menu Icon"
+                    alt='Menu Icon'
                     width={30}
                     height={30}
-                    className="hover:cursor-pointer"
+                    className='hover:cursor-pointer'
                   />
                 </DropdownTrigger>
-                <DropdownMenu variant="faded">
+                <DropdownMenu variant='faded'>
                   <DropdownItem
-                    key="edit"
+                    key='edit'
                     startContent={<EditIcon className={iconClasses} />}
                     onPress={() => {
                       setSelectedMember(member);
@@ -385,7 +387,7 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
                     Edit position title
                   </DropdownItem>
                   <DropdownItem
-                    key="change-permission"
+                    key='change-permission'
                     startContent={<UsersIcon className={iconClasses} />}
                     onPress={() => {
                       setSelectedMember(member);
@@ -395,9 +397,9 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
                     Change permission
                   </DropdownItem>
                   <DropdownItem
-                    key="delete"
-                    className="text-danger"
-                    color="danger"
+                    key='delete'
+                    className='text-danger'
+                    color='danger'
                     startContent={<DeleteIcon className={cn(iconClasses, 'text-danger')} />}
                     onPress={() => {
                       setSelectedMember(member);
@@ -444,41 +446,41 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
 
   // Loading skeleton for members
   const MemberLoadingSkeleton = () => (
-    <div className="w-full">
-      <div className="flex justify-between items-center mb-regular">
-        <div className="space-x-small">
-          <Button variant="primary-sm" radius="full" disabled>
+    <div className='w-full'>
+      <div className='flex justify-between items-center mb-regular'>
+        <div className='space-x-small'>
+          <Button variant='primary-sm' radius='full' disabled>
             All
           </Button>
           <Button
-            variant="bordered-sm"
-            radius="full"
+            variant='bordered-sm'
+            radius='full'
             disabled
-            className="border-neutral-50 border-1"
+            className='border-neutral-50 border-1'
           >
             Owner
           </Button>
           <Button
-            variant="bordered-sm"
-            radius="full"
+            variant='bordered-sm'
+            radius='full'
             disabled
-            className="border-neutral-50 border-1"
+            className='border-neutral-50 border-1'
           >
             Member
           </Button>
         </div>
-        <Button variant="primary-sm" disabled className="bg-primary text-neutral-20 px-regular">
+        <Button variant='primary-sm' disabled className='bg-primary text-neutral-20 px-regular'>
           INVITE
         </Button>
       </div>
-      <Card className="flex p-regular w-full">
-        <div className="w-full flex items-center gap-semi-regular">
+      <Card className='flex p-regular w-full'>
+        <div className='w-full flex items-center gap-semi-regular'>
           <div>
-            <Skeleton className="h-12 w-12 rounded-full bg-neutral-40" />
+            <Skeleton className='h-12 w-12 rounded-full bg-neutral-40' />
           </div>
-          <div className="w-full flex flex-col gap-small">
-            <Skeleton className="h-3 w-4/5 rounded-lg bg-neutral-40" />
-            <Skeleton className="h-3 w-3/5 rounded-lg bg-neutral-40" />
+          <div className='w-full flex flex-col gap-small'>
+            <Skeleton className='h-3 w-4/5 rounded-lg bg-neutral-40' />
+            <Skeleton className='h-3 w-3/5 rounded-lg bg-neutral-40' />
           </div>
         </div>
       </Card>
@@ -486,19 +488,19 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
   );
 
   return (
-    <div className="flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-extra-small relative z-10 gap-none mt-medium">
+    <div className='flex w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-extra-small relative z-10 gap-none mt-medium'>
       {startup_profile?.startup ? (
-        <div className="w-3/4 mx-0 flex flex-col">
+        <div className='w-3/4 mx-0 flex flex-col'>
           <MemberListContainer />
         </div>
       ) : (
-        <div className="w-3/4 mx-0 flex flex-col">
+        <div className='w-3/4 mx-0 flex flex-col'>
           <MemberLoadingSkeleton />
         </div>
       )}
       <Spacer x={4} />
       {startup_profile?.startup ? (
-        <div className="w-1/4">
+        <div className='w-1/4'>
           <ProfileInfoSubCard
             onFetchStartupProfile={onFetchStartupProfile}
             startup={startup_profile.startup}
@@ -508,17 +510,17 @@ const StartupMemberContainer: React.FC<StartupMemberContainerProps> = ({
           />
         </div>
       ) : (
-        <div className="w-1/4">
-          <Card className="bg-neutral-20 min-w-lg shadow-lg rounded-lg px-regular py-small">
-            <div className="rounded-full flex items-center justify-center">
-              <Skeleton className="h-20 w-20 rounded-full bg-neutral-40" />
+        <div className='w-1/4'>
+          <Card className='bg-neutral-20 min-w-lg shadow-lg rounded-lg px-regular py-small'>
+            <div className='rounded-full flex items-center justify-center'>
+              <Skeleton className='h-20 w-20 rounded-full bg-neutral-40' />
             </div>
             <CardBody>
               <Divider />
-              <div className="flex gap-medium justify-center items-center p-small">
-                <Skeleton className="h-8 w-20 rounded-full bg-neutral-40" />
-                <Divider orientation="vertical" className="h-14" />
-                <Skeleton className="h-8 w-20 rounded-full bg-neutral-40" />
+              <div className='flex gap-medium justify-center items-center p-small'>
+                <Skeleton className='h-8 w-20 rounded-full bg-neutral-40' />
+                <Divider orientation='vertical' className='h-14' />
+                <Skeleton className='h-8 w-20 rounded-full bg-neutral-40' />
               </div>
               <Divider />
             </CardBody>

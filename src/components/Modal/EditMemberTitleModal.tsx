@@ -42,44 +42,44 @@ const EditMemberTitleModal: React.FC<EditMemberTitleModalProps> = ({
         body: 'h-6',
       }}
     >
-      <ModalContent className="pt-1">
+      <ModalContent className='pt-1'>
         {(onOpenChange) => (
           <>
-            <ModalHeader className="items-center ">
+            <ModalHeader className='items-center '>
               <div>
-                <h3 className="text-lg text-secondary mb-1">
-                  Edit position title for <span className="text-primary">{member?.user.name}</span>
+                <h3 className='text-lg text-secondary mb-1'>
+                  Edit position title for <span className='text-primary'>{member?.user.name}</span>
                 </h3>
-                <div className="font-normal text-neutral-50 text-xs">
+                <div className='font-normal text-neutral-50 text-xs'>
                   We take certain actions for the safety of our users
                 </div>
               </div>
             </ModalHeader>
             <ModalBody>
               <LabelWithTextarea
-                label="New position title"
+                label='New position title'
                 content={titleField || ''}
                 setContent={setTitleField}
                 minRows={1}
-                placeholder="Enter new title"
+                placeholder='Enter new title'
               />
             </ModalBody>
-            <ModalFooter className="flex justify-between mt-20">
+            <ModalFooter className='flex justify-between mt-20'>
               <Button
-                variant="ghost-md"
-                className="w-1/2 border-2"
+                variant='ghost-md'
+                className='w-1/2 border-2'
                 onClick={onOpenChange}
                 disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
-                variant="primary-md"
-                className="w-1/2"
+                variant='primary-md'
+                className='w-1/2'
                 onClick={editTitle}
                 disabled={isLoading}
               >
-                {isLoading ? <Spinner size="sm" color="white" /> : 'Save'}
+                {isLoading ? <Spinner size='sm' color='white' /> : 'Save'}
               </Button>
             </ModalFooter>
           </>

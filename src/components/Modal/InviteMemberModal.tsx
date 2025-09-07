@@ -76,30 +76,30 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
   }, [newMemberInfo.email]);
 
   return (
-    <Modal isKeyboardDismissDisabled={true} size="xl" isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent className="pt-1">
+    <Modal isKeyboardDismissDisabled={true} size='xl' isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalContent className='pt-1'>
         {(onOpenChange) => (
           <>
-            <ModalHeader className="items-center ">
-              <div className="flex">
+            <ModalHeader className='items-center '>
+              <div className='flex'>
                 <div>
-                  <h3 className="text-lg text-secondary mb-1">Invite new member to your startup</h3>
-                  <div className="font-normal text-neutral-50 text-sm">
+                  <h3 className='text-lg text-secondary mb-1'>Invite new member to your startup</h3>
+                  <div className='font-normal text-neutral-50 text-sm'>
                     Invite member into your interesting journey!
                   </div>
                 </div>
               </div>
             </ModalHeader>
             <ModalBody>
-              <div className="flex flex-col w-full gap-2">
-                <div className="text-sm font-semibold text-secondary">Add member</div>
-                <div className="flex flex-col md:flex-row gap-4 w-full">
+              <div className='flex flex-col w-full gap-2'>
+                <div className='text-sm font-semibold text-secondary'>Add member</div>
+                <div className='flex flex-col md:flex-row gap-4 w-full'>
                   <Input
                     value={newMemberInfo.email}
                     onChange={handleChangeEmail}
-                    placeholder="Enter E-mail"
-                    className="flex-1"
-                    variant="bordered"
+                    placeholder='Enter E-mail'
+                    className='flex-1'
+                    variant='bordered'
                     classNames={{
                       input: 'text-sm font-normal',
                       inputWrapper: 'h-10',
@@ -108,67 +108,67 @@ const InviteMemberModal: React.FC<InviteMemberModalProps> = ({
                   <Input
                     value={newMemberInfo.title}
                     onChange={handleChangeTitle}
-                    placeholder="Enter Title"
-                    className="flex-1"
-                    variant="bordered"
+                    placeholder='Enter Title'
+                    className='flex-1'
+                    variant='bordered'
                     classNames={{
                       input: 'text-sm font-normal',
                       inputWrapper: 'h-10',
                     }}
                   />
                   <Button
-                    variant="secondary-md"
-                    className="w-full md:w-[100px] h-[40px]"
+                    variant='secondary-md'
+                    className='w-full md:w-[100px] h-[40px]'
                     onClick={handleAddMember}
                   >
                     Add
                   </Button>
                 </div>
-                <div className="flex flex-row gap-1 items-center mt-2">
+                <div className='flex flex-row gap-1 items-center mt-2'>
                   <InfoInCircleIcon />
-                  <span className="text-xs font-light">
+                  <span className='text-xs font-light'>
                     Please note that member is invited with member permission as default!
                   </span>
                 </div>
-                {error && <div className="text-error text-xs">{error}</div>}
+                {error && <div className='text-error text-xs'>{error}</div>}
 
-                <div className="flex flex-row flex-wrap gap-4 mt-4">
+                <div className='flex flex-row flex-wrap gap-4 mt-4'>
                   {members.map((member, index) => (
                     <div
                       key={index}
-                      className="flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto bg-primary-20"
+                      className='flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto bg-primary-20'
                     >
-                      <div className="flex flex-col gap-1">
-                        <div className="text-sm font-medium text-primary">{member.title}</div>
-                        <div className="text-sm text-neutral-80">{member.email}</div>
+                      <div className='flex flex-col gap-1'>
+                        <div className='text-sm font-medium text-primary'>{member.title}</div>
+                        <div className='text-sm text-neutral-80'>{member.email}</div>
                       </div>
                       <button
                         onClick={() => handleRemoveMember(index)}
-                        className="w-5 h-5 flex items-center justify-center"
+                        className='w-5 h-5 flex items-center justify-center'
                       >
-                        <Image src={CloseXIcon} alt="remove" width={8} height={8} />
+                        <Image src={CloseXIcon} alt='remove' width={8} height={8} />
                       </button>
                     </div>
                   ))}
                 </div>
               </div>
             </ModalBody>
-            <ModalFooter className="flex justify-between">
+            <ModalFooter className='flex justify-between'>
               <Button
-                variant="ghost-md"
-                className="w-1/2 border-2"
+                variant='ghost-md'
+                className='w-1/2 border-2'
                 onClick={onOpenChange}
                 disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
-                variant="primary-md"
-                className="w-1/2"
+                variant='primary-md'
+                className='w-1/2'
                 onClick={handleSaveButton}
                 disabled={isLoading}
               >
-                {isLoading ? <Spinner size="sm" color="white" /> : 'Save'}
+                {isLoading ? <Spinner size='sm' color='white' /> : 'Save'}
               </Button>
             </ModalFooter>
           </>

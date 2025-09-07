@@ -15,15 +15,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body className={`${inter.className}`} suppressHydrationWarning>
         <Providers>
           <div
-            className="fixed bg-cover inset-0 -z-10"
+            className='fixed bg-cover inset-0 -z-10'
             style={{ backgroundImage: `url(${HomepageBackground.src})` }}
           ></div>
           <ProtectedRoute>
-            <div className="min-h-screen">
+            <div className='min-h-screen'>
               <HeaderDisplayHandler />
               {children}
             </div>

@@ -91,43 +91,43 @@ function RegisterInfo() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-12 w-full">
+    <div className='flex flex-col items-center justify-center gap-12 w-full'>
       <div>
-        <div className="w-48 p-1 bg-transparent">
+        <div className='w-48 p-1 bg-transparent'>
           <EmpactsLogoIcon />
         </div>
       </div>
       <div>
-        <FormTitle className="font-bold text-2xl text-black" text="Complete your profile" />
+        <FormTitle className='font-bold text-2xl text-black' text='Complete your profile' />
       </div>
       <Form
-        className="flex flex-col items-center justify-center w-full gap-10"
+        className='flex flex-col items-center justify-center w-full gap-10'
         onSubmit={handleFormSubmit}
       >
-        <div className="flex flex-col items-center justify-center gap-3">
+        <div className='flex flex-col items-center justify-center gap-3'>
           <UserAvatar handleAvatarChange={handleAvatarChange} avatarUrl={avatarUrl} />
-          <FormLabel className="text-black text-medium" text="Upload your profile picture" />
+          <FormLabel className='text-black text-medium' text='Upload your profile picture' />
         </div>
 
         <Input
-          className="w-4/5"
-          label="Your name"
+          className='w-4/5'
+          label='Your name'
           value={username}
           onChange={setUsername}
-          errorMessage="Please enter your name"
-          variant="text"
-          preset="line-fill-sm"
+          errorMessage='Please enter your name'
+          variant='text'
+          preset='line-fill-sm'
           isRequired={true}
         />
 
-        <Button variant="primary-full" className="w-4/5" type="submit">
+        <Button variant='primary-full' className='w-4/5' type='submit'>
           Sign up
         </Button>
       </Form>
       <FormFooterAction
-        text="Already have an account?"
+        text='Already have an account?'
         action={
-          <AuthLink href={ROUTES.AUTH.LOGIN} className="text-md font-semibold text-primary">
+          <AuthLink href={ROUTES.AUTH.LOGIN} className='text-md font-semibold text-primary'>
             Sign in
           </AuthLink>
         }

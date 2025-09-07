@@ -1,6 +1,6 @@
 'use client';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Tabs, Tab } from '@heroui/react';
 import CompassIcon from '@/components/Icons/CompassIcon';
 import { SuggestMentors } from '@/interfaces/startup';
@@ -30,7 +30,7 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) =>
   const setMatches = useMatchingStore((state) => state.setMatches);
   const setError = useErrorStore((state) => state.setError);
 
-  const fetchMentors = async () => {
+  const fetchMentors = useCallback(async () => {
     if (!mentorList || mentorList.length === 0) return;
     try {
       const mentorDetails = await Promise.all(
@@ -64,11 +64,11 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) =>
     } catch (err) {
       console.error('Failed to fetch mentors profile:', err);
     }
-  };
+  }, [mentorList]);
 
   useEffect(() => {
     fetchMentors();
-  }, [mentorList]);
+  }, [fetchMentors]);
 
   useEffect(() => {
     const fetchMatching = async () => {
@@ -89,7 +89,7 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) =>
       }
     };
     fetchMatching();
-  }, [startupId]);
+  }, [startupId, setError, setMatches]);
 
   const handleFavoriteClick = (index: number) => {
     const newMentor = [...mentor];
@@ -102,20 +102,20 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) =>
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-screen 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-y-2">
+    <div className='flex flex-col items-center w-full h-screen 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-y-2'>
       <SearchWithLocation
-        placeholder="Search for anything"
-        className="w-3/5 mt-4"
+        placeholder='Search for anything'
+        className='w-3/5 mt-4'
         location={location}
         onLocationChange={setLocation}
       />
-      <Tabs aria-label="Explore" color="primary" variant="underlined" className="font-bold">
+      <Tabs aria-label='Explore' color='primary' variant='underlined' className='font-bold'>
         <Tab
-          key="for-you"
-          className="h-full w-full"
+          key='for-you'
+          className='h-full w-full'
           title={
-            <div className="flex items-center space-x-2">
-              <CompassIcon className="color-empacts" />
+            <div className='flex items-center space-x-2'>
+              <CompassIcon className='color-empacts' />
               <span>For you</span>
             </div>
           }
@@ -133,10 +133,10 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) =>
             error={error}
           />
         </Tab>
-        <Tab key="search" title="Search">
+        <Tab key='search' title='Search'>
           <SearchSection />
         </Tab>
-        <Tab key="matching-activity" title="Matching Activity" className="h-full w-full">
+        <Tab key='matching-activity' title='Matching Activity' className='h-full w-full'>
           <MatchingActivitySection startupId={startupId} />
         </Tab>
       </Tabs>

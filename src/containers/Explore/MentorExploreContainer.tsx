@@ -99,7 +99,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
       }
     };
     fetchAllStartupDetails();
-  }, [matches]);
+  }, [matches, mentorId, setError]);
 
   const fetchStartupDocuments = async (startupId: string) => {
     try {
@@ -133,36 +133,36 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-[50%]">
-        <TextLine text={error} className="text-neutral-50 text-lg" />
+      <div className='flex justify-center items-center h-[50%]'>
+        <TextLine text={error} className='text-neutral-50 text-lg' />
       </div>
     );
   }
 
   return startupList.length > 0 ? (
-    <div className="flex w-full px-regular relative z-10 gap-0 mt-medium">
-      <div className="mx-0 w-[33%] flex flex-col justify-start">
-        <div className="flex flex-col gap-small overflow-y-auto h-full pr-small custom-scrollbar">
-          <div className="flex justify-between items-center mb-regular">
-            <div className="flex gap-small">
+    <div className='flex w-full px-regular relative z-10 gap-0 mt-medium'>
+      <div className='mx-0 w-[33%] flex flex-col justify-start'>
+        <div className='flex flex-col gap-small overflow-y-auto h-full pr-small custom-scrollbar'>
+          <div className='flex justify-between items-center mb-regular'>
+            <div className='flex gap-small'>
               <Button
                 variant={filterMode === 'ALL' ? 'primary-sm' : 'tertiary-sm'}
                 onClick={() => setFilterMode('ALL')}
-                className="rounded-full"
+                className='rounded-full'
               >
                 {PROFILE_MESSAGES.ALL}
               </Button>
               <Button
                 variant={filterMode === 'ACCEPTED' ? 'primary-sm' : 'tertiary-sm'}
                 onClick={() => setFilterMode('ACCEPTED')}
-                className="rounded-full"
+                className='rounded-full'
               >
                 {PROFILE_MESSAGES.ACCEPTED}
               </Button>
               <Button
                 variant={filterMode === 'PENDING' ? 'primary-sm' : 'tertiary-sm'}
                 onClick={() => setFilterMode('PENDING')}
-                className="rounded-full"
+                className='rounded-full'
               >
                 {PROFILE_MESSAGES.PENDING}
               </Button>
@@ -182,7 +182,7 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
       </div>
 
       <Spacer x={4} />
-      <div className="w-[67%]">
+      <div className='w-[67%]'>
         {filterMatchIndexes.length > 0 && (
           <MatchingRequestInfoCard
             connectRequestCode={
@@ -207,11 +207,11 @@ const MentorExploreContainer: React.FC<MentorExploreContainerProps> = ({ mentorI
       </div>
     </div>
   ) : (
-    <div className="flex justify-center items-center h-[50%]">
+    <div className='flex justify-center items-center h-[50%]'>
       <Spinner
         classNames={{ label: 'text-foreground mt-4' }}
         label={PROFILE_MESSAGES.FINDING_MATCHING_REQUEST}
-        variant="wave"
+        variant='wave'
       />
     </div>
   );

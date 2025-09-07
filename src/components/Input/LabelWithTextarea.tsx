@@ -21,17 +21,17 @@ const LabelWithTextarea: React.FC<LabelWithTextareaProps> = ({
     setContent(newValue);
   };
   return (
-    <div className="flex flex-col gap-2">
+    <div className='flex flex-col gap-2'>
       <Textarea
         label={label}
-        labelPlacement="outside"
+        labelPlacement='outside'
         minRows={minRows}
         maxRows={30}
         placeholder={placeholder}
         value={content}
         defaultValue={content}
         onValueChange={handleChange}
-        variant="bordered"
+        variant='bordered'
       />
     </div>
   );

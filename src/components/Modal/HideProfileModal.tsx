@@ -21,40 +21,40 @@ const HideProfileModal = ({
       isKeyboardDismissDisabled={true}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      scrollBehavior="outside"
-      size="lg"
+      scrollBehavior='outside'
+      size='lg'
     >
       <ModalContent>
         {(onClose) => (
           <div>
-            <ModalHeader className="flex gap-4">
-              <Image src={DeleteWarningIcon} alt="Delete Warning Icon" width={48} height={48} />
+            <ModalHeader className='flex gap-4'>
+              <Image src={DeleteWarningIcon} alt='Delete Warning Icon' width={48} height={48} />
               {isHide ? (
-                <h2 className="text-2xl font-bold">
+                <h2 className='text-2xl font-bold'>
                   Are you sure you want to unhide your profile?
                 </h2>
               ) : (
-                <h2 className="text-2xl font-bold">Are you sure you want to hide your profile?</h2>
+                <h2 className='text-2xl font-bold'>Are you sure you want to hide your profile?</h2>
               )}
             </ModalHeader>
             <ModalBody>
               {isHide ? (
-                <div className="font-normal text-gray-400 text-sm">
+                <div className='font-normal text-gray-400 text-sm'>
                   Unhide your profile from search results across entire platform.
                 </div>
               ) : (
-                <div className="font-normal text-gray-400 text-sm">
+                <div className='font-normal text-gray-400 text-sm'>
                   Hide your profile from search results across entire platform.
                 </div>
               )}
             </ModalBody>
-            <ModalFooter className="flex justify-between gap-4 w-full">
+            <ModalFooter className='flex justify-between gap-4 w-full'>
               <Button
                 onPress={onClose}
-                className="font-bold w-1/2"
-                radius="lg"
-                color="primary"
-                variant="bordered"
+                className='font-bold w-1/2'
+                radius='lg'
+                color='primary'
+                variant='bordered'
               >
                 Cancel
               </Button>
@@ -63,10 +63,10 @@ const HideProfileModal = ({
                   onHideProfile();
                   onClose();
                 }}
-                className="font-bold w-1/2"
-                radius="lg"
-                color="primary"
-                variant="solid"
+                className='font-bold w-1/2'
+                radius='lg'
+                color='primary'
+                variant='solid'
               >
                 {isHide ? 'Unhide' : 'Hide'}
               </Button>

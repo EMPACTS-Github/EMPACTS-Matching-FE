@@ -29,28 +29,28 @@ const AlertLoginAs: React.FC<{
   onLoginAsDifferentAccount: () => void;
   onCancelLoginAsDifferentAccount: () => void;
 }> = ({ email, inviteeEmail, onLoginAsDifferentAccount, onCancelLoginAsDifferentAccount }) => (
-  <div className="w-full flex justify-center items-center mt-large">
-    <div className="rounded-xl p-large bg-neutral-20 flex flex-col gap-small justify-center items-center">
+  <div className='w-full flex justify-center items-center mt-large'>
+    <div className='rounded-xl p-large bg-neutral-20 flex flex-col gap-small justify-center items-center'>
       <TextLine
         text={`${UI_LABELS.YOURE_LOGIN_AS} `}
-        className="text-xl text-center font-semibold text-secondary"
+        className='text-xl text-center font-semibold text-secondary'
       />
-      <TextLine text={email} className="text-xl text-center font-semibold text-primary" />
-      <div className="flex flex-col items-center">
+      <TextLine text={email} className='text-xl text-center font-semibold text-primary' />
+      <div className='flex flex-col items-center'>
         <TextLine
           text={`${UI_LABELS.PLEASE_LOGIN_AS} `}
-          className="text-medium text-center font-semibold text-secondary"
+          className='text-medium text-center font-semibold text-secondary'
         />
         <TextLine
           text={`${inviteeEmail} ${UI_LABELS.TO_CONTINUE}`}
-          className="text-medium text-center font-semibold text-primary"
+          className='text-medium text-center font-semibold text-primary'
         />
       </div>
-      <div className="flex gap-small">
-        <Button onClick={onCancelLoginAsDifferentAccount} variant="secondary-md">
+      <div className='flex gap-small'>
+        <Button onClick={onCancelLoginAsDifferentAccount} variant='secondary-md'>
           {UI_LABELS.CANCEL}
         </Button>
-        <Button onClick={onLoginAsDifferentAccount} variant="primary-md">
+        <Button onClick={onLoginAsDifferentAccount} variant='primary-md'>
           {`${UI_LABELS.LOGIN_IN_AS} ${inviteeEmail}`}
         </Button>
       </div>
@@ -70,13 +70,13 @@ const InvitationStatus: React.FC<{ message: string }> = ({ message }) => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center mt-large">
-      <div className="rounded-xl p-large bg-neutral-20 flex flex-col gap-small justify-center items-center">
+    <div className='w-full flex justify-center items-center mt-large'>
+      <div className='rounded-xl p-large bg-neutral-20 flex flex-col gap-small justify-center items-center'>
         <TextLine
           text={`${message} ${UI_LABELS.PLEASE_ASK_RESEND}`}
-          className="text-xl text-center font-semibold text-secondary"
+          className='text-xl text-center font-semibold text-secondary'
         />
-        <Button onClick={handleReturnToHome} variant="primary-md">
+        <Button onClick={handleReturnToHome} variant='primary-md'>
           {UI_LABELS.RETURN_TO_HOME}
         </Button>
       </div>
@@ -103,18 +103,18 @@ const InvitationResponse: React.FC<{
   const renderActionButton = () => {
     if (!inivtationResponse.response) {
       return (
-        <div className="flex gap-large">
+        <div className='flex gap-large'>
           <Button
             onClick={() => handleChangeInvitationResponse(STARTUP_INVITATION_RESPONSE.REJECTED)}
-            variant="warning-md"
-            className="w-[120px]"
+            variant='warning-md'
+            className='w-[120px]'
           >
             {UI_LABELS.DECLINE}
           </Button>
           <Button
             onClick={() => handleChangeInvitationResponse(STARTUP_INVITATION_RESPONSE.ACCEPTED)}
-            variant="primary-md"
-            className="w-[120px] bg-success text-neutral-20"
+            variant='primary-md'
+            className='w-[120px] bg-success text-neutral-20'
           >
             {UI_LABELS.ACCEPT}
           </Button>
@@ -123,48 +123,48 @@ const InvitationResponse: React.FC<{
     }
     if (inivtationResponse.response === STARTUP_INVITATION_RESPONSE.ACCEPTED) {
       return (
-        <div className="flex flex-col items-center">
-          <TextLine text={UI_LABELS.ACCEPTED_INVITATION} className="text-center text-secondary" />
-          <TextLine text={UI_LABELS.WAIT_REDIRECT_STARTUP} className="text-center text-secondary" />
+        <div className='flex flex-col items-center'>
+          <TextLine text={UI_LABELS.ACCEPTED_INVITATION} className='text-center text-secondary' />
+          <TextLine text={UI_LABELS.WAIT_REDIRECT_STARTUP} className='text-center text-secondary' />
         </div>
       );
     }
     return (
-      <div className="flex flex-col items-center">
-        <TextLine text={UI_LABELS.REJECTED_INVITATION} className="text-center text-secondary" />
-        <TextLine text={UI_LABELS.WAIT_REDIRECT_HOME} className="text-center text-secondary" />
+      <div className='flex flex-col items-center'>
+        <TextLine text={UI_LABELS.REJECTED_INVITATION} className='text-center text-secondary' />
+        <TextLine text={UI_LABELS.WAIT_REDIRECT_HOME} className='text-center text-secondary' />
       </div>
     );
   };
 
   return (
-    <div className="w-full flex justify-center items-center mt-large">
-      <div className="rounded-xl p-large bg-neutral-20 flex flex-col gap-large justify-center items-center shadow-lg">
+    <div className='w-full flex justify-center items-center mt-large'>
+      <div className='rounded-xl p-large bg-neutral-20 flex flex-col gap-large justify-center items-center shadow-lg'>
         <div>
           <TextLine
             text={UI_LABELS.YOURE_INVITED_AS}
-            className="text-2xl text-center font-semibold text-secondary mb-small"
+            className='text-2xl text-center font-semibold text-secondary mb-small'
           />
           <TextLine
             text={invitationInfo.positionTitle}
-            className="text-2xl text-center font-semibold text-primary"
+            className='text-2xl text-center font-semibold text-primary'
           />
         </div>
-        <div className="flex flex-col gap-regular justify-center items-center">
+        <div className='flex flex-col gap-regular justify-center items-center'>
           <Avatar
-            variant="default-lg"
+            variant='default-lg'
             src={invitationInfo.startupAvt}
-            alt="Startup Avatar"
-            className="w-24 h-24"
+            alt='Startup Avatar'
+            className='w-24 h-24'
           />
           <div>
             <TextLine
               text={invitationInfo.startupName}
-              className="text-xl text-center font-semibold text-secondary mb-small"
+              className='text-xl text-center font-semibold text-secondary mb-small'
             />
             <TextLine
               text={invitationInfo.startupGoal}
-              className="text-sm text-center font-semibold text-neutral-50"
+              className='text-sm text-center font-semibold text-neutral-50'
             />
           </div>
         </div>
@@ -303,8 +303,8 @@ const StartupInvitation = () => {
 
   if (loading) {
     return (
-      <div className="w-full flex justify-center items-center">
-        <Spinner color="primary" />
+      <div className='w-full flex justify-center items-center'>
+        <Spinner color='primary' />
       </div>
     );
   }

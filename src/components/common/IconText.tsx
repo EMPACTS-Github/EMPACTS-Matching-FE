@@ -10,8 +10,8 @@ interface IconTextProps {
 
 const IconText: React.FC<IconTextProps> = ({ icon, text, alt }) => {
   return (
-    <div className="flex items-center gap-x-2">
-      {text && <TextLine text={text.toString()} className="text-black font-semibold text-[16px]" />}
+    <div className='flex items-center gap-x-2'>
+      {text && <TextLine text={text.toString()} className='text-black font-semibold text-[16px]' />}
       <Image src={icon} alt={alt} width={24} height={24} />
     </div>
   );

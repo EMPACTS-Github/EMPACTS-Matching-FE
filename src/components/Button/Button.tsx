@@ -278,7 +278,7 @@ const Button = ({
   return (
     <HeroButton
       type={type}
-      variant="solid"
+      variant='solid'
       color={color}
       size={size}
       disabled={disabled}

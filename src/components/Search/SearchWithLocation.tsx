@@ -126,9 +126,9 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
   return (
     <div className={`${className} relative`}>
       {/* Outer container with better hover/focus styling */}
-      <div className="flex items-center justify-between bg-white rounded-[64px] border border-gray-200 h-[52px] transition-all duration-200 hover:border-primary focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/30">
+      <div className='flex items-center justify-between bg-white rounded-[64px] border border-gray-200 h-[52px] transition-all duration-200 hover:border-primary focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/30'>
         {/* Search Input – full width with no internal focus/hover highlighting */}
-        <div className="flex flex-grow items-center pl-8 justify-between">
+        <div className='flex flex-grow items-center pl-8 justify-between'>
           <Input
             ref={inputRef}
             value={query}
@@ -136,8 +136,8 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
             onKeyDown={handleKeyDown}
             onFocus={() => query.trim() && setIsOpen(true)}
             placeholder={placeholder}
-            aria-label="Search input"
-            variant="flat"
+            aria-label='Search input'
+            variant='flat'
             classNames={{
               base: 'w-full',
               mainWrapper: 'w-full',
@@ -148,50 +148,50 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
               innerWrapper: 'bg-transparent',
             }}
           />
-          <div className="pr-4 flex items-center gap-2">
-            {isLoading && <Spinner size="sm" color="white" />}
+          <div className='pr-4 flex items-center gap-2'>
+            {isLoading && <Spinner size='sm' color='white' />}
             {query && !isLoading && (
               <button
                 onClick={handleClear}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                className='p-1 hover:bg-gray-100 rounded-full transition-colors'
               >
-                <ClearIcon className="h-4 w-4" />
+                <ClearIcon className='h-4 w-4' />
               </button>
             )}
           </div>
         </div>
 
         {/* Divider Line */}
-        <div className="h-6 w-px bg-gray-300 mx-3"></div>
+        <div className='h-6 w-px bg-gray-300 mx-3'></div>
 
         {/* Location Dropdown */}
-        <div className="flex-shrink-0 w-[170px] pr-6">
-          <div className="flex items-center">
+        <div className='flex-shrink-0 w-[170px] pr-6'>
+          <div className='flex items-center'>
             <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mr-2"
+              width='16'
+              height='16'
+              viewBox='0 0 24 24'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+              className='mr-2'
             >
               <path
-                d="M12 13.4299C13.7231 13.4299 15.12 12.0331 15.12 10.3099C15.12 8.58681 13.7231 7.18994 12 7.18994C10.2769 7.18994 8.88 8.58681 8.88 10.3099C8.88 12.0331 10.2769 13.4299 12 13.4299Z"
-                stroke="#292D32"
-                strokeWidth="1.5"
+                d='M12 13.4299C13.7231 13.4299 15.12 12.0331 15.12 10.3099C15.12 8.58681 13.7231 7.18994 12 7.18994C10.2769 7.18994 8.88 8.58681 8.88 10.3099C8.88 12.0331 10.2769 13.4299 12 13.4299Z'
+                stroke='#292D32'
+                strokeWidth='1.5'
               />
               <path
-                d="M3.62001 8.49C5.59001 -0.169998 18.42 -0.159998 20.38 8.5C21.53 13.58 18.37 17.88 15.6 20.54C13.59 22.48 10.41 22.48 8.39001 20.54C5.63001 17.88 2.47001 13.57 3.62001 8.49Z"
-                stroke="#292D32"
-                strokeWidth="1.5"
+                d='M3.62001 8.49C5.59001 -0.169998 18.42 -0.159998 20.38 8.5C21.53 13.58 18.37 17.88 15.6 20.54C13.59 22.48 10.41 22.48 8.39001 20.54C5.63001 17.88 2.47001 13.57 3.62001 8.49Z'
+                stroke='#292D32'
+                strokeWidth='1.5'
               />
             </svg>
             <Select
-              placeholder="Location"
+              placeholder='Location'
               value={location}
               onChange={handleLocationChange}
-              variant="flat"
-              size="md"
+              variant='flat'
+              size='md'
               classNames={{
                 base: 'min-w-0 w-full',
                 trigger: 'h-[40px] min-h-[40px] border-0 bg-transparent shadow-none cursor-pointer',
@@ -222,15 +222,15 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
         </div>
       </div>
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden">
+        <div className='absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden'>
           {error && (
-            <div className="p-4 text-red-600 text-sm border-b border-gray-100">
-              <span className="font-medium">Error:</span> {error}
+            <div className='p-4 text-red-600 text-sm border-b border-gray-100'>
+              <span className='font-medium'>Error:</span> {error}
             </div>
           )}
 
           {suggestions.length > 0 && (
-            <ul ref={listRef} className="max-h-80 overflow-y-auto">
+            <ul ref={listRef} className='max-h-80 overflow-y-auto'>
               {suggestions.map((suggestion, index) => (
                 <li key={index}>
                   <button
@@ -240,8 +240,8 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
                       selectedIndex === index && 'bg-primary-50 text-primary'
                     )}
                   >
-                    <UsersIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                    <span className="truncate">
+                    <UsersIcon className='h-4 w-4 text-gray-400 flex-shrink-0' />
+                    <span className='truncate'>
                       {(() => {
                         const lowerSuggestion = suggestion.toLowerCase();
                         const lowerQuery = query.toLowerCase();
@@ -254,7 +254,7 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
                         return (
                           <>
                             {suggestion.slice(0, matchIndex)}
-                            <span className="font-medium text-primary">
+                            <span className='font-medium text-primary'>
                               {suggestion.slice(matchIndex, matchIndex + query.length)}
                             </span>
                             {suggestion.slice(matchIndex + query.length)}
@@ -269,13 +269,13 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
           )}
 
           {!isLoading && suggestions.length === 0 && query.trim() && (
-            <div className="p-8 text-center text-gray-500">
-              <p className="text-sm">No suggestions found for &quot;{query}&quot;</p>
+            <div className='p-8 text-center text-gray-500'>
+              <p className='text-sm'>No suggestions found for &quot;{query}&quot;</p>
             </div>
           )}
 
           {suggestions.length > 0 && (
-            <div className="px-4 py-2 bg-gray-50 text-xs text-gray-500 border-t border-gray-100">
+            <div className='px-4 py-2 bg-gray-50 text-xs text-gray-500 border-t border-gray-100'>
               Use ↑↓ to navigate, Enter to select, Esc to close
             </div>
           )}

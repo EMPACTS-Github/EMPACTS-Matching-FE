@@ -70,7 +70,7 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
     className?: string;
   }) => (
     <div className={className} onClick={onClick}>
-      <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+      <Image src={ArrowLeftIcon} alt='Arrow left icon' width={40} height={40} />
     </div>
   );
 
@@ -87,13 +87,13 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
     logoHeight?: number;
     titleClassName?: string;
   }) => (
-    <div className="flex flex-col items-center text-center">
+    <div className='flex flex-col items-center text-center'>
       <Image
         src={logoSrc}
-        alt="Logo"
+        alt='Logo'
         width={logoWidth}
         height={logoHeight}
-        sizes="100vw"
+        sizes='100vw'
         style={{ width: logoWidth === 0 ? '50%' : 'auto', height: 'auto' }}
         priority
       />
@@ -111,37 +111,37 @@ function ResetPassword({ email, setOpenResetPasswordScreen }: ResetPasswordProps
 
   return (
     <div>
-      <div className="flex flex-col items-center text-center h-3/4">
+      <div className='flex flex-col items-center text-center h-3/4'>
         <BackButton onClick={handleGoBack} />
-        <LogoHeader title="Create new password" />
+        <LogoHeader title='Create new password' />
       </div>
-      <div className="flex justify-center space-x-2 mt-6">
+      <div className='flex justify-center space-x-2 mt-6'>
         <Form
-          className="flex flex-col items-center justify-center w-full gap-10"
+          className='flex flex-col items-center justify-center w-full gap-10'
           onSubmit={handleResetPassword}
         >
           <Input
-            label="Password"
-            variant="password"
+            label='Password'
+            variant='password'
             value={password}
             onChange={setPassword}
             isInvalid={!isValidPassword}
-            preset="line-fill-sm"
+            preset='line-fill-sm'
             errorMessage={passwordError}
             description={passwordDescription}
             isRequired
           />
           <Input
-            label="Confirm Password"
-            variant="password"
+            label='Confirm Password'
+            variant='password'
             value={confirmPassword}
             onChange={setConfirmPassword}
             isInvalid={!isValidConfirmPassword}
-            preset="line-fill-sm"
+            preset='line-fill-sm'
             errorMessage={confirmPasswordError}
             isRequired
           />
-          <Button variant="primary-full">Reset Password</Button>
+          <Button variant='primary-full'>Reset Password</Button>
         </Form>
       </div>
     </div>

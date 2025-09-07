@@ -30,7 +30,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
       isVirtualized={false}
       isRequired={isRequired ? true : false}
       className={`${className}`}
-      variant="bordered"
+      variant='bordered'
       selectedKeys={[selectedTime]}
       onSelectionChange={(keys) => setSelectedTime(Array.from(keys)[0] as string)}
       placeholder={placeholder || 'Select time'}

@@ -37,29 +37,29 @@ const SuggestMentorSmallCard: React.FC<SuggestMentorSmallCardProps> = ({
     <Card
       fullWidth
       isPressable
-      className="flex flex-row gap-2 bg-white rounded-md px-4 py-4 items-center shadow-md"
+      className='flex flex-row gap-2 bg-white rounded-md px-4 py-4 items-center shadow-md'
       onPress={onCardClick}
     >
-      <div className="w-[25%] flex justify-center items-center">
-        <Avatar src={avatarUrl} alt={name} variant="default-lg" />
+      <div className='w-[25%] flex justify-center items-center'>
+        <Avatar src={avatarUrl} alt={name} variant='default-lg' />
       </div>
 
-      <div className="flex flex-col justify-start w-[75%]">
-        <div className="flex justify-between items-center w-full pl-2">
-          <div className="text-md font-semibold text-black">{name}</div>
-          <Button isIconOnly onClick={onFavoriteClick} className="bg-transparent">
+      <div className='flex flex-col justify-start w-[75%]'>
+        <div className='flex justify-between items-center w-full pl-2'>
+          <div className='text-md font-semibold text-black'>{name}</div>
+          <Button isIconOnly onClick={onFavoriteClick} className='bg-transparent'>
             {isFavorite ? (
-              <Image src={FavoriteFilledIcon} alt="Unfavorite" />
+              <Image src={FavoriteFilledIcon} alt='Unfavorite' />
             ) : (
-              <Image src={FavoriteIcon} alt="Favorite" />
+              <Image src={FavoriteIcon} alt='Favorite' />
             )}
           </Button>
         </div>
-        <div className="flex flex-col gap-1 px-2">
-          <TextLine text={location} className="text-gray-500 text-xs text-left" />
+        <div className='flex flex-col gap-1 px-2'>
+          <TextLine text={location} className='text-gray-500 text-xs text-left' />
           <TextLine
             text={description}
-            className="text-gray-600 mt-2 text-[10px] text-left line-clamp-3"
+            className='text-gray-600 mt-2 text-[10px] text-left line-clamp-3'
           />
           <Progress
             classNames={{
@@ -70,7 +70,7 @@ const SuggestMentorSmallCard: React.FC<SuggestMentorSmallCardProps> = ({
             color={matchColor}
             showValueLabel={true}
             maxValue={100}
-            size="sm"
+            size='sm'
             value={matchScore}
           />
         </div>

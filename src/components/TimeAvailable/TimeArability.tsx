@@ -42,48 +42,48 @@ const TimeArability: React.FC<TimeArabilityProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-5 gap-4 items-start">
-      <div className="text-md p-1">{dayOfWeek}</div>
+    <div className='grid grid-cols-5 gap-4 items-start'>
+      <div className='text-md p-1'>{dayOfWeek}</div>
       <LabelStartAndSwitchEnd
-        label="Available"
+        label='Available'
         checked={switchState}
         onChange={setSwitchState ?? (() => {})}
       />
       {switchState && (
-        <div className="flex flex-col gap-2 col-span-3">
+        <div className='flex flex-col gap-2 col-span-3'>
           {fromToValue.map(([fromTime, toTime], idx) => (
-            <div className="flex gap-2 items-center" key={idx}>
+            <div className='flex gap-2 items-center' key={idx}>
               <TimeInput
                 selectedTime={fromTime}
                 setSelectedTime={(time) => handleChangeTime(idx, 'from', time)}
                 isRequired
-                label="From"
-                labelPlacement="outside-left"
+                label='From'
+                labelPlacement='outside-left'
               />
               <TimeInput
                 selectedTime={toTime}
                 setSelectedTime={(time) => handleChangeTime(idx, 'to', time)}
                 isRequired
-                label="To"
-                labelPlacement="outside-left"
+                label='To'
+                labelPlacement='outside-left'
               />
               {idx === 0 ? (
                 <Button
-                  variant="ghost-sm"
+                  variant='ghost-sm'
                   onClick={handleAddTimeRange}
                   isIconOnly={true}
-                  aria-label="Add time range"
+                  aria-label='Add time range'
                 >
-                  <PlusSquareIcon className="text-primary" />
+                  <PlusSquareIcon className='text-primary' />
                 </Button>
               ) : (
                 <Button
-                  variant="ghost-sm"
+                  variant='ghost-sm'
                   onClick={() => handleDeleteTimeRange(idx)}
                   isIconOnly={true}
-                  aria-label="Delete time range"
+                  aria-label='Delete time range'
                 >
-                  <DeleteIcon className="text-error" />
+                  <DeleteIcon className='text-error' />
                 </Button>
               )}
             </div>

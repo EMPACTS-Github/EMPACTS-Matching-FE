@@ -32,14 +32,14 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
 }) => {
   if (error === 'No suggestion found') {
     return (
-      <div className="flex justify-center items-center h-[50%]">
-        <span className="text-gray-500 text-lg">No mentor found for you</span>
+      <div className='flex justify-center items-center h-[50%]'>
+        <span className='text-gray-500 text-lg'>No mentor found for you</span>
       </div>
     );
   }
   return mentor.length !== 0 ? (
-    <div className="flex justify-between gap-4 flex-1 overflow-hidden">
-      <div className="flex flex-col gap-4 w-[34%] overflow-y-auto h-full pr-2 custom-scrollbar">
+    <div className='flex justify-between gap-4 flex-1 overflow-hidden'>
+      <div className='flex flex-col gap-4 w-[34%] overflow-y-auto h-full pr-2 custom-scrollbar'>
         {mentor.map((mentor, index) => (
           <SuggestMentorSmallCard
             key={index}
@@ -55,7 +55,7 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
         ))}
       </div>
       <SuggestMentorDetailCard
-        className="w-[66%]"
+        className='w-[66%]'
         title={selectedMentor?.name || ''}
         location={getProvince(selectedMentor?.locationBased || '')}
         description={selectedMentor?.description || ''}
@@ -77,11 +77,11 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
       />
     </div>
   ) : (
-    <div className="flex justify-center items-center h-[50%]">
+    <div className='flex justify-center items-center h-[50%]'>
       <Spinner
         classNames={{ label: 'text-foreground mt-4' }}
-        label="The system is finding the best mentors for you. Please wait..."
-        variant="wave"
+        label='The system is finding the best mentors for you. Please wait...'
+        variant='wave'
       />
     </div>
   );

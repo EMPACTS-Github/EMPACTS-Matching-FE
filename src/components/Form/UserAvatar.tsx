@@ -16,14 +16,14 @@ const UserAvatar = ({ avatarUrl, handleAvatarChange }: UserAvatarProps) => {
   };
 
   return (
-    <div className="relative group cursor-pointer" onClick={handleClick}>
-      <div className="relative">
+    <div className='relative group cursor-pointer' onClick={handleClick}>
+      <div className='relative'>
         {avatarUrl ? (
-          <Avatar src={avatarUrl} alt="User avatar" className="w-[100px] h-[100px]" />
+          <Avatar src={avatarUrl} alt='User avatar' className='w-[100px] h-[100px]' />
         ) : (
           <Image
             src={UserAvatarPlaceholder}
-            alt="User avatar placeholder"
+            alt='User avatar placeholder'
             width={100}
             height={100}
           />
@@ -32,10 +32,10 @@ const UserAvatar = ({ avatarUrl, handleAvatarChange }: UserAvatarProps) => {
 
       <Input
         ref={fileInputRef}
-        type="file"
+        type='file'
         onChange={handleAvatarChange}
-        className="absolute inset-0 opacity-0 cursor-pointer"
-        aria-label="Upload avatar"
+        className='absolute inset-0 opacity-0 cursor-pointer'
+        aria-label='Upload avatar'
       />
     </div>
   );

@@ -61,42 +61,42 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
   };
 
   return (
-    <div className="text-center">
-      <div className="flex flex-col items-center text-center">
-        <Image src={EmpactsLogo} alt="EMPACTS Logo Image" priority width={120} height={120} />
-        <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Sign up</h2>
+    <div className='text-center'>
+      <div className='flex flex-col items-center text-center'>
+        <Image src={EmpactsLogo} alt='EMPACTS Logo Image' priority width={120} height={120} />
+        <h2 className='text-2xl font-bold mt-6 mb-6 text-black'>Sign up</h2>
       </div>
       <Form
-        className="flex flex-col items-center justify-center w-full gap-10"
+        className='flex flex-col items-center justify-center w-full gap-10'
         onSubmit={handleCreatePassword}
       >
-        <div className="space-y-4">
+        <div className='space-y-4'>
           <Input
-            label="Password"
-            variant="password"
+            label='Password'
+            variant='password'
             value={password}
             onChange={setPassword}
-            preset="line-fill-sm"
+            preset='line-fill-sm'
             isRequired={true}
           />
           <Input
-            variant="password"
+            variant='password'
             value={confirmPassword}
             onChange={setConfirmPassword}
-            label="Confirm Password"
-            preset="line-fill-sm"
+            label='Confirm Password'
+            preset='line-fill-sm'
             isRequired={true}
           />
         </div>
-        <Button onClick={handleCreatePassword} variant="primary-full">
+        <Button onClick={handleCreatePassword} variant='primary-full'>
           Continue
         </Button>
       </Form>
 
       <FormFooterAction
-        text="Already have an account?"
+        text='Already have an account?'
         action={
-          <AuthLink href={ROUTES.AUTH.LOGIN} className="text-md font-semibold text-primary">
+          <AuthLink href={ROUTES.AUTH.LOGIN} className='text-md font-semibold text-primary'>
             Sign in
           </AuthLink>
         }

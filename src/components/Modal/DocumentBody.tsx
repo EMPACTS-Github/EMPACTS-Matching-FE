@@ -54,46 +54,46 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
 
   return (
     <>
-      <div className="space-y-4">
-        <Card className="flex gap-3 shadow-none m-0 p-0">
-          <CardBody className="m-0 p-1">
-            <div className="space-y-4">
+      <div className='space-y-4'>
+        <Card className='flex gap-3 shadow-none m-0 p-0'>
+          <CardBody className='m-0 p-1'>
+            <div className='space-y-4'>
               {files.map((file, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
+                <div key={index} className='flex items-center justify-between'>
+                  <div className='flex items-center gap-4'>
                     <button
-                      type="button"
+                      type='button'
                       onClick={() =>
                         handleDocumentDownload(file.attachmentUrl, file.attachmentTitle)
                       }
-                      className="cursor-pointer bg-transparent border-none p-0 flex items-center"
+                      className='cursor-pointer bg-transparent border-none p-0 flex items-center'
                     >
                       <Image
                         alt={`${file.type} icon`}
                         height={40}
                         src={getFileIcon(file.type)}
                         width={40}
-                        className="cursor-pointer"
+                        className='cursor-pointer'
                       />
                     </button>
                     <button
-                      type="button"
+                      type='button'
                       onClick={() =>
                         handleDocumentDownload(file.attachmentUrl, file.attachmentTitle)
                       }
-                      className="grid justify-items-start text-left cursor-pointer bg-transparent border-none p-0"
+                      className='grid justify-items-start text-left cursor-pointer bg-transparent border-none p-0'
                     >
-                      <div className="text-lg text-black font-bold">
+                      <div className='text-lg text-black font-bold'>
                         {getFileName(file.attachmentTitle)}
                       </div>
-                      <div className="text-xs text-gray-500">{file.type}</div>
+                      <div className='text-xs text-gray-500'>{file.type}</div>
                     </button>
                   </div>
-                  <Dropdown placement="bottom-end">
+                  <Dropdown placement='bottom-end'>
                     <DropdownTrigger>
                       <Button
                         isIconOnly
-                        className="bg-transparent border-none p-0"
+                        className='bg-transparent border-none p-0'
                         onPress={() => {
                           onSelectFile(file);
                         }}
@@ -103,19 +103,19 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
                     </DropdownTrigger>
                     <DropdownMenu>
                       <DropdownItem
-                        key="delete-document"
-                        variant="light"
-                        className="p-0 bg-transparent"
+                        key='delete-document'
+                        variant='light'
+                        className='p-0 bg-transparent'
                       >
                         <Button
-                          className="flex items-center gap-2 bg-transparent border-none p-0 w-full"
+                          className='flex items-center gap-2 bg-transparent border-none p-0 w-full'
                           onPress={() => {
                             onSelectFile(file);
                             onOpenDeleteDocumentModal();
                           }}
                         >
-                          <DeleteIcon className="w-4 h-4 text-red-500" />
-                          <div className="text-sm text-red-500 font-bold">Delete Document</div>
+                          <DeleteIcon className='w-4 h-4 text-red-500' />
+                          <div className='text-sm text-red-500 font-bold'>Delete Document</div>
                         </Button>
                       </DropdownItem>
                     </DropdownMenu>
@@ -127,13 +127,13 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
         </Card>
       </div>
       <Button
-        size="sm"
-        className="rounded-lg bg-empacts w-36 text-xs text-white"
+        size='sm'
+        className='rounded-lg bg-empacts w-36 text-xs text-white'
         startContent={<PlusSquareIcon />}
         onPress={handleOpenUploadNewFile}
       >
         Add new file
-        <input ref={inputRef} type="file" className="hidden" onChange={onUploadNewFile} />
+        <input ref={inputRef} type='file' className='hidden' onChange={onUploadNewFile} />
       </Button>
       <DeleteDocumentModal
         document={selectedFile}
