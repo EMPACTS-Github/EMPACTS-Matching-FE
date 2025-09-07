@@ -88,7 +88,7 @@ function ForgotPassword() {
     className?: string;
   }) => (
     <div className={className} onClick={onClick}>
-      <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+      <Image src={ArrowLeftIcon} alt='Arrow left icon' width={40} height={40} />
     </div>
   );
 
@@ -107,37 +107,37 @@ function ForgotPassword() {
   }, [email, hasSubmitted, updateEmailValidation]);
 
   return (
-    <div className="bg-white h-full flex justify-center">
-      <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
+    <div className='bg-white h-full flex justify-center'>
+      <div className='p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]'>
         <BackButton onClick={handleBackButton} />
         {currentScreen == 'verification' ? (
           <EmailVerification
             email={email}
             setEmailSent={() => {}}
             setResetPasswordScreen={() => router.push('/auth/forgot-password?stage=reset')}
-            title="Verification code"
+            title='Verification code'
             description={`A verification code has been sent to <strong>${email}</strong>. Please input your OTP code to finish reset password.`}
           />
         ) : currentScreen == 'reset' ? (
           <ResetPassword email={email} setOpenResetPasswordScreen={() => {}} />
         ) : (
-          <div className="space-y-[12.5%]">
+          <div className='space-y-[12.5%]'>
             <AuthHeader
-              title="Forgot password"
-              description="Enter your email address and we will send you instructions to reset your password."
+              title='Forgot password'
+              description='Enter your email address and we will send you instructions to reset your password.'
             />
-            <Form onSubmit={handleSentCode} className="space-y-4">
+            <Form onSubmit={handleSentCode} className='space-y-4'>
               <Input
-                label="Email"
-                variant="email"
+                label='Email'
+                variant='email'
                 value={email}
                 onChange={setEmail}
                 isInvalid={!isValidEmail}
-                preset="line-fill-sm"
+                preset='line-fill-sm'
                 errorMessage={emailError}
                 isRequired
               />
-              <Button variant="primary-full" className="mt-4" type="submit">
+              <Button variant='primary-full' className='mt-4' type='submit'>
                 Continue
               </Button>
             </Form>

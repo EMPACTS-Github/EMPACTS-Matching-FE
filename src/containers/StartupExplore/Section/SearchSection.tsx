@@ -70,9 +70,9 @@ const SearchSection: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen">
-      <div className="w-full flex flex-col items-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+    <div className='flex flex-col items-center min-h-screen'>
+      <div className='w-full flex flex-col items-center'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8'>
           {filteredMentors.length > 0
             ? filteredMentors.map((mentor) => (
                 <MentorSearchSectionCard
@@ -82,17 +82,17 @@ const SearchSection: React.FC = () => {
                 />
               ))
             : !loading && (
-                <div className="text-center mt-8 text-black md:col-span-2 lg:col-span-4">
+                <div className='text-center mt-8 text-black md:col-span-2 lg:col-span-4'>
                   No result found
                 </div>
               )}
         </div>
         {loading && hasMore && (
-          <div className="flex justify-center items-center h-[50%]">
+          <div className='flex justify-center items-center h-[50%]'>
             <Spinner
               classNames={{ label: 'text-foreground mt-4' }}
-              label="The system is fetching Mentor. Please wait..."
-              variant="wave"
+              label='The system is fetching Mentor. Please wait...'
+              variant='wave'
             />
           </div>
         )}

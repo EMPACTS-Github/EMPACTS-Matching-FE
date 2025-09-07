@@ -171,53 +171,53 @@ function Login() {
 
   // Inline components
   const FormDivider = () => (
-    <div className="mt-6 mb-4 text-gray-500 flex items-center">
-      <div className="flex-grow border-t border-gray-300"></div>
-      <span className="mx-4 text-black text-sm">Or</span>
-      <div className="flex-grow border-t border-gray-300"></div>
+    <div className='mt-6 mb-4 text-gray-500 flex items-center'>
+      <div className='flex-grow border-t border-gray-300'></div>
+      <span className='mx-4 text-black text-sm'>Or</span>
+      <div className='flex-grow border-t border-gray-300'></div>
     </div>
   );
 
   const GoogleSignInButton = () => (
-    <Button onClick={loginWithGoogleAPI} variant="google">
-      <Image src="/google-icon.svg" alt="Google icon" width={20} height={20} className="mr-2" />
+    <Button onClick={loginWithGoogleAPI} variant='google'>
+      <Image src='/google-icon.svg' alt='Google icon' width={20} height={20} className='mr-2' />
       Sign in with Google
     </Button>
   );
 
   return (
-    <div className="bg-white h-screen flex justify-center">
-      <div className="login-form p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
-        <AuthHeader title="Sign in" description="" />
-        <Form onSubmit={handleLogin} className="space-y-6">
+    <div className='bg-white h-screen flex justify-center'>
+      <div className='login-form p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]'>
+        <AuthHeader title='Sign in' description='' />
+        <Form onSubmit={handleLogin} className='space-y-6'>
           <Input
-            label="Email"
-            variant="email"
-            type="email"
+            label='Email'
+            variant='email'
+            type='email'
             value={email}
             onChange={setEmail}
             isInvalid={!isValidEmail}
-            preset="line-fill-sm"
+            preset='line-fill-sm'
             errorMessage={emailError}
           />
           <Input
-            label="Password"
-            variant="password"
+            label='Password'
+            variant='password'
             value={password}
             onChange={setPassword}
             isInvalid={!isValidPassword}
-            preset="line-fill-sm"
+            preset='line-fill-sm'
             errorMessage={passwordError}
           />
-          <div className="text-right !mt-1 w-full">
+          <div className='text-right !mt-1 w-full'>
             <AuthLink
               href={ROUTES.AUTH.FORGOT_PASSWORD}
-              className="text-xs font-semibold text-black"
+              className='text-xs font-semibold text-black'
             >
               Forgot your password?
             </AuthLink>
           </div>
-          <Button variant="primary-full" className="mt-4" type="submit">
+          <Button variant='primary-full' className='mt-4' type='submit'>
             Sign in
           </Button>
         </Form>
@@ -227,7 +227,7 @@ function Login() {
         <FormFooterAction
           text="Don't have an account?"
           action={
-            <AuthLink href={ROUTES.AUTH.SIGNUP} className="text-md font-semibold text-primary">
+            <AuthLink href={ROUTES.AUTH.SIGNUP} className='text-md font-semibold text-primary'>
               Sign Up
             </AuthLink>
           }

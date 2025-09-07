@@ -9,12 +9,12 @@ interface TabsSectionProps {
 
 const TabsSection: React.FC<TabsSectionProps> = ({ mentorProfile }) => {
   return (
-    <div className="flex-1">
-      <Tabs aria-label="Mentor Tabs" variant="underlined" color="primary" className="font-bold">
-        <Tab key="overview" title="Overview">
+    <div className='flex-1'>
+      <Tabs aria-label='Mentor Tabs' variant='underlined' color='primary' className='font-bold'>
+        <Tab key='overview' title='Overview'>
           <OverviewBody mentorProfile={mentorProfile} />
         </Tab>
-        <Tab key="advanced" title="Advanced">
+        <Tab key='advanced' title='Advanced'>
           <AdvancedBody mentorProfile={mentorProfile} />
         </Tab>
       </Tabs>

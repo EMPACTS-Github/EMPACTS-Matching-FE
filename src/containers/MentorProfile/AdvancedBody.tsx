@@ -7,26 +7,26 @@ interface AdvancedBodyProps {
 
 const AdvancedBody: React.FC<AdvancedBodyProps> = ({ mentorProfile }) => {
   return (
-    <div className="space-y-4 mt-2">
-      <div className="space-y-2">
-        <h4 className="text-lg font-semibold text-gray-800">Market Focus</h4>
-        <p className="text-gray-500 text-sm">
+    <div className='space-y-4 mt-2'>
+      <div className='space-y-2'>
+        <h4 className='text-lg font-semibold text-gray-800'>Market Focus</h4>
+        <p className='text-gray-500 text-sm'>
           {mentorProfile?.marketFocusExpertise == null ? (
             'No data'
           ) : (
-            <Chip size="sm" color="secondary" variant="bordered" className="border-1">
+            <Chip size='sm' color='secondary' variant='bordered' className='border-1'>
               {mentorProfile.marketFocusExpertise}
             </Chip>
           )}
         </p>
       </div>
-      <div className="space-y-2">
-        <h4 className="text-lg font-semibold text-gray-800">Funding Stage Experience</h4>
-        <p className="text-gray-500 text-sm flex gap-2 flex-wrap">
+      <div className='space-y-2'>
+        <h4 className='text-lg font-semibold text-gray-800'>Funding Stage Experience</h4>
+        <p className='text-gray-500 text-sm flex gap-2 flex-wrap'>
           {Array.isArray(mentorProfile?.experienceWithFundingStage) &&
           mentorProfile.experienceWithFundingStage.length > 0
             ? mentorProfile.experienceWithFundingStage.map((stage: string, idx: number) => (
-                <Chip key={idx} size="sm" color="secondary" variant="bordered" className="border-1">
+                <Chip key={idx} size='sm' color='secondary' variant='bordered' className='border-1'>
                   {stage}
                 </Chip>
               ))

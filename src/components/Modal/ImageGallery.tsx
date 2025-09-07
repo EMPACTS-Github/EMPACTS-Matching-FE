@@ -42,25 +42,25 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   return (
     <>
-      <div className="flex flex-col w-full my-4">
+      <div className='flex flex-col w-full my-4'>
         <div>
           {images.length > 0 && (
             <div
               onMouseEnter={handleDisplayDeleteIcon}
               onMouseLeave={handleHideDeleteIcon}
-              className="w-full h-auto mb-4 relative"
+              className='w-full h-auto mb-4 relative'
             >
               <Image
                 src={selectedImage?.attachmentUrl || ''}
-                alt="Selected"
+                alt='Selected'
                 width={800}
                 height={400}
-                className="object-cover shadow-lg rounded-lg"
+                className='object-cover shadow-lg rounded-lg'
               />
               {displayDeleteIcon && (
                 <Button
-                  className="absolute top-2 right-2 rounded-full bg-black/50"
-                  size="sm"
+                  className='absolute top-2 right-2 rounded-full bg-black/50'
+                  size='sm'
                   isIconOnly
                   onPress={() => onOpen()}
                 >
@@ -70,7 +70,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             </div>
           )}
 
-          <div className="flex space-x-2 justify-center">
+          <div className='flex space-x-2 justify-center'>
             {images.map((image, index) => (
               <div
                 key={index}
@@ -91,23 +91,23 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
               </div>
             ))}
             <div
-              key="add-new-media"
-              className="flex items-center justify-center w-14 h-14 cursor-pointer box-border p-1 border-[3px] border-dashed border-black"
+              key='add-new-media'
+              className='flex items-center justify-center w-14 h-14 cursor-pointer box-border p-1 border-[3px] border-dashed border-black'
               onClick={handleClickAddImage}
             >
               <Image
                 src={ImagePlusIcon}
-                alt="Add new media"
+                alt='Add new media'
                 width={36}
                 height={36}
-                className="cursor-pointer m-auto"
+                className='cursor-pointer m-auto'
               />
               <input
                 ref={imageInputRef}
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                className="hidden"
+                id='image-upload'
+                type='file'
+                accept='image/*'
+                className='hidden'
                 onChange={onUploadNewImage}
               />
             </div>

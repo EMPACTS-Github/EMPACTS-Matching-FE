@@ -45,31 +45,31 @@ const CancelRequestModal: React.FC<CancelRequestModalProps> = ({
     onOpenChange();
   };
   return (
-    <Modal isKeyboardDismissDisabled={true} size="xl" isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent className="pt-1">
+    <Modal isKeyboardDismissDisabled={true} size='xl' isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalContent className='pt-1'>
         {(onOpenChange) => (
           <>
-            <ModalHeader className="items-center ">
-              <div className="flex">
-                <DeleteIcon className="w-16 h-16 text-danger mr-6" />
+            <ModalHeader className='items-center '>
+              <div className='flex'>
+                <DeleteIcon className='w-16 h-16 text-danger mr-6' />
                 <div>
-                  <div className="text-lg text-black mb-1">
+                  <div className='text-lg text-black mb-1'>
                     Are you sure you want to cancel Request?
                   </div>
-                  <div className="font-normal text-gray-400 text-sm">
+                  <div className='font-normal text-gray-400 text-sm'>
                     This action cannot be undone. Your matching request will be permanently
                     cancelled..
                   </div>
                 </div>
               </div>
             </ModalHeader>
-            <ModalFooter className="flex justify-end">
+            <ModalFooter className='flex justify-end'>
               <Button
-                className="bg-empacts text-white"
+                className='bg-empacts text-white'
                 onPress={handleCancelRequest}
                 isDisabled={isLoading}
               >
-                {isLoading ? <Spinner size="sm" color="white" /> : 'Cancel Request'}
+                {isLoading ? <Spinner size='sm' color='white' /> : 'Cancel Request'}
               </Button>
             </ModalFooter>
           </>

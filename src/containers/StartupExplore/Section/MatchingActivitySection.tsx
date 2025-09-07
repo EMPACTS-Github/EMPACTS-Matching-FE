@@ -72,58 +72,58 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({ start
       }
     };
     fetchAllMentorDetails();
-  }, [matches]);
+  }, [matches, setError]);
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-[50%]">
-        <span className="text-gray-500 text-lg">{error}</span>
+      <div className='flex justify-center items-center h-[50%]'>
+        <span className='text-gray-500 text-lg'>{error}</span>
       </div>
     );
   }
 
   return mentorList.length > 0 ? (
-    <div className="flex w-full px-4 relative z-10 gap-0 mt-6">
-      <div className="mx-0 w-[33%] flex flex-col justify-start">
-        <div className="flex flex-col gap-2 overflow-y-auto h-full pr-2 custom-scrollbar">
-          <div className="flex justify-between items-center mb-4">
-            <div className="space-x-2">
+    <div className='flex w-full px-4 relative z-10 gap-0 mt-6'>
+      <div className='mx-0 w-[33%] flex flex-col justify-start'>
+        <div className='flex flex-col gap-2 overflow-y-auto h-full pr-2 custom-scrollbar'>
+          <div className='flex justify-between items-center mb-4'>
+            <div className='space-x-2'>
               <Button
-                size="sm"
-                color="primary"
+                size='sm'
+                color='primary'
                 className={
                   filterMode === 'ALL' ? 'font-bold' : 'border-empacts-grey-50 border-1 font-bold'
                 }
                 variant={filterMode === 'ALL' ? 'solid' : 'bordered'}
-                radius="full"
+                radius='full'
                 onPress={() => setFilterMode('ALL')}
               >
                 All
               </Button>
               <Button
-                size="sm"
-                color="primary"
+                size='sm'
+                color='primary'
                 className={
                   filterMode === 'ACCEPTED'
                     ? 'font-bold'
                     : 'border-empacts-grey-50 border-1 font-bold'
                 }
                 variant={filterMode === 'ACCEPTED' ? 'solid' : 'bordered'}
-                radius="full"
+                radius='full'
                 onPress={() => setFilterMode('ACCEPTED')}
               >
                 Accepted
               </Button>
               <Button
-                size="sm"
-                color="primary"
+                size='sm'
+                color='primary'
                 className={
                   filterMode === 'PENDING'
                     ? 'font-bold'
                     : 'border-empacts-grey-50 border-1 font-bold'
                 }
                 variant={filterMode === 'PENDING' ? 'solid' : 'bordered'}
-                radius="full"
+                radius='full'
                 onPress={() => setFilterMode('PENDING')}
               >
                 Pending
@@ -144,7 +144,7 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({ start
       </div>
 
       <Spacer x={4} />
-      <div className="w-[67%]">
+      <div className='w-[67%]'>
         {filterMentorIndexes.length > 0 && (
           <MatchingInfoCard
             startupId={startupId}
@@ -169,11 +169,11 @@ const MatchingActivitySection: React.FC<MatchingActivitySectionProps> = ({ start
       </div>
     </div>
   ) : (
-    <div className="flex justify-center items-center h-[50%]">
+    <div className='flex justify-center items-center h-[50%]'>
       <Spinner
         classNames={{ label: 'text-foreground mt-4' }}
-        label="The system is finding your matching activity. Please wait..."
-        variant="wave"
+        label='The system is finding your matching activity. Please wait...'
+        variant='wave'
       />
     </div>
   );

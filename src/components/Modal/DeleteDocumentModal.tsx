@@ -38,20 +38,20 @@ const DeleteDocumentModal = ({
       isKeyboardDismissDisabled={true}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      scrollBehavior="outside"
-      size="lg"
-      className="z-[1000]"
-      placement="center"
+      scrollBehavior='outside'
+      size='lg'
+      className='z-[1000]'
+      placement='center'
     >
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex gap-4">
-              <Image src={DeleteWarningIcon} alt="Delete Warning Icon" width={48} height={48} />
-              <h2 className="text-2xl font-bold">Are you sure you want to delete this document?</h2>
+            <ModalHeader className='flex gap-4'>
+              <Image src={DeleteWarningIcon} alt='Delete Warning Icon' width={48} height={48} />
+              <h2 className='text-2xl font-bold'>Are you sure you want to delete this document?</h2>
             </ModalHeader>
             <ModalBody>
-              <div className="flex items-center gap-4">
+              <div className='flex items-center gap-4'>
                 <div>
                   <Image
                     alt={`${document?.type} icon`}
@@ -60,21 +60,21 @@ const DeleteDocumentModal = ({
                     width={40}
                   />
                 </div>
-                <div className="grid justify-items-start text-left bg-transparent border-none p-0">
-                  <div className="text-lg text-black font-bold">
+                <div className='grid justify-items-start text-left bg-transparent border-none p-0'>
+                  <div className='text-lg text-black font-bold'>
                     {getFileName(document?.attachmentTitle || '')}
                   </div>
-                  <div className="text-xs text-gray-500">{document?.type}</div>
+                  <div className='text-xs text-gray-500'>{document?.type}</div>
                 </div>
               </div>
             </ModalBody>
-            <ModalFooter className="flex justify-between gap-4 w-full">
+            <ModalFooter className='flex justify-between gap-4 w-full'>
               <Button
                 onPress={onClose}
-                className="font-semibold bg-white w-1/2"
-                radius="lg"
-                variant="bordered"
-                color="primary"
+                className='font-semibold bg-white w-1/2'
+                radius='lg'
+                variant='bordered'
+                color='primary'
               >
                 Cancel
               </Button>
@@ -83,10 +83,10 @@ const DeleteDocumentModal = ({
                   onDeleteAttachment(document);
                   onClose();
                 }}
-                className="font-semibold w-1/2"
-                radius="lg"
-                color="primary"
-                variant="solid"
+                className='font-semibold w-1/2'
+                radius='lg'
+                color='primary'
+                variant='solid'
               >
                 Delete
               </Button>

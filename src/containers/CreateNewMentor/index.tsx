@@ -26,7 +26,7 @@ import TimeArability from '@/components/TimeAvailable/TimeArability';
 // Location Select Render Value
 const renderPurpleValue = (items: any[]) => {
   return items.map((item) => (
-    <span key={item.key} className="text-primary font-medium">
+    <span key={item.key} className='text-primary font-medium'>
       {item.data?.label || item.textValue}
     </span>
   ));
@@ -37,7 +37,7 @@ const createChipsRenderValue = <T extends string[]>(
   selectedItems: T,
   setSelectedItems: (items: T) => void
 ) => {
-  return (items: any[]) => {
+  const ChipsRenderValue = (items: any[]) => {
     if (items.length === 0) return null;
 
     const handleRemoveItem = (itemToRemove: string) => {
@@ -46,27 +46,27 @@ const createChipsRenderValue = <T extends string[]>(
     };
 
     return (
-      <div className="flex flex-wrap gap-1 py-1">
+      <div className='flex flex-wrap gap-1 py-1'>
         {items.map((item) => (
           <span
             key={item.key}
-            className="inline-flex items-center justify-center gap-1 px-3 py-2 h-8 bg-primary-20 border border-primary-40 rounded-lg text-sm text-primary font-medium"
+            className='inline-flex items-center justify-center gap-1 px-3 py-2 h-8 bg-primary-20 border border-primary-40 rounded-lg text-sm text-primary font-medium'
           >
             <span>{item.data?.label || item.textValue}</span>
             <button
-              type="button"
+              type='button'
               onClick={(e) => {
                 e.stopPropagation();
                 handleRemoveItem(item.key as string);
               }}
-              className="w-4 h-4 flex items-center justify-center rounded hover:bg-primary-40 transition-colors"
+              className='w-4 h-4 flex items-center justify-center rounded hover:bg-primary-40 transition-colors'
               aria-label={`Remove ${item.data?.label || item.textValue}`}
             >
-              <svg className="w-3 h-3 text-primary" fill="currentColor" viewBox="0 0 20 20">
+              <svg className='w-3 h-3 text-primary' fill='currentColor' viewBox='0 0 20 20'>
                 <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
+                  fillRule='evenodd'
+                  d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                  clipRule='evenodd'
                 />
               </svg>
             </button>
@@ -75,6 +75,9 @@ const createChipsRenderValue = <T extends string[]>(
       </div>
     );
   };
+
+  ChipsRenderValue.displayName = 'ChipsRenderValue';
+  return ChipsRenderValue;
 };
 
 const CreateNewMentor = () => {
@@ -97,7 +100,10 @@ const CreateNewMentor = () => {
   const [marketFocus, setMarketFocus] = useState('');
   const [switchState, setSwitchState] = useState(true);
   const [fromToValue, setFromToValue] = useState<string[][]>([['', '']]);
-  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const weekDays = useMemo(
+    () => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    []
+  );
   const [availability, setAvailability] = useState<
     Record<string, { switchState: boolean; fromToValue: string[][] }>
   >(() =>
@@ -254,23 +260,23 @@ const CreateNewMentor = () => {
   };
 
   const CameraIcon = () => (
-    <div className="w-6 h-6 text-secondary">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z" />
-        <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
+    <div className='w-6 h-6 text-secondary'>
+      <svg viewBox='0 0 24 24' fill='currentColor'>
+        <path d='M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z' />
+        <path d='M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z' />
       </svg>
     </div>
   );
 
   // Header Section
   const HeaderSection = () => (
-    <div className="flex flex-col items-center gap-2 w-full">
-      <h1 className="text-2xl font-bold text-secondary leading-[175%] text-center">
+    <div className='flex flex-col items-center gap-2 w-full'>
+      <h1 className='text-2xl font-bold text-secondary leading-[175%] text-center'>
         Mentor profile
       </h1>
       <TextLine
-        text="Bring your knowledge to the world"
-        className="text-neutral-500 text-sm font-normal"
+        text='Bring your knowledge to the world'
+        className='text-neutral-500 text-sm font-normal'
       />
     </div>
   );
@@ -278,65 +284,65 @@ const CreateNewMentor = () => {
   // Step 1: Profile
   const ProfileStep = useMemo(
     () => (
-      <div className="space-y-6 w-full">
+      <div className='space-y-6 w-full'>
         {/* Profile Picture Upload */}
-        <div className="flex flex-col items-center gap-5">
+        <div className='flex flex-col items-center gap-5'>
           <input
-            type="file"
-            accept="image/*"
+            type='file'
+            accept='image/*'
             onChange={handleFileChange}
-            className="hidden"
-            id="profile-picture"
+            className='hidden'
+            id='profile-picture'
           />
-          <label htmlFor="profile-picture" className="cursor-pointer">
-            <div className="w-20 h-20 min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors">
+          <label htmlFor='profile-picture' className='cursor-pointer'>
+            <div className='w-20 h-20 min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors'>
               {profilePicture ? (
                 <Image
                   src={profilePicture}
-                  alt="Profile"
+                  alt='Profile'
                   width={90}
                   height={90}
-                  className="w-full h-full object-cover"
+                  className='w-full h-full object-cover'
                 />
               ) : (
                 <CameraIcon />
               )}
             </div>
           </label>
-          <p className="text-lg font-normal text-secondary leading-[150%] text-center">
+          <p className='text-lg font-normal text-secondary leading-[150%] text-center'>
             Upload your profile picture
           </p>
         </div>
 
         {/* Mentor Name */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Mentor name"
-            className="text-base font-bold text-secondary leading-[150%]"
+            text='Mentor name'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Input
-            variant="text"
-            preset="default-lg"
+            variant='text'
+            preset='default-lg'
             value={mentorName}
             onChange={(value) => {
               setMentorName(value);
               // handleChangeMentorUsername(value);
             }}
-            placeholder="Enter your preferred name as a mentor"
+            placeholder='Enter your preferred name as a mentor'
             isRequired
           />
         </div>
 
         {/* Location */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Location based"
-            className="text-base font-bold text-secondary leading-[150%]"
+            text='Location based'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Select
             isVirtualized={false}
-            variant="form-field"
-            placeholder="Search location"
+            variant='form-field'
+            placeholder='Search location'
             items={provinces.map((province) => ({
               key: province.value,
               label: province.label,
@@ -349,21 +355,21 @@ const CreateNewMentor = () => {
                 setLocation(selectedKey.toString());
               }
             }}
-            className="[&_button]:h-12 [&_button]:min-h-12"
+            className='[&_button]:h-12 [&_button]:min-h-12'
             renderValue={renderPurpleValue}
             isRequired
           />
         </div>
 
         {/* SDG Goal */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="SDG Goal"
-            className="text-base font-bold text-secondary leading-[150%]"
+            text='SDG Goal'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Select
-            variant="form-field"
-            placeholder="Search goal"
+            variant='form-field'
+            placeholder='Search goal'
             items={Object.entries(STARTUP_SDG_GOALS).map(([key, goal]) => ({
               key: goal.textValue,
               label: goal.label,
@@ -376,7 +382,7 @@ const CreateNewMentor = () => {
               }
             }}
             itemHeight={32}
-            selectionMode="multiple"
+            selectionMode='multiple'
             className="[&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
             renderValue={createChipsRenderValue(selectedGoals, setSelectedGoals)}
             isRequired
@@ -390,61 +396,61 @@ const CreateNewMentor = () => {
   // Step 2: Career
   const CareerStep = useMemo(
     () => (
-      <div className="space-y-6 w-full">
+      <div className='space-y-6 w-full'>
         {/* Year of Experience */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Year of Experience"
-            className="text-sm font-semibold text-secondary leading-[150%]"
+            text='Year of Experience'
+            className='text-sm font-semibold text-secondary leading-[150%]'
           />
           <Input
-            variant="text"
-            preset="default-lg"
+            variant='text'
+            preset='default-lg'
             value={yearOfExperience}
             onChange={setYearOfExperience}
-            placeholder="Enter year"
+            placeholder='Enter year'
           />
         </div>
 
         {/* Current Position */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Current Position"
-            className="text-sm font-semibold text-secondary leading-[150%]"
+            text='Current Position'
+            className='text-sm font-semibold text-secondary leading-[150%]'
           />
           <Input
-            variant="text"
-            preset="default-lg"
+            variant='text'
+            preset='default-lg'
             value={currentPosition}
             onChange={setCurrentPosition}
-            placeholder="Enter your current position"
+            placeholder='Enter your current position'
           />
         </div>
 
         {/* Current Workplace */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Current Workplace"
-            className="text-sm font-semibold text-secondary leading-[150%]"
+            text='Current Workplace'
+            className='text-sm font-semibold text-secondary leading-[150%]'
           />
           <Input
-            variant="text"
-            preset="default-lg"
+            variant='text'
+            preset='default-lg'
             value={currentWorkplace}
             onChange={setCurrentWorkplace}
-            placeholder="Enter your current workplace"
+            placeholder='Enter your current workplace'
           />
         </div>
 
         {/* Industry */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Industry"
-            className="text-sm font-semibold text-secondary leading-[150%]"
+            text='Industry'
+            className='text-sm font-semibold text-secondary leading-[150%]'
           />
           <Select
-            variant="form-field"
-            placeholder="Search Industry"
+            variant='form-field'
+            placeholder='Search Industry'
             items={[
               { key: 'tech', label: 'Technology', value: 'tech' },
               { key: 'finance', label: 'Finance', value: 'finance' },
@@ -461,7 +467,7 @@ const CreateNewMentor = () => {
                 setIndustry(selectedKey.toString());
               }
             }}
-            className="[&_button]:h-12 [&_button]:min-h-12"
+            className='[&_button]:h-12 [&_button]:min-h-12'
             renderValue={renderPurpleValue}
           />
         </div>
@@ -473,16 +479,16 @@ const CreateNewMentor = () => {
   // Step 3: Mentorship
   const MentorshipStep = useMemo(
     () => (
-      <div className="space-y-6 w-full">
+      <div className='space-y-6 w-full'>
         {/* Market Focus */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Market Focus*"
-            className="text-sm font-semibold text-secondary leading-[150%]"
+            text='Market Focus*'
+            className='text-sm font-semibold text-secondary leading-[150%]'
           />
           <Select
-            variant="form-field"
-            placeholder="Search country"
+            variant='form-field'
+            placeholder='Search country'
             items={[
               { key: 'global', label: 'Global', value: 'global' },
               { key: 'asia', label: 'Asia', value: 'asia' },
@@ -499,20 +505,20 @@ const CreateNewMentor = () => {
                 setMarketFocus(selectedKey.toString());
               }
             }}
-            className="[&_button]:h-12 [&_button]:min-h-12"
+            className='[&_button]:h-12 [&_button]:min-h-12'
             renderValue={renderPurpleValue}
           />
         </div>
 
         {/* Skill Offered (Review) */}
-        <div className="space-y-2">
+        <div className='space-y-2'>
           <FormLabel
-            text="Skill offered*"
-            className="text-sm font-semibold text-secondary leading-[150%]"
+            text='Skill offered*'
+            className='text-sm font-semibold text-secondary leading-[150%]'
           />
           <Select
-            variant="form-field"
-            placeholder="Search skill"
+            variant='form-field'
+            placeholder='Search skill'
             items={Object.entries(MENTOR_SKILL_OFFERED).map(([key, label]) => ({
               key,
               label,
@@ -524,7 +530,7 @@ const CreateNewMentor = () => {
                 setSkillOffered(Array.from(keys) as SkillOffered);
               }
             }}
-            selectionMode="multiple"
+            selectionMode='multiple'
             className="[&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
             renderValue={createChipsRenderValue(skillOffered, setSkillOffered)}
             isRequired
@@ -538,10 +544,10 @@ const CreateNewMentor = () => {
   // Step 4: Availability
   const AvailabilityStep = useMemo(
     () => (
-      <div className="space-y-6 w-full">
-        <div className="flex flex-col">
-          <div className="text-md font-semibold">Time Availability</div>
-          <div className="text-sm">This step is optional</div>
+      <div className='space-y-6 w-full'>
+        <div className='flex flex-col'>
+          <div className='text-md font-semibold'>Time Availability</div>
+          <div className='text-sm'>This step is optional</div>
         </div>
         {weekDays.map((day) => (
           <TimeArability
@@ -555,25 +561,25 @@ const CreateNewMentor = () => {
         ))}
       </div>
     ),
-    [availability]
+    [availability, weekDays]
   );
 
   // Action Buttons
   const ActionButtons = () => (
-    <div className="flex flex-row justify-between w-full gap-8 h-12">
-      <div className="flex-1">
+    <div className='flex flex-row justify-between w-full gap-8 h-12'>
+      <div className='flex-1'>
         <Button
-          variant="secondary-full"
+          variant='secondary-full'
           onClick={currentStep === 0 ? handleCancelCreateProfile : handleBack}
         >
           {currentStep === 0 ? 'Cancel' : 'Back'}
         </Button>
       </div>
-      <div className="flex-1">
+      <div className='flex-1'>
         <Button
-          variant="primary-full"
+          variant='primary-full'
           onClick={currentStep === steps.length - 1 ? handleCreateProfile : handleNext}
-          className="bg-primary text-neutral-20 hover:bg-primary-80"
+          className='bg-primary text-neutral-20 hover:bg-primary-80'
         >
           {currentStep === steps.length - 1 ? 'Continue' : 'Continue'}
         </Button>
@@ -598,20 +604,20 @@ const CreateNewMentor = () => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center min-h-screen relative">
+    <div className='w-full flex justify-center items-center min-h-screen relative'>
       {loading && (
-        <div className="absolute inset-0 flex justify-center items-center bg-neutral-20 bg-opacity-75 z-50">
-          <div className="loader"></div>
+        <div className='absolute inset-0 flex justify-center items-center bg-neutral-20 bg-opacity-75 z-50'>
+          <div className='loader'></div>
         </div>
       )}
-      <div className="flex flex-col w-full max-w-[940px] p-8 bg-neutral-20 rounded-xl shadow-md space-y-8">
+      <div className='flex flex-col w-full max-w-[940px] p-8 bg-neutral-20 rounded-xl shadow-md space-y-8'>
         <HeaderSection />
 
         {/* Stepper */}
-        <Stepper steps={steps} currentStep={currentStep} className="mb-8" />
+        <Stepper steps={steps} currentStep={currentStep} className='mb-8' />
 
         {/* Step Content */}
-        <div className="w-full">{renderStepContent()}</div>
+        <div className='w-full'>{renderStepContent()}</div>
 
         <ActionButtons />
       </div>

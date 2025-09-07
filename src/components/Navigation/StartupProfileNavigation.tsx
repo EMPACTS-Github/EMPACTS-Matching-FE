@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Tab, Tabs } from '@heroui/react';
 import { startup_profile_detail } from '@/apis/startup-profile';
 import { StartupProfileResponse } from '@/interfaces/StartupProfile';
@@ -25,16 +25,16 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
   const [error, setError] = useState<string | null>(null);
   const setStartupId = useStartupIdStore((state) => state.setStartupId);
 
-  const fetchStartupProfile = async () => {
+  const fetchStartupProfile = useCallback(async () => {
     try {
       const data = await startup_profile_detail(startupId);
       setStartupProfile(data.data);
     } catch (err) {
       console.error(CONSOLE_ERRORS.FETCH_STARTUP_PROFILE_FAILED, err);
     }
-  };
+  }, [startupId]);
 
-  const suggestMentorList = async () => {
+  const suggestMentorList = useCallback(async () => {
     try {
       const suggestedMentorList = await suggest_mentor_list({ startupId: startupId });
       setSuggestedMentors(suggestedMentorList.data);
@@ -49,38 +49,38 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
       }
       console.error(CONSOLE_ERRORS.FETCH_SUGGESTED_MENTORS_FAILED, err);
     }
-  };
+  }, [startupId]);
 
   useEffect(() => {
     setStartupId(startupId);
     fetchStartupProfile();
     suggestMentorList();
-  }, [startupId]);
+  }, [startupId, setStartupId, fetchStartupProfile, suggestMentorList]);
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="flex-col w-full">
+    <div className='w-full flex justify-center'>
+      <div className='flex-col w-full'>
         <Tabs
-          aria-label="Startup profile tabs"
-          color="primary"
-          variant="underlined"
+          aria-label='Startup profile tabs'
+          color='primary'
+          variant='underlined'
           selectedKey={selected}
           onSelectionChange={setSelected as any}
-          className="w-full font-bold bg-white 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4"
+          className='w-full font-bold bg-white 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4'
         >
-          <Tab key="explore" title={UI_LABELS.EXPLORE} className="pt-0 px-2">
+          <Tab key='explore' title={UI_LABELS.EXPLORE} className='pt-0 px-2'>
             <StartupExploreContainer mentorList={suggestedMentors} error={error} />
           </Tab>
-          <Tab key="profile" title={UI_LABELS.PROFILE} className="pt-0 px-2">
-            <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
+          <Tab key='profile' title={UI_LABELS.PROFILE} className='pt-0 px-2'>
+            <div className='flex flex-col items-center w-full h-screen relative z-10 gap-y-8'>
               <StartupProfileContainer
                 onFetchStartupProfile={fetchStartupProfile}
                 startup_profile={startup_profile}
               />
             </div>
           </Tab>
-          <Tab key="member" title={UI_LABELS.MEMBER} className="pt-0 px-2">
-            <div className="flex flex-col items-center w-full h-screen relative z-10 gap-y-8">
+          <Tab key='member' title={UI_LABELS.MEMBER} className='pt-0 px-2'>
+            <div className='flex flex-col items-center w-full h-screen relative z-10 gap-y-8'>
               <StartupMemberContainer
                 onFetchStartupProfile={fetchStartupProfile}
                 startup_profile={startup_profile}

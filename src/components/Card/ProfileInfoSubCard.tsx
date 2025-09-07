@@ -42,17 +42,17 @@ const StatisticItem: React.FC<{ value: number; label: string; pluralLabel: strin
   label,
   pluralLabel,
 }) => (
-  <div className="flex flex-col justify-center items-center">
-    <TextLine text={value.toString()} className="font-semibold text-lg text-secondary py-1" />
-    <TextLine text={value === 1 ? label : pluralLabel} className="text-neutral-50 text-xs" />
+  <div className='flex flex-col justify-center items-center'>
+    <TextLine text={value.toString()} className='font-semibold text-lg text-secondary py-1' />
+    <TextLine text={value === 1 ? label : pluralLabel} className='text-neutral-50 text-xs' />
   </div>
 );
 
 // Profile Header Component
 const ProfileHeader: React.FC<{ startup: Startup }> = ({ startup }) => (
-  <div className="flex flex-col justify-center items-center">
-    <TextLine text={startup.name} className="font-semibold text-xl text-secondary" />
-    <TextLine text={startup.startupUsername} className="text-neutral-50 text-xs mb-2" />
+  <div className='flex flex-col justify-center items-center'>
+    <TextLine text={startup.name} className='font-semibold text-xl text-secondary' />
+    <TextLine text={startup.startupUsername} className='text-neutral-50 text-xs mb-2' />
     <StatusBadge status={startup.status} />
   </div>
 );
@@ -66,25 +66,25 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <Card className="bg-neutral-20 min-w-lg shadow-lg rounded-lg px-regular py-small">
-      <CardHeader className="flex flex-col gap-3 items-center">
+    <Card className='bg-neutral-20 min-w-lg shadow-lg rounded-lg px-regular py-small'>
+      <CardHeader className='flex flex-col gap-3 items-center'>
         <Avatar
-          variant="default-lg"
-          alt="Startup Profile"
+          variant='default-lg'
+          alt='Startup Profile'
           src={startup.avtUrl}
-          className="w-20 h-20"
+          className='w-20 h-20'
         />
         <ProfileHeader startup={startup} />
       </CardHeader>
-      <CardBody className="py-0">
+      <CardBody className='py-0'>
         <Divider />
-        <div className="flex justify-around items-center p-small">
+        <div className='flex justify-around items-center p-small'>
           <StatisticItem
             value={startup.memberQty}
             label={UI_LABELS.MEMBER}
             pluralLabel={UI_LABELS.MEMBERS}
           />
-          <Divider orientation="vertical" className="h-14" />
+          <Divider orientation='vertical' className='h-14' />
           <StatisticItem
             value={countMatches}
             label={UI_LABELS.MATCH}
@@ -93,8 +93,8 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({
         </div>
         <Divider />
       </CardBody>
-      <CardFooter className="pt-regular">
-        <Button onClick={onOpen} variant="tertiary-full" disabled={!isOwner}>
+      <CardFooter className='pt-regular'>
+        <Button onClick={onOpen} variant='tertiary-full' disabled={!isOwner}>
           {UI_LABELS.SETTINGS}
         </Button>
         <SettingModal

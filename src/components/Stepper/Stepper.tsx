@@ -103,9 +103,9 @@ const Stepper: React.FC<StepperProps> = ({
 
   return (
     <div className={`flex flex-col items-center ${className}`}>
-      <div className="flex flex-col items-center w-full">
+      <div className='flex flex-col items-center w-full'>
         {/* Step Numbers with Lines */}
-        <div className="flex items-center justify-center w-full">
+        <div className='flex items-center justify-center w-full'>
           {steps.map((step, index) => {
             const status = getStepStatus(index);
             const isLast = index === steps.length - 1;
@@ -119,11 +119,11 @@ const Stepper: React.FC<StepperProps> = ({
                       ? step.customContent
                       : step.isCompleted
                         ? completedIcon || (
-                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'>
                               <path
-                                fillRule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clipRule="evenodd"
+                                fillRule='evenodd'
+                                d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                clipRule='evenodd'
                               />
                             </svg>
                           )
@@ -142,7 +142,7 @@ const Stepper: React.FC<StepperProps> = ({
 
         {/* Step Labels */}
         {showLabels && (
-          <div className="flex items-center justify-center w-full mt-2">
+          <div className='flex items-center justify-center w-full mt-2'>
             {steps.map((step, index) => {
               const status = getStepStatus(index);
               const isLast = index === steps.length - 1;
@@ -156,7 +156,7 @@ const Stepper: React.FC<StepperProps> = ({
                   </div>
 
                   {/* Spacer for alignment */}
-                  {!isLast && <div className="w-32" />}
+                  {!isLast && <div className='w-32' />}
                 </React.Fragment>
               );
             })}

@@ -281,72 +281,72 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
   return (
     <Modal
-      size="5xl"
+      size='5xl'
       isKeyboardDismissDisabled={true}
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      scrollBehavior="inside"
-      className="py-4 px-6 min-h-96"
+      scrollBehavior='inside'
+      className='py-4 px-6 min-h-96'
     >
       <ModalContent>
         {(onOpenChange) => (
           <>
             <ModalHeader>
-              <div className="flex gap-3">
+              <div className='flex gap-3'>
                 <Avatar
-                  alt="heroui logo"
+                  alt='heroui logo'
                   src={image}
-                  size="md"
-                  radius="full"
+                  size='md'
+                  radius='full'
                   isBordered
-                  color="primary"
-                  className="bg-neutral-20"
+                  color='primary'
+                  className='bg-neutral-20'
                 />
-                <div className="flex flex-col justify-center">
-                  <p className="font-semibold text-lg text-secondary">{mentor?.name}</p>
-                  <p className="text-neutral-50 font-normal text-md">{UI_LABELS.MENTOR_SETTING}</p>
+                <div className='flex flex-col justify-center'>
+                  <p className='font-semibold text-lg text-secondary'>{mentor?.name}</p>
+                  <p className='text-neutral-50 font-normal text-md'>{UI_LABELS.MENTOR_SETTING}</p>
                 </div>
               </div>
             </ModalHeader>
             <Divider />
             <ModalBody>
               <Tabs
-                aria-label="Options"
-                variant="light"
-                color="primary"
+                aria-label='Options'
+                variant='light'
+                color='primary'
                 isVertical={true}
-                className="py-2 pr-4 mr-4 border-r-1 border-neutral-40"
+                className='py-2 pr-4 mr-4 border-r-1 border-neutral-40'
               >
                 <Tab
-                  key="general"
+                  key='general'
                   title={UI_LABELS.GENERAL}
-                  className="w-full flex flex-col gap-2 py-2"
+                  className='w-full flex flex-col gap-2 py-2'
                 >
-                  <div className="font-semibold text-lg text-primary">
+                  <div className='font-semibold text-lg text-primary'>
                     {UI_LABELS.BASIC_INFORMATION}
                   </div>
                   <Divider />
-                  <div className="flex gap-4">
+                  <div className='flex gap-4'>
                     <Avatar
-                      alt="heroui logo"
+                      alt='heroui logo'
                       src={image}
-                      size="sm"
-                      radius="full"
+                      size='sm'
+                      radius='full'
                       isBordered
-                      color="primary"
-                      className="bg-neutral-20"
+                      color='primary'
+                      className='bg-neutral-20'
                     />
-                    <div className="flex flex-col justify-center items-center">
-                      <label htmlFor="profile-upload" className="cursor-pointer">
-                        <p className="font-semibold text-sm text-primary">
+                    <div className='flex flex-col justify-center items-center'>
+                      <label htmlFor='profile-upload' className='cursor-pointer'>
+                        <p className='font-semibold text-sm text-primary'>
                           {UI_LABELS.CHANGE_PROFILE_PHOTO}
                         </p>
                       </label>
                       <input
-                        id="profile-upload"
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
+                        id='profile-upload'
+                        type='file'
+                        accept='image/*'
+                        className='hidden'
                         onChange={handleImageChange}
                       />
                     </div>
@@ -367,27 +367,27 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                   />
                   <Autocomplete
                     isVirtualized={false}
-                    labelPlacement="outside"
+                    labelPlacement='outside'
                     label={UI_LABELS.LOCATION}
                     placeholder={UI_LABELS.SELECT_LOCATION}
                     onSelectionChange={() => setLocation}
                     defaultItems={provinces}
-                    variant="bordered"
+                    variant='bordered'
                     defaultSelectedKey={location}
                   >
                     {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
                   </Autocomplete>
                   <Select
                     label={UI_LABELS.LANGUAGES_SPOKEN}
-                    labelPlacement="outside"
-                    aria-label="Select Languages Spoken"
-                    variant="bordered"
-                    selectionMode="multiple"
+                    labelPlacement='outside'
+                    aria-label='Select Languages Spoken'
+                    variant='bordered'
+                    selectionMode='multiple'
                     selectedKeys={languagesSpoken}
                     onSelectionChange={(keys) =>
                       setLanguagesSpoken(Array.from(keys).map(String) as LanguagesSpoken)
                     }
-                    className="w-full"
+                    className='w-full'
                     placeholder={UI_LABELS.SELECT_LANGUAGES}
                   >
                     {languages.map((lang) => (
@@ -406,15 +406,15 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
                   <Select
                     label={UI_LABELS.SKILL_OFFERED}
-                    labelPlacement="outside"
-                    aria-label="Select Skill Offered"
-                    variant="bordered"
-                    selectionMode="multiple"
+                    labelPlacement='outside'
+                    aria-label='Select Skill Offered'
+                    variant='bordered'
+                    selectionMode='multiple'
                     selectedKeys={skillOffered}
                     onSelectionChange={(keys) =>
                       setSkillOffered(Array.from(keys).map(String) as SkillOffered)
                     }
-                    className="w-full"
+                    className='w-full'
                     placeholder={UI_LABELS.SELECT_SKILL_OFFERED}
                   >
                     {skills.map((skill) => (
@@ -433,15 +433,15 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
                   <Select
                     label={UI_LABELS.SDGS_FOCUS_EXPERTISES}
-                    labelPlacement="outside"
-                    aria-label="Select SDGs Focus Expertises"
-                    variant="bordered"
-                    selectionMode="multiple"
+                    labelPlacement='outside'
+                    aria-label='Select SDGs Focus Expertises'
+                    variant='bordered'
+                    selectionMode='multiple'
                     selectedKeys={sdgFocusExpertises}
                     onSelectionChange={(keys) =>
                       setSdgFocusExpertises(Array.from(keys).map(String) as SDGs)
                     }
-                    className="w-full"
+                    className='w-full'
                     placeholder={UI_LABELS.SELECT_SDGS_EXPERTISES}
                   >
                     {sdgGoals.map((sdg) => (
@@ -458,44 +458,44 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                     ))}
                   </Select>
 
-                  <div className="flex flex-col gap-1">
-                    <label className="text-sm text-neutral-80 mb-1">{UI_LABELS.DESCRIPTION}</label>
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm text-neutral-80 mb-1'>{UI_LABELS.DESCRIPTION}</label>
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       rows={5}
-                      className="border border-neutral-40 rounded-lg min-h-[120px] p-3 bg-neutral-20 text-secondary text-sm resize-none focus:outline-none focus:border-secondary transition-colors"
+                      className='border border-neutral-40 rounded-lg min-h-[120px] p-3 bg-neutral-20 text-secondary text-sm resize-none focus:outline-none focus:border-secondary transition-colors'
                       placeholder={UI_LABELS.DESCRIPTION}
                     />
                   </div>
 
-                  <div className="flex justify-end gap-4">
-                    <Button variant="secondary-md" onClick={onOpenChange}>
+                  <div className='flex justify-end gap-4'>
+                    <Button variant='secondary-md' onClick={onOpenChange}>
                       {UI_LABELS.CANCEL}
                     </Button>
-                    <Button variant="primary-md" onClick={onUpdateProfileClick}>
+                    <Button variant='primary-md' onClick={onUpdateProfileClick}>
                       {UI_LABELS.UPDATE_PROFILE}
                     </Button>
                   </div>
                 </Tab>
                 <Tab
-                  key="advanced"
+                  key='advanced'
                   title={UI_LABELS.ADVANCED}
-                  className="w-full flex flex-col gap-2 py-3"
+                  className='w-full flex flex-col gap-2 py-3'
                 >
-                  <div className="flex justify-between">
-                    <div className="flex flex-col justify-center">
-                      <p className="font-semibold text-sm text-secondary">
+                  <div className='flex justify-between'>
+                    <div className='flex flex-col justify-center'>
+                      <p className='font-semibold text-sm text-secondary'>
                         {UI_LABELS.DELETE_PROFILE}
                       </p>
-                      <p className="text-neutral-50 font-normal text-xs">
+                      <p className='text-neutral-50 font-normal text-xs'>
                         {UI_LABELS.DELETE_PROFILE_DESCRIPTION}
                       </p>
                     </div>
                     <Button
-                      variant="warning-md"
+                      variant='warning-md'
                       onClick={onOpenDeleteProfileModal}
-                      className="w-32"
+                      className='w-32'
                     >
                       {UI_LABELS.DELETE_PROFILE}
                     </Button>

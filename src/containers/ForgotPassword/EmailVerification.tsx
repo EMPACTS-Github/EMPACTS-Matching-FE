@@ -56,7 +56,7 @@ function EmailVerification({
     className?: string;
   }) => (
     <div className={className} onClick={onClick}>
-      <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+      <Image src={ArrowLeftIcon} alt='Arrow left icon' width={40} height={40} />
     </div>
   );
 
@@ -73,13 +73,13 @@ function EmailVerification({
     logoHeight?: number;
     titleClassName?: string;
   }) => (
-    <div className="flex flex-col items-center text-center">
+    <div className='flex flex-col items-center text-center'>
       <Image
         src={logoSrc}
-        alt="Logo"
+        alt='Logo'
         width={logoWidth}
         height={logoHeight}
-        sizes="100vw"
+        sizes='100vw'
         style={{ width: logoWidth === 0 ? '50%' : 'auto', height: 'auto' }}
         priority
       />
@@ -155,14 +155,14 @@ function EmailVerification({
   };
 
   return (
-    <div className="text-center">
-      <div className="flex flex-col items-center text-center h-3/4">
+    <div className='text-center'>
+      <div className='flex flex-col items-center text-center h-3/4'>
         <BackButton onClick={handleGoBack} />
         <LogoHeader title={title} />
       </div>
-      <p className="text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
+      <p className='text-gray-600' dangerouslySetInnerHTML={{ __html: description }} />
       <Form
-        className="flex flex-col items-center justify-center w-full gap-10"
+        className='flex flex-col items-center justify-center w-full gap-10'
         onSubmit={handleVerifyOTP}
       >
         <OtpInput
@@ -170,13 +170,13 @@ function EmailVerification({
           onValueChange={setOtp}
           onComplete={handleVerifyOTP}
           length={6}
-          className="w-full max-w-xs"
+          className='w-full max-w-xs'
         />
-        <Button variant="primary-full" type="submit">
+        <Button variant='primary-full' type='submit'>
           Verify
         </Button>
       </Form>
-      <div className="text-gray-500 mt-4">
+      <div className='text-gray-500 mt-4'>
         Did not receive code? <span> </span>
         <ResendCodeButton
           isDisabled={isResendDisabled}

@@ -25,17 +25,17 @@ const MatchingMentorCard: React.FC<MatchingMentorCardProps> = ({
     <Card
       fullWidth
       isPressable
-      className="flex flex-row gap-small rounded-md px-regular py-regular items-center shadow-sm"
+      className='flex flex-row gap-small rounded-md px-regular py-regular items-center shadow-sm'
       onPress={onCardClick}
     >
-      <div className="w-[25%]">
-        <Avatar variant="default-lg" src={avatarUrl} alt={`${name}'s avatar`} />
+      <div className='w-[25%]'>
+        <Avatar variant='default-lg' src={avatarUrl} alt={`${name}'s avatar`} />
       </div>
-      <div className="flex flex-col justify-start w-[75%]">
-        <TextLine text={name} className="text-lg font-semibold text-secondary text-left" />
-        <TextLine text={location} className="text-neutral-50 text-sm text-left line-clamp-1" />
-        <div className="flex gap-small items-center mt-small">
-          <TextLine text={PROFILE_MESSAGES.STATUS} className="font-semibold text-secondary" />
+      <div className='flex flex-col justify-start w-[75%]'>
+        <TextLine text={name} className='text-lg font-semibold text-secondary text-left' />
+        <TextLine text={location} className='text-neutral-50 text-sm text-left line-clamp-1' />
+        <div className='flex gap-small items-center mt-small'>
+          <TextLine text={PROFILE_MESSAGES.STATUS} className='font-semibold text-secondary' />
           <TextLine
             text={capitalizeFirstLetter(status)}
             className={`font-semibold ${status === MATCHING_STATUS.ACCEPTED ? 'text-success' : 'text-neutral-50'}`}

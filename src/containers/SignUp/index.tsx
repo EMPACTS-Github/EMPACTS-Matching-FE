@@ -63,8 +63,8 @@ function SignUp() {
   };
 
   return (
-    <div className="col-span-1 bg-white h-screen flex justify-center">
-      <div className="p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]">
+    <div className='col-span-1 bg-white h-screen flex justify-center'>
+      <div className='p-8 rounded-lg w-full max-w-sm flex flex-col justify-start mt-[30%]'>
         {currentScreen == 'verification' ? (
           <EmailVerification />
         ) : currentScreen == 'password' ? (
@@ -73,27 +73,27 @@ function SignUp() {
           <RegisterInfo />
         ) : (
           <div>
-            <AuthHeader title="Sign up" description="" />
-            <Form onSubmit={handleSignup} className="space-y-4">
+            <AuthHeader title='Sign up' description='' />
+            <Form onSubmit={handleSignup} className='space-y-4'>
               <Input
-                label="Email"
-                variant="email"
+                label='Email'
+                variant='email'
                 value={email}
                 onChange={setEmail}
                 isInvalid={!isValidEmail}
-                preset="line-fill-sm"
+                preset='line-fill-sm'
                 errorMessage={emailError}
                 isRequired={true}
               />
-              <Button variant="primary-full" type="submit">
+              <Button variant='primary-full' type='submit'>
                 Sign up
               </Button>
             </Form>
 
             <FormFooterAction
-              text="Already have an account?"
+              text='Already have an account?'
               action={
-                <AuthLink href={ROUTES.AUTH.LOGIN} className="text-md font-semibold text-primary">
+                <AuthLink href={ROUTES.AUTH.LOGIN} className='text-md font-semibold text-primary'>
                   Sign in
                 </AuthLink>
               }

@@ -68,24 +68,24 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
   };
   return (
     <div className={`bg-white rounded-lg shadow-xl py-6 px-8 gap-y-6 flex flex-col`}>
-      <div className="flex justify-between items-end">
-        <div className="flex justify-start items-center">
+      <div className='flex justify-between items-end'>
+        <div className='flex justify-start items-center'>
           <Avatar
             src={avtUrl}
             alt={title}
-            color="primary"
+            color='primary'
             isBordered
-            size="lg"
-            radius="full"
-            className="mr-6 bg-white"
+            size='lg'
+            radius='full'
+            className='mr-6 bg-white'
           />
-          <div className="items-center justify-between flex-grow">
-            <div className="flex items-center justify-between">
+          <div className='items-center justify-between flex-grow'>
+            <div className='flex items-center justify-between'>
               <h3
-                className="text-[28px] font-semibold text-black hover:underline cursor-pointer"
+                className='text-[28px] font-semibold text-black hover:underline cursor-pointer'
                 onClick={onMentorInfoModalOpen}
                 tabIndex={0}
-                role="button"
+                role='button'
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') onMentorInfoModalOpen();
                 }}
@@ -93,27 +93,27 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
                 {title}
               </h3>
             </div>
-            <div className="flex items-center justify-between">
-              <TextLine text={location} className="text-black text-[20px]" />
+            <div className='flex items-center justify-between'>
+              <TextLine text={location} className='text-black text-[20px]' />
             </div>
           </div>
         </div>
         {status === MATCHING_STATUS.PENDING && (
           <Button
-            type="submit"
-            color="primary"
-            size="md"
-            variant="bordered"
-            radius="md"
-            startContent={<UserRightIcon className="text-empacts" />}
+            type='submit'
+            color='primary'
+            size='md'
+            variant='bordered'
+            radius='md'
+            startContent={<UserRightIcon className='text-empacts' />}
             onPress={onCancelModalOpen}
           >
             Cancel Request
           </Button>
         )}
       </div>
-      <div className="flex gap-x-2 items-center">
-        <div className="font-semibold">Status:</div>
+      <div className='flex gap-x-2 items-center'>
+        <div className='font-semibold'>Status:</div>
         <div
           className={
             status === MATCHING_STATUS.ACCEPTED
@@ -125,35 +125,35 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
         </div>
       </div>
       {status === MATCHING_STATUS.ACCEPTED ? (
-        <div className="flex w-full gap-2">
-          <div className="flex w-[60%] flex-wrap md:flex-nowrap gap-4">
+        <div className='flex w-full gap-2'>
+          <div className='flex w-[60%] flex-wrap md:flex-nowrap gap-4'>
             <DateInput
               isReadOnly
               defaultValue={calendarDate}
               placeholderValue={new CalendarDate(2025, 12, 1)}
-              endContent={<CalendarIcon className="text-black pointer-events-none" />}
-              className="w-1/2"
+              endContent={<CalendarIcon className='text-black pointer-events-none' />}
+              className='w-1/2'
             />
             <TimeInput
               isReadOnly
               defaultValue={time}
-              endContent={<ClockIcon className="text-xl text-black pointer-events-none" />}
-              className="w-1/2"
+              endContent={<ClockIcon className='text-xl text-black pointer-events-none' />}
+              className='w-1/2'
             />
           </div>
-          <div className="flex flex-col w-[40%] gap-2">
+          <div className='flex flex-col w-[40%] gap-2'>
             <Button
-              color="primary"
-              variant="solid"
-              className="w-full"
+              color='primary'
+              variant='solid'
+              className='w-full'
               onPress={onMeetingButtonClick}
             >
               Join with Google Meet
             </Button>
             <Snippet
               hideSymbol
-              size="sm"
-              className="bg-transparent border-none"
+              size='sm'
+              className='bg-transparent border-none'
               codeString={meetingLink}
             >
               {meetingLink.replace(/^https?:\/\//, '')}
@@ -161,31 +161,31 @@ const MatchingInfoCard: React.FC<MatchingInfoCardProps> = ({
           </div>
         </div>
       ) : (
-        <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+        <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
           <DateInput
             isReadOnly
             defaultValue={calendarDate}
             placeholderValue={new CalendarDate(2025, 12, 1)}
-            endContent={<CalendarIcon className="text-black pointer-events-none" />}
-            className="w-1/2"
+            endContent={<CalendarIcon className='text-black pointer-events-none' />}
+            className='w-1/2'
           />
           <TimeInput
             isReadOnly
             defaultValue={time}
-            endContent={<ClockIcon className="text-xl text-black pointer-events-none" />}
-            className="w-1/2"
+            endContent={<ClockIcon className='text-xl text-black pointer-events-none' />}
+            className='w-1/2'
           />
         </div>
       )}
 
-      <div className="flex flex-col gap-y-3">
+      <div className='flex flex-col gap-y-3'>
         <div className={`flex flex-col gap-1`}>
-          {note && <label className="text-sm text-gray-700 mb-1">Note</label>}
+          {note && <label className='text-sm text-gray-700 mb-1'>Note</label>}
           <textarea
             readOnly
             value={note}
             rows={5}
-            className="border border-gray-50 rounded-lg min-h-[120px] p-3 bg-gray-50 text-gray-700 resize-none focus:outline-none"
+            className='border border-gray-50 rounded-lg min-h-[120px] p-3 bg-gray-50 text-gray-700 resize-none focus:outline-none'
           />
         </div>
       </div>

@@ -66,34 +66,34 @@ function EmailVerification() {
   };
 
   const ResendAction = () => (
-    <span className="text-purple-600 cursor-pointer" onClick={handleResendCode}>
+    <span className='text-purple-600 cursor-pointer' onClick={handleResendCode}>
       Resend code
     </span>
   );
 
   return (
-    <div className="text-center">
-      <div className="flex flex-col items-center text-center">
-        <div className="absolute left-10 hover:bg-gray-300 rounded-lg" onClick={handleGoBack}>
-          <Image src={ArrowLeftIcon} alt="Arrow left icon" width={40} height={40} />
+    <div className='text-center'>
+      <div className='flex flex-col items-center text-center'>
+        <div className='absolute left-10 hover:bg-gray-300 rounded-lg' onClick={handleGoBack}>
+          <Image src={ArrowLeftIcon} alt='Arrow left icon' width={40} height={40} />
         </div>
         <Image
           src={EmpactsLogo}
-          alt="Background image"
+          alt='Background image'
           width={0}
           height={0}
-          sizes="100vw"
+          sizes='100vw'
           style={{ width: '50%', height: 'auto' }}
           priority
         />
-        <h2 className="text-2xl font-bold mt-6 mb-6 text-black">Verification code</h2>
+        <h2 className='text-2xl font-bold mt-6 mb-6 text-black'>Verification code</h2>
       </div>
-      <p className="text-gray-600">
+      <p className='text-gray-600'>
         A verification code has been sent to <strong>{email}</strong>. Please input your OTP code to
         finish the registration process.
       </p>
       <Form
-        className="flex flex-col items-center justify-center w-full gap-10"
+        className='flex flex-col items-center justify-center w-full gap-10'
         onSubmit={handleVerifyOTP}
       >
         <OtpInput
@@ -101,13 +101,13 @@ function EmailVerification() {
           onValueChange={setOtp}
           onComplete={handleVerifyOTP}
           length={6}
-          className="w-full max-w-xs"
+          className='w-full max-w-xs'
         />
-        <Button variant="primary-full" type="submit">
+        <Button variant='primary-full' type='submit'>
           Verify
         </Button>
       </Form>
-      <FormFooterAction text="Did not receive code?" action={<ResendAction />} />
+      <FormFooterAction text='Did not receive code?' action={<ResendAction />} />
     </div>
   );
 }
