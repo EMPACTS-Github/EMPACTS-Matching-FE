@@ -178,7 +178,7 @@ export const buttonPresets = {
 
   // Google sign-in button
   google: {
-    className: 'w-full mt-2 flex justify-center items-center bg-neutral-40 text-black',
+    className: 'w-full mt-2 flex justify-center items-center bg-neutral-30 text-black',
     variant: 'solid' as const,
     color: 'default' as const,
     size: 'lg' as const,
