@@ -16,10 +16,12 @@ import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import languages from '@/utils/data/languages.json';
 import { SkillOffered } from '@/constants/skillOffered';
 import skills from '@/utils/data/skillOffered.json';
-import { Select, SelectItem } from '@heroui/react';
 import DeleteProfileModal from './DeleteProfileModal';
 import HideProfileModal from './HideProfileModal';
 import Button from '@/components/Button/Button';
+import TimeArability from '@/components/TimeAvailable/TimeArability';
+import Input from '@/components/Input/Input';
+import Select from '@/components/Select/Select';
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/modal';
 
@@ -38,6 +40,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [selectedTab, setSelectedTab] = useState('general');
   const [image, setImage] = useState<string>(mentor.avtUrl || '');
   const [mentorName, setMentorName] = useState<string>(mentor.name || '');
   const [mentorUsername, setMentorUsername] = useState<string>(mentor.mentorUsername || '');
@@ -72,6 +75,19 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
   const [industryFocus, setIndustryFocus] = useState<string[]>(mentor.industryFocus || []);
   const [profilePicture, setProfilePicture] = useState('');
   const [uploadedPictureId, setUploadedPictureId] = useState('');
+
+  // Time availability states
+  const [timeAvailability, setTimeAvailability] = useState<{
+    [key: string]: { switchState: boolean; fromToValue: string[][] };
+  }>({
+    Monday: { switchState: false, fromToValue: [['', '']] },
+    Tuesday: { switchState: false, fromToValue: [['', '']] },
+    Wednesday: { switchState: false, fromToValue: [['', '']] },
+    Thursday: { switchState: false, fromToValue: [['', '']] },
+    Friday: { switchState: false, fromToValue: [['', '']] },
+    Saturday: { switchState: false, fromToValue: [['', '']] },
+    Sunday: { switchState: false, fromToValue: [['', '']] },
+  });
 
   const {
     isOpen: isDeleteProfileModalOpen,
@@ -286,234 +302,298 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       scrollBehavior='inside'
-      className='py-4 px-6 min-h-96'
+      className='p-0 rounded-3xl shadow-2xl'
     >
       <ModalContent>
         {(onOpenChange) => (
           <>
-            <ModalHeader>
-              <div className='flex gap-3'>
+            {/* Header Section */}
+            <div className='flex items-center justify-between p-regular bg-white rounded-t-3xl'>
+              <div className='flex items-center gap-3'>
                 <Avatar
-                  alt='heroui logo'
+                  alt='mentor avatar'
                   src={image}
                   size='md'
                   radius='full'
-                  isBordered
-                  color='primary'
-                  className='bg-neutral-20'
+                  className='w-10 h-10'
                 />
-                <div className='flex flex-col justify-center'>
-                  <p className='font-semibold text-lg text-secondary'>{mentor?.name}</p>
-                  <p className='text-neutral-50 font-normal text-md'>{UI_LABELS.MENTOR_SETTING}</p>
+                <div className='flex flex-col'>
+                  <p className='font-bold text-xl text-secondary'>{mentor?.name}</p>
+                  <p className='text-neutral-80 font-normal text-base'>Setting</p>
                 </div>
               </div>
-            </ModalHeader>
-            <Divider />
-            <ModalBody>
-              <Tabs
-                aria-label='Options'
-                variant='light'
-                color='primary'
-                isVertical={true}
-                className='py-2 pr-4 mr-4 border-r-1 border-neutral-40'
+              <button
+                onClick={onOpenChange}
+                className='w-6 h-6 flex items-center justify-center hover:bg-neutral-30 rounded-full transition-colors'
               >
-                <Tab
-                  key='general'
-                  title={UI_LABELS.GENERAL}
-                  className='w-full flex flex-col gap-2 py-2'
-                >
-                  <div className='font-semibold text-lg text-primary'>
-                    {UI_LABELS.BASIC_INFORMATION}
+                <svg className='w-3 h-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M6 18L18 6M6 6l12 12'
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <Divider className='border-neutral-40' />
+
+            <ModalBody className='p-0'>
+              <div className='flex h-full'>
+                {/* Left Sidebar - Tabs */}
+                <div className='w-64 flex flex-col gap-2 p-regular border-r border-neutral-40'>
+                  <div
+                    className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-colors ${
+                      selectedTab === 'general'
+                        ? 'bg-primary-20 text-primary'
+                        : 'text-secondary hover:bg-neutral-30'
+                    }`}
+                    onClick={() => setSelectedTab('general')}
+                  >
+                    <span className='font-bold text-base'>General</span>
                   </div>
-                  <Divider />
-                  <div className='flex gap-4'>
-                    <Avatar
-                      alt='heroui logo'
-                      src={image}
-                      size='sm'
-                      radius='full'
-                      isBordered
-                      color='primary'
-                      className='bg-neutral-20'
-                    />
-                    <div className='flex flex-col justify-center items-center'>
-                      <label htmlFor='profile-upload' className='cursor-pointer'>
-                        <p className='font-semibold text-sm text-primary'>
-                          {UI_LABELS.CHANGE_PROFILE_PHOTO}
+                  <div
+                    className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-colors ${
+                      selectedTab === 'time'
+                        ? 'bg-primary-20 text-primary'
+                        : 'text-secondary hover:bg-neutral-30'
+                    }`}
+                    onClick={() => setSelectedTab('time')}
+                  >
+                    <span className='font-bold text-base'>Time Availability</span>
+                  </div>
+                  <div
+                    className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-colors ${
+                      selectedTab === 'advanced'
+                        ? 'bg-primary-20 text-primary'
+                        : 'text-secondary hover:bg-neutral-30'
+                    }`}
+                    onClick={() => setSelectedTab('advanced')}
+                  >
+                    <span className='font-bold text-base'>Advanced</span>
+                  </div>
+                </div>
+
+                {/* Vertical Divider */}
+                <div className='w-px bg-neutral-40' />
+
+                {/* Right Content Area */}
+                <div className='flex-1 p-regular'>
+                  {selectedTab === 'general' && (
+                    <div className='flex flex-col gap-6'>
+                      {/* Basic Information Header */}
+                      <div className='flex flex-col gap-2'>
+                        <h2 className='text-2xl font-bold text-primary'>Basic information</h2>
+                        <Divider className='border-neutral-40' />
+                      </div>
+
+                      {/* Profile Photo Section */}
+                      <div className='flex items-center gap-4'>
+                        <Avatar
+                          alt='mentor avatar'
+                          src={image}
+                          className='w-10 h-10'
+                          radius='full'
+                        />
+                        <label htmlFor='profile-upload' className='cursor-pointer'>
+                          <p className='font-bold text-base text-blue-600 hover:text-blue-700 transition-colors'>
+                            Change profile photo
+                          </p>
+                        </label>
+                        <input
+                          id='profile-upload'
+                          type='file'
+                          accept='image/*'
+                          className='hidden'
+                          onChange={handleImageChange}
+                        />
+                      </div>
+
+                      {/* Form Fields */}
+                      <div className='flex flex-col gap-regular'>
+                        {/* Mentor Name */}
+                        <div className='flex flex-col gap-2'>
+                          <label className='text-base font-bold text-secondary'>Mentor name</label>
+                          <Input
+                            variant='text'
+                            preset='default-md'
+                            value={mentorName}
+                            onChange={setMentorName}
+                            placeholder='Mentor name'
+                            className='w-full'
+                          />
+                        </div>
+
+                        {/* Location */}
+                        <div className='flex flex-col gap-2'>
+                          <label className='text-base font-bold text-secondary'>Location</label>
+                          <div className='relative'>
+                            <Autocomplete
+                              isVirtualized={false}
+                              labelPlacement='outside'
+                              placeholder='Select location'
+                              onSelectionChange={(value) => setLocation(String(value))}
+                              defaultItems={provinces}
+                              variant='bordered'
+                              defaultSelectedKey={location}
+                              className='w-full'
+                            >
+                              {(item) => (
+                                <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+                              )}
+                            </Autocomplete>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        <div className='flex flex-col gap-2'>
+                          <label className='text-base font-bold text-secondary'>Description</label>
+                          <textarea
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={4}
+                            className='w-full px-3 py-2 border border-neutral-50 rounded-lg text-sm resize-none focus:outline-none focus:border-primary transition-colors'
+                            placeholder='Enter description'
+                          />
+                        </div>
+
+                        {/* Skill Offered */}
+                        <div className='flex flex-col gap-2'>
+                          <label className='text-base font-bold text-secondary'>
+                            Skill offered
+                          </label>
+                          <Select
+                            variant='form-field'
+                            items={skills.map((skill) => ({
+                              key: skill.value,
+                              label: skill.label,
+                              value: skill.value,
+                            }))}
+                            selectedKeys={new Set(skillOffered)}
+                            onSelectionChange={(keys) => {
+                              if (keys === 'all') {
+                                setSkillOffered(skills.map((skill) => skill.value));
+                              } else {
+                                setSkillOffered(Array.from(keys).map(String));
+                              }
+                            }}
+                            selectionMode='multiple'
+                            placeholder='Select skills offered'
+                            className="w-full [&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
+                            renderValue={(items) => (
+                              <div className='flex flex-wrap gap-1 py-1'>
+                                {items.map((item) => (
+                                  <span
+                                    key={item.key}
+                                    className='inline-flex items-center px-2 py-1 text-xs font-medium bg-primary-20 text-primary rounded-md'
+                                  >
+                                    {item.textValue}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedTab === 'time' && (
+                    <div className='flex flex-col gap-6'>
+                      <div className='flex flex-col gap-4'>
+                        <h2 className='text-2xl font-bold text-primary'>Time Availability</h2>
+                        <p className='text-sm text-neutral-80'>
+                          Set your available time for mentoring sessions
                         </p>
-                      </label>
-                      <input
-                        id='profile-upload'
-                        type='file'
-                        accept='image/*'
-                        className='hidden'
-                        onChange={handleImageChange}
-                      />
+                        <Divider className='border-neutral-40' />
+                      </div>
+
+                      <div className='flex flex-col gap-4'>
+                        {Object.keys(timeAvailability).map((day) => (
+                          <TimeArability
+                            key={day}
+                            dayOfWeek={day}
+                            switchState={timeAvailability[day].switchState}
+                            setSwitchState={(state) =>
+                              setTimeAvailability((prev) => ({
+                                ...prev,
+                                [day]: { ...prev[day], switchState: state },
+                              }))
+                            }
+                            fromToValue={timeAvailability[day].fromToValue}
+                            setFromToValue={(value) =>
+                              setTimeAvailability((prev) => ({
+                                ...prev,
+                                [day]: { ...prev[day], fromToValue: value },
+                              }))
+                            }
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <LabelWithTextarea
-                    label={UI_LABELS.MENTOR_NAME}
-                    content={mentorName}
-                    setContent={setMentorName}
-                    minRows={1}
-                    placeholder={UI_LABELS.MENTOR_NAME}
-                  />
-                  <LabelWithTextarea
-                    label={UI_LABELS.MENTOR_USERNAME}
-                    content={mentorUsername}
-                    setContent={setMentorUsername}
-                    minRows={1}
-                    placeholder={UI_LABELS.MENTOR_USERNAME}
-                  />
-                  <Autocomplete
-                    isVirtualized={false}
-                    labelPlacement='outside'
-                    label={UI_LABELS.LOCATION}
-                    placeholder={UI_LABELS.SELECT_LOCATION}
-                    onSelectionChange={() => setLocation}
-                    defaultItems={provinces}
-                    variant='bordered'
-                    defaultSelectedKey={location}
-                  >
-                    {(item) => <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>}
-                  </Autocomplete>
-                  <Select
-                    label={UI_LABELS.LANGUAGES_SPOKEN}
-                    labelPlacement='outside'
-                    aria-label='Select Languages Spoken'
-                    variant='bordered'
-                    selectionMode='multiple'
-                    selectedKeys={languagesSpoken}
-                    onSelectionChange={(keys) =>
-                      setLanguagesSpoken(Array.from(keys).map(String) as LanguagesSpoken)
-                    }
-                    className='w-full'
-                    placeholder={UI_LABELS.SELECT_LANGUAGES}
-                  >
-                    {languages.map((lang) => (
-                      <SelectItem
-                        key={lang.value}
-                        className={`${
-                          (languagesSpoken as string[]).includes(lang.value)
-                            ? 'text-primary'
-                            : 'text-neutral-80 hover:text-secondary'
-                        }`}
-                      >
-                        {lang.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                  )}
 
-                  <Select
-                    label={UI_LABELS.SKILL_OFFERED}
-                    labelPlacement='outside'
-                    aria-label='Select Skill Offered'
-                    variant='bordered'
-                    selectionMode='multiple'
-                    selectedKeys={skillOffered}
-                    onSelectionChange={(keys) =>
-                      setSkillOffered(Array.from(keys).map(String) as SkillOffered)
-                    }
-                    className='w-full'
-                    placeholder={UI_LABELS.SELECT_SKILL_OFFERED}
-                  >
-                    {skills.map((skill) => (
-                      <SelectItem
-                        key={skill.value}
-                        className={`${
-                          (skillOffered as string[]).includes(skill.value)
-                            ? 'text-primary'
-                            : 'text-neutral-80 hover:text-secondary'
-                        }`}
-                      >
-                        {skill.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-
-                  <Select
-                    label={UI_LABELS.SDGS_FOCUS_EXPERTISES}
-                    labelPlacement='outside'
-                    aria-label='Select SDGs Focus Expertises'
-                    variant='bordered'
-                    selectionMode='multiple'
-                    selectedKeys={sdgFocusExpertises}
-                    onSelectionChange={(keys) =>
-                      setSdgFocusExpertises(Array.from(keys).map(String) as SDGs)
-                    }
-                    className='w-full'
-                    placeholder={UI_LABELS.SELECT_SDGS_EXPERTISES}
-                  >
-                    {sdgGoals.map((sdg) => (
-                      <SelectItem
-                        key={sdg.value}
-                        className={`${
-                          (sdgFocusExpertises as string[]).includes(sdg.value)
-                            ? 'text-primary'
-                            : 'text-neutral-80 hover:text-secondary'
-                        }`}
-                      >
-                        {sdg.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-
-                  <div className='flex flex-col gap-1'>
-                    <label className='text-sm text-neutral-80 mb-1'>{UI_LABELS.DESCRIPTION}</label>
-                    <textarea
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      rows={5}
-                      className='border border-neutral-40 rounded-lg min-h-[120px] p-3 bg-neutral-20 text-secondary text-sm resize-none focus:outline-none focus:border-secondary transition-colors'
-                      placeholder={UI_LABELS.DESCRIPTION}
-                    />
-                  </div>
-
-                  <div className='flex justify-end gap-4'>
-                    <Button variant='secondary-md' onClick={onOpenChange}>
-                      {UI_LABELS.CANCEL}
-                    </Button>
-                    <Button variant='primary-md' onClick={onUpdateProfileClick}>
-                      {UI_LABELS.UPDATE_PROFILE}
-                    </Button>
-                  </div>
-                </Tab>
-                <Tab
-                  key='advanced'
-                  title={UI_LABELS.ADVANCED}
-                  className='w-full flex flex-col gap-2 py-3'
-                >
-                  <div className='flex justify-between'>
-                    <div className='flex flex-col justify-center'>
-                      <p className='font-semibold text-sm text-secondary'>
-                        {UI_LABELS.DELETE_PROFILE}
-                      </p>
-                      <p className='text-neutral-50 font-normal text-xs'>
-                        {UI_LABELS.DELETE_PROFILE_DESCRIPTION}
-                      </p>
+                  {selectedTab === 'advanced' && (
+                    <div className='flex flex-col gap-6'>
+                      <div className='flex justify-between items-center'>
+                        <div className='flex flex-col'>
+                          <p className='font-semibold text-base text-secondary'>Archive Profile</p>
+                          <p className='text-sm text-neutral-80'>
+                            Hide your profile from search results across entire platform.
+                          </p>
+                        </div>
+                        <Button
+                          variant='warning-md'
+                          onClick={onOpenHideProfileModal}
+                          className='w-32'
+                        >
+                          Hide
+                        </Button>
+                      </div>
+                      <div className='flex justify-between items-center'>
+                        <div className='flex flex-col'>
+                          <p className='font-semibold text-base text-secondary'>Delete Profile</p>
+                          <p className='text-sm text-neutral-80'>
+                            Permanently delete your mentor profile
+                          </p>
+                        </div>
+                        <Button
+                          variant='warning-md'
+                          onClick={onOpenDeleteProfileModal}
+                          className='w-32'
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </div>
-                    <Button
-                      variant='warning-md'
-                      onClick={onOpenDeleteProfileModal}
-                      className='w-32'
-                    >
-                      {UI_LABELS.DELETE_PROFILE}
-                    </Button>
-                  </div>
-                  <HideProfileModal
-                    isOpen={isHideProfileModalOpen}
-                    onOpenChange={onOpenChangeHideProfileModal}
-                    onHideProfile={handleHideProfileClick}
-                    isHide={mentor.isHide}
-                  />
-                  <DeleteProfileModal
-                    isOpen={isDeleteProfileModalOpen}
-                    onOpenChange={onOpenChangeDeleteProfileModal}
-                    onDeleteProfile={handleDeleteProfileClick}
-                  />
-                </Tab>
-              </Tabs>
+                  )}
+                </div>
+              </div>
             </ModalBody>
+
+            {/* Footer */}
+            <div className='flex justify-end gap-4 p-regular border-t border-neutral-40'>
+              <Button variant='secondary-md' onClick={onOpenChange} disabled={loading}>
+                Cancel
+              </Button>
+              <Button variant='primary-md' onClick={onUpdateProfileClick} disabled={loading}>
+                Update profile
+              </Button>
+            </div>
+
+            {/* Modals */}
+            <HideProfileModal
+              isOpen={isHideProfileModalOpen}
+              onOpenChange={onOpenChangeHideProfileModal}
+              onHideProfile={handleHideProfileClick}
+              isHide={mentor.isHide}
+            />
+            <DeleteProfileModal
+              isOpen={isDeleteProfileModalOpen}
+              onOpenChange={onOpenChangeDeleteProfileModal}
+              onDeleteProfile={handleDeleteProfileClick}
+            />
           </>
         )}
       </ModalContent>
