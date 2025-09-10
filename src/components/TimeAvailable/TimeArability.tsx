@@ -5,7 +5,7 @@ import { PlusSquareIcon } from '@/components/Icons/PlusSquareIcon';
 import DeleteIcon from '@/components/Icons/DeleteIcon';
 import Button from '@/components/Button/Button';
 
-interface TimeArabilityProps {
+export interface TimeArabilityProps {
   dayOfWeek: string;
   switchState: boolean;
   setSwitchState?: (state: boolean) => void;
