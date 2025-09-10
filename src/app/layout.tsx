@@ -5,6 +5,7 @@ import HomepageBackground from '/public/homepage-bg.png';
 import ProtectedRoute from './ProtectedRoute';
 import HeaderDisplayHandler from './HeaderDisplayHandler';
 import Providers from './Providers';
+import { GoogleAnalytics } from '@next/third-parties/google'; 
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ProtectedRoute>
         </Providers>
       </body>
+      <GoogleAnalytics gaId="G-WBV6EMVRJG" />
     </html>
   );
 }
