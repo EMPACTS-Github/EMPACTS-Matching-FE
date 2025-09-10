@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { create_startup_profile } from '@/apis/startup';
 import { LanguagesSpoken, LANGUAGE_SPOKEN } from '@/constants/common';
 import { addToast } from '@heroui/react';
@@ -17,13 +18,127 @@ import { uploadProfilePicture } from '@/apis/upload';
 import FormLabel from '@/components/Form/FormLabel';
 import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
 
+// Inline HeaderSection component
+const HeaderSection = () => (
+  <div className='flex flex-col items-center gap-2 w-full'>
+    <h1 className='text-large font-bold text-secondary leading-[175%] text-center'>
+      Startup profile
+    </h1>
+    <p className='text-regular font-bold text-neutral-80 leading-[160%] text-center'>
+      Access to your desired company
+    </p>
+  </div>
+);
+
+const CameraIcon = () => (
+  <div className='w-6 h-6 text-secondary'>
+    {/* Camera icon placeholder */}
+    <svg viewBox='0 0 24 24' fill='currentColor'>
+      <path d='M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z' />
+      <path d='M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z' />
+    </svg>
+  </div>
+);
+
+const StartupNameSection = ({
+  companyName,
+  onSetCompanyName,
+  onChangeStartupUsername,
+  startupUsername
+}: {
+  companyName: string,
+  onSetCompanyName: (value: string) => void,
+  onChangeStartupUsername: (value: string) => void,
+  startupUsername: string
+}) => (
+  <div className='space-y-2'>
+    <FormLabel
+      text='Startup name'
+      className='text-regular font-bold text-secondary leading-[150%]'
+    />
+    <Input
+      variant='text'
+      preset='default-md'
+      value={companyName}
+      onChange={(value) => {
+        onSetCompanyName(value);
+        onChangeStartupUsername(value);
+      }}
+      placeholder='Enter name company'
+      isRequired
+    />
+    <p className='text-small font-normal text-neutral-80 leading-[143%]'>
+      Your profile could be found with username{' '}
+      <span className='text-primary'>{startupUsername || '@company_name'}</span>. You can change
+      it later in Settings
+    </p>
+  </div>
+);
+
+const DescriptionSection = ({
+  description,
+  onSetDescription
+}: {
+  description: string,
+  onSetDescription: (value: string) => void,
+}) => (
+  <div className='space-y-2'>
+    <FormLabel
+      text='Description'
+      className='text-regular font-bold text-secondary leading-[150%]'
+    />
+    <textarea
+      value={description}
+      onChange={(e) => onSetDescription(e.target.value)}
+      placeholder='Enter company description'
+      className='h-24 border border-neutral-50 bg-neutral-20 rounded-lg px-3 py-2 text-regular w-full resize-none'
+      rows={4}
+    />
+  </div>
+);
+
+ const LanguagesSpokenSection = ({
+  languagesSpoken,
+  onSetLanguagesSpoken,
+ }: {
+  languagesSpoken: string[],
+  onSetLanguagesSpoken: (values: LanguagesSpoken) => void,
+ }) => {
+  const languageItems = Object.entries(LANGUAGE_SPOKEN).map(([key, label]) => ({
+    key,
+    label,
+    value: key,
+  }));
+
+  return (
+    <div className='space-y-2'>
+      <FormLabel
+        text='Languages Spoken'
+        className='text-regular font-bold text-secondary leading-[150%]'
+      />
+      <Select
+        variant='form-field'
+        placeholder='Select languages'
+        items={languageItems}
+        selectedKeys={languagesSpoken}
+        onSelectionChange={(keys) => {
+          if (keys !== 'all') {
+            onSetLanguagesSpoken(Array.from(keys) as LanguagesSpoken);
+          }
+        }}
+        selectionMode='multiple'
+      />
+    </div>
+  );
+};
+
 const CreateNewStartup = () => {
   const [companyName, setCompanyName] = useState('');
   const [startupUsername, setStartupUsername] = useState('');
   const [selectedGoal, setSelectedGoal] = useState('');
   const [location, setLocation] = useState('');
-  const [profilePicture, setProfilePicture] = useState<string | undefined>('');
-  const [uploadedPictureId, setUploadedPictureId] = useState('');
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>('');
+  const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [formedTime, setFormedTime] = useState<Date | null>(null);
   const [description, setDescription] = useState('');
@@ -35,31 +150,18 @@ const CreateNewStartup = () => {
     router.back();
   };
 
-  const handleChangeImage = async (file: File) => {
-    try {
-      setLoading(true);
-      // Upload the file first
-      const uploadResponse = await uploadProfilePicture(file, 'STARTUP');
-      const fileUrl = uploadResponse.data.attachmentUrl;
-      const fileId = uploadResponse.data.id;
-
-      setProfilePicture(fileUrl);
-      setUploadedPictureId(fileId);
-    } catch (error) {
-      addToast({
-        title: 'Error uploading image',
-        color: 'danger',
-        timeout: 3000,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
+    if (profilePictureUrl) {
+      URL.revokeObjectURL(profilePictureUrl);
+    }
+
     if (file) {
-      await handleChangeImage(file);
+      const fileUrl = URL.createObjectURL(file);
+      setProfilePictureUrl(fileUrl);
+      setProfilePictureFile(file);
+      e.target.files = null;
     }
   };
 
@@ -69,7 +171,7 @@ const CreateNewStartup = () => {
   };
 
   const handleCreateProfile = async () => {
-    const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
+    let avtUrl = profilePictureUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
     if (!companyName.trim() || !startupUsername.trim() || !location || !avtUrl || !formedTime) {
       addToast({
         title: 'Please fill in all required fields',
@@ -79,13 +181,29 @@ const CreateNewStartup = () => {
       return;
     }
 
+    let uploadAvatarId: string = '';
+    if (profilePictureFile) {
+      try {
+        const uploadAvatarResult: any = await uploadProfilePicture(profilePictureFile, 'STARTUP');
+        uploadAvatarId = uploadAvatarResult.data.id;
+        avtUrl = uploadAvatarResult.data.attachmentUrl;
+      } catch (error) {
+        addToast({
+          title: 'Error uploading image',
+          color: 'danger',
+          timeout: 3000,
+        });
+        return;
+      }
+    }
+
     const requestBody = {
       name: companyName,
       startupUsername: startupUsername,
       locationBased: location,
       sdgGoal: selectedGoal,
       description: description,
-      avtUrl: avtUrl,
+      avtUrl: avtUrl as string,
       formedTime: formedTime,
       languagesSpoken: languagesSpoken,
     };
@@ -102,9 +220,9 @@ const CreateNewStartup = () => {
       router.push(`/startup-detail/${response.data.newStartup.id}`);
 
       // Update attachment ownership if we uploaded a new picture
-      if (uploadedPictureId) {
+      if (uploadAvatarId) {
         updateAttachment({
-          id: uploadedPictureId,
+          id: uploadAvatarId,
           ownerId: response.data.newStartup.id,
           ownerType: UPLOAD_OWNER_TYPE.STARTUP,
         });
@@ -125,30 +243,8 @@ const CreateNewStartup = () => {
     return goal?.label || goalKey;
   };
 
-  // Inline HeaderSection component
-  const HeaderSection = () => (
-    <div className='flex flex-col items-center gap-2 w-full'>
-      <h1 className='text-large font-bold text-secondary leading-[175%] text-center'>
-        Startup profile
-      </h1>
-      <p className='text-regular font-bold text-neutral-80 leading-[160%] text-center'>
-        Access to your desired company
-      </p>
-    </div>
-  );
-
-  const CameraIcon = () => (
-    <div className='w-6 h-6 text-secondary'>
-      {/* Camera icon placeholder */}
-      <svg viewBox='0 0 24 24' fill='currentColor'>
-        <path d='M12 15.2a3.2 3.2 0 100-6.4 3.2 3.2 0 000 6.4z' />
-        <path d='M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z' />
-      </svg>
-    </div>
-  );
-
   // Inline ProfilePictureUpload component
-  const ProfilePictureUpload = () => {
+  const ProfilePictureUpload = useCallback(() => {
     return (
       <div className='flex flex-col items-center gap-5'>
         <input
@@ -158,15 +254,14 @@ const CreateNewStartup = () => {
           className='hidden'
           id='profile-picture'
         />
-        <label htmlFor='profile-picture' className='cursor-pointer'>
-          <div className='w-[12%] h-[12%] min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors'>
-            {profilePicture ? (
+        <label htmlFor='profile-picture' className='cursor-pointer flex justify-center'>
+          <div className='w-[12%] h-[12%] relative min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors'>
+            {profilePictureUrl ? (
               <Image
-                src={profilePicture}
+                src={profilePictureUrl}
                 alt='Profile'
-                width={90}
-                height={90}
                 className='w-full h-full object-cover'
+                fill
               />
             ) : (
               <CameraIcon />
@@ -178,36 +273,12 @@ const CreateNewStartup = () => {
         </p>
       </div>
     );
-  };
+  }, [profilePictureUrl]);
 
-  // Inline StartupNameSection component using Input component
-  const StartupNameSection = () => (
-    <div className='space-y-2'>
-      <FormLabel
-        text='Startup name'
-        className='text-regular font-bold text-secondary leading-[150%]'
-      />
-      <Input
-        variant='text'
-        preset='default-md'
-        value={companyName}
-        onChange={(value) => {
-          setCompanyName(value);
-          handleChangeStartupUsername(value);
-        }}
-        placeholder='Enter name company'
-        isRequired
-      />
-      <p className='text-small font-normal text-neutral-80 leading-[143%]'>
-        Your profile could be found with username{' '}
-        <span className='text-primary'>{startupUsername || '@company_name'}</span>. You can change
-        it later in Settings
-      </p>
-    </div>
-  );
+
 
   // Inline LocationBasedSection component using Select component
-  const LocationBasedSection = () => {
+  const LocationBasedSection = useCallback(() => {
     const locationItems = provinces.map((province) => ({
       key: province.value,
       label: province.label,
@@ -240,10 +311,10 @@ const CreateNewStartup = () => {
         )}
       </div>
     );
-  };
+  }, [location])
 
   // Inline DateEstablishedSection component
-  const DateEstablishedSection = () => (
+  const DateEstablishedSection = useCallback(() => (
     <div className='space-y-2'>
       <FormLabel
         text='Date established'
@@ -256,10 +327,10 @@ const CreateNewStartup = () => {
         className='h-12 border border-neutral-50 bg-neutral-20 rounded-lg px-3 text-regular w-full'
       />
     </div>
-  );
+  ), [formedTime]);
 
   // Inline SDGGoalSection component using Select component
-  const SDGGoalSection = () => {
+  const SDGGoalSection = useCallback(() => {
     const goalItems = Object.entries(STARTUP_SDG_GOALS).map(([key, goal]) => ({
       key: goal.textValue,
       label: goal.label,
@@ -291,57 +362,10 @@ const CreateNewStartup = () => {
         )}
       </div>
     );
-  };
-
-  // Inline DescriptionSection component
-  const DescriptionSection = () => (
-    <div className='space-y-2'>
-      <FormLabel
-        text='Description'
-        className='text-regular font-bold text-secondary leading-[150%]'
-      />
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        placeholder='Enter company description'
-        className='h-24 border border-neutral-50 bg-neutral-20 rounded-lg px-3 py-2 text-regular w-full resize-none'
-        rows={4}
-      />
-    </div>
-  );
-
-  // Inline LanguagesSpokenSection component
-  const LanguagesSpokenSection = () => {
-    const languageItems = Object.entries(LANGUAGE_SPOKEN).map(([key, label]) => ({
-      key,
-      label,
-      value: key,
-    }));
-
-    return (
-      <div className='space-y-2'>
-        <FormLabel
-          text='Languages Spoken'
-          className='text-regular font-bold text-secondary leading-[150%]'
-        />
-        <Select
-          variant='form-field'
-          placeholder='Select languages'
-          items={languageItems}
-          selectedKeys={languagesSpoken}
-          onSelectionChange={(keys) => {
-            if (keys !== 'all') {
-              setLanguagesSpoken(Array.from(keys) as LanguagesSpoken);
-            }
-          }}
-          selectionMode='multiple'
-        />
-      </div>
-    );
-  };
+  }, [selectedGoal]);
 
   // Inline ActionButtons component using Button component
-  const ActionButtons = () => (
+  const ActionButtons = useCallback(() => (
     <div className='flex flex-row justify-between w-full gap-4 h-12'>
       <div className='flex-1'>
         <Button
@@ -362,7 +386,7 @@ const CreateNewStartup = () => {
         </Button>
       </div>
     </div>
-  );
+  ), []);
 
   return (
     <div className='w-full flex justify-center items-center min-h-screen relative'>
@@ -375,12 +399,23 @@ const CreateNewStartup = () => {
         <HeaderSection />
         <ProfilePictureUpload />
         <div className='space-y-6'>
-          <StartupNameSection />
+          <StartupNameSection
+            companyName={companyName}
+            onSetCompanyName={setCompanyName}
+            startupUsername={startupUsername}
+            onChangeStartupUsername={handleChangeStartupUsername}
+          />
           <LocationBasedSection />
           <DateEstablishedSection />
           <SDGGoalSection />
-          <DescriptionSection />
-          <LanguagesSpokenSection />
+          <DescriptionSection
+            description={description}
+            onSetDescription={setDescription}
+          />
+          <LanguagesSpokenSection
+            languagesSpoken={languagesSpoken}
+            onSetLanguagesSpoken={setLanguagesSpoken}
+          />
         </div>
         <ActionButtons />
       </div>
