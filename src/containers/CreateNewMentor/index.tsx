@@ -85,8 +85,8 @@ const CreateNewMentor = () => {
   const [mentorName, setMentorName] = useState('');
   const [mentorUsername, setMentorUsername] = useState('');
   const [location, setLocation] = useState('');
-  const [profilePicture, setProfilePicture] = useState<string | undefined>('');
-  const [uploadedPictureId, setUploadedPictureId] = useState('');
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>('');
+  const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [languagesSpoken, setLanguagesSpoken] = useState<LanguagesSpoken>(['EN']);
@@ -141,32 +141,19 @@ const CreateNewMentor = () => {
     router.back();
   }, [router]);
 
-  const handleChangeImage = async (file: File) => {
-    try {
-      setLoading(true);
-      const uploadResponse = await uploadProfilePicture(file, 'MENTOR');
-      const fileUrl = uploadResponse.data.attachmentUrl;
-      const fileId = uploadResponse.data.id;
-
-      setProfilePicture(fileUrl);
-      setUploadedPictureId(fileId);
-    } catch (error) {
-      addToast({
-        title: 'Error uploading image',
-        color: TOAST_COLORS.DANGER,
-        timeout: TOAST_TIMEOUT.SHORT,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      await handleChangeImage(file);
+
+    if (profilePictureUrl) {
+      URL.revokeObjectURL(profilePictureUrl);
     }
-  }, []);
+    if (file) {
+      const fileUrl = URL.createObjectURL(file);
+      setProfilePictureUrl(fileUrl);
+      setProfilePictureFile(file);
+      e.target.files = null;
+    }
+  }, [profilePictureUrl]);
 
   const handleChangeMentorUsername = useCallback((mentorName: string) => {
     const username = changeCase.snakeCase(mentorName);
@@ -196,7 +183,7 @@ const CreateNewMentor = () => {
   };
 
   const handleCreateProfile = async () => {
-    const avtUrl = profilePicture || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
+    let avtUrl = profilePictureUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
     if (
       !mentorName.trim() ||
       !mentorUsername.trim() ||
@@ -215,12 +202,29 @@ const CreateNewMentor = () => {
     }
 
     setLoading(true);
+
+    let uploadAvatarId: string = '';
+    if (profilePictureFile) {
+      try {
+        const uploadAvatarResult: any = await uploadProfilePicture(profilePictureFile, 'STARTUP');
+        uploadAvatarId = uploadAvatarResult.data.id;
+        avtUrl = uploadAvatarResult.data.attachmentUrl;
+      } catch (error) {
+        addToast({
+          title: 'Error uploading image',
+          color: 'danger',
+          timeout: 3000,
+        });
+        return;
+      }
+    }
+
     const requestBody = {
       name: mentorName,
       mentorUsername: mentorUsername,
       locationBased: location,
       sdgFocusExpertises: selectedGoals,
-      avtUrl: avtUrl,
+      avtUrl: avtUrl as string,
       description: 'Mentor profile', // Default description since field is not in UI
       skillOffered: skillOffered,
       languagesSpoken: languagesSpoken,
@@ -236,9 +240,9 @@ const CreateNewMentor = () => {
       });
       router.push(`/mentor-detail/${response.data.newMentor.id}`);
 
-      if (uploadedPictureId) {
+      if (uploadAvatarId) {
         updateAttachment({
-          id: uploadedPictureId,
+          id: uploadAvatarId,
           ownerId: response.data.newMentor.id,
           ownerType: UPLOAD_OWNER_TYPE.MENTOR,
         });
@@ -294,11 +298,11 @@ const CreateNewMentor = () => {
             className='hidden'
             id='profile-picture'
           />
-          <label htmlFor='profile-picture' className='cursor-pointer'>
-            <div className='w-20 h-20 min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors'>
-              {profilePicture ? (
+          <label htmlFor='profile-picture' className='cursor-pointer flex justify-center'>
+            <div className='w-20 h-20 relative min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors'>
+              {profilePictureUrl ? (
                 <Image
-                  src={profilePicture}
+                  src={profilePictureUrl}
                   alt='Profile'
                   width={90}
                   height={90}
@@ -390,7 +394,7 @@ const CreateNewMentor = () => {
         </div>
       </div>
     ),
-    [profilePicture, mentorName, location, selectedGoals, handleFileChange]
+    [profilePictureUrl, mentorName, location, selectedGoals, handleFileChange]
   );
 
   // Step 2: Career
