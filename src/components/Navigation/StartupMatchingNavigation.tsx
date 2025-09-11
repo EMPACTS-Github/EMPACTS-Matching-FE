@@ -1,16 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Tab, Tabs } from '@heroui/react';
-import { startup_profile_detail } from '@/apis/startup-profile';
-import { StartupProfileResponse } from '@/interfaces/StartupProfile';
-import StartupExploreContainer from '@/containers/StartupExplore';
-import StartupMemberContainer from '@/containers/StartupMember';
-import StartupProfileContainer from '@/containers/StartupProfile';
-import { suggest_mentor_list } from '@/apis/suggest-mentor';
-import { SuggestMentors } from '@/interfaces/startup';
-import { useStartupIdStore } from '@/stores/startup-store';
-import { UI_LABELS, SUGGESTION_MESSAGES, CONSOLE_ERRORS, API_ERROR_CODES } from '@/constants';
+import { UI_LABELS } from '@/constants';
 import Calendar from '@/components/Calendar/Calendar';
 
 interface StartupMatchingNavigationProps {
