@@ -24,6 +24,20 @@ export const SUCCESS_MESSAGES = {
   ATTACHMENT_DELETED_SUCCESS: 'Attachment deleted successfully',
 } as const;
 
+// Validation Error Messages
+export const VALIDATION_ERROR_MESSAGES = {
+  MENTOR_NAME_REQUIRED: 'Mentor name is required',
+  LOCATION_REQUIRED: 'Location is required',
+  SDG_GOAL_REQUIRED: 'At least one SDG Goal is required',
+  DESCRIPTION_REQUIRED: 'Description is required',
+  YEAR_EXPERIENCE_INVALID: 'Year of experience must be greater than 0',
+  INDUSTRY_REQUIRED: 'Industry is required',
+  SKILL_OFFERED_REQUIRED: 'At least one skill is required',
+  MARKET_FOCUS_REQUIRED: 'Market focus is required',
+  FUNDING_STAGE_REQUIRED: 'Funding stage experience is required',
+  FORM_VALIDATION_FAILED: 'Please fix the errors below',
+} as const;
+
 // Suggestion Error Messages
 export const SUGGESTION_ERROR_MESSAGES = {
   NO_SUGGESTION_FOUND: 'No suggestion found',
@@ -43,5 +57,6 @@ export const API_ERROR_CODES = {
 
 export type ProfileErrorKey = keyof typeof PROFILE_ERROR_MESSAGES;
 export type SuccessMessageKey = keyof typeof SUCCESS_MESSAGES;
+export type ValidationErrorKey = keyof typeof VALIDATION_ERROR_MESSAGES;
 export type SuggestionErrorKey = keyof typeof SUGGESTION_ERROR_MESSAGES;
 export type ConsoleErrorKey = keyof typeof CONSOLE_ERROR_MESSAGES;
