@@ -11,6 +11,8 @@ import { suggest_mentor_list } from '@/apis/suggest-mentor';
 import { SuggestMentors } from '@/interfaces/startup';
 import { useStartupIdStore } from '@/stores/startup-store';
 import { UI_LABELS, SUGGESTION_MESSAGES, CONSOLE_ERRORS, API_ERROR_CODES } from '@/constants';
+import Calendar from '@/components/Calendar/Calendar';
+import StartupMatchingNavigation from '@/components/Navigation/StartupMatchingNavigation';
 
 interface StartupProfileNavigationProps {
   startupId: string;
@@ -70,6 +72,9 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
         >
           <Tab key='explore' title={UI_LABELS.EXPLORE} className='pt-0 px-2'>
             <StartupExploreContainer mentorList={suggestedMentors} error={error} />
+          </Tab>
+          <Tab key='matching' title={UI_LABELS.MATCHING} className='pt-0 px-2'>
+            <StartupMatchingNavigation startupId={startupId} />
           </Tab>
           <Tab key='profile' title={UI_LABELS.PROFILE} className='pt-0 px-2'>
             <div className='flex flex-col items-center w-full h-screen relative z-10 gap-y-8'>

@@ -119,6 +119,7 @@ export const UI_LABELS = {
   EXPLORE: 'Explore',
   PROFILE: 'Profile',
   MEMBER: 'Member',
+  MATCHING: 'Matching',
 
   // Profile states
   HIDE_PROFILE_DESCRIPTION: 'Hide your profile from search results across entire platform.',
@@ -158,6 +159,12 @@ export const UI_LABELS = {
   PLEASE_LOGIN_AS: 'Please login as',
   TO_CONTINUE: 'to continue',
   LOGIN_IN_AS: 'Login in as',
+
+  // Matching tabs labels
+  SCHEDULE_MEETING: 'Schedule Meeting',
+  UPCOMING_MEETING: 'Upcoming Meeting',
+  SENT_INVITATION: 'Sent Invitation',
+  PAST_MEETING: 'Past Meeting',
 } as const;
 
 // Error codes and messages for suggestions
