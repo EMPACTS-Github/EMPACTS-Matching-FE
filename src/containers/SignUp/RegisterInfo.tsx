@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { addToast } from '@heroui/react';
 import { useRouter } from 'next/navigation';
-import { updateAttachment, uploadAttachemt } from '@/apis/upload';
+import { updateAttachment, uploadAttachemt, uploadProfilePicture } from '@/apis/upload';
 import { createNewProfile } from '@/apis/auth';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { ROUTES, getStartupInvitationUrl, DEFAULT_AVATAR_URL } from '@/constants/link';
@@ -21,30 +21,20 @@ function RegisterInfo() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
-  const [uploadAvatarId, setUploadAvatarId] = useState('');
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | undefined>('');
+  const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const uploadResult = await uploadAttachemt({
-        file: e.target.files[0],
-        ownerType: UPLOAD_OWNER_TYPE.USER,
-      });
+    const file = e.target.files?.[0];
 
-      if (uploadResult.data.attachmentUrl) {
-        setAvatarUrl(uploadResult.data.attachmentUrl);
-        setUploadAvatarId(uploadResult.data.id);
-        addToast({
-          title: TOAST_MESSAGES.AVATAR_UPLOADED,
-          color: TOAST_COLORS.SUCCESS,
-          timeout: TOAST_TIMEOUT.SHORT,
-        });
-      } else {
-        addToast({
-          title: TOAST_MESSAGES.AVATAR_UPLOAD_ERROR,
-          color: TOAST_COLORS.DANGER,
-          timeout: TOAST_TIMEOUT.SHORT,
-        });
-      }
+    if (profilePictureUrl) {
+      URL.revokeObjectURL(profilePictureUrl);
+    }
+    if (file) {
+      const fileUrl = URL.createObjectURL(file);
+      setProfilePictureUrl(fileUrl);
+      setProfilePictureFile(file);
+      setAvatarUrl(fileUrl);
       e.target.files = null;
     }
   };
@@ -52,11 +42,32 @@ function RegisterInfo() {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = localStorage.getItem('email');
-    const userProfileImgUrl = avatarUrl || DEFAULT_AVATAR_URL;
+    let uploadAvatarId: string = '';
+    let userProfileImgUrl = '';
+
+    if (profilePictureFile) {
+      try {
+        const uploadAvatarResult: any = await uploadProfilePicture(profilePictureFile, 'USER');
+        uploadAvatarId = uploadAvatarResult.data.id;
+        userProfileImgUrl = uploadAvatarResult.data.attachmentUrl;
+      } catch (error) {
+        addToast({
+          title: 'Error uploading image',
+          color: 'danger',
+          timeout: 3000,
+        });
+        return;
+      }
+    }
 
     if (email && username) {
       try {
-        const response = await createNewProfile(email, userProfileImgUrl, username);
+        const requestBody = {
+          avtUrl: userProfileImgUrl || DEFAULT_AVATAR_URL,
+          email,
+          name: username,
+        };
+        const response = await createNewProfile(requestBody);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         localStorage.removeItem('email');
 
