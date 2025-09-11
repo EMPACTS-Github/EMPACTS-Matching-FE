@@ -13,6 +13,7 @@ import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { LanguagesSpoken, SDGs } from '@/constants/common';
 import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
+import { VALIDATION_ERROR_MESSAGES } from '@/errors';
 import languages from '@/utils/data/languages.json';
 import { SkillOffered } from '@/constants/skillOffered';
 import skills from '@/utils/data/skillOffered.json';
@@ -24,6 +25,30 @@ import Input from '@/components/Input/Input';
 import Select from '@/components/Select/Select';
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/modal';
+
+// Component for labels with red asterisk
+const RequiredLabel: React.FC<{ children: React.ReactNode; required?: boolean }> = ({
+  children,
+  required = false,
+}) => (
+  <label className='text-base font-bold text-secondary'>
+    {children}
+    {required && <span className='text-error ml-1'>*</span>}
+  </label>
+);
+
+// Validation errors state
+interface ValidationErrors {
+  mentorName?: string;
+  location?: string;
+  sdgGoal?: string;
+  description?: string;
+  yearOfExperience?: string;
+  industry?: string;
+  skillOffered?: string;
+  marketFocus?: string;
+  fundingStageExperience?: string;
+}
 
 interface SettingModalProps {
   isOpen: boolean;
@@ -41,6 +66,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState('general');
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [image, setImage] = useState<string>(mentor.avtUrl || '');
   const [mentorName, setMentorName] = useState<string>(mentor.name || '');
   const [mentorUsername, setMentorUsername] = useState<string>(mentor.mentorUsername || '');
@@ -153,8 +179,77 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     }
   }, [mentor]);
 
+  // Validation function
+  const validateForm = (): boolean => {
+    const errors: ValidationErrors = {};
+
+    // Required field validations
+    if (!mentorName.trim()) {
+      errors.mentorName = VALIDATION_ERROR_MESSAGES.MENTOR_NAME_REQUIRED;
+    }
+
+    if (!location.trim()) {
+      errors.location = VALIDATION_ERROR_MESSAGES.LOCATION_REQUIRED;
+    }
+
+    if (sdgFocusExpertises.length === 0) {
+      errors.sdgGoal = VALIDATION_ERROR_MESSAGES.SDG_GOAL_REQUIRED;
+    }
+
+    if (!description.trim()) {
+      errors.description = VALIDATION_ERROR_MESSAGES.DESCRIPTION_REQUIRED;
+    }
+
+    if (yearOfProfessionalExperience <= 0) {
+      errors.yearOfExperience = VALIDATION_ERROR_MESSAGES.YEAR_EXPERIENCE_INVALID;
+    }
+
+    if (industryFocus.length === 0 || (industryFocus.length === 1 && !industryFocus[0].trim())) {
+      errors.industry = VALIDATION_ERROR_MESSAGES.INDUSTRY_REQUIRED;
+    }
+
+    if (skillOffered.length === 0) {
+      errors.skillOffered = VALIDATION_ERROR_MESSAGES.SKILL_OFFERED_REQUIRED;
+    }
+
+    if (!marketFocusExpertise.trim()) {
+      errors.marketFocus = VALIDATION_ERROR_MESSAGES.MARKET_FOCUS_REQUIRED;
+    }
+
+    if (
+      experienceWithFundingStage.length === 0 ||
+      (experienceWithFundingStage.length === 1 && !experienceWithFundingStage[0].trim())
+    ) {
+      errors.fundingStageExperience = VALIDATION_ERROR_MESSAGES.FUNDING_STAGE_REQUIRED;
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // Clear validation error for specific field
+  const clearValidationError = (fieldName: keyof ValidationErrors) => {
+    if (validationErrors[fieldName]) {
+      setValidationErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[fieldName];
+        return newErrors;
+      });
+    }
+  };
+
   const onUpdateProfileClick = async () => {
     if (mentor.id) {
+      // Validate form before submitting
+      if (!validateForm()) {
+        addToast({
+          title: VALIDATION_ERROR_MESSAGES.FORM_VALIDATION_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+        return;
+      }
+
       setLoading(true);
       const requestBody = {
         name: mentorName,
@@ -165,6 +260,11 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
         skillOffered: skillOffered,
         languagesSpoken: languagesSpoken,
         marketFocusExpertise: marketFocusExpertise,
+        experienceWithFundingStage: experienceWithFundingStage,
+        yearOfProfessionalExperience: yearOfProfessionalExperience,
+        currentWorkplace: currentWorkplace,
+        currentPosition: currentPosition,
+        industryFocus: industryFocus,
         avtUrl: profilePicture ? profilePicture : mentor.avtUrl,
       };
       try {
@@ -414,55 +514,191 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                       <div className='flex flex-col gap-regular'>
                         {/* Mentor Name */}
                         <div className='flex flex-col gap-2'>
-                          <label className='text-base font-bold text-secondary'>Mentor name</label>
+                          <RequiredLabel required>Mentor name</RequiredLabel>
                           <Input
                             variant='text'
                             preset='default-md'
                             value={mentorName}
-                            onChange={setMentorName}
+                            onChange={(value) => {
+                              setMentorName(value);
+                              clearValidationError('mentorName');
+                            }}
                             placeholder='Mentor name'
-                            className='w-full'
+                            className={`w-full ${validationErrors.mentorName ? 'border-error' : ''}`}
                           />
+                          {validationErrors.mentorName && (
+                            <span className='text-error text-sm'>
+                              {validationErrors.mentorName}
+                            </span>
+                          )}
                         </div>
 
                         {/* Location */}
                         <div className='flex flex-col gap-2'>
-                          <label className='text-base font-bold text-secondary'>Location</label>
+                          <RequiredLabel required>Location</RequiredLabel>
                           <div className='relative'>
                             <Autocomplete
                               isVirtualized={false}
                               labelPlacement='outside'
                               placeholder='Select location'
-                              onSelectionChange={(value) => setLocation(String(value))}
+                              onSelectionChange={(value) => {
+                                setLocation(String(value));
+                                clearValidationError('location');
+                              }}
                               defaultItems={provinces}
                               variant='bordered'
                               defaultSelectedKey={location}
-                              className='w-full'
+                              className={`w-full ${validationErrors.location ? 'border-error' : ''}`}
                             >
                               {(item) => (
                                 <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
                               )}
                             </Autocomplete>
                           </div>
+                          {validationErrors.location && (
+                            <span className='text-error text-sm'>{validationErrors.location}</span>
+                          )}
+                        </div>
+
+                        {/* SDG Goal */}
+                        <div className='flex flex-col gap-2'>
+                          <RequiredLabel required>SDG Goal</RequiredLabel>
+                          <Select
+                            variant='form-field'
+                            items={sdgGoals.map((goal) => ({
+                              key: goal.value,
+                              label: goal.label,
+                              value: goal.value,
+                            }))}
+                            selectedKeys={new Set(sdgFocusExpertises)}
+                            onSelectionChange={(keys) => {
+                              if (keys === 'all') {
+                                setSdgFocusExpertises(sdgGoals.map((goal) => goal.value));
+                              } else {
+                                setSdgFocusExpertises(Array.from(keys).map(String));
+                              }
+                              clearValidationError('sdgGoal');
+                            }}
+                            selectionMode='multiple'
+                            placeholder='Select SDG goals'
+                            className={`w-full [&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap ${validationErrors.sdgGoal ? 'border-error' : ''}`}
+                            renderValue={(items) => (
+                              <div className='flex flex-wrap gap-1 py-1'>
+                                {items.map((item) => (
+                                  <span
+                                    key={item.key}
+                                    className='inline-flex items-center px-2 py-1 text-xs font-medium bg-primary-20 text-primary rounded-md'
+                                  >
+                                    {item.textValue}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          />
+                          {validationErrors.sdgGoal && (
+                            <span className='text-error text-sm'>{validationErrors.sdgGoal}</span>
+                          )}
                         </div>
 
                         {/* Description */}
                         <div className='flex flex-col gap-2'>
-                          <label className='text-base font-bold text-secondary'>Description</label>
+                          <RequiredLabel required>Description</RequiredLabel>
                           <textarea
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={(e) => {
+                              setDescription(e.target.value);
+                              clearValidationError('description');
+                            }}
                             rows={4}
-                            className='w-full px-3 py-2 border border-neutral-50 rounded-lg text-sm resize-none focus:outline-none focus:border-primary transition-colors'
+                            className={`w-full px-3 py-2 border rounded-lg text-sm resize-none focus:outline-none focus:border-primary transition-colors ${
+                              validationErrors.description ? 'border-error' : 'border-neutral-50'
+                            }`}
                             placeholder='Enter description'
                           />
+                          {validationErrors.description && (
+                            <span className='text-error text-sm'>
+                              {validationErrors.description}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Year of Experience */}
+                        <div className='flex flex-col gap-2'>
+                          <RequiredLabel required>Year of Experience</RequiredLabel>
+                          <input
+                            type='number'
+                            value={yearOfProfessionalExperience}
+                            onChange={(e) => {
+                              setYearOfProfessionalExperience(parseInt(e.target.value) || 0);
+                              clearValidationError('yearOfExperience');
+                            }}
+                            placeholder='Enter years of experience'
+                            className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:border-primary transition-colors ${
+                              validationErrors.yearOfExperience
+                                ? 'border-error'
+                                : 'border-neutral-50'
+                            }`}
+                          />
+                          {validationErrors.yearOfExperience && (
+                            <span className='text-error text-sm'>
+                              {validationErrors.yearOfExperience}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Current Workspace */}
+                        <div className='flex flex-col gap-2'>
+                          <RequiredLabel>Current Workspace</RequiredLabel>
+                          <Input
+                            variant='text'
+                            preset='default-md'
+                            value={currentWorkplace}
+                            onChange={setCurrentWorkplace}
+                            placeholder='Enter current workspace'
+                            className='w-full'
+                          />
+                        </div>
+
+                        {/* Current Position */}
+                        <div className='flex flex-col gap-2'>
+                          <RequiredLabel>Current Position</RequiredLabel>
+                          <Input
+                            variant='text'
+                            preset='default-md'
+                            value={currentPosition}
+                            onChange={setCurrentPosition}
+                            placeholder='Enter current position'
+                            className='w-full'
+                          />
+                        </div>
+
+                        {/* Industry */}
+                        <div className='flex flex-col gap-2'>
+                          <RequiredLabel required>Industry</RequiredLabel>
+                          <Input
+                            variant='text'
+                            preset='default-md'
+                            value={industryFocus.join(', ')}
+                            onChange={(value) => {
+                              setIndustryFocus(
+                                value
+                                  .split(',')
+                                  .map((item) => item.trim())
+                                  .filter(Boolean)
+                              );
+                              clearValidationError('industry');
+                            }}
+                            placeholder='Enter industry (comma separated)'
+                            className={`w-full ${validationErrors.industry ? 'border-error' : ''}`}
+                          />
+                          {validationErrors.industry && (
+                            <span className='text-error text-sm'>{validationErrors.industry}</span>
+                          )}
                         </div>
 
                         {/* Skill Offered */}
                         <div className='flex flex-col gap-2'>
-                          <label className='text-base font-bold text-secondary'>
-                            Skill offered
-                          </label>
+                          <RequiredLabel required>Skill offered</RequiredLabel>
                           <Select
                             variant='form-field'
                             items={skills.map((skill) => ({
@@ -477,10 +713,11 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                               } else {
                                 setSkillOffered(Array.from(keys).map(String));
                               }
+                              clearValidationError('skillOffered');
                             }}
                             selectionMode='multiple'
                             placeholder='Select skills offered'
-                            className="w-full [&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
+                            className={`w-full [&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap ${validationErrors.skillOffered ? 'border-error' : ''}`}
                             renderValue={(items) => (
                               <div className='flex flex-wrap gap-1 py-1'>
                                 {items.map((item) => (
@@ -494,6 +731,72 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                               </div>
                             )}
                           />
+                          {validationErrors.skillOffered && (
+                            <span className='text-error text-sm'>
+                              {validationErrors.skillOffered}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Advanced Information Section */}
+                        <div className='bg-white border border-neutral-40 rounded-3xl p-6 mt-6'>
+                          <div className='flex flex-col gap-4'>
+                            <div className='flex flex-col gap-2'>
+                              <h3 className='text-2xl font-bold text-primary'>
+                                Advanced Information
+                              </h3>
+                              <Divider className='border-neutral-40' />
+                            </div>
+
+                            <div className='flex flex-col gap-regular'>
+                              {/* Market Focus */}
+                              <div className='flex flex-col gap-2'>
+                                <RequiredLabel required>Market Focus</RequiredLabel>
+                                <Input
+                                  variant='text'
+                                  preset='default-md'
+                                  value={marketFocusExpertise}
+                                  onChange={(value) => {
+                                    setMarketFocusExpertise(value);
+                                    clearValidationError('marketFocus');
+                                  }}
+                                  placeholder='Enter market focus'
+                                  className={`w-full ${validationErrors.marketFocus ? 'border-error' : ''}`}
+                                />
+                                {validationErrors.marketFocus && (
+                                  <span className='text-error text-sm'>
+                                    {validationErrors.marketFocus}
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Funding Stage Experience */}
+                              <div className='flex flex-col gap-2'>
+                                <RequiredLabel required>Funding Stage Experience</RequiredLabel>
+                                <Input
+                                  variant='text'
+                                  preset='default-md'
+                                  value={experienceWithFundingStage.join(', ')}
+                                  onChange={(value) => {
+                                    setExperienceWithFundingStage(
+                                      value
+                                        .split(',')
+                                        .map((item) => item.trim())
+                                        .filter(Boolean)
+                                    );
+                                    clearValidationError('fundingStageExperience');
+                                  }}
+                                  placeholder='Enter funding stage experience (comma separated)'
+                                  className={`w-full ${validationErrors.fundingStageExperience ? 'border-error' : ''}`}
+                                />
+                                {validationErrors.fundingStageExperience && (
+                                  <span className='text-error text-sm'>
+                                    {validationErrors.fundingStageExperience}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
