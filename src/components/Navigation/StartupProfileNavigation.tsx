@@ -11,7 +11,6 @@ import { suggest_mentor_list } from '@/apis/suggest-mentor';
 import { SuggestMentors } from '@/interfaces/startup';
 import { useStartupIdStore } from '@/stores/startup-store';
 import { UI_LABELS, SUGGESTION_MESSAGES, CONSOLE_ERRORS, API_ERROR_CODES } from '@/constants';
-import Calendar from '@/components/Calendar/Calendar';
 import StartupMatchingNavigation from '@/components/Navigation/StartupMatchingNavigation';
 
 interface StartupProfileNavigationProps {
