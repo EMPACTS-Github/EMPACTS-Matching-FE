@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Tab, Tabs } from '@heroui/react';
 import { UI_LABELS } from '@/constants';
 import Calendar from '@/components/Calendar/Calendar';
+import UpcomingMeetings from '@/containers/Matching/UpcomingMeetings';
 
 interface StartupMatchingNavigationProps {
   startupId: string;
@@ -11,8 +12,9 @@ interface StartupMatchingNavigationProps {
 
 const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ startupId }) => {
   const [selected, setSelected] = useState('schedule-meeting');
+
   return (
-    <div className='w-full flex flex-col justify-center mt-8'>
+    <div className='w-full flex flex-col justify-center mt-8 max-w-[1200px]'>
       <Tabs
         aria-label='Startup matching tabs'
         color='primary'
@@ -24,7 +26,9 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
         <Tab key='schedule-meeting' title={UI_LABELS.SCHEDULE_MEETING} className='px-2'>
           <Calendar />
         </Tab>
-        <Tab key='upcoming-meeting' title={UI_LABELS.UPCOMING_MEETING} className='px-2'></Tab>
+        <Tab key='upcoming-meeting' title={UI_LABELS.UPCOMING_MEETING} className='px-2'>
+          <UpcomingMeetings />
+        </Tab>
         <Tab key='sent-invitation' title={UI_LABELS.SENT_INVITATION} className='px-2'></Tab>
         <Tab key='past-meeting' title={UI_LABELS.PAST_MEETING} className='px-2'></Tab>
       </Tabs>
