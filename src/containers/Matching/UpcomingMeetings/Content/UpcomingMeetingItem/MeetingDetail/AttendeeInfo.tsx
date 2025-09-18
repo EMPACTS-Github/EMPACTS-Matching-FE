@@ -9,7 +9,7 @@ const AttendeeInfo = () => {
         className='w-[64px] h-[64px]'
         radius='full'
       />
-      <div className='flex gap-[10px] flex-col px-3'>
+      <div className='flex flex-col px-3'>
         <p className='text-xl font-bold leading-8'>John Doe</p>
         <p className='text-sm leading-5 font-normal text-neutral-80'>Hanoi, Vietnam</p>
       </div>
