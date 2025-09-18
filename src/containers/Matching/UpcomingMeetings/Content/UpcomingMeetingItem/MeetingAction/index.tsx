@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { Button } from '@heroui/react';
 import MemberModal from './MemberModal';
+import CancelMeeting from './CancelMeeting';
 
 const MeetingAction = () => {
   const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
+  const [isCancelMeetingModalOpen, setIsCancelMeetingModalOpen] = useState(false);
 
   const handleOpenMemberModal = () => {
     setIsMemberModalOpen(true);
@@ -12,6 +14,14 @@ const MeetingAction = () => {
 
   const handleCloseMemberModal = () => {
     setIsMemberModalOpen(false);
+  }
+
+  const handleOpenCancelMeetingModal = () => {
+    setIsCancelMeetingModalOpen(true);
+  }
+
+  const handleCloseCancelMeetingModal = () => {
+    setIsCancelMeetingModalOpen(false);
   }
 
   return (
@@ -33,12 +43,13 @@ const MeetingAction = () => {
           className='bg-error text-white'
           size='lg'
           radius='lg'
-          onPress={() => {}}
+          onPress={handleOpenCancelMeetingModal}
         >
           <p className='text-base font-bold leading-6'>Cancel Meeting</p>
         </Button>
       </div>
       <MemberModal isOpen={isMemberModalOpen} onOpenChange={handleCloseMemberModal} />
+      <CancelMeeting isOpen={isCancelMeetingModalOpen} onOpenChange={handleCloseCancelMeetingModal} />
     </div>
   );
 };
