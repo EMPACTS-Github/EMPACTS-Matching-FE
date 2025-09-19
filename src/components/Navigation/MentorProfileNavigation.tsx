@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from '@heroui/react';
 import { mentor_profile_detail } from '@/apis/mentor-profile';
-import MentorExploreContainer from '@/containers/Explore/MentorExploreContainer';
+import MentorExploreContainer from '@/containers/MentorExplore/MentorExploreContainer';
 import MentorProfileContainer from '@/containers/MentorProfile/MentorProfileContainer';
 import { mentor_matching_request_list } from '@/apis/mentor-matching';
 import { useErrorStore } from '@/stores/error-store';

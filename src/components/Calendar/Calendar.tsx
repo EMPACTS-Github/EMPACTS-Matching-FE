@@ -9,14 +9,13 @@ const Calendar = () => {
       minValue={today(getLocalTimeZone())}
       maxValue={today(getLocalTimeZone()).add({ days: 28 })}
       firstDayOfWeek='mon'
-      calendarWidth={100}
       weekdayStyle='short'
       classNames={{
-        base: 'w-[600px]', // Calendar wrapper
-        content: 'w-[600px]',
-        cell: 'w-20 h-20', // Tăng kích thước cell (ô chứa ngày) - từ w-16 h-16 lên w-20 h-20
-        cellButton: 'w-full h-full', // Tăng kích thước button và text size
-        gridHeaderRow: 'w-full',
+        base: 'w-[360px]', // Calendar wrapper
+        content: 'w-[360px]',
+        cell: 'w-12 h-14', // Tăng kích thước cell (ô chứa ngày)
+        cellButton:
+          'w-full h-full data-[hovered=true]:data-[disabled=false]:bg-primary-20 data-[hovered=true]:data-[disabled=false]:text-black',
         gridHeaderCell: 'w-full',
         gridWrapper: 'w-full',
         header: 'w-full',
