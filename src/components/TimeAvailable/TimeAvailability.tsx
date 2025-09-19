@@ -5,7 +5,7 @@ import { PlusSquareIcon } from '@/components/Icons/PlusSquareIcon';
 import DeleteIcon from '@/components/Icons/DeleteIcon';
 import Button from '@/components/Button/Button';
 
-export interface TimeArabilityProps {
+export interface TimeAvailabilityProps {
   dayOfWeek: string;
   switchState: boolean;
   setSwitchState?: (state: boolean) => void;
@@ -13,7 +13,7 @@ export interface TimeArabilityProps {
   setFromToValue?: (value: string[][]) => void;
 }
 
-const TimeArability: React.FC<TimeArabilityProps> = ({
+const TimeAvailability: React.FC<TimeAvailabilityProps> = ({
   dayOfWeek,
   switchState,
   setSwitchState,
@@ -94,4 +94,4 @@ const TimeArability: React.FC<TimeArabilityProps> = ({
   );
 };
 
-export default TimeArability;
+export default TimeAvailability;
