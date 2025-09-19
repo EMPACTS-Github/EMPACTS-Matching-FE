@@ -20,7 +20,7 @@ import skills from '@/utils/data/skillOffered.json';
 import DeleteProfileModal from './DeleteProfileModal';
 import HideProfileModal from './HideProfileModal';
 import Button from '@/components/Button/Button';
-import TimeArability from '@/components/TimeAvailable/TimeArability';
+import TimeArability from '@/components/TimeAvailable/TimeAvailability';
 import Input from '@/components/Input/Input';
 import Select from '@/components/Select/Select';
 

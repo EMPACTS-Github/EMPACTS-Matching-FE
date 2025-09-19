@@ -26,11 +26,14 @@ export const create_mentor_profile = async (data: {
   mentorUsername: string;
   locationBased: string;
   sdgFocusExpertises: string[];
-  description: string;
   skillOffered: string[];
   avtUrl: string | null;
-  languagesSpoken: LanguagesSpoken;
-  phone?: string;
+  industryFocus: string;
+  marketFocusExpertise: string;
+  yearOfProfessionalExperience: string | undefined;
+  currentPosition: string | undefined;
+  currentWorkplace: string | undefined;
+  timeAvailability?: Record<string, Array<{ from: number; to: number }>>;
 }) => {
   const response = await axiosInstance.post(`/mentor`, data);
   return response.data;

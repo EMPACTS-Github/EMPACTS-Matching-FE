@@ -21,7 +21,7 @@ import { uploadProfilePicture } from '@/apis/upload';
 import FormLabel from '@/components/Form/FormLabel';
 import TextLine from '@/components/common/TextLine';
 import Stepper from '@/components/Stepper/Stepper';
-import TimeArability from '@/components/TimeAvailable/TimeArability';
+import TimeAvailability from '@/components/TimeAvailable/TimeAvailability';
 
 // Location Select Render Value
 const renderPurpleValue = (items: any[]) => {
@@ -80,6 +80,40 @@ const createChipsRenderValue = <T extends string[]>(
   return ChipsRenderValue;
 };
 
+// Utility function to convert time string (HH:MM) to seconds
+const timeStringToSeconds = (timeStr: string): number => {
+  if (!timeStr) return 0;
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  return hours * 3600 + minutes * 60;
+};
+
+// Transform availability data to API format
+const transformAvailabilityToAPI = (
+  availability: Record<string, { switchState: boolean; fromToValue: string[][] }>
+) => {
+  const timeAvailability: Record<string, Array<{ from: number; to: number }>> = {};
+
+  Object.entries(availability).forEach(([day, { switchState, fromToValue }]) => {
+    // Chỉ thêm vào API nếu switchState là true
+    if (switchState && fromToValue.length > 0) {
+      const validTimeRanges = fromToValue
+        .filter(([from, to]) => from && to) // Chỉ lấy những cặp thời gian hợp lệ
+        .map(([from, to]) => ({
+          from: timeStringToSeconds(from),
+          to: timeStringToSeconds(to),
+        }));
+
+      // Chỉ thêm ngày vào API nếu có ít nhất 1 khoảng thời gian hợp lệ
+      if (validTimeRanges.length > 0) {
+        timeAvailability[day] = validTimeRanges;
+      }
+    }
+    // Nếu switchState là false, không thêm ngày này vào API (bỏ qua hoàn toàn)
+  });
+
+  return timeAvailability;
+};
+
 const CreateNewMentor = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [mentorName, setMentorName] = useState('');
@@ -98,8 +132,6 @@ const CreateNewMentor = () => {
   const [currentWorkplace, setCurrentWorkplace] = useState('');
   const [industry, setIndustry] = useState('');
   const [marketFocus, setMarketFocus] = useState('');
-  const [switchState, setSwitchState] = useState(true);
-  const [fromToValue, setFromToValue] = useState<string[][]>([['', '']]);
   const weekDays = useMemo(
     () => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     []
@@ -141,19 +173,22 @@ const CreateNewMentor = () => {
     router.back();
   }, [router]);
 
-  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
 
-    if (profilePictureUrl) {
-      URL.revokeObjectURL(profilePictureUrl);
-    }
-    if (file) {
-      const fileUrl = URL.createObjectURL(file);
-      setProfilePictureUrl(fileUrl);
-      setProfilePictureFile(file);
-      e.target.files = null;
-    }
-  }, [profilePictureUrl]);
+      if (profilePictureUrl) {
+        URL.revokeObjectURL(profilePictureUrl);
+      }
+      if (file) {
+        const fileUrl = URL.createObjectURL(file);
+        setProfilePictureUrl(fileUrl);
+        setProfilePictureFile(file);
+        e.target.files = null;
+      }
+    },
+    [profilePictureUrl]
+  );
 
   const handleChangeMentorUsername = useCallback((mentorName: string) => {
     const username = changeCase.snakeCase(mentorName);
@@ -188,9 +223,7 @@ const CreateNewMentor = () => {
       !mentorName.trim() ||
       !mentorUsername.trim() ||
       !location ||
-      !avtUrl ||
       !selectedGoals.length ||
-      !languagesSpoken.length ||
       !skillOffered.length
     ) {
       addToast({
@@ -206,7 +239,7 @@ const CreateNewMentor = () => {
     let uploadAvatarId: string = '';
     if (profilePictureFile) {
       try {
-        const uploadAvatarResult: any = await uploadProfilePicture(profilePictureFile, 'STARTUP');
+        const uploadAvatarResult: any = await uploadProfilePicture(profilePictureFile, 'MENTOR');
         uploadAvatarId = uploadAvatarResult.data.id;
         avtUrl = uploadAvatarResult.data.attachmentUrl;
       } catch (error) {
@@ -215,6 +248,7 @@ const CreateNewMentor = () => {
           color: 'danger',
           timeout: 3000,
         });
+        setLoading(false);
         return;
       }
     }
@@ -225,10 +259,13 @@ const CreateNewMentor = () => {
       locationBased: location,
       sdgFocusExpertises: selectedGoals,
       avtUrl: avtUrl as string,
-      description: 'Mentor profile', // Default description since field is not in UI
       skillOffered: skillOffered,
-      languagesSpoken: languagesSpoken,
-      phone: phone || undefined,
+      industryFocus: industry,
+      marketFocusExpertise: marketFocus,
+      yearOfProfessionalExperience: yearOfExperience || undefined,
+      currentPosition: currentPosition || undefined,
+      currentWorkplace: currentWorkplace || undefined,
+      timeAvailability: transformAvailabilityToAPI(availability),
     };
 
     try {
@@ -330,7 +367,7 @@ const CreateNewMentor = () => {
             value={mentorName}
             onChange={(value) => {
               setMentorName(value);
-              // handleChangeMentorUsername(value);
+              handleChangeMentorUsername(value);
             }}
             placeholder='Enter your preferred name as a mentor'
             isRequired
@@ -554,7 +591,7 @@ const CreateNewMentor = () => {
           <div className='text-sm'>This step is optional</div>
         </div>
         {weekDays.map((day) => (
-          <TimeArability
+          <TimeAvailability
             key={day}
             dayOfWeek={day}
             switchState={availability[day].switchState}
@@ -585,7 +622,7 @@ const CreateNewMentor = () => {
           onClick={currentStep === steps.length - 1 ? handleCreateProfile : handleNext}
           className='bg-primary text-neutral-20 hover:bg-primary-80'
         >
-          {currentStep === steps.length - 1 ? 'Continue' : 'Continue'}
+          {currentStep === steps.length - 1 ? 'Create profile' : 'Continue'}
         </Button>
       </div>
     </div>
