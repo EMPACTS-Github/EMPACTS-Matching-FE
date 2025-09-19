@@ -14,9 +14,11 @@ import { LanguagesSpoken, SDGs } from '@/constants/common';
 import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import { VALIDATION_ERROR_MESSAGES } from '@/errors';
+import type { IUpdateMentorProfile } from '@/apis/mentor-profile';
 import languages from '@/utils/data/languages.json';
 import { SkillOffered } from '@/constants/skillOffered';
 import skills from '@/utils/data/skillOffered.json';
+import fundingStages from '@/utils/data/fundingStages.json';
 import DeleteProfileModal from './DeleteProfileModal';
 import HideProfileModal from './HideProfileModal';
 import Button from '@/components/Button/Button';
@@ -126,99 +128,128 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     onOpenChange: onOpenChangeHideProfileModal,
   } = useDisclosure();
 
-  // Đồng bộ state với props khi mentor thay đổi
+  // Helper function to map skill labels to values for form state
+  const mapSkillLabelsToValues = (skillLabels: string[]): string[] => {
+    return skillLabels
+      .map((skill: string) => {
+        const skillItem = skills.find((s) => s.label === skill);
+        return skillItem?.value;
+      })
+      .filter((value): value is string => value !== undefined && value !== '');
+  };
+
+  // Helper function to map funding stage strings to enum keys
+  const mapFundingStageToKeys = (stages: string[]): string[] => {
+    return stages
+      .map((stage: string) => {
+        // If it's already an enum key, return it
+        const fundingStageItem = fundingStages.find((fs) => fs.value === stage || fs.label === stage);
+        return fundingStageItem?.value;
+      })
+      .filter((value): value is string => value !== undefined && value !== '');
+  };
+
+  // Helper function to map funding stage keys to labels for display
+  const mapFundingStageKeysToLabels = (stageKeys: string[]): string[] => {
+    return stageKeys
+      .map((key: string) => {
+        const fundingStageItem = fundingStages.find((fs) => fs.value === key);
+        return fundingStageItem?.label || key;
+      })
+      .filter((label): label is string => label !== undefined && label !== '');
+  };
+
+  // Helper function for error handling
+  const handleApiError = (error: any, operation: string) => {
+    console.error(`${operation} failed:`, error);
+    
+    // Extract error message from response if available
+    const errorMessage = error?.response?.data?.message || error?.message;
+    
+    if (errorMessage) {
+      setError(errorMessage);
+    }
+  };
+
+  // Synchronize state with props when mentor changes
   useEffect(() => {
-    if (mentor.name) {
-      setMentorName(mentor.name);
+    setMentorName(mentor.name || '');
+    setMentorUsername(mentor.mentorUsername || '');
+    setLocation(mentor.locationBased || '');
+    setImage(mentor.avtUrl || '');
+    setDescription(mentor.description || '');
+    setSdgFocusExpertises(mentor.sdgFocusExpertises || []);
+    setLanguagesSpoken(mentor.languagesSpoken || []);
+    setMarketFocusExpertise(mentor.marketFocusExpertise || '');
+    // Map funding stage keys to labels for display, or convert comma-separated strings to array
+    if (mentor.experienceWithFundingStage && mentor.experienceWithFundingStage.length > 0) {
+      setExperienceWithFundingStage(mapFundingStageKeysToLabels(mentor.experienceWithFundingStage));
+    } else {
+      setExperienceWithFundingStage([]);
     }
-    if (mentor.locationBased) {
-      setLocation(mentor.locationBased);
-    }
-    if (mentor.avtUrl) {
-      setImage(mentor.avtUrl);
-    }
-    if (mentor.description) {
-      setDescription(mentor.description);
-    }
-    if (mentor.sdgFocusExpertises) {
-      setSdgFocusExpertises(mentor.sdgFocusExpertises);
-    }
-    if (mentor.skillOffered) {
-      // Map skill labels to values, filtering out any invalid mappings
-      const mappedSkills = mentor.skillOffered
-        .map((skill: string) => {
-          const skillItem = skills.find((s) => s.label === skill);
-          return skillItem?.value;
-        })
-        .filter((value): value is string => value !== undefined && value !== '');
-      setSkillOffered(mappedSkills);
-    }
-    if (mentor.languagesSpoken) {
-      setLanguagesSpoken(mentor.languagesSpoken);
-    }
-    if (mentor.marketFocusExpertise) {
-      setMarketFocusExpertise(mentor.marketFocusExpertise);
-    }
-    if (mentor.experienceWithFundingStage) {
-      setExperienceWithFundingStage(mentor.experienceWithFundingStage);
-    }
-    if (mentor.yearOfProfessionalExperience) {
-      setYearOfProfessionalExperience(mentor.yearOfProfessionalExperience);
-    }
-    if (mentor.currentWorkplace) {
-      setCurrentWorkplace(mentor.currentWorkplace);
-    }
-    if (mentor.currentPosition) {
-      setCurrentPosition(mentor.currentPosition);
-    }
-    if (mentor.industryFocus) {
-      setIndustryFocus(mentor.industryFocus);
-    }
-    if (mentor.avtUrl) {
-      setProfilePicture(mentor.avtUrl);
+    setYearOfProfessionalExperience(mentor.yearOfProfessionalExperience || 0);
+    setCurrentWorkplace(mentor.currentWorkplace || '');
+    setCurrentPosition(mentor.currentPosition || '');
+    setIndustryFocus(mentor.industryFocus || []);
+    setProfilePicture(mentor.avtUrl || '');
+    
+    // Map skill labels to values for the form state
+    if (mentor.skillOffered && mentor.skillOffered.length > 0) {
+      setSkillOffered(mapSkillLabelsToValues(mentor.skillOffered));
+    } else {
+      setSkillOffered([]);
     }
   }, [mentor]);
+
+  // Clear form errors when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setValidationErrors({});
+      setError(null);
+    }
+  }, [isOpen]);
 
   // Validation function
   const validateForm = (): boolean => {
     const errors: ValidationErrors = {};
 
     // Required field validations
-    if (!mentorName.trim()) {
+    if (!mentorName?.trim()) {
       errors.mentorName = VALIDATION_ERROR_MESSAGES.MENTOR_NAME_REQUIRED;
     }
 
-    if (!location.trim()) {
+    if (!location?.trim()) {
       errors.location = VALIDATION_ERROR_MESSAGES.LOCATION_REQUIRED;
     }
 
-    if (sdgFocusExpertises.length === 0) {
+    if (!sdgFocusExpertises || sdgFocusExpertises.length === 0) {
       errors.sdgGoal = VALIDATION_ERROR_MESSAGES.SDG_GOAL_REQUIRED;
     }
 
-    if (!description.trim()) {
+    if (!description?.trim()) {
       errors.description = VALIDATION_ERROR_MESSAGES.DESCRIPTION_REQUIRED;
     }
 
-    if (yearOfProfessionalExperience <= 0) {
+    if (!yearOfProfessionalExperience || yearOfProfessionalExperience <= 0) {
       errors.yearOfExperience = VALIDATION_ERROR_MESSAGES.YEAR_EXPERIENCE_INVALID;
     }
 
-    if (industryFocus.length === 0 || (industryFocus.length === 1 && !industryFocus[0].trim())) {
+    if (!industryFocus || industryFocus.length === 0 || (industryFocus.length === 1 && !industryFocus[0]?.trim())) {
       errors.industry = VALIDATION_ERROR_MESSAGES.INDUSTRY_REQUIRED;
     }
 
-    if (skillOffered.length === 0) {
+    if (!skillOffered || skillOffered.length === 0) {
       errors.skillOffered = VALIDATION_ERROR_MESSAGES.SKILL_OFFERED_REQUIRED;
     }
 
-    if (!marketFocusExpertise.trim()) {
+    if (!marketFocusExpertise?.trim()) {
       errors.marketFocus = VALIDATION_ERROR_MESSAGES.MARKET_FOCUS_REQUIRED;
     }
 
     if (
+      !experienceWithFundingStage || 
       experienceWithFundingStage.length === 0 ||
-      (experienceWithFundingStage.length === 1 && !experienceWithFundingStage[0].trim())
+      (experienceWithFundingStage.length === 1 && !experienceWithFundingStage[0]?.trim())
     ) {
       errors.fundingStageExperience = VALIDATION_ERROR_MESSAGES.FUNDING_STAGE_REQUIRED;
     }
@@ -239,119 +270,137 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
   };
 
   const onUpdateProfileClick = async () => {
-    if (mentor.id) {
-      // Validate form before submitting
-      if (!validateForm()) {
-        addToast({
-          title: VALIDATION_ERROR_MESSAGES.FORM_VALIDATION_FAILED,
-          color: TOAST_COLORS.DANGER,
-          timeout: DEFAULT_TOAST_TIMEOUT,
-        });
-        return;
-      }
+    if (!mentor.id || loading) {
+      return;
+    }
 
-      setLoading(true);
-      const requestBody = {
-        name: mentorName,
-        mentorUsername: mentorUsername,
-        locationBased: location,
-        description: description,
-        sdgFocusExpertises: sdgFocusExpertises,
-        skillOffered: skillOffered,
-        languagesSpoken: languagesSpoken,
-        marketFocusExpertise: marketFocusExpertise,
-        experienceWithFundingStage: experienceWithFundingStage,
-        yearOfProfessionalExperience: yearOfProfessionalExperience,
-        currentWorkplace: currentWorkplace,
-        currentPosition: currentPosition,
-        industryFocus: industryFocus,
-        avtUrl: profilePicture ? profilePicture : mentor.avtUrl,
-      };
-      try {
-        await mentor_profile_update(mentor.id, requestBody);
-        addToast({
-          title: PROFILE_MESSAGES.PROFILE_UPDATED_SUCCESS,
-          color: TOAST_COLORS.SUCCESS,
-          timeout: DEFAULT_TOAST_TIMEOUT,
-        });
-        await onFetchMentorProfile();
-      } catch (err) {
-        setError(PROFILE_MESSAGES.PROFILE_UPDATE_FAILED);
-        addToast({
-          title: PROFILE_MESSAGES.PROFILE_UPDATE_ERROR,
-          color: TOAST_COLORS.DANGER,
-          timeout: DEFAULT_TOAST_TIMEOUT,
-        });
-      } finally {
-        setLoading(false);
-        onOpenChange();
-      }
+    // Validate form before submitting
+    if (!validateForm()) {
+      addToast({
+        title: VALIDATION_ERROR_MESSAGES.FORM_VALIDATION_FAILED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+      return;
+    }
+
+    setLoading(true);
+    setError(null); // Clear any previous errors
+    
+    // Convert funding stage labels back to enum keys for API
+    const mappedExperienceWithFundingStage = mapFundingStageToKeys(experienceWithFundingStage);
+
+    const requestBody: IUpdateMentorProfile = {
+      name: mentorName,
+      mentorUsername: mentorUsername,
+      locationBased: location,
+      description: description,
+      sdgFocusExpertises: sdgFocusExpertises,
+      skillOffered: skillOffered, // Send enum keys directly
+      languagesSpoken: languagesSpoken,
+      marketFocusExpertise: marketFocusExpertise,
+      experienceWithFundingStage: mappedExperienceWithFundingStage,
+      yearOfProfessionalExperience: yearOfProfessionalExperience,
+      currentWorkplace: currentWorkplace,
+      currentPosition: currentPosition,
+      industryFocus: industryFocus,
+      avtUrl: profilePicture || mentor.avtUrl,
+    };
+    
+    try {
+      await mentor_profile_update(mentor.id, requestBody);
+      addToast({
+        title: PROFILE_MESSAGES.PROFILE_UPDATED_SUCCESS,
+        color: TOAST_COLORS.SUCCESS,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+      await onFetchMentorProfile();
+    } catch (err) {
+      handleApiError(err, 'Profile update');
+      addToast({
+        title: PROFILE_MESSAGES.PROFILE_UPDATE_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+    } finally {
+      setLoading(false);
+      onOpenChange();
     }
   };
 
   const handleHideProfileClick = async () => {
-    if (mentor.id) {
-      setLoading(true);
-      const requestBody = {
-        isHide: !mentor.isHide,
-      };
+    if (!mentor.id || loading) {
+      return;
+    }
 
-      try {
-        await mentor_profile_update(mentor.id, requestBody);
-        if (requestBody.isHide) {
-          addToast({
-            title: PROFILE_MESSAGES.PROFILE_HIDDEN_SUCCESS,
-            color: TOAST_COLORS.SUCCESS,
-            timeout: DEFAULT_TOAST_TIMEOUT,
-          });
-        } else {
-          addToast({
-            title: PROFILE_MESSAGES.PROFILE_UNHIDDEN_SUCCESS,
-            color: TOAST_COLORS.SUCCESS,
-            timeout: DEFAULT_TOAST_TIMEOUT,
-          });
-        }
-      } catch (err) {
-        if (requestBody.isHide) {
-          addToast({
-            title: PROFILE_MESSAGES.PROFILE_HIDE_FAILED,
-            color: TOAST_COLORS.DANGER,
-            timeout: DEFAULT_TOAST_TIMEOUT,
-          });
-        } else {
-          addToast({
-            title: PROFILE_MESSAGES.PROFILE_UNHIDE_FAILED,
-            color: TOAST_COLORS.DANGER,
-            timeout: DEFAULT_TOAST_TIMEOUT,
-          });
-        }
-      } finally {
-        setLoading(false);
-        onOpenChange();
+    setLoading(true);
+    setError(null); // Clear any previous errors
+    
+    const requestBody: IUpdateMentorProfile = {
+      isHide: !mentor.isHide,
+    };
+
+    try {
+      await mentor_profile_update(mentor.id, requestBody);
+      if (requestBody.isHide) {
+        addToast({
+          title: PROFILE_MESSAGES.PROFILE_HIDDEN_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+      } else {
+        addToast({
+          title: PROFILE_MESSAGES.PROFILE_UNHIDDEN_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
       }
+    } catch (err) {
+      handleApiError(err, 'Profile hide/unhide');
+      if (requestBody.isHide) {
+        addToast({
+          title: PROFILE_MESSAGES.PROFILE_HIDE_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+      } else {
+        addToast({
+          title: PROFILE_MESSAGES.PROFILE_UNHIDE_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+      }
+    } finally {
+      setLoading(false);
+      onOpenChange();
     }
   };
 
   const handleDeleteProfileClick = async () => {
-    if (mentor.id) {
-      setLoading(true);
-      try {
-        await mentor_profile_delete(mentor.id);
-        addToast({
-          title: PROFILE_MESSAGES.PROFILE_DELETED_SUCCESS,
-          color: TOAST_COLORS.SUCCESS,
-          timeout: DEFAULT_TOAST_TIMEOUT,
-        });
-      } catch (err) {
-        addToast({
-          title: PROFILE_MESSAGES.PROFILE_DELETE_FAILED,
-          color: TOAST_COLORS.DANGER,
-          timeout: DEFAULT_TOAST_TIMEOUT,
-        });
-      } finally {
-        setLoading(false);
-        onOpenChange();
-      }
+    if (!mentor.id || loading) {
+      return;
+    }
+
+    setLoading(true);
+    setError(null); // Clear any previous errors
+    
+    try {
+      await mentor_profile_delete(mentor.id);
+      addToast({
+        title: PROFILE_MESSAGES.PROFILE_DELETED_SUCCESS,
+        color: TOAST_COLORS.SUCCESS,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+    } catch (err) {
+      handleApiError(err, 'Profile delete');
+      addToast({
+        title: PROFILE_MESSAGES.PROFILE_DELETE_FAILED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+    } finally {
+      setLoading(false);
+      onOpenChange();
     }
   };
 
@@ -362,12 +411,13 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file && !loading) {
       setLoading(true);
+      setError(null); // Clear any previous errors
+      
       try {
         const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.MENTOR });
         setImage(response.data.attachmentUrl);
-        setError(null);
         onImageUpload(response.data.attachmentUrl, response.data.id);
         addToast({
           title: PROFILE_MESSAGES.IMAGE_UPLOADED_SUCCESS,
@@ -375,7 +425,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
           timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } catch (err) {
-        setError(PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED);
+        handleApiError(err, 'Image upload');
         addToast({
           title: PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED,
           color: TOAST_COLORS.DANGER,
@@ -773,21 +823,37 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                               {/* Funding Stage Experience */}
                               <div className='flex flex-col gap-2'>
                                 <RequiredLabel required>Funding Stage Experience</RequiredLabel>
-                                <Input
-                                  variant='text'
-                                  preset='default-md'
-                                  value={experienceWithFundingStage.join(', ')}
-                                  onChange={(value) => {
-                                    setExperienceWithFundingStage(
-                                      value
-                                        .split(',')
-                                        .map((item) => item.trim())
-                                        .filter(Boolean)
-                                    );
+                                <Select
+                                  variant='form-field'
+                                  items={fundingStages.map((stage) => ({
+                                    key: stage.label,
+                                    label: stage.label,
+                                    value: stage.label,
+                                  }))}
+                                  selectedKeys={new Set(experienceWithFundingStage)}
+                                  onSelectionChange={(keys) => {
+                                    if (keys === 'all') {
+                                      setExperienceWithFundingStage(fundingStages.map((stage) => stage.label));
+                                    } else {
+                                      setExperienceWithFundingStage(Array.from(keys).map(String));
+                                    }
                                     clearValidationError('fundingStageExperience');
                                   }}
-                                  placeholder='Enter funding stage experience (comma separated)'
-                                  className={`w-full ${validationErrors.fundingStageExperience ? 'border-error' : ''}`}
+                                  selectionMode='multiple'
+                                  placeholder='Select funding stage experience'
+                                  className={`w-full [&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap ${validationErrors.fundingStageExperience ? 'border-error' : ''}`}
+                                  renderValue={(items) => (
+                                    <div className='flex flex-wrap gap-1 py-1'>
+                                      {items.map((item) => (
+                                        <span
+                                          key={item.key}
+                                          className='inline-flex items-center px-2 py-1 text-xs font-medium bg-primary-20 text-primary rounded-md'
+                                        >
+                                          {item.textValue}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
                                 />
                                 {validationErrors.fundingStageExperience && (
                                   <span className='text-error text-sm'>

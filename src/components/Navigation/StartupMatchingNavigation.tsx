@@ -7,6 +7,7 @@ import { UI_LABELS } from '@/constants';
 import { PAST_MEETING_STATUS } from '@/constants/matching';
 import ScheduleMeetingContainer from '@/containers/Matching/ScheduleMeeting';
 import UpcomingMeetings from '@/containers/Matching/UpcomingMeetings';
+import SentInvitations from '@/containers/Matching/SentInvitations';
 import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
 import PastMeetings from '@/containers/Matching/PastMeetings';
 
@@ -103,6 +104,10 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
             </CardBody>
           </Card>
         </Tab>
+        <Tab key='sent-invitation' title={UI_LABELS.SENT_INVITATION} className='px-2'>
+          <SentInvitations />
+        </Tab>
+        <Tab key='past-meeting' title={UI_LABELS.PAST_MEETING} className='px-2'></Tab>
       </Tabs>
     </div>
   );
