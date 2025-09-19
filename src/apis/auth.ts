@@ -30,7 +30,15 @@ export const verifyOTP = async (email: string, otpCode: string) => {
   return response.data;
 };
 
-export const createNewProfile = async ({ email, avtUrl, name } : { email: string, avtUrl: string, name: string }) => {
+export const createNewProfile = async ({
+  email,
+  avtUrl,
+  name,
+}: {
+  email: string;
+  avtUrl: string;
+  name: string;
+}) => {
   const response = await axiosInstance.post('/base-auth/new-profile', {
     email,
     avtUrl,

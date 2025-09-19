@@ -143,7 +143,9 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     return stages
       .map((stage: string) => {
         // If it's already an enum key, return it
-        const fundingStageItem = fundingStages.find((fs) => fs.value === stage || fs.label === stage);
+        const fundingStageItem = fundingStages.find(
+          (fs) => fs.value === stage || fs.label === stage
+        );
         return fundingStageItem?.value;
       })
       .filter((value): value is string => value !== undefined && value !== '');
@@ -162,10 +164,10 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
   // Helper function for error handling
   const handleApiError = (error: any, operation: string) => {
     console.error(`${operation} failed:`, error);
-    
+
     // Extract error message from response if available
     const errorMessage = error?.response?.data?.message || error?.message;
-    
+
     if (errorMessage) {
       setError(errorMessage);
     }
@@ -192,7 +194,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     setCurrentPosition(mentor.currentPosition || '');
     setIndustryFocus(mentor.industryFocus || []);
     setProfilePicture(mentor.avtUrl || '');
-    
+
     // Map skill labels to values for the form state
     if (mentor.skillOffered && mentor.skillOffered.length > 0) {
       setSkillOffered(mapSkillLabelsToValues(mentor.skillOffered));
@@ -234,7 +236,11 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       errors.yearOfExperience = VALIDATION_ERROR_MESSAGES.YEAR_EXPERIENCE_INVALID;
     }
 
-    if (!industryFocus || industryFocus.length === 0 || (industryFocus.length === 1 && !industryFocus[0]?.trim())) {
+    if (
+      !industryFocus ||
+      industryFocus.length === 0 ||
+      (industryFocus.length === 1 && !industryFocus[0]?.trim())
+    ) {
       errors.industry = VALIDATION_ERROR_MESSAGES.INDUSTRY_REQUIRED;
     }
 
@@ -247,7 +253,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     }
 
     if (
-      !experienceWithFundingStage || 
+      !experienceWithFundingStage ||
       experienceWithFundingStage.length === 0 ||
       (experienceWithFundingStage.length === 1 && !experienceWithFundingStage[0]?.trim())
     ) {
@@ -286,7 +292,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
     setLoading(true);
     setError(null); // Clear any previous errors
-    
+
     // Convert funding stage labels back to enum keys for API
     const mappedExperienceWithFundingStage = mapFundingStageToKeys(experienceWithFundingStage);
 
@@ -306,7 +312,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       industryFocus: industryFocus,
       avtUrl: profilePicture || mentor.avtUrl,
     };
-    
+
     try {
       await mentor_profile_update(mentor.id, requestBody);
       addToast({
@@ -335,7 +341,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
     setLoading(true);
     setError(null); // Clear any previous errors
-    
+
     const requestBody: IUpdateMentorProfile = {
       isHide: !mentor.isHide,
     };
@@ -383,7 +389,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
     setLoading(true);
     setError(null); // Clear any previous errors
-    
+
     try {
       await mentor_profile_delete(mentor.id);
       addToast({
@@ -414,7 +420,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     if (file && !loading) {
       setLoading(true);
       setError(null); // Clear any previous errors
-      
+
       try {
         const response = await uploadAttachemt({ file, ownerType: UPLOAD_OWNER_TYPE.MENTOR });
         setImage(response.data.attachmentUrl);
@@ -833,7 +839,9 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                                   selectedKeys={new Set(experienceWithFundingStage)}
                                   onSelectionChange={(keys) => {
                                     if (keys === 'all') {
-                                      setExperienceWithFundingStage(fundingStages.map((stage) => stage.label));
+                                      setExperienceWithFundingStage(
+                                        fundingStages.map((stage) => stage.label)
+                                      );
                                     } else {
                                       setExperienceWithFundingStage(Array.from(keys).map(String));
                                     }
