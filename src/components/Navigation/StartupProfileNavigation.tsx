@@ -73,7 +73,9 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
             <StartupExploreContainer mentorList={suggestedMentors} error={error} />
           </Tab>
           <Tab key='matching' title={UI_LABELS.MATCHING} className='pt-0 px-2'>
-            <StartupMatchingNavigation startupId={startupId} />
+            <div className='flex justify-center w-full'>
+              <StartupMatchingNavigation startupId={startupId} />
+            </div>
           </Tab>
           <Tab key='profile' title={UI_LABELS.PROFILE} className='pt-0 px-2'>
             <div className='flex flex-col items-center w-full h-screen relative z-10 gap-y-8'>
