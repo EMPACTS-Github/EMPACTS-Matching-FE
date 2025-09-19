@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { Tab, Tabs } from '@heroui/react';
 import { UI_LABELS } from '@/constants';
-import Calendar from '@/components/Calendar/Calendar';
 import { Card, CardHeader, CardBody } from '@heroui/react';
+import ScheduleMeetingContainer from '@/containers/Matching/ScheduleMeeting';
 
 interface StartupMatchingNavigationProps {
   startupId: string;
@@ -31,12 +31,12 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
               <div className='flex flex-col'>
                 <p className='text-lg font-bold text-primary'>Schedule a Meeting</p>
                 <p className='text-sm text-default-500'>
-                  Select a matched mentor to start scheduling.
+                  s Select a matched mentor to start scheduling.
                 </p>
               </div>
             </CardHeader>
             <CardBody>
-              <Calendar />
+              <ScheduleMeetingContainer startupId={startupId} />
             </CardBody>
           </Card>
         </Tab>
