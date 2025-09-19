@@ -1,7 +1,7 @@
 'use-client';
 import axiosInstance from '.';
 
-interface IUpdateMentorProfile {
+export interface IUpdateMentorProfile {
   name?: string;
   mentorUsername?: string;
   locationBased?: string;

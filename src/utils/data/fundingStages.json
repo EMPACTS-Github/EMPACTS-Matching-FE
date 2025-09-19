@@ -1,0 +1,42 @@
+[
+  {
+    "value": "PRE_SEED",
+    "label": "Pre-seed"
+  },
+  {
+    "value": "SEED",
+    "label": "Seed"
+  },
+  {
+    "value": "SERIES_A",
+    "label": "Series A"
+  },
+  {
+    "value": "SERIES_B",
+    "label": "Series B"
+  },
+  {
+    "value": "SERIES_C_PLUS",
+    "label": "Series C+"
+  },
+  {
+    "value": "GROWTH_EQUITY",
+    "label": "Growth Equity"
+  },
+  {
+    "value": "BRIDGE",
+    "label": "Bridge"
+  },
+  {
+    "value": "BOOTSTRAPPED",
+    "label": "Bootstrapped"
+  },
+  {
+    "value": "ANGEL",
+    "label": "Angel"
+  },
+  {
+    "value": "NOT_YET_FUNDED",
+    "label": "Not Yet Funded"
+  }
+]
