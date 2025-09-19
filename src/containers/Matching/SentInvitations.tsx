@@ -36,12 +36,12 @@ const mockInvitations: SentInvitation[] = [
       expertise: ['Digital Marketing', 'Growth Strategy'],
       location: 'Ho Chi Minh City',
       experience: 8,
-      rating: 4.8
+      rating: 4.8,
     },
     sentDate: '2024-01-15',
     status: 'pending',
     message: 'Hi Sarah, I would love to discuss our digital marketing strategy with you.',
-    meetingDate: '2024-01-20'
+    meetingDate: '2024-01-20',
   },
   {
     id: '2',
@@ -52,12 +52,12 @@ const mockInvitations: SentInvitation[] = [
       expertise: ['Product Development', 'Tech Leadership'],
       location: 'Ha Noi',
       experience: 12,
-      rating: 4.9
+      rating: 4.9,
     },
     sentDate: '2024-01-14',
     status: 'accepted',
     message: 'Hello Michael, we need guidance on our product roadmap.',
-    meetingDate: '2024-01-18'
+    meetingDate: '2024-01-18',
   },
   {
     id: '3',
@@ -68,7 +68,7 @@ const mockInvitations: SentInvitation[] = [
       expertise: ['Fundraising', 'Business Strategy'],
       location: 'Da Nang',
       experience: 10,
-      rating: 4.7
+      rating: 4.7,
     },
     sentDate: '2024-01-13',
     status: 'declined',
@@ -83,12 +83,12 @@ const mockInvitations: SentInvitation[] = [
       expertise: ['Operations', 'Scaling'],
       location: 'Can Tho',
       experience: 7,
-      rating: 4.6
+      rating: 4.6,
     },
     sentDate: '2024-01-12',
     status: 'pending',
     message: 'Hi David, we are refining our operations and would like your input.',
-    meetingDate: '2024-01-22'
+    meetingDate: '2024-01-22',
   },
   {
     id: '5',
@@ -99,12 +99,12 @@ const mockInvitations: SentInvitation[] = [
       expertise: ['UX/UI', 'Product Strategy'],
       location: 'Ho Chi Minh City',
       experience: 9,
-      rating: 4.8
+      rating: 4.8,
     },
     sentDate: '2024-01-11',
     status: 'accepted',
     message: 'Hello Anna, we want to improve our onboarding experience.',
-    meetingDate: '2024-01-19'
+    meetingDate: '2024-01-19',
   },
   {
     id: '6',
@@ -115,12 +115,12 @@ const mockInvitations: SentInvitation[] = [
       expertise: ['Sales', 'Go-To-Market'],
       location: 'Da Nang',
       experience: 11,
-      rating: 4.7
+      rating: 4.7,
     },
     sentDate: '2024-01-10',
     status: 'declined',
-    message: 'Hi Carlos, we are planning our GTM for Q1 and need guidance.'
-  }
+    message: 'Hi Carlos, we are planning our GTM for Q1 and need guidance.',
+  },
 ];
 
 // Inline Components for reusability
@@ -133,8 +133,9 @@ const MentorAvatar: React.FC<{
   name: string;
   size?: 'sm' | 'md' | 'lg';
 }> = ({ avatar, name, size = 'md' }) => {
-  const variant = `default-${size}` as keyof typeof import('@/components/Avatar/Avatar').avatarPresets;
-  
+  const variant =
+    `default-${size}` as keyof typeof import('@/components/Avatar/Avatar').avatarPresets;
+
   return (
     <Avatar
       src={avatar}
@@ -151,7 +152,7 @@ const MentorAvatar: React.FC<{
 
 // Helpers: date formatting (ordinal day + optional time range)
 const getOrdinal = (n: number) => {
-  const s = ["th", "st", "nd", "rd"];
+  const s = ['th', 'st', 'nd', 'rd'];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
@@ -180,34 +181,30 @@ const formatDateRange = (startDateIso?: string, endDateIso?: string) => {
 const InvitationCard: React.FC<{
   invitation: SentInvitation;
 }> = ({ invitation }) => (
-  <div className="bg-white rounded-xl p-medium border border-neutral-30">
-    <div className="flex items-start gap-regular">
+  <div className='bg-white rounded-xl p-medium border border-neutral-30'>
+    <div className='flex items-start gap-regular'>
       {/* Avatar */}
-      <MentorAvatar 
-        avatar={invitation.mentor.avatar} 
-        name={invitation.mentor.name}
-        size="md"
-      />
+      <MentorAvatar avatar={invitation.mentor.avatar} name={invitation.mentor.name} size='md' />
 
       {/* Content */}
-      <div className="flex-1">
+      <div className='flex-1'>
         {/* Header with name, location and status */}
-        <div className="flex items-start justify-between mb-small">
+        <div className='flex items-start justify-between mb-small'>
           <div>
-            <h3 className="font-semibold text-secondary text-base">{invitation.mentor.name}</h3>
-            <p className="text-sm text-neutral-80">{invitation.mentor.location}</p>
+            <h3 className='font-semibold text-secondary text-base'>{invitation.mentor.name}</h3>
+            <p className='text-sm text-neutral-80'>{invitation.mentor.location}</p>
           </div>
-          <div className="flex flex-col items-end gap-extra-small">
-            <p className="text-sm text-neutral-50">
+          <div className='flex flex-col items-end gap-extra-small'>
+            <p className='text-sm text-neutral-50'>
               {formatDateRange(invitation.sentDate, invitation.meetingDate)}
             </p>
           </div>
         </div>
 
         {/* Notes section */}
-        <div className="mt-small">
-          <h4 className="font-medium text-secondary text-sm mb-extra-small">Notes</h4>
-          <p className="text-sm text-neutral-80 leading-relaxed">“{invitation.message}”</p>
+        <div className='mt-small'>
+          <h4 className='font-medium text-secondary text-sm mb-extra-small'>Notes</h4>
+          <p className='text-sm text-neutral-80 leading-relaxed'>“{invitation.message}”</p>
         </div>
       </div>
     </div>
@@ -220,7 +217,7 @@ const InvitationCard: React.FC<{
 const SentInvitations: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Show 3 invitations per page (as shown in screenshot)
-  
+
   // Calculate pagination
   const totalPages = Math.ceil(mockInvitations.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -237,30 +234,27 @@ const SentInvitations: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex justify-center">
-      <div 
-        id="sent-invitations-container"
-        className="w-full max-w-4xl bg-white rounded-xl overflow-hidden shadow-[0px_0px_8px_0px_rgba(10,20,57,0.07)]"
+    <div className='w-full flex justify-center'>
+      <div
+        id='sent-invitations-container'
+        className='w-full max-w-4xl bg-white rounded-xl overflow-hidden shadow-[0px_0px_8px_0px_rgba(10,20,57,0.07)]'
       >
         {/* Header Section */}
-        <div className="px-large pt-large pb-medium">
-          <h1 className="text-2xl font-bold text-primary mb-extra-small">Sent Invitations</h1>
-          <p className="text-neutral-80">Mentors you have invited to connect.</p>
+        <div className='px-large pt-large pb-medium'>
+          <h1 className='text-2xl font-bold text-primary mb-extra-small'>Sent Invitations</h1>
+          <p className='text-neutral-80'>Mentors you have invited to connect.</p>
         </div>
 
         {/* Content Area */}
-        <div className="px-large">
+        <div className='px-large'>
           {currentInvitations.length === 0 ? (
-            <div className="text-center py-extra-large">
-              <p className="text-neutral-80">No invitations found for this page.</p>
+            <div className='text-center py-extra-large'>
+              <p className='text-neutral-80'>No invitations found for this page.</p>
             </div>
           ) : (
-            <div className="space-y-medium">
+            <div className='space-y-medium'>
               {currentInvitations.map((invitation) => (
-                <InvitationCard
-                  key={invitation.id}
-                  invitation={invitation}
-                />
+                <InvitationCard key={invitation.id} invitation={invitation} />
               ))}
             </div>
           )}
@@ -268,12 +262,12 @@ const SentInvitations: React.FC = () => {
 
         {/* Pagination Section */}
         {totalPages > 1 && (
-          <div className="px-large py-medium flex justify-end bg-white">
+          <div className='px-large py-medium flex justify-end bg-white'>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
-              className="justify-end"
+              className='justify-end'
             />
           </div>
         )}

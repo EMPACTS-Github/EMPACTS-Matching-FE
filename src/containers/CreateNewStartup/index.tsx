@@ -44,12 +44,12 @@ const StartupNameSection = ({
   companyName,
   onSetCompanyName,
   onChangeStartupUsername,
-  startupUsername
+  startupUsername,
 }: {
-  companyName: string,
-  onSetCompanyName: (value: string) => void,
-  onChangeStartupUsername: (value: string) => void,
-  startupUsername: string
+  companyName: string;
+  onSetCompanyName: (value: string) => void;
+  onChangeStartupUsername: (value: string) => void;
+  startupUsername: string;
 }) => (
   <div className='space-y-2'>
     <FormLabel
@@ -69,18 +69,18 @@ const StartupNameSection = ({
     />
     <p className='text-small font-normal text-neutral-80 leading-[143%]'>
       Your profile could be found with username{' '}
-      <span className='text-primary'>{startupUsername || '@company_name'}</span>. You can change
-      it later in Settings
+      <span className='text-primary'>{startupUsername || '@company_name'}</span>. You can change it
+      later in Settings
     </p>
   </div>
 );
 
 const DescriptionSection = ({
   description,
-  onSetDescription
+  onSetDescription,
 }: {
-  description: string,
-  onSetDescription: (value: string) => void,
+  description: string;
+  onSetDescription: (value: string) => void;
 }) => (
   <div className='space-y-2'>
     <FormLabel
@@ -97,13 +97,13 @@ const DescriptionSection = ({
   </div>
 );
 
- const LanguagesSpokenSection = ({
+const LanguagesSpokenSection = ({
   languagesSpoken,
   onSetLanguagesSpoken,
- }: {
-  languagesSpoken: string[],
-  onSetLanguagesSpoken: (values: LanguagesSpoken) => void,
- }) => {
+}: {
+  languagesSpoken: string[];
+  onSetLanguagesSpoken: (values: LanguagesSpoken) => void;
+}) => {
   const languageItems = Object.entries(LANGUAGE_SPOKEN).map(([key, label]) => ({
     key,
     label,
@@ -275,8 +275,6 @@ const CreateNewStartup = () => {
     );
   }, [profilePictureUrl]);
 
-
-
   // Inline LocationBasedSection component using Select component
   const LocationBasedSection = useCallback(() => {
     const locationItems = provinces.map((province) => ({
@@ -311,23 +309,26 @@ const CreateNewStartup = () => {
         )}
       </div>
     );
-  }, [location])
+  }, [location]);
 
   // Inline DateEstablishedSection component
-  const DateEstablishedSection = useCallback(() => (
-    <div className='space-y-2'>
-      <FormLabel
-        text='Date established'
-        className='text-regular font-bold text-secondary leading-[150%]'
-      />
-      <input
-        type='date'
-        value={formedTime ? formedTime.toISOString().split('T')[0] : ''}
-        onChange={(e) => setFormedTime(e.target.value ? new Date(e.target.value) : null)}
-        className='h-12 border border-neutral-50 bg-neutral-20 rounded-lg px-3 text-regular w-full'
-      />
-    </div>
-  ), [formedTime]);
+  const DateEstablishedSection = useCallback(
+    () => (
+      <div className='space-y-2'>
+        <FormLabel
+          text='Date established'
+          className='text-regular font-bold text-secondary leading-[150%]'
+        />
+        <input
+          type='date'
+          value={formedTime ? formedTime.toISOString().split('T')[0] : ''}
+          onChange={(e) => setFormedTime(e.target.value ? new Date(e.target.value) : null)}
+          className='h-12 border border-neutral-50 bg-neutral-20 rounded-lg px-3 text-regular w-full'
+        />
+      </div>
+    ),
+    [formedTime]
+  );
 
   // Inline SDGGoalSection component using Select component
   const SDGGoalSection = useCallback(() => {
@@ -365,28 +366,31 @@ const CreateNewStartup = () => {
   }, [selectedGoal]);
 
   // Inline ActionButtons component using Button component
-  const ActionButtons = useCallback(() => (
-    <div className='flex flex-row justify-between w-full gap-4 h-12'>
-      <div className='flex-1'>
-        <Button
-          variant='secondary-full'
-          onClick={handleCancelCreateProfile}
-          className='border border-primary text-primary bg-neutral-20 hover:bg-neutral-40'
-        >
-          Back
-        </Button>
+  const ActionButtons = useCallback(
+    () => (
+      <div className='flex flex-row justify-between w-full gap-4 h-12'>
+        <div className='flex-1'>
+          <Button
+            variant='secondary-full'
+            onClick={handleCancelCreateProfile}
+            className='border border-primary text-primary bg-neutral-20 hover:bg-neutral-40'
+          >
+            Back
+          </Button>
+        </div>
+        <div className='flex-1'>
+          <Button
+            variant='primary-full'
+            onClick={handleCreateProfile}
+            className='bg-primary text-neutral-20 hover:bg-primary-80'
+          >
+            Continue
+          </Button>
+        </div>
       </div>
-      <div className='flex-1'>
-        <Button
-          variant='primary-full'
-          onClick={handleCreateProfile}
-          className='bg-primary text-neutral-20 hover:bg-primary-80'
-        >
-          Continue
-        </Button>
-      </div>
-    </div>
-  ), []);
+    ),
+    []
+  );
 
   return (
     <div className='w-full flex justify-center items-center min-h-screen relative'>
@@ -408,10 +412,7 @@ const CreateNewStartup = () => {
           <LocationBasedSection />
           <DateEstablishedSection />
           <SDGGoalSection />
-          <DescriptionSection
-            description={description}
-            onSetDescription={setDescription}
-          />
+          <DescriptionSection description={description} onSetDescription={setDescription} />
           <LanguagesSpokenSection
             languagesSpoken={languagesSpoken}
             onSetLanguagesSpoken={setLanguagesSpoken}

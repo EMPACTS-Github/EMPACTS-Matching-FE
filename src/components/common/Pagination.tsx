@@ -7,16 +7,16 @@ interface PaginationProps {
   className?: string;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ 
-  currentPage, 
-  totalPages, 
-  onPageChange, 
-  className = '' 
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  className = '',
 }) => {
   const getVisiblePages = () => {
     const pages: (number | string)[] = [];
     const showPages = 5; // Number of page buttons to show
-    
+
     if (totalPages <= showPages) {
       // If total pages is small, show all pages
       for (let i = 1; i <= totalPages; i++) {
@@ -53,7 +53,7 @@ const Pagination: React.FC<PaginationProps> = ({
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   };
 
@@ -90,10 +90,10 @@ const Pagination: React.FC<PaginationProps> = ({
             ? 'text-neutral-50 cursor-not-allowed'
             : 'text-neutral-80 hover:bg-neutral-30'
         }`}
-        aria-label="Previous page"
+        aria-label='Previous page'
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
         </svg>
       </button>
 
@@ -107,8 +107,8 @@ const Pagination: React.FC<PaginationProps> = ({
             page === currentPage
               ? 'bg-primary text-white'
               : page === '...'
-              ? 'text-neutral-50 cursor-default'
-              : 'text-neutral-80 hover:bg-neutral-30'
+                ? 'text-neutral-50 cursor-default'
+                : 'text-neutral-80 hover:bg-neutral-30'
           }`}
         >
           {page}
@@ -124,10 +124,10 @@ const Pagination: React.FC<PaginationProps> = ({
             ? 'text-neutral-50 cursor-not-allowed'
             : 'text-neutral-80 hover:bg-neutral-30'
         }`}
-        aria-label="Next page"
+        aria-label='Next page'
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
         </svg>
       </button>
     </div>
