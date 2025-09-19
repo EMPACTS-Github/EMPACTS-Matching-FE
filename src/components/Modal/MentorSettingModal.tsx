@@ -20,7 +20,7 @@ import skills from '@/utils/data/skillOffered.json';
 import DeleteProfileModal from './DeleteProfileModal';
 import HideProfileModal from './HideProfileModal';
 import Button from '@/components/Button/Button';
-import TimeArability from '@/components/TimeAvailable/TimeAvailability';
+import TimeAvailability from '@/components/TimeAvailable/TimeAvailability';
 import Input from '@/components/Input/Input';
 import Select from '@/components/Select/Select';
 
@@ -814,7 +814,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
                       <div className='flex flex-col gap-4'>
                         {Object.keys(timeAvailability).map((day) => (
-                          <TimeArability
+                          <TimeAvailability
                             key={day}
                             dayOfWeek={day}
                             switchState={timeAvailability[day].switchState}
