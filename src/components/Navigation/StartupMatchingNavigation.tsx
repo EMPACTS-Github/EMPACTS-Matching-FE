@@ -15,7 +15,7 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
   const [selected, setSelected] = useState('schedule-meeting');
 
   return (
-    <div className='w-full flex flex-col justify-center mt-8 max-w-[1200px]'>
+    <div className='w-full flex flex-col justify-center mt-8'>
       <Tabs
         aria-label='Startup matching tabs'
         color='primary'
@@ -33,7 +33,7 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
               <div className='flex flex-col'>
                 <p className='text-lg font-bold text-primary'>Schedule a Meeting</p>
                 <p className='text-sm text-default-500'>
-                  s Select a matched mentor to start scheduling.
+                  Select a matched mentor to start scheduling.
                 </p>
               </div>
             </CardHeader>
@@ -43,7 +43,22 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
           </Card>
         </Tab>
         <Tab key='upcoming-meeting' title={UI_LABELS.UPCOMING_MEETING} className='px-2'>
-          <UpcomingMeetings />
+          <Card
+            shadow='sm'
+            className='2xl:mx-[20%] xl:mx-56 lg:mx-48 md:mx-32 sm:mx-16 xs:mx-8 mx-4 px-3 py-2'
+          >
+            <CardHeader className=''>
+              <div className='flex flex-col'>
+                <p className='text-lg font-bold text-primary'>Upcoming Meetings</p>
+                <p className='text-sm text-default-500'>
+                  Your confirmed meetings and scheduled calls.
+                </p>
+              </div>
+            </CardHeader>
+            <CardBody>
+              <UpcomingMeetings />
+            </CardBody>
+          </Card>
         </Tab>
         <Tab key='sent-invitation' title={UI_LABELS.SENT_INVITATION} className='px-2'>
           <Card
