@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { Tab, Tabs } from '@heroui/react';
-import { UI_LABELS } from '@/constants';
 import { Card, CardHeader, CardBody } from '@heroui/react';
+import { UI_LABELS } from '@/constants';
+import { PAST_MEETING_STATUS } from '@/constants/matching';
 import ScheduleMeetingContainer from '@/containers/Matching/ScheduleMeeting';
 import UpcomingMeetings from '@/containers/Matching/UpcomingMeetings';
+import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
 
 interface StartupMatchingNavigationProps {
   startupId: string;
@@ -13,6 +15,11 @@ interface StartupMatchingNavigationProps {
 
 const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ startupId }) => {
   const [selected, setSelected] = useState('schedule-meeting');
+  const [currentMeetingStatus, setCurrentMeetingStatus] = useState(PAST_MEETING_STATUS[0].value);
+
+  const handleMeetingStatusChange = (status: string) => {
+    setCurrentMeetingStatus(status);
+  }
 
   return (
     <div className='w-full flex flex-col justify-center mt-8'>
@@ -80,11 +87,14 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
             className='2xl:mx-[20%] xl:mx-56 lg:mx-48 md:mx-32 sm:mx-16 xs:mx-8 mx-4 px-3 py-2'
           >
             <CardHeader className=''>
-              <div className='flex flex-col'>
-                <p className='text-lg font-bold text-primary'> Past Meetings</p>
-                <p className='text-sm text-default-500'>
-                  Review your completed meetings and access summaries.
-                </p>
+              <div className='flex justify-between w-full'>
+                <div className='flex flex-col'>
+                  <p className='text-lg font-bold text-primary'> Past Meetings</p>
+                  <p className='text-sm text-default-500'>
+                    Review your completed meetings and access summaries.
+                  </p>
+                </div>
+                <FilterPastMeeting currentMeetingStatus={currentMeetingStatus} onChangeMeetingStatus={handleMeetingStatusChange} />
               </div>
             </CardHeader>
             <CardBody></CardBody>

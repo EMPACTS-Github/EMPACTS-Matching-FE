@@ -4,3 +4,18 @@ export const MATCHING_STATUS = {
   REJECTED: 'REJECTED',
   CANCELED: 'CANCELED',
 };
+
+export const PAST_MEETING_STATUS = [
+  {
+    label: 'Completed Meeting',
+    value: 'completed'
+  },
+  {
+    label: 'Cancelled Meeting',
+    value: 'cancelled'
+  },
+  {
+    label: 'Expired Meeting',
+    value: 'expired'
+  }
+];
