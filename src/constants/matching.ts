@@ -5,6 +5,12 @@ export const MATCHING_STATUS = {
   CANCELED: 'CANCELED',
 };
 
+export const MEETING_STATUS = {
+  COMPLETED: 'completed',
+  CANCELLED: 'cancelled',
+  EXPIRED: 'expired',
+};
+
 export const PAST_MEETING_STATUS = [
   {
     label: 'Completed Meeting',

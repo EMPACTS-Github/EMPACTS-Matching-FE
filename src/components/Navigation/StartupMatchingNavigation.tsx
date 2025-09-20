@@ -8,6 +8,7 @@ import { PAST_MEETING_STATUS } from '@/constants/matching';
 import ScheduleMeetingContainer from '@/containers/Matching/ScheduleMeeting';
 import UpcomingMeetings from '@/containers/Matching/UpcomingMeetings';
 import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
+import PastMeetings from '@/containers/Matching/PastMeetings';
 
 interface StartupMatchingNavigationProps {
   startupId: string;
@@ -97,7 +98,9 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
                 <FilterPastMeeting currentMeetingStatus={currentMeetingStatus} onChangeMeetingStatus={handleMeetingStatusChange} />
               </div>
             </CardHeader>
-            <CardBody></CardBody>
+            <CardBody>
+              <PastMeetings />
+            </CardBody>
           </Card>
         </Tab>
       </Tabs>
