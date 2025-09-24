@@ -165,6 +165,7 @@ export const UI_LABELS = {
   UPCOMING_MEETING: 'Upcoming Meeting',
   SENT_INVITATION: 'Sent Invitation',
   PAST_MEETING: 'Past Meeting',
+  CONNECTION_REQUEST: 'Connection Request',
 } as const;
 
 // Error codes and messages for suggestions
