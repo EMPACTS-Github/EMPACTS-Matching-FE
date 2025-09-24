@@ -10,19 +10,19 @@ const MeetingAction = () => {
 
   const handleOpenMemberModal = () => {
     setIsMemberModalOpen(true);
-  }
+  };
 
   const handleCloseMemberModal = () => {
     setIsMemberModalOpen(false);
-  }
+  };
 
   const handleOpenCancelMeetingModal = () => {
     setIsCancelMeetingModalOpen(true);
-  }
+  };
 
   const handleCloseCancelMeetingModal = () => {
     setIsCancelMeetingModalOpen(false);
-  }
+  };
 
   return (
     <div className='flex justify-between'>
@@ -49,7 +49,10 @@ const MeetingAction = () => {
         </Button>
       </div>
       <MemberModal isOpen={isMemberModalOpen} onOpenChange={handleCloseMemberModal} />
-      <CancelMeeting isOpen={isCancelMeetingModalOpen} onOpenChange={handleCloseCancelMeetingModal} />
+      <CancelMeeting
+        isOpen={isCancelMeetingModalOpen}
+        onOpenChange={handleCloseCancelMeetingModal}
+      />
     </div>
   );
 };

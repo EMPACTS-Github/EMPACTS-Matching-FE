@@ -10,7 +10,7 @@ const Content = () => {
       <UpcomingMeetingItem />
       <UpcomingMeetingItem />
     </div>
-  )
-}
+  );
+};
 
 export default Content;

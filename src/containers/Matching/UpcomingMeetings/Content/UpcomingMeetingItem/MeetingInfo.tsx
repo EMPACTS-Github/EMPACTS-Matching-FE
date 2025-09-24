@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import MeetingDetail from './MeetingDetail';
 import JoinMeetingAction from './JoinMeetingAction';
 

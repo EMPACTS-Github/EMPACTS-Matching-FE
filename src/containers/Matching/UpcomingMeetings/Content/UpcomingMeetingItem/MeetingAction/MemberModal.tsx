@@ -1,11 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  Modal,
-  ModalContent,
-  ModalBody,
-  Button,
-} from "@heroui/react";
+import { Modal, ModalContent, ModalBody, Button } from '@heroui/react';
 import CloseIcon from '@/components/Icons/CloseIcon';
 import Input from '@/components/Input/Input';
 
@@ -48,7 +43,9 @@ const MemberItem = ({
 }) => {
   return (
     <div className='flex justify-between bg-primary-20 rounded-lg px-3 py-2'>
-      <p className='text-primary text-base font-bold leading-6 max-w-[200px] text-wrap break-words'>{name}</p>
+      <p className='text-primary text-base font-bold leading-6 max-w-[200px] text-wrap break-words'>
+        {name}
+      </p>
       <p className='text-base font-normal leading-6 max-w-[250px] text-wrap break-words'>{email}</p>
       <div className='cursor-pointer text-primary w-[24px] h-[24px]' onClick={onRemove}>
         {/* Hard code value, will be fixed later */}
@@ -64,33 +61,40 @@ const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onOpenChange }) => {
 
   const handleRemoveMember = (id: number) => {
     setMembers(members.filter((member) => member.id !== id));
-  }
+  };
 
   const handleAddMember = () => {
     setMembers([...members, { id: members.length + 1, name: email, email }]);
     setEmail('');
-  }
+  };
 
   return (
     <Modal
-    size='2xl'
-    isOpen={isOpen}
-    onOpenChange={onOpenChange}
-    classNames={{
-      body: 'px-8 py-10',
-    }}
+      size='2xl'
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      classNames={{
+        body: 'px-8 py-10',
+      }}
     >
       <ModalContent>
         <ModalBody>
           <div className='flex flex-col gap-10'>
             <div>
               <p className='text-[28px] font-bold leading-[48px]'>Meeting members</p>
-              <p className='text-base font-normal leading-6'>See who are attending the meeting and make the changes</p>
+              <p className='text-base font-normal leading-6'>
+                See who are attending the meeting and make the changes
+              </p>
             </div>
             <div className='flex flex-col gap-4'>
               <div className='flex flex-col gap-2'>
                 {members.map((member) => (
-                  <MemberItem key={member.id} name={member.name} email={member.email} onRemove={() => handleRemoveMember(member.id)} />
+                  <MemberItem
+                    key={member.id}
+                    name={member.name}
+                    email={member.email}
+                    onRemove={() => handleRemoveMember(member.id)}
+                  />
                 ))}
               </div>
               <div className='flex flex-col gap-2'>
@@ -103,7 +107,7 @@ const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onOpenChange }) => {
                     value={email}
                     onChange={(value) => setEmail(value)}
                   />
-                   <Button
+                  <Button
                     variant='solid'
                     className='bg-black text-white'
                     size='lg'

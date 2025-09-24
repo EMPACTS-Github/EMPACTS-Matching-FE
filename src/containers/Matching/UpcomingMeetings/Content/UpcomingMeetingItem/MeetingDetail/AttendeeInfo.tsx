@@ -1,5 +1,5 @@
-import React from 'react'
-import { Avatar } from "@heroui/react";
+import React from 'react';
+import { Avatar } from '@heroui/react';
 
 const AttendeeInfo = () => {
   return (
@@ -14,7 +14,7 @@ const AttendeeInfo = () => {
         <p className='text-sm leading-5 font-normal text-neutral-80'>Hanoi, Vietnam</p>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default AttendeeInfo;

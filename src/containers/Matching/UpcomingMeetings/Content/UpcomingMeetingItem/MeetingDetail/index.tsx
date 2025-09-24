@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import AttendeeInfo from './AttendeeInfo';
 import HostInfo from './HostInfo';
 
@@ -8,7 +8,7 @@ const MeetingDetail = () => {
       <AttendeeInfo />
       <HostInfo />
     </div>
-  )
-}
+  );
+};
 
 export default MeetingDetail;

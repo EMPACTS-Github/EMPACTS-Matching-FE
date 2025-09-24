@@ -1,18 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import {
-  Modal,
-  ModalContent,
-  ModalBody,
-} from "@heroui/react";
+import { Modal, ModalContent, ModalBody } from '@heroui/react';
 import Button from '@/components/Button/Button';
 
-const CancelMeeting = ({ isOpen, onOpenChange }: { isOpen: boolean, onOpenChange: () => void }) => {
+const CancelMeeting = ({ isOpen, onOpenChange }: { isOpen: boolean; onOpenChange: () => void }) => {
   const [cancelReason, setCancelReason] = useState('');
 
   const handleChangeCancelReason = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCancelReason(e.target.value);
-  }
+  };
 
   return (
     <Modal
@@ -27,7 +23,9 @@ const CancelMeeting = ({ isOpen, onOpenChange }: { isOpen: boolean, onOpenChange
         {(onClose) => (
           <ModalBody>
             <div className='flex flex-col gap-8'>
-              <p className='text-[28px] font-bold leading-[48px]'>Cancel meeting with <span className='text-primary'>Do Chi Thanh</span></p>
+              <p className='text-[28px] font-bold leading-[48px]'>
+                Cancel meeting with <span className='text-primary'>Do Chi Thanh</span>
+              </p>
               <div className='flex flex-col gap-2'>
                 <p className='text-xl font-bold leading-8'>Cancel reason</p>
                 <textarea
@@ -46,7 +44,7 @@ const CancelMeeting = ({ isOpen, onOpenChange }: { isOpen: boolean, onOpenChange
                 </Button>
               </div>
             </div>
-          </ModalBody>  
+          </ModalBody>
         )}
       </ModalContent>
     </Modal>
