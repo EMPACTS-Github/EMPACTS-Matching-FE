@@ -9,6 +9,6 @@ const UpcomingMeetingItem = () => {
       <MeetingAction />
     </div>
   );
-}
+};
 
 export default UpcomingMeetingItem;

@@ -80,7 +80,9 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
                 <p className='text-sm text-default-500'>Mentors you have invited to connect.</p>
               </div>
             </CardHeader>
-            <CardBody></CardBody>
+            <CardBody className='h-[55vh] p-0'>
+              <SentInvitations />
+            </CardBody>
           </Card>
         </Tab>
         <Tab key='past-meeting' title={UI_LABELS.PAST_MEETING} className='px-2'>
@@ -104,10 +106,6 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
             </CardBody>
           </Card>
         </Tab>
-        <Tab key='sent-invitation' title={UI_LABELS.SENT_INVITATION} className='px-2'>
-          <SentInvitations />
-        </Tab>
-        <Tab key='past-meeting' title={UI_LABELS.PAST_MEETING} className='px-2'></Tab>
       </Tabs>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tooltip } from "@heroui/react";
+import { Tooltip } from '@heroui/react';
 import Button from '@/components/Button/Button';
 import CopyIcon from '@/components/Icons/CopyIcon';
 
@@ -8,7 +8,7 @@ const GOOGLE_MEET_LINK = 'https://meet.google.com/ktq-edyu-ydj';
 
 const CopyLinkItem = () => {
   const [isCopied, setIsCopied] = useState(false);
-  
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(GOOGLE_MEET_LINK);
     setIsCopied(true);
