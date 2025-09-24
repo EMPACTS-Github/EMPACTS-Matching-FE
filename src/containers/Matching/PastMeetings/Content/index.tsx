@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import PastMeetingItem from './PastMeetingItem';
 import { MEETING_STATUS } from '@/constants/matching';
 
@@ -12,6 +12,6 @@ const Content = () => {
       <PastMeetingItem status={MEETING_STATUS.COMPLETED} />
     </div>
   );
-}
+};
 
 export default Content;

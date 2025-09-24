@@ -21,7 +21,7 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
 
   const handleMeetingStatusChange = (status: string) => {
     setCurrentMeetingStatus(status);
-  }
+  };
 
   return (
     <div className='w-full flex flex-col justify-center mt-8'>
@@ -98,7 +98,10 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
                     Review your completed meetings and access summaries.
                   </p>
                 </div>
-                <FilterPastMeeting currentMeetingStatus={currentMeetingStatus} onChangeMeetingStatus={handleMeetingStatusChange} />
+                <FilterPastMeeting
+                  currentMeetingStatus={currentMeetingStatus}
+                  onChangeMeetingStatus={handleMeetingStatusChange}
+                />
               </div>
             </CardHeader>
             <CardBody>

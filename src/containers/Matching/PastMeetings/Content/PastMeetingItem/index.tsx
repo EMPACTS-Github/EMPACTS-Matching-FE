@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import MeetingDetail from './MeetingDetail';
 import Button from '@/components/Button/Button';
 
@@ -15,6 +15,6 @@ const PastMeetingItem = ({ status }: PastMeetingItemProps) => {
       </Button>
     </div>
   );
-}
+};
 
 export default PastMeetingItem;

@@ -1,10 +1,8 @@
-import React from 'react'
+import React from 'react';
 import Content from './Content';
 
 const PastMeetings = () => {
-  return (
-    <Content />
-  );
-}
+  return <Content />;
+};
 
 export default PastMeetings;

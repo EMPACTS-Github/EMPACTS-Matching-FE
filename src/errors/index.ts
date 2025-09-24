@@ -10,6 +10,8 @@ export const PROFILE_ERROR_MESSAGES = {
   IMAGE_UPLOAD_FAILED: 'Failed to upload the image. Please try again.',
   ATTACHMENT_DELETE_FAILED: 'Failed to delete the attachment',
   NO_FILE_SELECTED: 'No file selected. Please choose an image file.',
+  AVAILABILITY_UPDATE_FAILED: 'Failed to update time availability',
+  AVAILABILITY_FETCH_FAILED: 'Failed to fetch time availability',
   GENERAL_ERROR: 'Oops! Something went wrong',
 } as const;
 
@@ -22,6 +24,7 @@ export const SUCCESS_MESSAGES = {
   IMAGE_UPLOADED_SUCCESS: 'Image uploaded successfully',
   ATTACHMENT_UPLOADED_SUCCESS: 'Attachement uploaded successfully',
   ATTACHMENT_DELETED_SUCCESS: 'Attachment deleted successfully',
+  AVAILABILITY_UPDATED_SUCCESS: 'Time availability updated successfully',
 } as const;
 
 // Validation Error Messages
