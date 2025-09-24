@@ -1,6 +1,5 @@
 'use-client';
 import axiosInstance from '.';
-import { LanguagesSpoken } from '@/constants/common';
 
 export const mentor_search = async (limit: number, page: number, keyword?: string) => {
   if (keyword) {

@@ -4,20 +4,21 @@
 import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from '@heroui/react';
 import { mentor_profile_detail } from '@/apis/mentor-profile';
-import MentorExploreContainer from '@/containers/MentorExplore/MentorExploreContainer';
 import MentorProfileContainer from '@/containers/MentorProfile/MentorProfileContainer';
 import { mentor_matching_request_list } from '@/apis/mentor-matching';
 import { useErrorStore } from '@/stores/error-store';
 import { useMatchingRequestListStore } from '@/stores/matching-store';
 import { Mentor } from '@/interfaces/MentorProfile';
 import { MATCHING_STATUS } from '@/constants/matching';
+import { UI_LABELS } from '@/constants';
+import MentorMatchingNavigation from '@/components/Navigation/MentorMatchingNavigation';
 
 interface MentorProfileNavigationProps {
   mentorId: string;
 }
 
 const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mentorId }) => {
-  const [selectedTab, setSelectedTab] = useState('explore');
+  const [selectedTab, setSelectedTab] = useState('matching');
   const setError = useErrorStore((state) => state.setError);
   const [mentorProfile, setMentorProfile] = useState<Mentor | null>(null);
   const setMatchingRequestList = useMatchingRequestListStore(
@@ -74,9 +75,9 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mento
           onSelectionChange={setSelectedTab as any}
           className='w-full font-bold bg-white 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4'
         >
-          <Tab key='explore' title='Explore' className='pt-0 px-2'>
-            <div className='flex flex-col items-center w-full h-screen 2xl:px-[20%] 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-y-2'>
-              <MentorExploreContainer mentorId={mentorId} />
+          <Tab key='matching' title={UI_LABELS.MATCHING} className='pt-0 px-2'>
+            <div className='flex justify-center w-full'>
+              <MentorMatchingNavigation mentorId={mentorId} />
             </div>
           </Tab>
           <Tab key='profile' title='Profile' className='pt-0 px-2'>
