@@ -17,6 +17,7 @@ export interface IUpdateMentorProfile {
   currentPosition?: string;
   industryFocus?: string[];
   isHide?: boolean;
+  timeAvailability?: Record<string, Array<{ from: number; to: number }>>;
 }
 
 export const mentor_list = async () => {
@@ -36,5 +37,21 @@ export const mentor_profile_update = async (id: string, data: IUpdateMentorProfi
 
 export const mentor_profile_delete = async (id: string) => {
   const response = await axiosInstance.delete(`/mentor-profile/${id}`);
+  return response.data;
+};
+
+// Mentor Availability API functions
+export const get_mentor_availability = async (mentorId: string) => {
+  const response = await axiosInstance.get(`/mentor-availability/${mentorId}`);
+  return response.data;
+};
+
+export const update_mentor_availability = async (
+  mentorId: string,
+  timeAvailability: Record<string, Array<{ from: number; to: number }>>
+) => {
+  const response = await axiosInstance.put(`/mentor-availability/${mentorId}`, {
+    timeAvailability: timeAvailability,
+  });
   return response.data;
 };

@@ -14,14 +14,14 @@ export const MEETING_STATUS = {
 export const PAST_MEETING_STATUS = [
   {
     label: 'Completed Meeting',
-    value: 'completed'
+    value: 'completed',
   },
   {
     label: 'Cancelled Meeting',
-    value: 'cancelled'
+    value: 'cancelled',
   },
   {
     label: 'Expired Meeting',
-    value: 'expired'
-  }
+    value: 'expired',
+  },
 ];

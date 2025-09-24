@@ -4,7 +4,12 @@ import { Tabs, Tab, Divider, Avatar, addToast, useDisclosure } from '@heroui/rea
 import { Autocomplete, AutocompleteItem } from '@heroui/autocomplete';
 import React, { useState, useEffect } from 'react';
 import { uploadAttachemt } from '@/apis/upload';
-import { mentor_profile_update, mentor_profile_delete } from '@/apis/mentor-profile';
+import {
+  mentor_profile_update,
+  mentor_profile_delete,
+  get_mentor_availability,
+  update_mentor_availability,
+} from '@/apis/mentor-profile';
 import { Mentor } from '@/interfaces/MentorProfile';
 import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
 import sdgGoals from '@/utils/data/sdgGoals.json';
@@ -13,7 +18,7 @@ import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { LanguagesSpoken, SDGs } from '@/constants/common';
 import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
-import { VALIDATION_ERROR_MESSAGES } from '@/errors';
+import { VALIDATION_ERROR_MESSAGES, PROFILE_ERROR_MESSAGES } from '@/errors';
 import type { IUpdateMentorProfile } from '@/apis/mentor-profile';
 import languages from '@/utils/data/languages.json';
 import { SkillOffered } from '@/constants/skillOffered';
@@ -27,6 +32,70 @@ import Input from '@/components/Input/Input';
 import Select from '@/components/Select/Select';
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/modal';
+
+// Data transformation utilities
+const secondsToTimeString = (seconds: number): string => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+};
+
+const timeStringToSeconds = (timeStr: string): number => {
+  if (!timeStr) return 0;
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  return hours * 3600 + minutes * 60;
+};
+
+// Transform API availability data to UI format
+const transformAPIToUI = (
+  apiData: Record<string, Array<{ from: number; to: number; isAvailable: boolean }>>
+): Record<string, { switchState: boolean; fromToValue: string[][] }> => {
+  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const uiData: Record<string, { switchState: boolean; fromToValue: string[][] }> = {};
+
+  weekDays.forEach((day) => {
+    if (apiData[day] && apiData[day].length > 0) {
+      uiData[day] = {
+        switchState: true,
+        fromToValue: apiData[day].map((slot) => [
+          secondsToTimeString(slot.from),
+          secondsToTimeString(slot.to),
+        ]),
+      };
+    } else {
+      uiData[day] = {
+        switchState: false,
+        fromToValue: [['', '']],
+      };
+    }
+  });
+
+  return uiData;
+};
+
+// Transform UI availability data to API format
+const transformUIToAPI = (
+  uiData: Record<string, { switchState: boolean; fromToValue: string[][] }>
+): Record<string, Array<{ from: number; to: number }>> => {
+  const apiData: Record<string, Array<{ from: number; to: number }>> = {};
+
+  Object.entries(uiData).forEach(([day, { switchState, fromToValue }]) => {
+    if (switchState && fromToValue.length > 0) {
+      const validTimeRanges = fromToValue
+        .filter(([from, to]) => from && to)
+        .map(([from, to]) => ({
+          from: timeStringToSeconds(from),
+          to: timeStringToSeconds(to),
+        }));
+
+      if (validTimeRanges.length > 0) {
+        apiData[day] = validTimeRanges;
+      }
+    }
+  });
+
+  return apiData;
+};
 
 // Component for labels with red asterisk
 const RequiredLabel: React.FC<{ children: React.ReactNode; required?: boolean }> = ({
@@ -174,6 +243,33 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
   };
 
   // Synchronize state with props when mentor changes
+  // Function to fetch mentor availability
+  const fetchMentorAvailability = async () => {
+    if (!mentor.id) return;
+
+    try {
+      const response = await get_mentor_availability(mentor.id);
+      if (response.data && response.data.mentorAvailability) {
+        const transformedData = transformAPIToUI(response.data.mentorAvailability);
+        setTimeAvailability(transformedData);
+      }
+    } catch (error) {
+      console.error('Error fetching mentor availability:', error);
+      // Show error toast only if it's not a "not found" error (which is expected for new mentors)
+      if (error && typeof error === 'object' && 'response' in error) {
+        const response = (error as any).response;
+        if (response?.status !== 404) {
+          addToast({
+            title: PROFILE_ERROR_MESSAGES.AVAILABILITY_FETCH_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
+          });
+        }
+      }
+    }
+  };
+  
+  // Đồng bộ state với props khi mentor thay đổi
   useEffect(() => {
     setMentorName(mentor.name || '');
     setMentorUsername(mentor.mentorUsername || '');
@@ -201,6 +297,9 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     } else {
       setSkillOffered([]);
     }
+
+    // Fetch mentor availability data
+    fetchMentorAvailability();
   }, [mentor]);
 
   // Clear form errors when modal opens
@@ -315,6 +414,10 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
 
     try {
       await mentor_profile_update(mentor.id, requestBody);
+      // Update time availability separately
+      const transformedTimeAvailability = transformUIToAPI(timeAvailability);
+      await update_mentor_availability(mentor.id, transformedTimeAvailability);
+
       addToast({
         title: PROFILE_MESSAGES.PROFILE_UPDATED_SUCCESS,
         color: TOAST_COLORS.SUCCESS,
