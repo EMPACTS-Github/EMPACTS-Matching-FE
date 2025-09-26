@@ -6,6 +6,7 @@ import { UI_LABELS } from '@/constants';
 import { PAST_MEETING_STATUS } from '@/constants/matching';
 import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
 import PastMeetings from '@/containers/Matching/PastMeetings';
+import MentorUpcomingMeetings from '@/containers/Matching/MentorUpcomingMeetings';
 
 interface MentorMatchingNavigationProps {
   mentorId: string;
@@ -57,7 +58,9 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
                 </p>
               </div>
             </CardHeader>
-            <CardBody>{/* <UpcomingMeetings /> */}</CardBody>
+            <CardBody>
+              <MentorUpcomingMeetings />
+            </CardBody>
           </Card>
         </Tab>
         <Tab
