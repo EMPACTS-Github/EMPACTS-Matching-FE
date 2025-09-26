@@ -244,7 +244,9 @@ const InvitationCard: React.FC<{
         {/* Notes section */}
         <div className='mt-small'>
           <h4 className='font-medium text-secondary text-sm mb-extra-small'>Notes</h4>
-          <p className='text-sm text-neutral-80 leading-relaxed'>&ldquo;{invitation.message}&rdquo;</p>
+          <p className='text-sm text-neutral-80 leading-relaxed'>
+            &ldquo;{invitation.message}&rdquo;
+          </p>
         </div>
       </div>
     </div>
@@ -334,7 +336,9 @@ const SentInvitations: React.FC = () => {
         {/* End of results indicator */}
         {!hasMore && displayedInvitations.length > 0 && (
           <div className='text-center py-medium'>
-            <p className='text-neutral-50 text-sm'>You&rsquo;ve reached the end of your invitations</p>
+            <p className='text-neutral-50 text-sm'>
+              You&rsquo;ve reached the end of your invitations
+            </p>
           </div>
         )}
       </div>
