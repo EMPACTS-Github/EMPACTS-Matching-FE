@@ -268,7 +268,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       }
     }
   };
-  
+
   // Đồng bộ state với props khi mentor thay đổi
   useEffect(() => {
     setMentorName(mentor.name || '');
