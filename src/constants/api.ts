@@ -53,6 +53,7 @@ export const TOAST_MESSAGES = {
   INVALID_CREDENTIALS: 'Invalid credentials',
   LOGIN_ERROR: 'An error occurred while logging in',
   GOOGLE_LOGIN_FAILED: 'Login with Google failed!',
+  GOOGLE_LOGIN_SUCCESS: 'Login with Google successful!',
   SIGNUP_ERROR: 'An error occurred while signing up',
   USER_ALREADY_EXISTS: 'User already exist',
   OTP_VERIFY_ERROR: 'An error occurred while verifying the OTP',

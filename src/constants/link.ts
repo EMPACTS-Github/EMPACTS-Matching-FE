@@ -8,6 +8,7 @@ export const ROUTES = {
 
   // Profile routes
   PROFILES: {
+    GENERAL: '/profiles',
     NEW: '/profiles/new',
   },
 
