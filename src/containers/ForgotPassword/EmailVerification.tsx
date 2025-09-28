@@ -170,7 +170,7 @@ function EmailVerification({
           onValueChange={setOtp}
           onComplete={handleVerifyOTP}
           length={6}
-          className='w-full max-w-xs'
+          className='w-full items-center' // Inside the class of OtpInput, there is already a flex flex-col
         />
         <Button variant='primary-full' type='submit'>
           Verify
