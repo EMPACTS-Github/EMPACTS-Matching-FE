@@ -23,21 +23,21 @@ import {
 } from '@/constants/api';
 import Image from 'next/image';
 
-function routeAfterLoginWithInvitation(router: any, response: any) {
+function routeAfterLoginWithInvitation(router: any, userInfo: any) {
   const hasInvitationStatus = localStorage.getItem('status');
 
   if (hasInvitationStatus) {
     const invitationCode = localStorage.getItem('invitationCode');
     const invitedEmail = localStorage.getItem('invitedEmail');
 
-    if (invitedEmail === response.email) {
+    if (invitedEmail === userInfo.email) {
       router.push(getStartupInvitationUrl(invitationCode || '', invitedEmail || ''));
     } else {
       router.push(ROUTES.PROFILES.NEW);
     }
   } else {
-    if (response.user.hasProfile) {
-      router.push(ROUTES.PROFILES.NEW);
+    if (userInfo?.hasProfile) {
+      router.push(ROUTES.PROFILES.GENERAL);
     } else {
       router.push(ROUTES.PROFILES.NEW);
     }
@@ -145,12 +145,18 @@ function Login() {
   useEffect(() => {
     async function getUserAuthInfo() {
       const success = searchParams.get('success');
+      if (!success) return;
       if (success === 'true') {
         try {
           const response = await getUserAuthInfoAPI();
           localStorage.setItem('user', JSON.stringify(response.data));
 
           routeAfterLoginWithInvitation(router, response.data);
+          addToast({
+            title: TOAST_MESSAGES.GOOGLE_LOGIN_SUCCESS,
+            color: TOAST_COLORS.SUCCESS,
+            timeout: TOAST_TIMEOUT.MEDIUM,
+          });
         } catch (error) {
           addToast({
             title: TOAST_MESSAGES.GOOGLE_LOGIN_FAILED,
@@ -158,7 +164,7 @@ function Login() {
             timeout: TOAST_TIMEOUT.MEDIUM,
           });
         }
-      } else if (success == 'false') {
+      } else if (success === 'false') {
         addToast({
           title: TOAST_MESSAGES.GOOGLE_LOGIN_FAILED,
           color: TOAST_COLORS.DANGER,
@@ -166,6 +172,7 @@ function Login() {
         });
       }
     }
+
     getUserAuthInfo();
   }, [searchParams, router]);
 
