@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { Tab, Tabs, Card, CardHeader, CardBody, Chip } from '@heroui/react';
 import { UI_LABELS } from '@/constants';
-import { PAST_MEETING_STATUS } from '@/constants/matching';
+import { PAST_MEETING_STATUS, CONNECTION_REQUEST_STATUS } from '@/constants/matching';
 import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
+import FilterConnectionRequest from '@/containers/Matching/MentorConnectionRequest/FilterConnectionRequest';
 import PastMeetings from '@/containers/Matching/PastMeetings';
 import MentorUpcomingMeetings from '@/containers/Matching/MentorUpcomingMeetings';
+import MentorConnectionRequest from '@/containers/Matching/MentorConnectionRequest';
 
 interface MentorMatchingNavigationProps {
   mentorId: string;
@@ -15,9 +17,16 @@ interface MentorMatchingNavigationProps {
 const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ mentorId }) => {
   const [selected, setSelected] = useState('upcoming-meeting');
   const [currentMeetingStatus, setCurrentMeetingStatus] = useState(PAST_MEETING_STATUS[0].value);
+  const [currentRequestStatus, setCurrentRequestStatus] = useState(
+    CONNECTION_REQUEST_STATUS[0].value
+  );
 
   const handleMeetingStatusChange = (status: string) => {
     setCurrentMeetingStatus(status);
+  };
+
+  const handleRequestStatusChange = (status: string) => {
+    setCurrentRequestStatus(status);
   };
 
   return (
@@ -89,13 +98,15 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
                   <p className='text-lg font-bold text-primary'>Connection Request</p>
                   <p className='text-sm text-default-500'>placeholder text</p>
                 </div>
-                <FilterPastMeeting
-                  currentMeetingStatus={currentMeetingStatus}
-                  onChangeMeetingStatus={handleMeetingStatusChange}
+                <FilterConnectionRequest
+                  currentRequestStatus={currentRequestStatus}
+                  onChangeRequestStatus={handleRequestStatusChange}
                 />
               </div>
             </CardHeader>
-            <CardBody></CardBody>
+            <CardBody>
+              <MentorConnectionRequest />
+            </CardBody>
           </Card>
         </Tab>
         <Tab key='past-meeting' title={UI_LABELS.PAST_MEETING} className='px-2'>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Avatar, Tooltip, Button } from '@heroui/react';
+import { Tooltip } from '@heroui/react';
+import Avatar from '@/components/Avatar/Avatar';
+import Button from '@/components/Button/Button';
 import CopyIcon from '@/components/Icons/CopyIcon';
 import MentorCancelMeeting from './MentorCancelMeeting';
 
@@ -50,13 +52,12 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({ m
       {/* 3-Column Grid Layout with Fixed Column Sizes */}
       <div className='grid grid-cols-[280px_1fr_240px] gap-8 items-start'>
         {/* Column 1: Avatar + Name (spans 2 rows) */}
-        <div className='row-span-2 flex gap-3'>
+        <div className='row-span-2 flex gap-4'>
           <Avatar
+            variant='default-lg'
             src={meeting.startupAvatar || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL}
-            className='w-16 h-16 flex-shrink-0'
-            radius='full'
           />
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-1'>
             <p className='text-xl font-bold leading-tight'>{meeting.startupName}</p>
             <p className='text-sm font-normal text-neutral-80'>{meeting.startupLocation}</p>
           </div>
@@ -70,7 +71,7 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({ m
 
         {/* Column 3 Row 1: Join Meeting Action */}
         <div className='flex flex-col gap-1 items-end'>
-          <Button variant='solid' color='primary' size='lg' onPress={handleJoinMeeting}>
+          <Button variant='primary-lg' onClick={handleJoinMeeting}>
             <p className='text-base font-bold leading-6'>Join with Google Meet</p>
           </Button>
           <div className='flex items-center gap-1'>
@@ -96,13 +97,7 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({ m
 
         {/* Column 3 Row 2: Cancel Button */}
         <div className='flex justify-end'>
-          <Button
-            variant='solid'
-            color='danger'
-            size='lg'
-            radius='lg'
-            onPress={handleCancelMeeting}
-          >
+          <Button variant='warning-lg' onClick={handleCancelMeeting}>
             <p className='text-base font-bold leading-6'>Cancel Meeting</p>
           </Button>
         </div>
