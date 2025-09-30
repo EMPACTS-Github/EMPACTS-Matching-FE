@@ -4,7 +4,7 @@ import MentorConnectionRequestItem from './MentorConnectionRequestItem';
 // Mock data for connection requests
 const mockConnectionRequests = [
   {
-    id: '1',
+    startupId: '5cf00f73-1f01-4cf7-a34f-9395d599cb06',
     startupName: 'The Amazing Team',
     startupLocation: 'Hanoi, Vietnam',
     startupAvatar:
@@ -12,7 +12,7 @@ const mockConnectionRequests = [
     meetingStatus: 'Pending',
   },
   {
-    id: '2',
+    startupId: '83ef0be8-01e7-4a06-863d-50e9c877cb94',
     startupName: 'TechFlow Solutions',
     startupLocation: 'Ho Chi Minh City, Vietnam',
     startupAvatar:
@@ -20,7 +20,7 @@ const mockConnectionRequests = [
     meetingStatus: 'Pending',
   },
   {
-    id: '3',
+    startupId: '8ea8abe6-f34d-4f4d-99fd-c1125bdc994f',
     startupName: 'Green Innovation Hub',
     startupLocation: 'Da Nang, Vietnam',
     startupAvatar:
@@ -33,7 +33,7 @@ const Content = () => {
   return (
     <div className='flex flex-col gap-6 h-full max-h-[40vh] overflow-y-auto'>
       {mockConnectionRequests.map((req) => (
-        <MentorConnectionRequestItem key={req.id} request={req} />
+        <MentorConnectionRequestItem key={req.startupId} request={req} />
       ))}
     </div>
   );
