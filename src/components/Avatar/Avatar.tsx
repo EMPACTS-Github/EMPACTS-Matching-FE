@@ -1,7 +1,5 @@
 import React from 'react';
 import { Avatar as HeroAvatar } from '@heroui/avatar';
-import { a, pre } from 'framer-motion/client';
-
 export const avatarPresets = {
   // Default Avatar variants with sizes
   'default-sm': {

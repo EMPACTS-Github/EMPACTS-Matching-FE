@@ -3,24 +3,23 @@
 import React, { useMemo, useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger, Button } from '@heroui/react';
 import FilterIcon from '@/components/Icons/FilterIcon';
-import { PAST_MEETING_STATUS } from '@/constants/matching';
+import { CONNECTION_REQUEST_STATUS } from '@/constants/matching';
 import CompletedMeetingIcon from '@/components/Icons/CompletedMeetingIcon';
 import CancelledMeetingIcon from '@/components/Icons/CancelledMeetingIcon';
-import ExpiredMeetingIcon from '@/components/Icons/ExpiredMeetingIcon';
 
-interface FilterPastMeetingProps {
-  currentMeetingStatus: string;
-  onChangeMeetingStatus: (status: string) => void;
+interface FilterConnectionRequestProps {
+  currentRequestStatus: string;
+  onChangeRequestStatus: (status: string) => void;
 }
 
 const FilterItem = ({
-  currentMeetingStatus,
+  currentRequestStatus,
   label,
   value,
   onSelectItem,
   icon,
 }: {
-  currentMeetingStatus: string;
+  currentRequestStatus: string;
   label: string;
   value: string;
   onSelectItem: (value: string) => void;
@@ -33,7 +32,7 @@ const FilterItem = ({
     >
       {icon && icon}
       <p
-        className={`text-base leading-6 font-bold text-black ${currentMeetingStatus === value ? 'text-primary' : ''}`}
+        className={`text-base leading-6 font-bold text-black ${currentRequestStatus === value ? 'text-primary' : ''}`}
       >
         {label}
       </p>
@@ -41,37 +40,31 @@ const FilterItem = ({
   );
 };
 
-const FilterPastMeeting: React.FC<FilterPastMeetingProps> = ({
-  currentMeetingStatus,
-  onChangeMeetingStatus,
+const FilterConnectionRequest: React.FC<FilterConnectionRequestProps> = ({
+  currentRequestStatus,
+  onChangeRequestStatus,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const itemIconBuilder = useMemo(() => {
     return [
       {
-        value: 'completed',
-        icon: ({ isSelected }: { isSelected: boolean }) => (
-          <CompletedMeetingIcon width={20} height={20} stroke={isSelected ? '#9200FE' : 'black'} />
-        ),
-      },
-      {
-        value: 'cancelled',
+        value: 'pending',
         icon: ({ isSelected }: { isSelected: boolean }) => (
           <CancelledMeetingIcon width={20} height={20} stroke={isSelected ? '#9200FE' : 'black'} />
         ),
       },
       {
-        value: 'expired',
+        value: 'accepted',
         icon: ({ isSelected }: { isSelected: boolean }) => (
-          <ExpiredMeetingIcon width={20} height={20} stroke={isSelected ? '#9200FE' : 'black'} />
+          <CompletedMeetingIcon width={20} height={20} stroke={isSelected ? '#9200FE' : 'black'} />
         ),
       },
     ];
   }, []);
 
-  const pastMeetingStatusBuilder = useMemo(() => {
-    return PAST_MEETING_STATUS.map((status) => ({
+  const connectionRequestStatusBuilder = useMemo(() => {
+    return CONNECTION_REQUEST_STATUS.map((status) => ({
       label: status.label,
       value: status.value,
       icon: itemIconBuilder.find((item) => item.value === status.value)?.icon,
@@ -79,12 +72,12 @@ const FilterPastMeeting: React.FC<FilterPastMeetingProps> = ({
   }, [itemIconBuilder]);
 
   const handleStatusChange = (status: string) => {
-    onChangeMeetingStatus(status);
+    onChangeRequestStatus(status);
     setIsOpen(false);
   };
 
   const getDisplayLabel = (status: string) => {
-    const found = pastMeetingStatusBuilder.find((s) => s.value === status);
+    const found = connectionRequestStatusBuilder.find((s) => s.value === status);
     return found ? found.label : status;
   };
 
@@ -104,22 +97,22 @@ const FilterPastMeeting: React.FC<FilterPastMeetingProps> = ({
             startContent={<FilterIcon width={20} height={20} stroke='white' />}
           >
             <p className='text-base leading-6 font-bold text-white'>
-              {getDisplayLabel(currentMeetingStatus)}
+              {getDisplayLabel(currentRequestStatus)}
             </p>
           </Button>
         </PopoverTrigger>
         <PopoverContent className='py-[10px] px-[20px] rounded-xl'>
           <div className='flex flex-col gap-4'>
-            {pastMeetingStatusBuilder.map((status) => (
+            {connectionRequestStatusBuilder.map((status) => (
               <FilterItem
                 key={status.value}
-                currentMeetingStatus={currentMeetingStatus}
+                currentRequestStatus={currentRequestStatus}
                 label={status.label}
                 value={status.value}
                 onSelectItem={handleStatusChange}
                 icon={
                   status.icon
-                    ? status.icon({ isSelected: currentMeetingStatus === status.value })
+                    ? status.icon({ isSelected: currentRequestStatus === status.value })
                     : undefined
                 }
               />
@@ -131,4 +124,4 @@ const FilterPastMeeting: React.FC<FilterPastMeetingProps> = ({
   );
 };
 
-export default FilterPastMeeting;
+export default FilterConnectionRequest;

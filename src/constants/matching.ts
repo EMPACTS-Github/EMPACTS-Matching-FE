@@ -25,3 +25,14 @@ export const PAST_MEETING_STATUS = [
     value: 'expired',
   },
 ];
+
+export const CONNECTION_REQUEST_STATUS = [
+  {
+    label: 'Pending',
+    value: 'pending',
+  },
+  {
+    label: 'Accepted',
+    value: 'accepted',
+  },
+];
