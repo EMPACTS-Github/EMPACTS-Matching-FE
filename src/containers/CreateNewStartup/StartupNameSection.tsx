@@ -15,6 +15,7 @@ const StartupNameSection = ({ companyName, onSetCompanyName, onChangeStartupUser
       <FormLabel
         text='Startup name'
         className='text-regular font-bold text-secondary leading-[150%]'
+        isRequired
       />
       <Input
         variant='text'

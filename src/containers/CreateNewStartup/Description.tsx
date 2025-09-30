@@ -15,6 +15,7 @@ const Description = ({
     <FormLabel
       text='Description'
       className='text-regular font-bold text-secondary leading-[150%]'
+      isRequired
     />
     <textarea
       value={description}
