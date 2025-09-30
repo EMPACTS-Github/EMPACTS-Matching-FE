@@ -18,6 +18,7 @@ export const PROFILE_MESSAGES = {
   IMAGE_UPLOAD_FAILED: 'Failed to upload the image. Please try again.',
   ATTACHMENT_DELETE_FAILED: 'Failed to delete the attachment',
   NO_FILE_SELECTED: 'No file selected. Please choose an image file.',
+  SUGGESTION_MENTORS_FAILED: 'Failed to fetch suggestion mentors profile',
 
   // General messages
   GENERAL_ERROR: 'Oops! Something went wrong',

@@ -1,7 +1,8 @@
 'use client';
 import SearchWithLocation from '@/components/Search/SearchWithLocation';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Tabs, Tab } from '@heroui/react';
+import { Tabs, Tab, addToast } from '@heroui/react';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 import CompassIcon from '@/components/Icons/CompassIcon';
 import { SuggestMentors } from '@/interfaces/startup';
 import { SuggestMentor } from '@/interfaces/MentorProfile';
@@ -9,24 +10,23 @@ import { mentor_profile_detail } from '@/apis/mentor-profile';
 import ForyouSection from '@/containers/StartupExplore/Section/ForyouSection';
 import MatchingActivitySection from '@/containers/StartupExplore/Section/MatchingActivitySection';
 import SearchSection from '@/containers/StartupExplore/Section/SearchSection';
-import { useStartupIdStore } from '@/stores/startup-store';
 import { useMatchingStore } from '@/stores/matching-store';
 import { startup_matching_activity } from '@/apis/startup-matching';
 import { useErrorStore } from '@/stores/error-store';
-import { API_RESPONSE_CODES, API_RESPONSE_NUMBER_CODES } from '@/constants/api';
+import { API_RESPONSE_CODES, API_RESPONSE_NUMBER_CODES, DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
 
 interface StartupExploreProps {
   mentorList: SuggestMentors[] | undefined;
   error: string | null;
+  startupId: string;
 }
 
-const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) => {
+const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, startupId }) => {
   const [location, setLocation] = useState<string>('');
   const [isFavourite, setIsFavourite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mentor, setMentor] = useState<SuggestMentor[]>([]);
   const [selectedMentor, setSelectedMentor] = useState(mentor[0]);
-  const startupId = useStartupIdStore((state) => state.startupId);
   const setMatches = useMatchingStore((state) => state.setMatches);
   const setError = useErrorStore((state) => state.setError);
 
@@ -62,13 +62,19 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error }) =>
       setMentor(mentorDetails);
       setSelectedMentor(mentorDetails[0]);
     } catch (err) {
-      console.error('Failed to fetch mentors profile:', err);
+      addToast({
+        title: PROFILE_MESSAGES.SUGGESTION_MENTORS_FAILED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
     }
   }, [mentorList]);
 
   useEffect(() => {
-    fetchMentors();
-  }, [fetchMentors]);
+    if (mentorList && mentorList.length > 0) {
+      fetchMentors();
+    }
+  }, [fetchMentors, mentorList]);
 
   useEffect(() => {
     const fetchMatching = async () => {
