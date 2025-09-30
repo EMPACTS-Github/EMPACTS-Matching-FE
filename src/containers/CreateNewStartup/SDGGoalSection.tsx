@@ -20,6 +20,7 @@ const SDGGoalSection = ({ selectedGoal, onSetSelectedGoal }: SDGGoalSectionProps
       <FormLabel
         text='SDG Goal'
         className='text-regular font-bold text-secondary leading-[150%]'
+        isRequired
       />
       <Select
         variant='form-field'

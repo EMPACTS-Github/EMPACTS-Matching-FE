@@ -15,6 +15,7 @@ const DateEstablishedSection = ({
       <FormLabel
         text='Date established'
         className='text-regular font-bold text-secondary leading-[150%]'
+        isRequired
       />
       <input
         type='date'

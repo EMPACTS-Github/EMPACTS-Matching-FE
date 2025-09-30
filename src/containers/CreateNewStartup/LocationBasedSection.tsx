@@ -20,6 +20,7 @@ const LocationBasedSection = ({ location, onSetLocation }: LocationBasedSectionP
       <FormLabel
         text='Location based'
         className='text-regular font-bold text-secondary leading-[150%]'
+        isRequired
       />
       <Select
         variant='form-field'
