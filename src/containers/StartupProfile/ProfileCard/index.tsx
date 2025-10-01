@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, CardFooter, Divider, useDisclosure } from '@heroui/react';
-import SettingModal from '@/components/Modal/SettingModal';
+import SettingModal from '@/containers/StartupProfile/SettingProfile';
 import { Startup } from '@/interfaces/StartupProfile';
 import Button from '@/components/Button/Button';
 import Avatar from '@/components/Avatar/Avatar';
@@ -57,7 +57,7 @@ const ProfileHeader: React.FC<{ startup: Startup }> = ({ startup }) => (
   </div>
 );
 
-const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({
+const ProfileCard: React.FC<ProfileInfoSubCardProps> = ({
   startup,
   isOwner,
   countMatches,
@@ -97,16 +97,20 @@ const ProfileInfoSubCard: React.FC<ProfileInfoSubCardProps> = ({
         <Button onClick={onOpen} variant='tertiary-full' disabled={!isOwner}>
           {UI_LABELS.SETTINGS}
         </Button>
-        <SettingModal
-          onFetchStartupProfile={onFetchStartupProfile}
-          onFetchStartupDocuments={onFetchStartupDocuments}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          startup={startup}
-        />
+        {
+          isOpen && (
+              <SettingModal
+                onFetchStartupProfile={onFetchStartupProfile}
+                onFetchStartupDocuments={onFetchStartupDocuments}
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                startup={startup}
+              />
+          )
+        }
       </CardFooter>
     </Card>
   );
 };
 
-export default ProfileInfoSubCard;
+export default ProfileCard;

@@ -7,35 +7,34 @@ import { uploadAttachemt, updateAttachment, getStartupDocuments } from '@/apis/u
 import { startup_profile_update, startup_profile_delete } from '@/apis/startup-profile';
 import { Startup } from '@/interfaces/StartupProfile';
 import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
-import ImageGallery from './ImageGallery';
-import DocumentBody from './DocumentBody';
-import LabelStartAndSwitchEnd from '@/components/Switch/LabelStartAndSwitchEnd';
+import ImageGallery from '@/containers/StartupProfile/SettingProfile/ImageGallery';
+import DocumentBody from '@/containers/StartupProfile/SettingProfile/DocumentBody';
+import DeleteProfileModal from '@/containers/StartupProfile/SettingProfile/DeleteProfileModal';
+import HideProfileModal from '@/containers/StartupProfile/SettingProfile/HideProfileModal';
 import sdgGoals from '@/utils/data/sdgGoals.json';
 import provinces from '@/utils/data/provinces.json';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
-import DeleteProfileModal from './DeleteProfileModal';
-import HideProfileModal from './HideProfileModal';
+import LabelStartAndSwitchEnd from '@/components/Switch/LabelStartAndSwitchEnd';
 import Button from '@/components/Button/Button';
 
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@heroui/modal';
+import { Modal, ModalContent, ModalHeader, ModalBody } from '@heroui/modal';
 import { isDocumentFile, isImageFile } from '@/services/upload';
 import { IDocument } from '@/interfaces/upload';
-import { start } from 'repl';
 
 interface SettingModalProps {
   isOpen: boolean;
-  onOpenChange: () => void;
   startup: Startup;
+  onOpenChange: () => void;
   onFetchStartupProfile: () => Promise<void>;
   onFetchStartupDocuments: () => Promise<void>;
 }
 
 const SettingModal: React.FC<SettingModalProps> = ({
   isOpen,
-  onOpenChange,
   startup,
+  onOpenChange,
   onFetchStartupProfile,
   onFetchStartupDocuments,
 }) => {
@@ -65,31 +64,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
     onOpen: onOpenHideProfileModal,
     onOpenChange: onOpenChangeHideProfileModal,
   } = useDisclosure();
-
-  // Đồng bộ state với props khi startup thay đổi
-  useEffect(() => {
-    if (startup.name) {
-      setStartupName(startup.name);
-    }
-    if (startup.locationBased) {
-      setLocation(startup.locationBased);
-    }
-    if (startup.avtUrl) {
-      setImage(startup.avtUrl);
-    }
-    if (startup.description) {
-      setDescription(startup.description);
-    }
-    if (startup.sdgGoal) {
-      setSdgGoal(startup.sdgGoal);
-    }
-    if (startup.startupUsername) {
-      setStartupUsername(startup.startupUsername);
-    }
-    if (startup.avtUrl) {
-      setProfilePicture(startup.avtUrl);
-    }
-  }, [startup]);
 
   const onUpdateProfileClick = async () => {
     if (startup.id) {

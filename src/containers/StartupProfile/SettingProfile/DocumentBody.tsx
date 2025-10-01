@@ -7,11 +7,11 @@ import Image from 'next/image';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react';
 import { getFileName, handleDocumentDownload } from '@/services/file';
 import { IDocument } from '@/interfaces/upload';
-import { PlusSquareIcon } from '../Icons/PlusSquareIcon';
+import { PlusSquareIcon } from '@/components/Icons/PlusSquareIcon';
 import { useRef } from 'react';
-import MoreHorizontalIcon from '../Icons/MoreHorizontalIcon';
-import DeleteIcon from '../Icons/DeleteIcon';
-import DeleteDocumentModal from './DeleteDocumentModal';
+import MoreHorizontalIcon from '@/components/Icons/MoreHorizontalIcon';
+import DeleteIcon from '@/components/Icons/DeleteIcon';
+import DeleteDocumentModal from '@/components/Modal/DeleteDocumentModal';
 
 interface DocumentBodyProps {
   files: IDocument[];

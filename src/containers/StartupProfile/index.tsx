@@ -13,17 +13,6 @@ import {
   Tabs,
   Link,
 } from '@heroui/react';
-import ProfileInfoSubCard from '@/components/Card/ProfileInfoSubCard';
-import { StartupProfileResponse, Startup } from '@/interfaces/StartupProfile';
-import { startup_matching_activity } from '@/apis/startup-matching';
-import { MATCHING_STATUS } from '@/constants/matching';
-import { IDocument } from '@/interfaces/upload';
-import { getStartupDocuments } from '@/apis/upload';
-import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
-import { isImageFile, isDocumentFile } from '@/services/upload';
-import { getProvince } from '@/utils/getProvince';
-import { getSDGGoal } from '@/utils/getSDGGoal';
-import { getFileName, handleDocumentDownload } from '@/services/file';
 import Image from 'next/image';
 import GroupIcon from '/public/assets/group.png';
 import LabelIcon from '/public/assets/label.png';
@@ -32,6 +21,17 @@ import SheetsIcon from '/public/assets/sheets-icon.svg';
 import SlidesIcon from '/public/assets/slides-icon.svg';
 import DocumentEmptyStateLogo from '/public/assets/document-empty-state-logo.svg';
 import MediaEmptyStateLogo from '/public/assets/media-empty-state-logo.svg';
+import ProfileCard from '@/containers/StartupProfile/ProfileCard';
+import { startup_matching_activity } from '@/apis/startup-matching';
+import { getStartupDocuments } from '@/apis/upload';
+import { MATCHING_STATUS } from '@/constants/matching';
+import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
+import { StartupProfileResponse, Startup } from '@/interfaces/StartupProfile';
+import { IDocument } from '@/interfaces/upload';
+import { isImageFile, isDocumentFile } from '@/services/upload';
+import { getFileName, handleDocumentDownload } from '@/services/file';
+import { getProvince } from '@/utils/getProvince';
+import { getSDGGoal } from '@/utils/getSDGGoal';
 
 interface StartupProfileContainerProps {
   startup_profile: StartupProfileResponse | undefined;
@@ -382,7 +382,7 @@ const StartupProfileContainer: React.FC<StartupProfileContainerProps> = ({
       <Spacer x={4} />
       {startup_profile?.startup ? (
         <div className='w-1/4'>
-          <ProfileInfoSubCard
+          <ProfileCard
             onFetchStartupProfile={onFetchStartupProfile}
             onFetchStartupDocuments={fetchStartupDocuments}
             startup={startup_profile.startup}
