@@ -22,7 +22,7 @@ import Button from '@/components/Button/Button';
 import { Modal, ModalContent, ModalHeader, ModalBody } from '@heroui/modal';
 import { isDocumentFile, isImageFile } from '@/services/upload';
 import { IDocument } from '@/interfaces/upload';
-
+import CloseIcon from '@/components/Icons/CloseIcon';
 interface SettingModalProps {
   isOpen: boolean;
   startup: Startup;
@@ -335,25 +335,35 @@ const SettingModal: React.FC<SettingModalProps> = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       scrollBehavior='inside'
-      className='py-4 px-6 min-h-96'
+      className='px-10 pb-6 min-h-[600px]'
+      hideCloseButton={true}
+      classNames={{
+        header: 'px-0',
+        body: 'px-0 custom-scrollbar',
+      }}
     >
       <ModalContent>
         {(onOpenChange) => (
           <>
             <ModalHeader>
-              <div className='flex gap-3'>
-                <Avatar
-                  alt='heroui logo'
-                  src={image}
-                  size='md'
-                  radius='full'
-                  isBordered
-                  color='primary'
-                  className='bg-neutral-20'
-                />
-                <div className='flex flex-col justify-center'>
-                  <p className='font-semibold text-lg text-secondary'>{startup?.name}</p>
-                  <p className='text-neutral-50 font-normal text-md'>{UI_LABELS.STARTUP_SETTING}</p>
+              <div className='flex justify-between items-center w-full'>
+                <div className='flex items-center gap-3 px-3'>
+                  <Avatar
+                    alt='heroui logo'
+                    src={image}
+                    size='md'
+                    radius='full'
+                    isBordered
+                    color='primary'
+                    className='bg-neutral-20'
+                  />
+                  <div className='flex flex-col justify-center'>
+                    <p className='font-semibold text-lg text-secondary'>{startup?.name}</p>
+                    <p className='text-neutral-50 font-normal text-md'>{UI_LABELS.STARTUP_SETTING}</p>
+                  </div>
+                </div>
+                <div className='cursor-pointer' onClick={onOpenChange}>
+                  <CloseIcon stroke='black'/>
                 </div>
               </div>
             </ModalHeader>
