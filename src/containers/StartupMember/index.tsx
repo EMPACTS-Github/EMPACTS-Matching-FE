@@ -16,7 +16,7 @@ import {
   cn,
 } from '@heroui/react';
 import { Chip } from '@heroui/chip';
-import ProfileInfoSubCard from '@/components/Card/ProfileInfoSubCard';
+import ProfileInfoSubCard from '@/containers/StartupProfile/ProfileCard';
 import { StartupProfileResponse, Member } from '@/interfaces/StartupProfile';
 import { startup_matching_activity } from '@/apis/startup-matching';
 import { MATCHING_STATUS } from '@/constants/matching';
