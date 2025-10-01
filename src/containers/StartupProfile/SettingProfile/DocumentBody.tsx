@@ -128,7 +128,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
       </div>
       <Button
         size='sm'
-        className='rounded-lg bg-empacts w-36 text-xs text-white'
+        className='rounded-lg bg-primary w-36 text-xs text-white'
         startContent={<PlusSquareIcon />}
         onPress={handleOpenUploadNewFile}
       >
