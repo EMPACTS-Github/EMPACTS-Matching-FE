@@ -2,9 +2,10 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import ImagePlusIcon from '/public/assets/image-plus.svg';
 import { IDocument } from '@/interfaces/upload';
-import { Button, useDisclosure } from '@heroui/react';
+import { Button, Divider, useDisclosure } from '@heroui/react';
 import CloseIcon from '@/components/Icons/CloseIcon';
 import DeleteImageModal from '@/components/Modal/DeleteImageModal';
+import { UI_LABELS } from '@/constants';
 
 interface ImageGalleryProps {
   images: IDocument[];
@@ -42,6 +43,8 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
 
   return (
     <>
+    <div className='font-semibold text-lg text-primary'>{UI_LABELS.MEDIA}</div>
+      <Divider />
       <div className='flex flex-col w-full my-4'>
         <div>
           {images.length > 0 && (

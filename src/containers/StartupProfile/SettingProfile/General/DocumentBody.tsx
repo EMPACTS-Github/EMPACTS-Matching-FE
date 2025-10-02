@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, useDisclosure } from '@heroui/react';
+import { Button, Card, CardBody, Divider, useDisclosure } from '@heroui/react';
 import DocsIcon from '/public/assets/docs-icon.svg';
 import SheetsIcon from '/public/assets/sheets-icon.svg';
 import SlidesIcon from '/public/assets/slides-icon.svg';
@@ -12,6 +12,7 @@ import { useRef } from 'react';
 import MoreHorizontalIcon from '@/components/Icons/MoreHorizontalIcon';
 import DeleteIcon from '@/components/Icons/DeleteIcon';
 import DeleteDocumentModal from '@/components/Modal/DeleteDocumentModal';
+import { UI_LABELS } from '@/constants';
 
 interface DocumentBodyProps {
   files: IDocument[];
@@ -54,6 +55,8 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
 
   return (
     <>
+      <div className='font-semibold text-lg text-primary'>{UI_LABELS.DOCUMENTATION}</div>
+      <Divider />
       <div className='space-y-4'>
         <Card className='flex gap-3 shadow-none m-0 p-0'>
           <CardBody className='m-0 p-1'>
