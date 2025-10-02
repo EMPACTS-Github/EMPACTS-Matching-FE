@@ -2,6 +2,7 @@
 export const PROFILE_MESSAGES = {
   // Success messages
   PROFILE_UPDATED_SUCCESS: 'Profile updated successfully',
+  TIME_AVAILABILITY_UPDATED_SUCCESS: 'Time availability updated successfully',
   PROFILE_HIDDEN_SUCCESS: 'Profile has been hidden successfully',
   PROFILE_UNHIDDEN_SUCCESS: 'Profile has been unhidden successfully',
   PROFILE_DELETED_SUCCESS: 'Profile has been deleted successfully',
@@ -12,6 +13,7 @@ export const PROFILE_MESSAGES = {
   // Error messages
   PROFILE_UPDATE_FAILED: 'Failed to update the profile. Please try again.',
   PROFILE_UPDATE_ERROR: 'Failed to update profile',
+  TIME_AVAILABILITY_UPDATE_FAILED: 'Failed to update time availability. Please try again.',
   PROFILE_HIDE_FAILED: 'Failed to hide the profile',
   PROFILE_UNHIDE_FAILED: 'Failed to unhide the profile',
   PROFILE_DELETE_FAILED: 'Failed to delete the profile',

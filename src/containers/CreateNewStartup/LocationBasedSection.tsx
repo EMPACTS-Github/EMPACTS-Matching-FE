@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import FormLabel from '@/components/Form/FormLabel';
 import Select from '@/components/Select/Select';
 import provinces from '@/utils/data/provinces.json';
@@ -37,6 +37,6 @@ const LocationBasedSection = ({ location, onSetLocation }: LocationBasedSectionP
       />
     </div>
   );
-}
+};
 
-export default LocationBasedSection
+export default LocationBasedSection;

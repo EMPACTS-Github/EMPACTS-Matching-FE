@@ -379,8 +379,8 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       return;
     }
 
-    // Validate form before submitting
-    if (!validateForm()) {
+    // Only validate form for general tab
+    if (selectedTab === 'general' && !validateForm()) {
       addToast({
         title: VALIDATION_ERROR_MESSAGES.FORM_VALIDATION_FAILED,
         color: TOAST_COLORS.DANGER,
@@ -392,42 +392,53 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
     setLoading(true);
     setError(null); // Clear any previous errors
 
-    // Convert funding stage labels back to enum keys for API
-    const mappedExperienceWithFundingStage = mapFundingStageToKeys(experienceWithFundingStage);
-
-    const requestBody: IUpdateMentorProfile = {
-      name: mentorName,
-      mentorUsername: mentorUsername,
-      locationBased: location,
-      description: description,
-      sdgFocusExpertises: sdgFocusExpertises,
-      skillOffered: skillOffered, // Send enum keys directly
-      languagesSpoken: languagesSpoken,
-      marketFocusExpertise: marketFocusExpertise,
-      experienceWithFundingStage: mappedExperienceWithFundingStage,
-      yearOfProfessionalExperience: yearOfProfessionalExperience,
-      currentWorkplace: currentWorkplace,
-      currentPosition: currentPosition,
-      industryFocus: industryFocus,
-      avtUrl: profilePicture || mentor.avtUrl,
-    };
-
     try {
-      await mentor_profile_update(mentor.id, requestBody);
-      // Update time availability separately
-      const transformedTimeAvailability = transformUIToAPI(timeAvailability);
-      await update_mentor_availability(mentor.id, transformedTimeAvailability);
+      if (selectedTab === 'general') {
+        // Convert funding stage labels back to enum keys for API
+        const mappedExperienceWithFundingStage = mapFundingStageToKeys(experienceWithFundingStage);
 
-      addToast({
-        title: PROFILE_MESSAGES.PROFILE_UPDATED_SUCCESS,
-        color: TOAST_COLORS.SUCCESS,
-        timeout: DEFAULT_TOAST_TIMEOUT,
-      });
+        const requestBody: IUpdateMentorProfile = {
+          name: mentorName,
+          mentorUsername: mentorUsername,
+          locationBased: location,
+          description: description,
+          sdgFocusExpertises: sdgFocusExpertises,
+          skillOffered: skillOffered, // Send enum keys directly
+          languagesSpoken: languagesSpoken,
+          marketFocusExpertise: marketFocusExpertise,
+          experienceWithFundingStage: mappedExperienceWithFundingStage,
+          yearOfProfessionalExperience: yearOfProfessionalExperience,
+          currentWorkplace: currentWorkplace,
+          currentPosition: currentPosition,
+          industryFocus: industryFocus,
+          avtUrl: profilePicture || mentor.avtUrl,
+        };
+
+        await mentor_profile_update(mentor.id, requestBody);
+        addToast({
+          title: PROFILE_MESSAGES.PROFILE_UPDATED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+      } else if (selectedTab === 'time') {
+        // Update time availability separately
+        const transformedTimeAvailability = transformUIToAPI(timeAvailability);
+        await update_mentor_availability(mentor.id, transformedTimeAvailability);
+        addToast({
+          title: PROFILE_MESSAGES.TIME_AVAILABILITY_UPDATED_SUCCESS,
+          color: TOAST_COLORS.SUCCESS,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+      }
+
       await onFetchMentorProfile();
     } catch (err) {
-      handleApiError(err, 'Profile update');
+      handleApiError(err, selectedTab === 'time' ? 'Time availability update' : 'Profile update');
       addToast({
-        title: PROFILE_MESSAGES.PROFILE_UPDATE_ERROR,
+        title:
+          selectedTab === 'time'
+            ? PROFILE_MESSAGES.TIME_AVAILABILITY_UPDATE_FAILED
+            : PROFILE_MESSAGES.PROFILE_UPDATE_ERROR,
         color: TOAST_COLORS.DANGER,
         timeout: DEFAULT_TOAST_TIMEOUT,
       });
@@ -1057,9 +1068,11 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
               <Button variant='secondary-md' onClick={onOpenChange} disabled={loading}>
                 Cancel
               </Button>
-              <Button variant='primary-md' onClick={onUpdateProfileClick} disabled={loading}>
-                Update profile
-              </Button>
+              {selectedTab !== 'advanced' && (
+                <Button variant='primary-md' onClick={onUpdateProfileClick} disabled={loading}>
+                  {selectedTab === 'time' ? 'Update availability' : 'Update profile'}
+                </Button>
+              )}
             </div>
 
             {/* Modals */}

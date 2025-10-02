@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import FormLabel from '@/components/Form/FormLabel';
 import Input from '@/components/Input/Input';
 
@@ -9,7 +9,12 @@ interface StartupNameSectionProps {
   onChangeStartupUsername: (value: string) => void;
 }
 
-const StartupNameSection = ({ companyName, onSetCompanyName, onChangeStartupUsername, startupUsername }: StartupNameSectionProps) => {
+const StartupNameSection = ({
+  companyName,
+  onSetCompanyName,
+  onChangeStartupUsername,
+  startupUsername,
+}: StartupNameSectionProps) => {
   return (
     <div className='space-y-2'>
       <FormLabel
@@ -30,11 +35,11 @@ const StartupNameSection = ({ companyName, onSetCompanyName, onChangeStartupUser
       />
       <p className='text-small font-normal text-neutral-80 leading-[143%]'>
         Your profile could be found with username{' '}
-        <span className='text-primary'>{startupUsername || '@company_name'}</span>. You can change it
-        later in Settings
+        <span className='text-primary'>{startupUsername || '@company_name'}</span>. You can change
+        it later in Settings
       </p>
     </div>
-  )
+  );
 };
 
 export default StartupNameSection;

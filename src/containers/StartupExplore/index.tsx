@@ -13,7 +13,12 @@ import SearchSection from '@/containers/StartupExplore/Section/SearchSection';
 import { useMatchingStore } from '@/stores/matching-store';
 import { startup_matching_activity } from '@/apis/startup-matching';
 import { useErrorStore } from '@/stores/error-store';
-import { API_RESPONSE_CODES, API_RESPONSE_NUMBER_CODES, DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
+import {
+  API_RESPONSE_CODES,
+  API_RESPONSE_NUMBER_CODES,
+  DEFAULT_TOAST_TIMEOUT,
+  TOAST_COLORS,
+} from '@/constants/api';
 
 interface StartupExploreProps {
   mentorList: SuggestMentors[] | undefined;

@@ -17,7 +17,6 @@ export interface IUpdateMentorProfile {
   currentPosition?: string;
   industryFocus?: string[];
   isHide?: boolean;
-  timeAvailability?: Record<string, Array<{ from: number; to: number }>>;
 }
 
 export const mentor_list = async () => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Image from 'next/image';
 import CameraIcon from '@/components/Icons/CameraIcon';
 
@@ -7,7 +7,10 @@ interface ProfilePictureUploadProps {
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ProfilePictureUpload = ({ profilePictureUrl, handleFileChange }: ProfilePictureUploadProps) => {
+const ProfilePictureUpload = ({
+  profilePictureUrl,
+  handleFileChange,
+}: ProfilePictureUploadProps) => {
   return (
     <div className='flex flex-col items-center gap-5'>
       <input
@@ -35,7 +38,7 @@ const ProfilePictureUpload = ({ profilePictureUrl, handleFileChange }: ProfilePi
         Upload your profile picture
       </p>
     </div>
-  )
+  );
 };
 
 export default ProfilePictureUpload;

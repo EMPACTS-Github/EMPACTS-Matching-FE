@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import FormLabel from '@/components/Form/FormLabel';
 import Select from '@/components/Select/Select';
 import { STARTUP_SDG_GOALS } from '@/constants/sdgs';

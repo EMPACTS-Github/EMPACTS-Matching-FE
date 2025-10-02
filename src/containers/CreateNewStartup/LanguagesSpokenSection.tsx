@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { LanguagesSpoken, LANGUAGE_SPOKEN } from '@/constants/common';
 import FormLabel from '@/components/Form/FormLabel';
 import Select from '@/components/Select/Select';

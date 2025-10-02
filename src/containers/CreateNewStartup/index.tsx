@@ -149,22 +149,10 @@ const CreateNewStartup = () => {
             startupUsername={startupUsername}
             onChangeStartupUsername={handleChangeStartupUsername}
           />
-          <LocationBasedSection
-            location={location}
-            onSetLocation={setLocation}
-          />
-          <DateEstablishedSection
-            formedTime={formedTime}
-            onSetFormedTime={setFormedTime}
-          />
-          <SDGGoalSection
-            selectedGoal={selectedGoal}
-            onSetSelectedGoal={setSelectedGoal}
-          />
-          <Description
-            description={description}
-            onSetDescription={setDescription}
-          />
+          <LocationBasedSection location={location} onSetLocation={setLocation} />
+          <DateEstablishedSection formedTime={formedTime} onSetFormedTime={setFormedTime} />
+          <SDGGoalSection selectedGoal={selectedGoal} onSetSelectedGoal={setSelectedGoal} />
+          <Description description={description} onSetDescription={setDescription} />
           <LanguagesSpokenSection
             languagesSpoken={languagesSpoken}
             onSetLanguagesSpoken={setLanguagesSpoken}
