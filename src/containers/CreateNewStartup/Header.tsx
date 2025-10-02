@@ -10,7 +10,7 @@ const Header = () => {
         Access to your desired company
       </p>
     </div>
-  )
+  );
 };
 
 export default Header;

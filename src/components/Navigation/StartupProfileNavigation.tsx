@@ -34,7 +34,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
         title: CONSOLE_ERRORS.FETCH_STARTUP_PROFILE_FAILED,
         color: TOAST_COLORS.DANGER,
         timeout: DEFAULT_TOAST_TIMEOUT,
-      })
+      });
     }
   }, [startupId]);
 
@@ -55,7 +55,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
         title: CONSOLE_ERRORS.FETCH_SUGGESTED_MENTORS_FAILED,
         color: TOAST_COLORS.DANGER,
         timeout: DEFAULT_TOAST_TIMEOUT,
-      })
+      });
     }
   }, [startupId]);
 
@@ -77,7 +77,11 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
           className='w-full font-bold bg-white 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4'
         >
           <Tab key='explore' title={UI_LABELS.EXPLORE} className='pt-0 px-2'>
-            <StartupExploreContainer startupId={startupId} mentorList={suggestedMentors} error={error} />
+            <StartupExploreContainer
+              startupId={startupId}
+              mentorList={suggestedMentors}
+              error={error}
+            />
           </Tab>
           <Tab key='matching' title={UI_LABELS.MATCHING} className='pt-0 px-2'>
             <div className='flex justify-center w-full'>

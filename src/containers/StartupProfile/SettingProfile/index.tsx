@@ -359,11 +359,13 @@ const SettingModal: React.FC<SettingModalProps> = ({
                   />
                   <div className='flex flex-col justify-center'>
                     <p className='font-semibold text-lg text-secondary'>{startup?.name}</p>
-                    <p className='text-neutral-50 font-normal text-md'>{UI_LABELS.STARTUP_SETTING}</p>
+                    <p className='text-neutral-50 font-normal text-md'>
+                      {UI_LABELS.STARTUP_SETTING}
+                    </p>
                   </div>
                 </div>
                 <div className='cursor-pointer' onClick={onOpenChange}>
-                  <CloseIcon stroke='black'/>
+                  <CloseIcon stroke='black' />
                 </div>
               </div>
             </ModalHeader>
