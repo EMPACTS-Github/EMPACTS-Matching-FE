@@ -21,7 +21,7 @@ const LogoAndTitle = ({ title, description }: { title: string; description: stri
       >
         <EmpactsLogoIcon />
       </Button>
-      <h2 className='text-2xl font-bold mt-6 mb-6 text-black'>{title}</h2>
+      <h2 className='text-[28px] font-semibold mt-6 mb-6 text-black'>{title}</h2>
       <p className='text-sm text-gray-500 mb-6'>{description}</p>
     </div>
   );
