@@ -178,9 +178,9 @@ function Login() {
 
   // Inline components
   const FormDivider = () => (
-    <div className='mt-6 mb-4 text-gray-500 flex items-center'>
+    <div className='mt-8 mb-4 text-gray-500 flex items-center'>
       <div className='flex-grow border-t border-gray-300'></div>
-      <span className='mx-4 text-black text-sm'>Or</span>
+      <span className='mx-4 text-black text-base font-normal'>Or</span>
       <div className='flex-grow border-t border-gray-300'></div>
     </div>
   );
@@ -204,7 +204,7 @@ function Login() {
             value={email}
             onChange={setEmail}
             isInvalid={!isValidEmail}
-            preset='line-fill-sm'
+            preset='line-fill-md'
             errorMessage={emailError}
           />
           <Input
@@ -213,7 +213,7 @@ function Login() {
             value={password}
             onChange={setPassword}
             isInvalid={!isValidPassword}
-            preset='line-fill-sm'
+            preset='line-fill-md'
             errorMessage={passwordError}
           />
           <div className='text-right !mt-1 w-full'>
@@ -224,7 +224,7 @@ function Login() {
               Forgot your password?
             </AuthLink>
           </div>
-          <Button variant='primary-full' className='mt-4' type='submit'>
+          <Button variant='primary-full' className='mt-4 text-[16px] h-[48px]' type='submit'>
             Sign in
           </Button>
         </Form>
@@ -234,7 +234,7 @@ function Login() {
         <FormFooterAction
           text="Don't have an account?"
           action={
-            <AuthLink href={ROUTES.AUTH.SIGNUP} className='text-md font-semibold text-primary'>
+            <AuthLink href={ROUTES.AUTH.SIGNUP} className='text-base font-normal text-primary'>
               Sign Up
             </AuthLink>
           }
