@@ -3,6 +3,7 @@ import React from 'react'
 import { UI_LABELS } from '@/constants'
 import LabelStartAndSwitchEnd from '@/components/Switch/LabelStartAndSwitchEnd';
 import { Startup } from '@/interfaces/StartupProfile';
+import Typography from '@/components/Typography';
 
 interface AdvancedInformationProps {
   startup: Startup;
@@ -12,9 +13,11 @@ const AdvancedInformation = ({
   startup,
 }: AdvancedInformationProps) => {
   return (
-    <>
-      <div className='font-semibold text-lg text-primary'>{UI_LABELS.ADVANCED_INFORMATION}</div>
-      <Divider />
+    <div className='flex flex-col gap-4'>
+      <div>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.ADVANCED_INFORMATION}</Typography>
+        <Divider />
+      </div>
       <LabelStartAndSwitchEnd
         label={UI_LABELS.ACTIVE_USER}
         checked={startup.haveActiveUse ? true : false}
@@ -40,7 +43,7 @@ const AdvancedInformation = ({
         checked={startup.fundraisingDetail ? true : false}
         onChange={() => {}}
       />
-    </>
+    </div>
   )
 }
 

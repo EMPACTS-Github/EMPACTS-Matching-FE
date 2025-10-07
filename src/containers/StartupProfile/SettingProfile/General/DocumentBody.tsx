@@ -13,6 +13,7 @@ import MoreHorizontalIcon from '@/components/Icons/MoreHorizontalIcon';
 import DeleteIcon from '@/components/Icons/DeleteIcon';
 import DeleteDocumentModal from '@/components/Modal/DeleteDocumentModal';
 import { UI_LABELS } from '@/constants';
+import Typography from '@/components/Typography';
 
 interface DocumentBodyProps {
   files: IDocument[];
@@ -54,16 +55,18 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
   };
 
   return (
-    <>
-      <div className='font-semibold text-lg text-primary'>{UI_LABELS.DOCUMENTATION}</div>
-      <Divider />
+    <div className='flex flex-col gap-4'>
+      <div>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.DOCUMENTATION}</Typography>
+        <Divider />
+      </div>
       <div className='space-y-4'>
         <Card className='flex gap-3 shadow-none m-0 p-0'>
           <CardBody className='m-0 p-1'>
             <div className='space-y-4'>
               {files.map((file, index) => (
                 <div key={index} className='flex items-center justify-between'>
-                  <div className='flex items-center gap-4'>
+                  <div className='flex items-center gap-4'> 
                     <button
                       type='button'
                       onClick={() =>
@@ -144,7 +147,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
         onOpenChange={onOpenChangeDeleteDocumentModal}
         onDeleteAttachment={onDeleteAttachment}
       />
-    </>
+    </div>
   );
 };
 export default DocumentBody;

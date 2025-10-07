@@ -4,6 +4,7 @@ import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
 import { UI_LABELS } from '@/constants';
 import sdgGoals from '@/utils/data/sdgGoals.json';
 import provinces from '@/utils/data/provinces.json';
+import Typography from '@/components/Typography';
 
 interface BasicInformationProps {
   image: string;
@@ -35,9 +36,11 @@ const BasicInformation = ({
   setDescription,
 }: BasicInformationProps) => {
   return (
-    <>
-      <div className='font-semibold text-lg text-primary'>{UI_LABELS.BASIC_INFORMATION}</div>
-      <Divider />
+    <div className='flex flex-col gap-4'> 
+      <div>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.BASIC_INFORMATION}</Typography>
+        <Divider />
+      </div>
       <div className='flex gap-4'>
         <Avatar
           alt='heroui logo'
@@ -114,7 +117,7 @@ const BasicInformation = ({
           placeholder={UI_LABELS.DESCRIPTION}
         />
       </div>
-    </>
+    </div>
   )
 }
 
