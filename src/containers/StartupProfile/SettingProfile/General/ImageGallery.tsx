@@ -6,6 +6,7 @@ import { Button, Divider, useDisclosure } from '@heroui/react';
 import CloseIcon from '@/components/Icons/CloseIcon';
 import DeleteImageModal from '@/components/Modal/DeleteImageModal';
 import { UI_LABELS } from '@/constants';
+import Typography from '@/components/Typography';
 
 interface ImageGalleryProps {
   images: IDocument[];
@@ -42,9 +43,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   };
 
   return (
-    <>
-    <div className='font-semibold text-lg text-primary'>{UI_LABELS.MEDIA}</div>
-      <Divider />
+    <div className='flex flex-col gap-4'>
+      <div>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.MEDIA}</Typography>
+        <Divider />
+      </div>
       <div className='flex flex-col w-full my-4'>
         <div>
           {images.length > 0 && (
@@ -123,7 +126,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
         onOpenChange={onOpenChange}
         onDeleteAttachment={onDeleteAttachment}
       />
-    </>
+    </div>
   );
 };
 
