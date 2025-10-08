@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Divider, Avatar, Autocomplete, AutocompleteItem } from '@heroui/react';
 import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
 import { UI_LABELS } from '@/constants';
@@ -36,9 +36,11 @@ const BasicInformation = ({
   setDescription,
 }: BasicInformationProps) => {
   return (
-    <div className='flex flex-col gap-4'> 
+    <div className='flex flex-col gap-4'>
       <div>
-        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.BASIC_INFORMATION}</Typography>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>
+          {UI_LABELS.BASIC_INFORMATION}
+        </Typography>
         <Divider />
       </div>
       <div className='flex gap-4'>
@@ -118,7 +120,7 @@ const BasicInformation = ({
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BasicInformation
+export default BasicInformation;

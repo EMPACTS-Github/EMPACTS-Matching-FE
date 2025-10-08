@@ -57,7 +57,9 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
   return (
     <div className='flex flex-col gap-4'>
       <div>
-        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.DOCUMENTATION}</Typography>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>
+          {UI_LABELS.DOCUMENTATION}
+        </Typography>
         <Divider />
       </div>
       <div className='space-y-4'>
@@ -66,7 +68,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
             <div className='space-y-4'>
               {files.map((file, index) => (
                 <div key={index} className='flex items-center justify-between'>
-                  <div className='flex items-center gap-4'> 
+                  <div className='flex items-center gap-4'>
                     <button
                       type='button'
                       onClick={() =>

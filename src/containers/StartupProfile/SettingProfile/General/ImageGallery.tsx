@@ -45,7 +45,9 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
   return (
     <div className='flex flex-col gap-4'>
       <div>
-        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.MEDIA}</Typography>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>
+          {UI_LABELS.MEDIA}
+        </Typography>
         <Divider />
       </div>
       <div className='flex flex-col w-full my-4'>

@@ -1,171 +1,236 @@
 'use client';
 
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Avatar from '@/components/Avatar/Avatar';
+import { ConnectRequest } from '@/interfaces/matching';
+import { getProvince } from '@/utils/getProvince';
 
-// Interfaces for type safety
-interface Mentor {
-  id: string;
-  name: string;
-  avatar: string;
-  expertise: string[];
-  location: string;
-  experience: number;
-  rating: number;
-}
-
-interface SentInvitation {
-  id: string;
-  mentor: Mentor;
-  sentDate: string;
-  status: 'pending' | 'accepted' | 'declined';
-  message: string;
-  meetingDate?: string;
-}
-
-// Mock data with more items for infinite scroll demo
-const mockInvitations: SentInvitation[] = [
+// Mock data based on API documentation structure
+const mockInvitations: ConnectRequest[] = [
   {
     id: '1',
+    startup_id: 'startup-1',
+    mentor_id: 'm1',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'sarah.johnson@email.com',
+    connect_request_code: 'CR-001',
+    request_schedule: '2024-01-20T13:30:00Z',
+    note: 'Hi Sarah, I would love to discuss our digital marketing strategy with you.',
+    meeting_link: '',
+    status: 'PENDING',
+    responded_by: null,
+    responded_at: null,
+    expired_at: '2024-01-25T13:30:00Z',
+    created_at: '2024-01-15T10:00:00Z',
+    updated_at: '2024-01-15T10:00:00Z',
     mentor: {
       id: 'm1',
       name: 'Sarah Johnson',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['Digital Marketing', 'Growth Strategy'],
-      location: 'Ho Chi Minh City',
-      experience: 8,
-      rating: 4.8,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'HO_CHI_MINH',
+      description: 'Digital Marketing Expert',
     },
-    sentDate: '2024-01-15',
-    status: 'pending',
-    message: 'Hi Sarah, I would love to discuss our digital marketing strategy with you.',
-    meetingDate: '2024-01-20',
   },
   {
     id: '2',
+    startup_id: 'startup-1',
+    mentor_id: 'm2',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'michael.chen@email.com',
+    connect_request_code: 'CR-002',
+    request_schedule: '2024-01-18T14:00:00Z',
+    note: 'Hello Michael, we need guidance on our product roadmap.',
+    meeting_link: 'https://meet.google.com/abc-defg-hij',
+    status: 'APPROVED',
+    responded_by: 'm2',
+    responded_at: '2024-01-14T15:30:00Z',
+    expired_at: null,
+    created_at: '2024-01-14T09:00:00Z',
+    updated_at: '2024-01-14T15:30:00Z',
     mentor: {
       id: 'm2',
       name: 'Michael Chen',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['Product Development', 'Tech Leadership'],
-      location: 'Ha Noi',
-      experience: 12,
-      rating: 4.9,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'HA_NOI',
+      description: 'Product Development & Tech Leadership',
     },
-    sentDate: '2024-01-14',
-    status: 'accepted',
-    message: 'Hello Michael, we need guidance on our product roadmap.',
-    meetingDate: '2024-01-18',
   },
   {
     id: '3',
+    startup_id: 'startup-1',
+    mentor_id: 'm3',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'emily.rodriguez@email.com',
+    connect_request_code: 'CR-003',
+    request_schedule: '2024-01-17T10:00:00Z',
+    note: 'Hi Emily, we are preparing for Series A and need your expertise.',
+    meeting_link: '',
+    status: 'REJECTED',
+    responded_by: 'm3',
+    responded_at: '2024-01-13T16:00:00Z',
+    expired_at: null,
+    created_at: '2024-01-13T08:00:00Z',
+    updated_at: '2024-01-13T16:00:00Z',
     mentor: {
       id: 'm3',
       name: 'Emily Rodriguez',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['Fundraising', 'Business Strategy'],
-      location: 'Da Nang',
-      experience: 10,
-      rating: 4.7,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'DA_NANG',
+      description: 'Fundraising & Business Strategy',
     },
-    sentDate: '2024-01-13',
-    status: 'declined',
-    message: 'Hi Emily, we are preparing for Series A and need your expertise.',
   },
   {
     id: '4',
+    startup_id: 'startup-1',
+    mentor_id: 'm4',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'david.nguyen@email.com',
+    connect_request_code: 'CR-004',
+    request_schedule: '2024-01-22T15:00:00Z',
+    note: 'Hi David, we are refining our operations and would like your input.',
+    meeting_link: '',
+    status: 'PENDING',
+    responded_by: null,
+    responded_at: null,
+    expired_at: '2024-01-27T15:00:00Z',
+    created_at: '2024-01-12T11:00:00Z',
+    updated_at: '2024-01-12T11:00:00Z',
     mentor: {
       id: 'm4',
       name: 'David Nguyen',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['Operations', 'Scaling'],
-      location: 'Can Tho',
-      experience: 7,
-      rating: 4.6,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'CAN_THO',
+      description: 'Operations & Scaling',
     },
-    sentDate: '2024-01-12',
-    status: 'pending',
-    message: 'Hi David, we are refining our operations and would like your input.',
-    meetingDate: '2024-01-22',
   },
   {
     id: '5',
+    startup_id: 'startup-1',
+    mentor_id: 'm5',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'anna.lee@email.com',
+    connect_request_code: 'CR-005',
+    request_schedule: '2024-01-19T09:30:00Z',
+    note: 'Hello Anna, we want to improve our onboarding experience.',
+    meeting_link: 'https://meet.google.com/xyz-abcd-efg',
+    status: 'APPROVED',
+    responded_by: 'm5',
+    responded_at: '2024-01-11T14:00:00Z',
+    expired_at: null,
+    created_at: '2024-01-11T10:00:00Z',
+    updated_at: '2024-01-11T14:00:00Z',
     mentor: {
       id: 'm5',
       name: 'Anna Lee',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['UX/UI', 'Product Strategy'],
-      location: 'Ho Chi Minh City',
-      experience: 9,
-      rating: 4.8,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'HO_CHI_MINH',
+      description: 'UX/UI & Product Strategy',
     },
-    sentDate: '2024-01-11',
-    status: 'accepted',
-    message: 'Hello Anna, we want to improve our onboarding experience.',
-    meetingDate: '2024-01-19',
   },
   {
     id: '6',
+    startup_id: 'startup-1',
+    mentor_id: 'm6',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'carlos.martinez@email.com',
+    connect_request_code: 'CR-006',
+    request_schedule: '2024-01-16T11:00:00Z',
+    note: 'Hi Carlos, we are planning our GTM for Q1 and need guidance.',
+    meeting_link: '',
+    status: 'CANCELLED',
+    responded_by: 'founder-1',
+    responded_at: '2024-01-10T12:00:00Z',
+    expired_at: null,
+    created_at: '2024-01-10T09:00:00Z',
+    updated_at: '2024-01-10T12:00:00Z',
     mentor: {
       id: 'm6',
       name: 'Carlos Martinez',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['Sales', 'Go-To-Market'],
-      location: 'Da Nang',
-      experience: 11,
-      rating: 4.7,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'DA_NANG',
+      description: 'Sales & Go-To-Market',
     },
-    sentDate: '2024-01-10',
-    status: 'declined',
-    message: 'Hi Carlos, we are planning our GTM for Q1 and need guidance.',
   },
   {
     id: '7',
+    startup_id: 'startup-1',
+    mentor_id: 'm7',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'jennifer.park@email.com',
+    connect_request_code: 'CR-007',
+    request_schedule: '2024-01-25T16:00:00Z',
+    note: 'Hi Jennifer, we need help with our brand positioning strategy.',
+    meeting_link: '',
+    status: 'PENDING',
+    responded_by: null,
+    responded_at: null,
+    expired_at: '2024-01-30T16:00:00Z',
+    created_at: '2024-01-09T13:00:00Z',
+    updated_at: '2024-01-09T13:00:00Z',
     mentor: {
       id: 'm7',
       name: 'Jennifer Park',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['Content Marketing', 'Brand Strategy'],
-      location: 'Ho Chi Minh City',
-      experience: 6,
-      rating: 4.5,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'HO_CHI_MINH',
+      description: 'Content Marketing & Brand Strategy',
     },
-    sentDate: '2024-01-09',
-    status: 'pending',
-    message: 'Hi Jennifer, we need help with our brand positioning strategy.',
-    meetingDate: '2024-01-25',
   },
   {
     id: '8',
+    startup_id: 'startup-1',
+    mentor_id: 'm8',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'robert.kim@email.com',
+    connect_request_code: 'CR-008',
+    request_schedule: '2024-01-05T10:00:00Z',
+    note: 'Hello Robert, we want to discuss our technical infrastructure.',
+    meeting_link: '',
+    status: 'EXPIRED',
+    responded_by: null,
+    responded_at: null,
+    expired_at: '2024-01-08T10:00:00Z',
+    created_at: '2024-01-08T08:00:00Z',
+    updated_at: '2024-01-08T10:00:00Z',
     mentor: {
       id: 'm8',
       name: 'Robert Kim',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['Tech Architecture', 'DevOps'],
-      location: 'Ha Noi',
-      experience: 15,
-      rating: 4.9,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'HA_NOI',
+      description: 'Tech Architecture & DevOps',
     },
-    sentDate: '2024-01-08',
-    status: 'accepted',
-    message: 'Hello Robert, we want to discuss our technical infrastructure.',
-    meetingDate: '2024-01-16',
   },
   {
     id: '9',
+    startup_id: 'startup-1',
+    mentor_id: 'm9',
+    startup_founder_id: 'founder-1',
+    startup_founder_email: 'founder@startup.com',
+    mentor_email: 'lisa.wang@email.com',
+    connect_request_code: 'CR-009',
+    request_schedule: '2024-01-23T14:30:00Z',
+    note: 'Hi Lisa, we need guidance on scaling our team effectively.',
+    meeting_link: '',
+    status: 'PENDING',
+    responded_by: null,
+    responded_at: null,
+    expired_at: '2024-01-28T14:30:00Z',
+    created_at: '2024-01-07T09:30:00Z',
+    updated_at: '2024-01-07T09:30:00Z',
     mentor: {
       id: 'm9',
       name: 'Lisa Wang',
-      avatar: '/assets/avatar-placeholder.png',
-      expertise: ['HR Strategy', 'Team Building'],
-      location: 'Da Nang',
-      experience: 8,
-      rating: 4.6,
+      avtUrl: '/assets/avatar-placeholder.png',
+      locationBased: 'DA_NANG',
+      description: 'HR Strategy & Team Building',
     },
-    sentDate: '2024-01-07',
-    status: 'pending',
-    message: 'Hi Lisa, we need guidance on scaling our team effectively.',
-    meetingDate: '2024-01-23',
   },
 ];
 
@@ -219,47 +284,55 @@ const formatDateRange = (startDateIso?: string, endDateIso?: string) => {
 
 // Invitation Card Component - Within Container Design
 const InvitationCard: React.FC<{
-  invitation: SentInvitation;
-}> = ({ invitation }) => (
-  <div className='bg-white rounded-xl p-medium border border-neutral-30 shadow-sm'>
-    <div className='flex items-start gap-regular'>
-      {/* Avatar */}
-      <MentorAvatar avatar={invitation.mentor.avatar} name={invitation.mentor.name} size='md' />
+  invitation: ConnectRequest;
+}> = ({ invitation }) => {
+  const mentorAvatar = invitation.mentor?.avtUrl || '/assets/avatar-placeholder.png';
+  const mentorName = invitation.mentor?.name || 'Unknown Mentor';
+  const mentorLocation = invitation.mentor?.locationBased
+    ? getProvince(invitation.mentor.locationBased)
+    : '';
 
-      {/* Content */}
-      <div className='flex-1'>
-        {/* Header with name, location and status */}
-        <div className='flex items-start justify-between mb-small'>
-          <div>
-            <h3 className='font-semibold text-secondary text-base'>{invitation.mentor.name}</h3>
-            <p className='text-sm text-neutral-80'>{invitation.mentor.location}</p>
+  return (
+    <div className='bg-white rounded-xl p-medium border border-neutral-30 shadow-sm'>
+      <div className='flex items-start gap-regular'>
+        {/* Avatar */}
+        <MentorAvatar avatar={mentorAvatar} name={mentorName} size='md' />
+
+        {/* Content */}
+        <div className='flex-1'>
+          {/* Header with name, location and status */}
+          <div className='flex items-start justify-between mb-small'>
+            <div>
+              <h3 className='font-semibold text-secondary text-base'>{mentorName}</h3>
+              <p className='text-sm text-neutral-80'>{mentorLocation}</p>
+            </div>
+            <div className='flex flex-col items-end gap-extra-small'>
+              <p className='text-sm text-neutral-50'>
+                {formatDateRange(invitation.created_at, invitation.request_schedule)}
+              </p>
+            </div>
           </div>
-          <div className='flex flex-col items-end gap-extra-small'>
-            <p className='text-sm text-neutral-50'>
-              {formatDateRange(invitation.sentDate, invitation.meetingDate)}
+
+          {/* Notes section */}
+          <div className='mt-small'>
+            <h4 className='font-medium text-secondary text-sm mb-extra-small'>Notes</h4>
+            <p className='text-sm text-neutral-80 leading-relaxed'>
+              {invitation.note ? `"${invitation.note}"` : 'No notes provided'}
             </p>
           </div>
         </div>
-
-        {/* Notes section */}
-        <div className='mt-small'>
-          <h4 className='font-medium text-secondary text-sm mb-extra-small'>Notes</h4>
-          <p className='text-sm text-neutral-80 leading-relaxed'>
-            &ldquo;{invitation.message}&rdquo;
-          </p>
-        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Main Component - With Infinite Scrolling
 const SentInvitations: React.FC = () => {
-  const [displayedInvitations, setDisplayedInvitations] = useState<SentInvitation[]>([]);
+  const [displayedInvitations, setDisplayedInvitations] = useState<ConnectRequest[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const itemsPerPage = 3; // Keep 3 items per page as requested
+  const itemsPerPage = 3;
 
   // Initialize with first page of mock data
   useEffect(() => {
@@ -290,8 +363,8 @@ const SentInvitations: React.FC = () => {
       }
 
       setLoadingMore(false);
-    }, 500); // Small delay for UX
-  }, [currentPage, itemsPerPage, loadingMore, hasMore]);
+    }, 500);
+  }, [currentPage, loadingMore, hasMore]);
 
   if (displayedInvitations.length === 0) {
     return (
