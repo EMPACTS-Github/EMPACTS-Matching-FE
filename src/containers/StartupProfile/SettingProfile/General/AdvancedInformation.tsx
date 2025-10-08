@@ -1,6 +1,6 @@
-import { Divider } from '@heroui/react'
-import React from 'react'
-import { UI_LABELS } from '@/constants'
+import { Divider } from '@heroui/react';
+import React from 'react';
+import { UI_LABELS } from '@/constants';
 import LabelStartAndSwitchEnd from '@/components/Switch/LabelStartAndSwitchEnd';
 import { Startup } from '@/interfaces/StartupProfile';
 import Typography from '@/components/Typography';
@@ -9,13 +9,13 @@ interface AdvancedInformationProps {
   startup: Startup;
 }
 
-const AdvancedInformation = ({
-  startup,
-}: AdvancedInformationProps) => {
+const AdvancedInformation = ({ startup }: AdvancedInformationProps) => {
   return (
     <div className='flex flex-col gap-4'>
       <div>
-        <Typography type='p' variant='body-28-bold' className='text-primary'>{UI_LABELS.ADVANCED_INFORMATION}</Typography>
+        <Typography type='p' variant='body-28-bold' className='text-primary'>
+          {UI_LABELS.ADVANCED_INFORMATION}
+        </Typography>
         <Divider />
       </div>
       <LabelStartAndSwitchEnd
@@ -44,7 +44,7 @@ const AdvancedInformation = ({
         onChange={() => {}}
       />
     </div>
-  )
-}
+  );
+};
 
-export default AdvancedInformation
+export default AdvancedInformation;

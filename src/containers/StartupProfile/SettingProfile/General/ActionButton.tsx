@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Divider } from '@heroui/react';
 import Button from '@/components/Button/Button';
 import { UI_LABELS } from '@/constants';
@@ -11,7 +11,7 @@ interface ActionButtonProps {
 const ActionButton = ({ onOpenChange, onUpdateProfileClick }: ActionButtonProps) => {
   return (
     <>
-            <Divider />
+      <Divider />
       <div className='flex justify-end gap-4'>
         <Button variant='secondary-md' onClick={onOpenChange}>
           {UI_LABELS.CANCEL}
@@ -21,7 +21,7 @@ const ActionButton = ({ onOpenChange, onUpdateProfileClick }: ActionButtonProps)
         </Button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ActionButton
+export default ActionButton;

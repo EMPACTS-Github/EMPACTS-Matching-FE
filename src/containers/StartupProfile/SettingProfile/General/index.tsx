@@ -66,7 +66,7 @@ const GeneralTab = ({
         startupUsername={startupUsername}
         location={location}
         sdgGoal={sdgGoal}
-        description={description} 
+        description={description}
         handleImageChange={handleImageChange}
         setStartupName={setStartupName}
         setStartupUsername={setStartupUsername}
@@ -91,14 +91,9 @@ const GeneralTab = ({
         onUploadNewFile={handleUploadNewStartupAttachment}
       />
 
-      <AdvancedInformation
-        startup={startup}
-      />
+      <AdvancedInformation startup={startup} />
 
-      <ActionButton
-        onOpenChange={onOpenChange}
-        onUpdateProfileClick={onUpdateProfileClick}
-      />
+      <ActionButton onOpenChange={onOpenChange} onUpdateProfileClick={onUpdateProfileClick} />
     </>
   );
 };
