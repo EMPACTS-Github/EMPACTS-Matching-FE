@@ -33,3 +33,42 @@ export interface ConnectRequest {
     description?: string;
   };
 }
+
+export interface ConnectionMeetingAttendee {
+  name: string;
+  email: string;
+}
+
+export interface ConnectionMeetingPrimaryContact {
+  name: string;
+  email: string;
+  role: 'STARTUP' | 'MENTOR';
+}
+
+export interface ConnectionMeeting {
+  id: string;
+  mentor_id: string;
+  startup_id: string;
+  title: string;
+  description: string;
+  start_at: string;
+  end_at: string;
+  status: 'SCHEDULING' | 'SCHEDULED' | 'CANCELLED' | 'COMPLETED' | 'EXPIRED';
+  meet_link: string;
+  attendees: ConnectionMeetingAttendee[];
+  primary_contact: ConnectionMeetingPrimaryContact;
+  mentor?: {
+    id: string;
+    name: string;
+    avtUrl?: string;
+    locationBased?: string;
+    description?: string;
+  };
+  startup?: {
+    id: string;
+    name: string;
+    avtUrl?: string;
+    locationBased?: string;
+    description?: string;
+  };
+}
