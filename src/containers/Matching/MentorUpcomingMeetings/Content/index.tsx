@@ -26,7 +26,8 @@ const mockMeetings: ConnectionMeeting[] = [
     startup: {
       id: 'startup-1',
       name: 'The Amazing Team',
-      avtUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=64&h=64&fit=crop&crop=face',
+      avtUrl:
+        'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=64&h=64&fit=crop&crop=face',
       locationBased: 'HA_NOI',
       description: 'A promising startup in the tech industry',
     },
@@ -53,7 +54,8 @@ const mockMeetings: ConnectionMeeting[] = [
     startup: {
       id: 'startup-2',
       name: 'TechFlow Solutions',
-      avtUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=64&h=64&fit=crop&crop=face',
+      avtUrl:
+        'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=64&h=64&fit=crop&crop=face',
       locationBased: 'HO_CHI_MINH',
       description: 'Tech solutions provider for enterprise clients',
     },
@@ -80,7 +82,8 @@ const mockMeetings: ConnectionMeeting[] = [
     startup: {
       id: 'startup-3',
       name: 'Green Innovation Hub',
-      avtUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=64&h=64&fit=crop&crop=face',
+      avtUrl:
+        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=64&h=64&fit=crop&crop=face',
       locationBased: 'DA_NANG',
       description: 'Green technology and sustainable solutions',
     },
@@ -107,7 +110,8 @@ const mockMeetings: ConnectionMeeting[] = [
     startup: {
       id: 'startup-4',
       name: 'FinTech Innovators',
-      avtUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=64&h=64&fit=crop&crop=face',
+      avtUrl:
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=64&h=64&fit=crop&crop=face',
       locationBased: 'HO_CHI_MINH',
       description: 'Financial technology solutions',
     },
@@ -134,7 +138,8 @@ const mockMeetings: ConnectionMeeting[] = [
     startup: {
       id: 'startup-5',
       name: 'EduTech Connect',
-      avtUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=64&h=64&fit=crop&crop=face',
+      avtUrl:
+        'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=64&h=64&fit=crop&crop=face',
       locationBased: 'HA_NOI',
       description: 'Educational platform for online learning',
     },
@@ -161,7 +166,8 @@ const mockMeetings: ConnectionMeeting[] = [
     startup: {
       id: 'startup-6',
       name: 'HealthTech Solutions',
-      avtUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=64&h=64&fit=crop&crop=face',
+      avtUrl:
+        'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=64&h=64&fit=crop&crop=face',
       locationBased: 'CAN_THO',
       description: 'Healthcare and medical technology solutions',
     },
@@ -214,7 +220,7 @@ const Content = () => {
     (meetingId: string) => {
       setDisplayedMeetings((prev) => {
         const updatedMeetings = prev.filter((meeting) => meeting.id !== meetingId);
-        
+
         /**
          * Auto-load more items if list becomes too short to scroll
          * This prevents the situation where after cancelling, the list is too short
@@ -226,7 +232,7 @@ const Content = () => {
           const startIndex = totalItemsLoaded;
           const endIndex = Math.min(startIndex + itemsPerPage, mockMeetings.length);
           const newItems = mockMeetings.slice(startIndex, endIndex);
-          
+
           if (newItems.length > 0) {
             // Schedule the update to avoid React state update warnings
             // Use functional update to ensure we append to the latest state
@@ -240,7 +246,7 @@ const Content = () => {
             setHasMore(false);
           }
         }
-        
+
         return updatedMeetings;
       });
     },

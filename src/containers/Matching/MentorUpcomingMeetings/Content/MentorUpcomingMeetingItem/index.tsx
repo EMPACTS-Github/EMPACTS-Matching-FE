@@ -120,12 +120,8 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
             <p className='text-xl font-bold leading-tight'>Representative:</p>
           </div>
           <div className='flex flex-col'>
-            <p className='text-base font-normal leading-relaxed'>
-              {meeting.primary_contact.name}
-            </p>
-            <p className='text-base font-normal leading-relaxed'>
-              {meeting.primary_contact.email}
-            </p>
+            <p className='text-base font-normal leading-relaxed'>{meeting.primary_contact.name}</p>
+            <p className='text-base font-normal leading-relaxed'>{meeting.primary_contact.email}</p>
           </div>
         </div>
 
