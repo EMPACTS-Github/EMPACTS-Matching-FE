@@ -43,7 +43,7 @@ const MentorCancelMeeting: React.FC<MentorCancelMeetingProps> = ({
     try {
       // Mock API call - replace with actual API when available
       // const response = await cancelConnectionMeeting(meetingId);
-      
+
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -63,7 +63,7 @@ const MentorCancelMeeting: React.FC<MentorCancelMeetingProps> = ({
 
       setCancelReason('');
       onOpenChange();
-      
+
       // Trigger parent refresh if callback provided
       if (onCancelSuccess) {
         onCancelSuccess();
