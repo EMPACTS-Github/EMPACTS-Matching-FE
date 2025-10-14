@@ -3,14 +3,16 @@ import { Tooltip } from '@heroui/react';
 import Button from '@/components/Button/Button';
 import CopyIcon from '@/components/Icons/CopyIcon';
 
-// Mock Google meet link
-const GOOGLE_MEET_LINK = 'https://meet.google.com/ktq-edyu-ydj';
+interface JoinMeetingActionProps {
+  meetLink: string;
+}
 
-const CopyLinkItem = () => {
+const CopyLinkItem: React.FC<{ meetLink: string }> = ({ meetLink }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const fullLink = meetLink.startsWith('http') ? meetLink : `https://${meetLink}`;
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(GOOGLE_MEET_LINK);
+    navigator.clipboard.writeText(fullLink);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
@@ -19,7 +21,7 @@ const CopyLinkItem = () => {
 
   return (
     <div className='flex items-center gap-1'>
-      <p className='text-xs font-normal leading-4'>{GOOGLE_MEET_LINK}</p>
+      <p className='text-xs font-normal leading-4'>{meetLink}</p>
       <Tooltip content={isCopied ? 'Copied' : 'Copy Link'}>
         <div className='cursor-pointer' onClick={handleCopyLink}>
           <CopyIcon />
@@ -29,16 +31,18 @@ const CopyLinkItem = () => {
   );
 };
 
-const JoinMeetingAction = () => {
+const JoinMeetingAction: React.FC<JoinMeetingActionProps> = ({ meetLink }) => {
   const handleJoinMeeting = () => {
-    window.open(GOOGLE_MEET_LINK, '_blank');
+    const fullLink = meetLink.startsWith('http') ? meetLink : `https://${meetLink}`;
+    window.open(fullLink, '_blank');
   };
+
   return (
     <div className='flex flex-col gap-1 max-w-fit'>
       <Button variant='primary-lg' onClick={handleJoinMeeting}>
         <p className='text-base font-bold leading-6'>Join with Google Meet</p>
       </Button>
-      <CopyLinkItem />
+      <CopyLinkItem meetLink={meetLink} />
     </div>
   );
 };
