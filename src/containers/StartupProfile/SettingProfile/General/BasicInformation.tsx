@@ -9,13 +9,11 @@ import Typography from '@/components/Typography';
 interface BasicInformationProps {
   image: string;
   startupName: string;
-  startupUsername: string;
   location: string;
   sdgGoal: string;
   description: string;
   handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setStartupName: (name: string) => void;
-  setStartupUsername: (username: string) => void;
   setLocation: (location: string) => void;
   setSdgGoal: (sdgGoal: string) => void;
   setDescription: (description: string) => void;
@@ -24,13 +22,11 @@ interface BasicInformationProps {
 const BasicInformation = ({
   image,
   startupName,
-  startupUsername,
   location,
   sdgGoal,
   description,
   handleImageChange,
   setStartupName,
-  setStartupUsername,
   setLocation,
   setSdgGoal,
   setDescription,
@@ -70,13 +66,6 @@ const BasicInformation = ({
         setContent={setStartupName}
         minRows={1}
         placeholder={UI_LABELS.STARTUP_NAME}
-      />
-      <LabelWithTextarea
-        label={UI_LABELS.STARTUP_USERNAME}
-        content={startupUsername}
-        setContent={setStartupUsername}
-        minRows={1}
-        placeholder={UI_LABELS.STARTUP_USERNAME}
       />
       <Autocomplete
         isVirtualized={false}

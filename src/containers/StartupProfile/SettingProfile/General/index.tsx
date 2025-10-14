@@ -11,7 +11,6 @@ interface GeneralTabProps {
   image: string;
   startup: Startup;
   startupName: string;
-  startupUsername: string;
   location: string;
   sdgGoal: string;
   description: string;
@@ -27,7 +26,6 @@ interface GeneralTabProps {
   handleSelectDocument: (document: IDocument) => void;
   handleDeleteAttachment: (attachment: IDocument | null) => void;
   setStartupName: (name: string) => void;
-  setStartupUsername: (username: string) => void;
   setLocation: (location: string) => void;
   setSdgGoal: (sdgGoal: string) => void;
   setDescription: (description: string) => void;
@@ -37,7 +35,6 @@ const GeneralTab = ({
   image,
   startup,
   startupName,
-  startupUsername,
   location,
   sdgGoal,
   description,
@@ -53,7 +50,6 @@ const GeneralTab = ({
   handleSelectDocument,
   handleDeleteAttachment,
   setStartupName,
-  setStartupUsername,
   setLocation,
   setSdgGoal,
   setDescription,
@@ -63,13 +59,11 @@ const GeneralTab = ({
       <BasicInformation
         image={image}
         startupName={startupName}
-        startupUsername={startupUsername}
         location={location}
         sdgGoal={sdgGoal}
         description={description} 
         handleImageChange={handleImageChange}
         setStartupName={setStartupName}
-        setStartupUsername={setStartupUsername}
         setLocation={setLocation}
         setSdgGoal={setSdgGoal}
         setDescription={setDescription}

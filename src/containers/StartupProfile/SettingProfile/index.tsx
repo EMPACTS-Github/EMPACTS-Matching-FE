@@ -34,7 +34,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
   const [loading, setLoading] = useState(false); // Add loading state
   const [image, setImage] = useState<string>(startup.avtUrl || '');
   const [startupName, setStartupName] = useState<string>(startup.name || '');
-  const [startupUsername, setStartupUsername] = useState<string>(startup.startupUsername || '');
   const [location, setLocation] = useState<string>(startup.locationBased || '');
   const [description, setDescription] = useState<string>(startup.description || '');
   const [sdgGoal, setSdgGoal] = useState<string>(startup.sdgGoal || '');
@@ -62,7 +61,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
       setLoading(true);
       const requestBody = {
         name: startupName,
-        startupUsername: startupUsername,
         locationBased: location,
         description: description,
         sdgGoal: sdgGoal,
@@ -378,7 +376,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
                   <GeneralTab
                     image={image}
                     startupName={startupName}
-                    startupUsername={startupUsername}
                     location={location}
                     sdgGoal={sdgGoal}
                     description={description}
@@ -395,7 +392,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     handleSelectDocument={handleSelectDocument}
                     handleDeleteAttachment={handleDeleteAttachment}
                     setStartupName={setStartupName}
-                    setStartupUsername={setStartupUsername}
                     setLocation={setLocation}
                     setSdgGoal={setSdgGoal}
                     setDescription={setDescription}
