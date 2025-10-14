@@ -1,36 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, ModalContent, ModalBody, Button } from '@heroui/react';
 import CloseIcon from '@/components/Icons/CloseIcon';
 import Input from '@/components/Input/Input';
+import { ConnectionMeetingAttendee } from '@/interfaces/matching';
 
 interface MemberModalProps {
   isOpen: boolean;
   onOpenChange: () => void;
+  attendees: ConnectionMeetingAttendee[];
 }
-
-const membersData = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-  },
-  {
-    id: 2,
-    name: 'Jane Doe',
-    email: 'jane.doe@example.com',
-  },
-  {
-    id: 3,
-    name: 'John Smith',
-    email: 'john.smith@example.com',
-  },
-  {
-    id: 4,
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
-  },
-];
 
 const MemberItem = ({
   name,
@@ -55,15 +34,25 @@ const MemberItem = ({
   );
 };
 
-const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onOpenChange }) => {
-  const [members, setMembers] = useState(membersData);
+const MemberModal: React.FC<MemberModalProps> = ({ isOpen, onOpenChange, attendees }) => {
+  const [members, setMembers] = useState<Array<ConnectionMeetingAttendee & { id: number }>>([]);
   const [email, setEmail] = useState('');
+
+  // Initialize members from attendees prop
+  useEffect(() => {
+    const membersWithId = attendees.map((attendee, index) => ({
+      ...attendee,
+      id: index + 1,
+    }));
+    setMembers(membersWithId);
+  }, [attendees]);
 
   const handleRemoveMember = (id: number) => {
     setMembers(members.filter((member) => member.id !== id));
   };
 
   const handleAddMember = () => {
+    if (!email.trim()) return;
     setMembers([...members, { id: members.length + 1, name: email, email }]);
     setEmail('');
   };

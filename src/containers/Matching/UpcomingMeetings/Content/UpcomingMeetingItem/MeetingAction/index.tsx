@@ -3,8 +3,14 @@ import React, { useState } from 'react';
 import { Button } from '@heroui/react';
 import MemberModal from './MemberModal';
 import CancelMeeting from './CancelMeeting';
+import { ConnectionMeeting } from '@/interfaces/matching';
 
-const MeetingAction = () => {
+interface MeetingActionProps {
+  meeting: ConnectionMeeting;
+  onCancelSuccess?: () => void;
+}
+
+const MeetingAction: React.FC<MeetingActionProps> = ({ meeting, onCancelSuccess }) => {
   const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
   const [isCancelMeetingModalOpen, setIsCancelMeetingModalOpen] = useState(false);
 
@@ -23,6 +29,8 @@ const MeetingAction = () => {
   const handleCloseCancelMeetingModal = () => {
     setIsCancelMeetingModalOpen(false);
   };
+
+  const mentorName = meeting.mentor?.name || 'Unknown Mentor';
 
   return (
     <div className='flex justify-between'>
@@ -48,10 +56,17 @@ const MeetingAction = () => {
           <p className='text-base font-bold leading-6'>Cancel Meeting</p>
         </Button>
       </div>
-      <MemberModal isOpen={isMemberModalOpen} onOpenChange={handleCloseMemberModal} />
+      <MemberModal
+        isOpen={isMemberModalOpen}
+        onOpenChange={handleCloseMemberModal}
+        attendees={meeting.attendees}
+      />
       <CancelMeeting
         isOpen={isCancelMeetingModalOpen}
         onOpenChange={handleCloseCancelMeetingModal}
+        meetingId={meeting.id}
+        mentorName={mentorName}
+        onCancelSuccess={onCancelSuccess}
       />
     </div>
   );
