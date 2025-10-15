@@ -19,6 +19,7 @@ export interface Startup {
   startupFundingStage?: string | null;
   stateDetail?: string | null;
   haveActiveUse?: number;
+  activeUser?: number;
   revenue?: number;
   otherParticipatedDetail?: string;
   legalEquityDetail?: string;

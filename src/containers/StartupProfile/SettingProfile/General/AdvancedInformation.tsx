@@ -9,7 +9,7 @@ interface AdvancedInformationProps {
 }
 
 interface AdvancedInformation {
-  activeUse?: string;
+  activeUser?: string;
   revenue?: string;
   legalEquityDetail?: string;
   investmentDetail?: string;
@@ -18,14 +18,14 @@ interface AdvancedInformation {
 
 const AdvancedInformation = ({ startup }: AdvancedInformationProps) => {
   const [advancedInformation, setAdvancedInformation] = useState<AdvancedInformation>({
-    activeUse: startup.haveActiveUse?.toString(),
+    activeUser: startup.activeUser?.toString(),
     revenue: startup.revenue?.toString(),
     legalEquityDetail: startup.legalEquityDetail,
     investmentDetail: startup.investmentDetail,
     fundraisingDetail: startup.fundraisingDetail,
   });
   const [openAdvancedItems, setOpenAdvancedItems] = useState({
-    activeUse: false,
+    activeUser: false,
     revenue: false,
     legalEquityDetail: false,
     investmentDetail: false,
@@ -34,7 +34,7 @@ const AdvancedInformation = ({ startup }: AdvancedInformationProps) => {
 
   const advancedInformationItems = Object.keys(advancedInformation);
   const advancedInformationLabels = {
-    activeUse: UI_LABELS.ACTIVE_USER,
+    activeUser: UI_LABELS.ACTIVE_USER,
     revenue: UI_LABELS.LATEST_REVENUE,
     legalEquityDetail: UI_LABELS.LEGAL_EQUITY,
     investmentDetail: UI_LABELS.INVESTMENT,
