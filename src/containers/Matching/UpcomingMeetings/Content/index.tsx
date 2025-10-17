@@ -1,189 +1,65 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { addToast } from '@heroui/react';
 import UpcomingMeetingItem from './UpcomingMeetingItem';
 import { ConnectionMeeting } from '@/interfaces/matching';
+import { getConnectionMeetings } from '@/apis/connection-meeting';
+import { PROFILE_MESSAGES } from '@/constants';
+import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
 
-// Mock data based on API documentation structure for Startup
-const mockMeetings: ConnectionMeeting[] = [
-  {
-    id: '1',
-    mentor_id: 'mentor-1',
-    startup_id: 'startup-1',
-    title: 'EMPACTS Connect: Le Phuong Nam <> The Amazing Team',
-    description: 'Initial consultation meeting to discuss startup growth strategy',
-    start_at: '2025-08-04T13:30:00Z',
-    end_at: '2025-08-04T16:30:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/ktq-edyu-ydj',
-    attendees: [
-      { name: 'Do Chi Thanh', email: 'memberA@startup.com' },
-      { name: 'Le Phuong Nam', email: 'mentor@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Le Phuong Nam',
-      email: 'mentor@empacts.com',
-      role: 'MENTOR',
-    },
-    mentor: {
-      id: 'mentor-1',
-      name: 'Le Phuong Nam',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HA_NOI',
-      description: 'Experienced mentor in digital transformation',
-    },
-  },
-  {
-    id: '2',
-    mentor_id: 'mentor-2',
-    startup_id: 'startup-1',
-    title: 'EMPACTS Connect: Sarah Johnson <> The Amazing Team',
-    description: 'Marketing strategy and brand positioning discussion',
-    start_at: '2025-08-05T14:00:00Z',
-    end_at: '2025-08-05T17:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/abc-defg-hij',
-    attendees: [
-      { name: 'Do Chi Thanh', email: 'memberA@startup.com' },
-      { name: 'Sarah Johnson', email: 'sarah@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Sarah Johnson',
-      email: 'sarah@empacts.com',
-      role: 'MENTOR',
-    },
-    mentor: {
-      id: 'mentor-2',
-      name: 'Sarah Johnson',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HO_CHI_MINH',
-      description: 'Marketing and Growth Strategy Expert',
-    },
-  },
-  {
-    id: '3',
-    mentor_id: 'mentor-3',
-    startup_id: 'startup-1',
-    title: 'EMPACTS Connect: Michael Chen <> The Amazing Team',
-    description: 'Product development roadmap and technical architecture',
-    start_at: '2025-08-06T10:00:00Z',
-    end_at: '2025-08-06T13:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/xyz-uvwx-rst',
-    attendees: [
-      { name: 'Do Chi Thanh', email: 'memberA@startup.com' },
-      { name: 'Michael Chen', email: 'michael@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Michael Chen',
-      email: 'michael@empacts.com',
-      role: 'MENTOR',
-    },
-    mentor: {
-      id: 'mentor-3',
-      name: 'Michael Chen',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'DA_NANG',
-      description: 'Product Development & Tech Leadership',
-    },
-  },
-  {
-    id: '4',
-    mentor_id: 'mentor-4',
-    startup_id: 'startup-1',
-    title: 'EMPACTS Connect: Emily Rodriguez <> The Amazing Team',
-    description: 'Fundraising strategy and investor relations',
-    start_at: '2025-08-07T15:00:00Z',
-    end_at: '2025-08-07T18:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/fin-tech-abc',
-    attendees: [
-      { name: 'Do Chi Thanh', email: 'memberA@startup.com' },
-      { name: 'Emily Rodriguez', email: 'emily@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Emily Rodriguez',
-      email: 'emily@empacts.com',
-      role: 'MENTOR',
-    },
-    mentor: {
-      id: 'mentor-4',
-      name: 'Emily Rodriguez',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HO_CHI_MINH',
-      description: 'Fundraising & Business Strategy',
-    },
-  },
-  {
-    id: '5',
-    mentor_id: 'mentor-5',
-    startup_id: 'startup-1',
-    title: 'EMPACTS Connect: David Nguyen <> The Amazing Team',
-    description: 'Operations optimization and scaling strategies',
-    start_at: '2025-08-08T11:00:00Z',
-    end_at: '2025-08-08T14:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/edu-tech-xyz',
-    attendees: [
-      { name: 'Do Chi Thanh', email: 'memberA@startup.com' },
-      { name: 'David Nguyen', email: 'david@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'David Nguyen',
-      email: 'david@empacts.com',
-      role: 'MENTOR',
-    },
-    mentor: {
-      id: 'mentor-5',
-      name: 'David Nguyen',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'CAN_THO',
-      description: 'Operations & Scaling',
-    },
-  },
-  {
-    id: '6',
-    mentor_id: 'mentor-6',
-    startup_id: 'startup-1',
-    title: 'EMPACTS Connect: Anna Lee <> The Amazing Team',
-    description: 'UX/UI improvements and product design review',
-    start_at: '2025-08-09T09:30:00Z',
-    end_at: '2025-08-09T12:30:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/health-tech-def',
-    attendees: [
-      { name: 'Do Chi Thanh', email: 'memberA@startup.com' },
-      { name: 'Anna Lee', email: 'anna@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Anna Lee',
-      email: 'anna@empacts.com',
-      role: 'MENTOR',
-    },
-    mentor: {
-      id: 'mentor-6',
-      name: 'Anna Lee',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HA_NOI',
-      description: 'UX/UI & Product Strategy',
-    },
-  },
-];
+interface ContentProps {
+  startupId: string;
+}
 
-const Content = () => {
+const Content: React.FC<ContentProps> = ({ startupId }) => {
   const [displayedMeetings, setDisplayedMeetings] = useState<ConnectionMeeting[]>([]);
+  const [allMeetings, setAllMeetings] = useState<ConnectionMeeting[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [totalItemsLoaded, setTotalItemsLoaded] = useState(0);
   const itemsPerPage = 3;
 
-  // Initialize with first page of mock data
+  // Fetch upcoming meetings from API
   useEffect(() => {
-    const firstPageItems = mockMeetings.slice(0, itemsPerPage);
-    setDisplayedMeetings(firstPageItems);
-    setHasMore(mockMeetings.length > itemsPerPage);
-    setCurrentPage(1);
-    setTotalItemsLoaded(itemsPerPage);
-  }, []);
+    const fetchUpcomingMeetings = async () => {
+      if (!startupId) return;
+
+      setIsInitialLoading(true);
+      try {
+        const response = await getConnectionMeetings({
+          actor: 'startup',
+          profileId: startupId,
+          view: 'upcoming',
+        });
+
+        const meetings = response.data || [];
+        setAllMeetings(meetings);
+
+        // Display first page
+        const firstPageItems = meetings.slice(0, itemsPerPage);
+        setDisplayedMeetings(firstPageItems);
+        setHasMore(meetings.length > itemsPerPage);
+        setCurrentPage(1);
+        setTotalItemsLoaded(itemsPerPage);
+      } catch (error: any) {
+        console.error('Error fetching upcoming meetings:', error);
+        addToast({
+          title: error?.response?.data?.message || error?.message || PROFILE_MESSAGES.GENERAL_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+        // Set empty state on error
+        setAllMeetings([]);
+        setDisplayedMeetings([]);
+        setHasMore(false);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchUpcomingMeetings();
+  }, [startupId]);
 
   // Load more items for infinite scroll
   const loadMoreItems = useCallback(() => {
@@ -194,20 +70,20 @@ const Content = () => {
     setTimeout(() => {
       const startIndex = totalItemsLoaded;
       const endIndex = startIndex + itemsPerPage;
-      const newItems = mockMeetings.slice(startIndex, endIndex);
+      const newItems = allMeetings.slice(startIndex, endIndex);
 
       if (newItems.length > 0) {
         setDisplayedMeetings((prev) => [...prev, ...newItems]);
         setCurrentPage((page) => page + 1);
         setTotalItemsLoaded(endIndex);
-        setHasMore(endIndex < mockMeetings.length);
+        setHasMore(endIndex < allMeetings.length);
       } else {
         setHasMore(false);
       }
 
       setLoadingMore(false);
     }, 500);
-  }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage]);
+  }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage, allMeetings]);
 
   // Handler to remove cancelled meeting from list and auto-load more if needed
   const handleMeetingCancelled = useCallback(
@@ -222,10 +98,10 @@ const Content = () => {
          */
         const MIN_ITEMS_FOR_SCROLL = 3;
         if (updatedMeetings.length < MIN_ITEMS_FOR_SCROLL && hasMore && !loadingMore) {
-          // Load next batch of items from mock data
+          // Load next batch of items from all meetings
           const startIndex = totalItemsLoaded;
-          const endIndex = Math.min(startIndex + itemsPerPage, mockMeetings.length);
-          const newItems = mockMeetings.slice(startIndex, endIndex);
+          const endIndex = Math.min(startIndex + itemsPerPage, allMeetings.length);
+          const newItems = allMeetings.slice(startIndex, endIndex);
 
           if (newItems.length > 0) {
             // Schedule the update to avoid React state update warnings
@@ -233,7 +109,7 @@ const Content = () => {
               setDisplayedMeetings((current) => [...current, ...newItems]);
               setCurrentPage((page) => page + 1);
               setTotalItemsLoaded(endIndex);
-              setHasMore(endIndex < mockMeetings.length);
+              setHasMore(endIndex < allMeetings.length);
             }, 100);
           } else {
             setHasMore(false);
@@ -243,9 +119,19 @@ const Content = () => {
         return updatedMeetings;
       });
     },
-    [hasMore, loadingMore, itemsPerPage, totalItemsLoaded]
+    [hasMore, loadingMore, itemsPerPage, totalItemsLoaded, allMeetings]
   );
 
+  // Show loading on initial fetch
+  if (isInitialLoading) {
+    return (
+      <div className='w-full text-center py-large'>
+        <p className='text-neutral-80'>Loading upcoming meetings...</p>
+      </div>
+    );
+  }
+
+  // Show empty state
   if (displayedMeetings.length === 0) {
     return (
       <div className='w-full text-center py-large'>

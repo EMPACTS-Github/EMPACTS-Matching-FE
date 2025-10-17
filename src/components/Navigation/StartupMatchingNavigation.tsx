@@ -65,7 +65,7 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
               </div>
             </CardHeader>
             <CardBody>
-              <UpcomingMeetings />
+              <UpcomingMeetings startupId={startupId} />
             </CardBody>
           </Card>
         </Tab>
@@ -81,7 +81,7 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
               </div>
             </CardHeader>
             <CardBody className='h-[55vh] p-0'>
-              <SentInvitations />
+              <SentInvitations startupId={startupId} />
             </CardBody>
           </Card>
         </Tab>
