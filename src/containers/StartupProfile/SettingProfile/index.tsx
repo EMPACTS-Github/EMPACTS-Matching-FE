@@ -2,7 +2,7 @@
 'use client';
 import { Tabs, Tab, Divider, Avatar, addToast, useDisclosure } from '@heroui/react';
 import React, { useState, useEffect } from 'react';
-import { uploadAttachemt, updateAttachment, getStartupDocuments } from '@/apis/upload';
+import { uploadAttachemt, updateAttachment, getStartupDocuments, getS3PresignedUrl, uploadToS3ByPresignedUrl } from '@/apis/upload';
 import { startup_profile_update, startup_profile_delete } from '@/apis/startup-profile';
 import { Startup } from '@/interfaces/StartupProfile';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
@@ -38,7 +38,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
   const [description, setDescription] = useState<string>(startup.description || '');
   const [sdgGoal, setSdgGoal] = useState<string>(startup.sdgGoal || '');
   const [profilePicture, setProfilePicture] = useState('');
-  const [uploadedPictureId, setUploadedPictureId] = useState('');
 
   const [startupImages, setStartupImages] = useState<IDocument[]>([]);
   const [startupDocuments, setStartupDocuments] = useState<IDocument[]>([]);
@@ -155,24 +154,20 @@ const SettingModal: React.FC<SettingModalProps> = ({
     }
   };
 
-  const onImageUpload = (fileUrl: string, fileId: string) => {
-    setProfilePicture(fileUrl);
-    setUploadedPictureId(fileId);
-  };
-
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setLoading(true);
       try {
-        const response = await uploadAttachemt({
-          file,
-          ownerId: startup.id,
-          ownerType: UPLOAD_OWNER_TYPE.STARTUP,
-        });
-        setImage(response.data.attachmentUrl);
+        const fileType = file.type;
+        const fileName = file.name;
+
+        const presignedUrlResponse = await getS3PresignedUrl(fileName, fileType);
+        const { data: { uploadUrl, fileUrl }  } = presignedUrlResponse;
+        await uploadToS3ByPresignedUrl(uploadUrl, file);
+
+        setImage(fileUrl);
         setError(null);
-        onImageUpload(response.data.attachmentUrl, response.data.id);
         addToast({
           title: PROFILE_MESSAGES.IMAGE_UPLOADED_SUCCESS,
           color: TOAST_COLORS.SUCCESS,

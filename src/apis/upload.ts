@@ -45,3 +45,22 @@ export const getStartupDocuments = async (getStartupDocumentsData: IGetStartupDo
   });
   return response.data;
 };
+
+export const getS3PresignedUrl = async (fileName: string, fileType: string) => {
+  const response = await axiosInstance.get('/s3/presigned-url', {
+    params: {
+      fileName,
+      fileType,
+    },
+  });
+  return response.data;
+}
+
+export const uploadToS3ByPresignedUrl = async (url: string, file: File) => {
+  const response = await axiosInstance.put(url, file, {
+    headers: {
+      'Content-Type': file.type,
+    },
+  });
+  return response.data;
+}
