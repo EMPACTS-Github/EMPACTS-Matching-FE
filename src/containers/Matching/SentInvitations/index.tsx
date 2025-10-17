@@ -1,238 +1,17 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
+import { addToast } from '@heroui/react';
 import Avatar from '@/components/Avatar/Avatar';
 import { ConnectRequest } from '@/interfaces/matching';
 import { getProvince } from '@/utils/getProvince';
+import { startup_matching_activity } from '@/apis/startup-matching';
+import { PROFILE_MESSAGES } from '@/constants';
+import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
 
-// Mock data based on API documentation structure
-const mockInvitations: ConnectRequest[] = [
-  {
-    id: '1',
-    startup_id: 'startup-1',
-    mentor_id: 'm1',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'sarah.johnson@email.com',
-    connect_request_code: 'CR-001',
-    request_schedule: '2024-01-20T13:30:00Z',
-    note: 'Hi Sarah, I would love to discuss our digital marketing strategy with you.',
-    meeting_link: '',
-    status: 'PENDING',
-    responded_by: null,
-    responded_at: null,
-    expired_at: '2024-01-25T13:30:00Z',
-    created_at: '2024-01-15T10:00:00Z',
-    updated_at: '2024-01-15T10:00:00Z',
-    mentor: {
-      id: 'm1',
-      name: 'Sarah Johnson',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HO_CHI_MINH',
-      description: 'Digital Marketing Expert',
-    },
-  },
-  {
-    id: '2',
-    startup_id: 'startup-1',
-    mentor_id: 'm2',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'michael.chen@email.com',
-    connect_request_code: 'CR-002',
-    request_schedule: '2024-01-18T14:00:00Z',
-    note: 'Hello Michael, we need guidance on our product roadmap.',
-    meeting_link: 'https://meet.google.com/abc-defg-hij',
-    status: 'APPROVED',
-    responded_by: 'm2',
-    responded_at: '2024-01-14T15:30:00Z',
-    expired_at: null,
-    created_at: '2024-01-14T09:00:00Z',
-    updated_at: '2024-01-14T15:30:00Z',
-    mentor: {
-      id: 'm2',
-      name: 'Michael Chen',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HA_NOI',
-      description: 'Product Development & Tech Leadership',
-    },
-  },
-  {
-    id: '3',
-    startup_id: 'startup-1',
-    mentor_id: 'm3',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'emily.rodriguez@email.com',
-    connect_request_code: 'CR-003',
-    request_schedule: '2024-01-17T10:00:00Z',
-    note: 'Hi Emily, we are preparing for Series A and need your expertise.',
-    meeting_link: '',
-    status: 'REJECTED',
-    responded_by: 'm3',
-    responded_at: '2024-01-13T16:00:00Z',
-    expired_at: null,
-    created_at: '2024-01-13T08:00:00Z',
-    updated_at: '2024-01-13T16:00:00Z',
-    mentor: {
-      id: 'm3',
-      name: 'Emily Rodriguez',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'DA_NANG',
-      description: 'Fundraising & Business Strategy',
-    },
-  },
-  {
-    id: '4',
-    startup_id: 'startup-1',
-    mentor_id: 'm4',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'david.nguyen@email.com',
-    connect_request_code: 'CR-004',
-    request_schedule: '2024-01-22T15:00:00Z',
-    note: 'Hi David, we are refining our operations and would like your input.',
-    meeting_link: '',
-    status: 'PENDING',
-    responded_by: null,
-    responded_at: null,
-    expired_at: '2024-01-27T15:00:00Z',
-    created_at: '2024-01-12T11:00:00Z',
-    updated_at: '2024-01-12T11:00:00Z',
-    mentor: {
-      id: 'm4',
-      name: 'David Nguyen',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'CAN_THO',
-      description: 'Operations & Scaling',
-    },
-  },
-  {
-    id: '5',
-    startup_id: 'startup-1',
-    mentor_id: 'm5',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'anna.lee@email.com',
-    connect_request_code: 'CR-005',
-    request_schedule: '2024-01-19T09:30:00Z',
-    note: 'Hello Anna, we want to improve our onboarding experience.',
-    meeting_link: 'https://meet.google.com/xyz-abcd-efg',
-    status: 'APPROVED',
-    responded_by: 'm5',
-    responded_at: '2024-01-11T14:00:00Z',
-    expired_at: null,
-    created_at: '2024-01-11T10:00:00Z',
-    updated_at: '2024-01-11T14:00:00Z',
-    mentor: {
-      id: 'm5',
-      name: 'Anna Lee',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HO_CHI_MINH',
-      description: 'UX/UI & Product Strategy',
-    },
-  },
-  {
-    id: '6',
-    startup_id: 'startup-1',
-    mentor_id: 'm6',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'carlos.martinez@email.com',
-    connect_request_code: 'CR-006',
-    request_schedule: '2024-01-16T11:00:00Z',
-    note: 'Hi Carlos, we are planning our GTM for Q1 and need guidance.',
-    meeting_link: '',
-    status: 'CANCELLED',
-    responded_by: 'founder-1',
-    responded_at: '2024-01-10T12:00:00Z',
-    expired_at: null,
-    created_at: '2024-01-10T09:00:00Z',
-    updated_at: '2024-01-10T12:00:00Z',
-    mentor: {
-      id: 'm6',
-      name: 'Carlos Martinez',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'DA_NANG',
-      description: 'Sales & Go-To-Market',
-    },
-  },
-  {
-    id: '7',
-    startup_id: 'startup-1',
-    mentor_id: 'm7',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'jennifer.park@email.com',
-    connect_request_code: 'CR-007',
-    request_schedule: '2024-01-25T16:00:00Z',
-    note: 'Hi Jennifer, we need help with our brand positioning strategy.',
-    meeting_link: '',
-    status: 'PENDING',
-    responded_by: null,
-    responded_at: null,
-    expired_at: '2024-01-30T16:00:00Z',
-    created_at: '2024-01-09T13:00:00Z',
-    updated_at: '2024-01-09T13:00:00Z',
-    mentor: {
-      id: 'm7',
-      name: 'Jennifer Park',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HO_CHI_MINH',
-      description: 'Content Marketing & Brand Strategy',
-    },
-  },
-  {
-    id: '8',
-    startup_id: 'startup-1',
-    mentor_id: 'm8',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'robert.kim@email.com',
-    connect_request_code: 'CR-008',
-    request_schedule: '2024-01-05T10:00:00Z',
-    note: 'Hello Robert, we want to discuss our technical infrastructure.',
-    meeting_link: '',
-    status: 'EXPIRED',
-    responded_by: null,
-    responded_at: null,
-    expired_at: '2024-01-08T10:00:00Z',
-    created_at: '2024-01-08T08:00:00Z',
-    updated_at: '2024-01-08T10:00:00Z',
-    mentor: {
-      id: 'm8',
-      name: 'Robert Kim',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'HA_NOI',
-      description: 'Tech Architecture & DevOps',
-    },
-  },
-  {
-    id: '9',
-    startup_id: 'startup-1',
-    mentor_id: 'm9',
-    startup_founder_id: 'founder-1',
-    startup_founder_email: 'founder@startup.com',
-    mentor_email: 'lisa.wang@email.com',
-    connect_request_code: 'CR-009',
-    request_schedule: '2024-01-23T14:30:00Z',
-    note: 'Hi Lisa, we need guidance on scaling our team effectively.',
-    meeting_link: '',
-    status: 'PENDING',
-    responded_by: null,
-    responded_at: null,
-    expired_at: '2024-01-28T14:30:00Z',
-    created_at: '2024-01-07T09:30:00Z',
-    updated_at: '2024-01-07T09:30:00Z',
-    mentor: {
-      id: 'm9',
-      name: 'Lisa Wang',
-      avtUrl: '/assets/avatar-placeholder.png',
-      locationBased: 'DA_NANG',
-      description: 'HR Strategy & Team Building',
-    },
-  },
-];
+interface SentInvitationsProps {
+  startupId: string;
+}
 
 // Mentor Avatar Component - Using project's Avatar component
 const MentorAvatar: React.FC<{
@@ -327,20 +106,51 @@ const InvitationCard: React.FC<{
 };
 
 // Main Component - With Infinite Scrolling
-const SentInvitations: React.FC = () => {
+const SentInvitations: React.FC<SentInvitationsProps> = ({ startupId }) => {
   const [displayedInvitations, setDisplayedInvitations] = useState<ConnectRequest[]>([]);
+  const [allInvitations, setAllInvitations] = useState<ConnectRequest[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [totalItemsLoaded, setTotalItemsLoaded] = useState(0);
   const itemsPerPage = 3;
 
-  // Initialize with first page of mock data
+  // Fetch sent invitations from API
   useEffect(() => {
-    const firstPageItems = mockInvitations.slice(0, itemsPerPage);
-    setDisplayedInvitations(firstPageItems);
-    setHasMore(mockInvitations.length > itemsPerPage);
-    setCurrentPage(1);
-  }, []);
+    const fetchInvitations = async () => {
+      if (!startupId) return;
+
+      setIsInitialLoading(true);
+      try {
+        const response = await startup_matching_activity(startupId);
+        const invitations = response.data || [];
+        setAllInvitations(invitations);
+
+        // Display first page
+        const firstPageItems = invitations.slice(0, itemsPerPage);
+        setDisplayedInvitations(firstPageItems);
+        setHasMore(invitations.length > itemsPerPage);
+        setCurrentPage(1);
+        setTotalItemsLoaded(itemsPerPage);
+      } catch (error: any) {
+        console.error('Error fetching sent invitations:', error);
+        addToast({
+          title: error?.response?.data?.message || error?.message || PROFILE_MESSAGES.GENERAL_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+        // Set empty state on error
+        setAllInvitations([]);
+        setDisplayedInvitations([]);
+        setHasMore(false);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchInvitations();
+  }, [startupId]);
 
   // Load more items for infinite scroll
   const loadMoreItems = useCallback(() => {
@@ -349,23 +159,33 @@ const SentInvitations: React.FC = () => {
     setLoadingMore(true);
 
     setTimeout(() => {
-      const nextPage = currentPage + 1;
-      const startIndex = currentPage * itemsPerPage;
+      const startIndex = totalItemsLoaded;
       const endIndex = startIndex + itemsPerPage;
-      const newItems = mockInvitations.slice(startIndex, endIndex);
+      const newItems = allInvitations.slice(startIndex, endIndex);
 
       if (newItems.length > 0) {
         setDisplayedInvitations((prev) => [...prev, ...newItems]);
-        setCurrentPage(nextPage);
-        setHasMore(endIndex < mockInvitations.length);
+        setCurrentPage((page) => page + 1);
+        setTotalItemsLoaded(endIndex);
+        setHasMore(endIndex < allInvitations.length);
       } else {
         setHasMore(false);
       }
 
       setLoadingMore(false);
     }, 500);
-  }, [currentPage, loadingMore, hasMore]);
+  }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage, allInvitations]);
 
+  // Show loading on initial fetch
+  if (isInitialLoading) {
+    return (
+      <div className='w-full text-center py-large'>
+        <p className='text-neutral-80'>Loading invitations...</p>
+      </div>
+    );
+  }
+
+  // Show empty state
   if (displayedInvitations.length === 0) {
     return (
       <div className='w-full text-center py-large'>

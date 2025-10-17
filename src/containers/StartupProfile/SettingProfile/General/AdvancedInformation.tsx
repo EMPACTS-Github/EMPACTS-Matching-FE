@@ -30,7 +30,7 @@ const AdvancedInformation = ({ startup }: AdvancedInformationProps) => {
     legalEquityDetail: false,
     investmentDetail: false,
     fundraisingDetail: false,
-  })
+  });
 
   const advancedInformationItems = Object.keys(advancedInformation);
   const advancedInformationLabels = {
@@ -41,7 +41,10 @@ const AdvancedInformation = ({ startup }: AdvancedInformationProps) => {
     fundraisingDetail: UI_LABELS.FUNDRAISING,
   };
 
-  const handleChangeAdvancedInformation = (key: keyof AdvancedInformation, value: string | number) => {
+  const handleChangeAdvancedInformation = (
+    key: keyof AdvancedInformation,
+    value: string | number
+  ) => {
     setAdvancedInformation({
       ...advancedInformation,
       [key]: value,
@@ -59,7 +62,9 @@ const AdvancedInformation = ({ startup }: AdvancedInformationProps) => {
     return (advancedInformationItems as (keyof typeof advancedInformationLabels)[]).map((item) => (
       <div className='flex flex-col gap-2' key={item}>
         <div className='flex justify-between items-center' key={item}>
-          <Typography type='p' variant='body-16-bold'>{advancedInformationLabels[item]}</Typography>
+          <Typography type='p' variant='body-16-bold'>
+            {advancedInformationLabels[item]}
+          </Typography>
           <Switch
             checked={openAdvancedItems[item]}
             onValueChange={() => handleOpenAdvancedItems(item)}

@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Modal, ModalContent, ModalBody, addToast } from '@heroui/react';
 import Button from '@/components/Button/Button';
 import { PROFILE_MESSAGES } from '@/constants';
+import { cancelConnectionMeeting } from '@/apis/connection-meeting';
+import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
 
 interface MentorCancelMeetingProps {
   isOpen: boolean;
@@ -32,8 +34,8 @@ const MentorCancelMeeting: React.FC<MentorCancelMeetingProps> = ({
     if (!cancelReason.trim()) {
       addToast({
         title: 'Please provide a reason for cancellation',
-        color: 'warning',
-        timeout: 3000,
+        color: TOAST_COLORS.WARNING,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
       return;
     }
@@ -41,24 +43,13 @@ const MentorCancelMeeting: React.FC<MentorCancelMeetingProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Mock API call - replace with actual API when available
-      // const response = await cancelConnectionMeeting(meetingId);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock success response
-      console.log('Meeting cancelled:', {
-        meetingId,
-        reason: cancelReason,
-        startup: startupName,
-        representative: representativeName,
-      });
+      // Call actual API to cancel the meeting
+      await cancelConnectionMeeting(meetingId);
 
       addToast({
         title: 'Meeting cancelled successfully',
-        color: 'success',
-        timeout: 3000,
+        color: TOAST_COLORS.SUCCESS,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
 
       setCancelReason('');
@@ -71,9 +62,9 @@ const MentorCancelMeeting: React.FC<MentorCancelMeetingProps> = ({
     } catch (error: any) {
       console.error('Error cancelling meeting:', error);
       addToast({
-        title: error?.message || PROFILE_MESSAGES.GENERAL_ERROR,
-        color: 'danger',
-        timeout: 3000,
+        title: error?.response?.data?.message || error?.message || PROFILE_MESSAGES.GENERAL_ERROR,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
       });
     } finally {
       setIsSubmitting(false);

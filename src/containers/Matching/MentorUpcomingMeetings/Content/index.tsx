@@ -1,195 +1,65 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { addToast } from '@heroui/react';
 import MentorUpcomingMeetingItem from './MentorUpcomingMeetingItem';
 import { ConnectionMeeting } from '@/interfaces/matching';
+import { getConnectionMeetings } from '@/apis/connection-meeting';
+import { PROFILE_MESSAGES } from '@/constants';
+import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
 
-// Mock data based on API documentation structure
-const mockMeetings: ConnectionMeeting[] = [
-  {
-    id: '1',
-    mentor_id: 'mentor-1',
-    startup_id: 'startup-1',
-    title: 'EMPACTS Connect: Le Phuong Nam <> The Amazing Team',
-    description: 'Initial consultation meeting to discuss startup growth strategy',
-    start_at: '2025-08-04T13:30:00Z',
-    end_at: '2025-08-04T16:30:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/ktq-edyu-ydj',
-    attendees: [
-      { name: 'Do Chi Thanh', email: 'memberA@startup.com' },
-      { name: 'Le Phuong Nam', email: 'mentor@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Do Chi Thanh',
-      email: 'memberA@startup.com',
-      role: 'STARTUP',
-    },
-    startup: {
-      id: 'startup-1',
-      name: 'The Amazing Team',
-      avtUrl:
-        'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=64&h=64&fit=crop&crop=face',
-      locationBased: 'HA_NOI',
-      description: 'A promising startup in the tech industry',
-    },
-  },
-  {
-    id: '2',
-    mentor_id: 'mentor-1',
-    startup_id: 'startup-2',
-    title: 'EMPACTS Connect: Le Phuong Nam <> TechFlow Solutions',
-    description: 'Technical architecture review and scaling strategies',
-    start_at: '2025-08-05T14:00:00Z',
-    end_at: '2025-08-05T17:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/abc-defg-hij',
-    attendees: [
-      { name: 'Nguyen Van Duc', email: 'duc@techflow.com' },
-      { name: 'Le Phuong Nam', email: 'mentor@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Nguyen Van Duc',
-      email: 'duc@techflow.com',
-      role: 'STARTUP',
-    },
-    startup: {
-      id: 'startup-2',
-      name: 'TechFlow Solutions',
-      avtUrl:
-        'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=64&h=64&fit=crop&crop=face',
-      locationBased: 'HO_CHI_MINH',
-      description: 'Tech solutions provider for enterprise clients',
-    },
-  },
-  {
-    id: '3',
-    mentor_id: 'mentor-1',
-    startup_id: 'startup-3',
-    title: 'EMPACTS Connect: Le Phuong Nam <> Green Innovation Hub',
-    description: 'Sustainability and environmental impact discussion',
-    start_at: '2025-08-06T10:00:00Z',
-    end_at: '2025-08-06T13:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/xyz-uvwx-rst',
-    attendees: [
-      { name: 'Tran Thi Linh', email: 'linh@greeninnovation.vn' },
-      { name: 'Le Phuong Nam', email: 'mentor@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Tran Thi Linh',
-      email: 'linh@greeninnovation.vn',
-      role: 'STARTUP',
-    },
-    startup: {
-      id: 'startup-3',
-      name: 'Green Innovation Hub',
-      avtUrl:
-        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=64&h=64&fit=crop&crop=face',
-      locationBased: 'DA_NANG',
-      description: 'Green technology and sustainable solutions',
-    },
-  },
-  {
-    id: '4',
-    mentor_id: 'mentor-1',
-    startup_id: 'startup-4',
-    title: 'EMPACTS Connect: Le Phuong Nam <> FinTech Innovators',
-    description: 'Financial technology and market expansion strategies',
-    start_at: '2025-08-07T15:00:00Z',
-    end_at: '2025-08-07T18:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/fin-tech-abc',
-    attendees: [
-      { name: 'Pham Van Hieu', email: 'hieu@fintech.vn' },
-      { name: 'Le Phuong Nam', email: 'mentor@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Pham Van Hieu',
-      email: 'hieu@fintech.vn',
-      role: 'STARTUP',
-    },
-    startup: {
-      id: 'startup-4',
-      name: 'FinTech Innovators',
-      avtUrl:
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=64&h=64&fit=crop&crop=face',
-      locationBased: 'HO_CHI_MINH',
-      description: 'Financial technology solutions',
-    },
-  },
-  {
-    id: '5',
-    mentor_id: 'mentor-1',
-    startup_id: 'startup-5',
-    title: 'EMPACTS Connect: Le Phuong Nam <> EduTech Connect',
-    description: 'Educational technology and learning platform development',
-    start_at: '2025-08-08T11:00:00Z',
-    end_at: '2025-08-08T14:00:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/edu-tech-xyz',
-    attendees: [
-      { name: 'Hoang Thi Mai', email: 'mai@edutech.vn' },
-      { name: 'Le Phuong Nam', email: 'mentor@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Hoang Thi Mai',
-      email: 'mai@edutech.vn',
-      role: 'STARTUP',
-    },
-    startup: {
-      id: 'startup-5',
-      name: 'EduTech Connect',
-      avtUrl:
-        'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=64&h=64&fit=crop&crop=face',
-      locationBased: 'HA_NOI',
-      description: 'Educational platform for online learning',
-    },
-  },
-  {
-    id: '6',
-    mentor_id: 'mentor-1',
-    startup_id: 'startup-6',
-    title: 'EMPACTS Connect: Le Phuong Nam <> HealthTech Solutions',
-    description: 'Healthcare technology and telemedicine platform',
-    start_at: '2025-08-09T09:30:00Z',
-    end_at: '2025-08-09T12:30:00Z',
-    status: 'SCHEDULED',
-    meet_link: 'meet.google.com/health-tech-def',
-    attendees: [
-      { name: 'Nguyen Minh Duc', email: 'duc@healthtech.vn' },
-      { name: 'Le Phuong Nam', email: 'mentor@empacts.com' },
-    ],
-    primary_contact: {
-      name: 'Nguyen Minh Duc',
-      email: 'duc@healthtech.vn',
-      role: 'STARTUP',
-    },
-    startup: {
-      id: 'startup-6',
-      name: 'HealthTech Solutions',
-      avtUrl:
-        'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=64&h=64&fit=crop&crop=face',
-      locationBased: 'CAN_THO',
-      description: 'Healthcare and medical technology solutions',
-    },
-  },
-];
+interface ContentProps {
+  mentorId: string;
+}
 
-const Content = () => {
+const Content: React.FC<ContentProps> = ({ mentorId }) => {
   const [displayedMeetings, setDisplayedMeetings] = useState<ConnectionMeeting[]>([]);
+  const [allMeetings, setAllMeetings] = useState<ConnectionMeeting[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const [totalItemsLoaded, setTotalItemsLoaded] = useState(0); // Track total items loaded from mock
+  const [totalItemsLoaded, setTotalItemsLoaded] = useState(0);
   const itemsPerPage = 3;
 
-  // Initialize with first page of mock data
+  // Fetch upcoming meetings from API
   useEffect(() => {
-    const firstPageItems = mockMeetings.slice(0, itemsPerPage);
-    setDisplayedMeetings(firstPageItems);
-    setHasMore(mockMeetings.length > itemsPerPage);
-    setCurrentPage(1);
-    setTotalItemsLoaded(itemsPerPage);
-  }, []);
+    const fetchUpcomingMeetings = async () => {
+      if (!mentorId) return;
+
+      setIsInitialLoading(true);
+      try {
+        const response = await getConnectionMeetings({
+          actor: 'mentor',
+          profileId: mentorId,
+          view: 'upcoming',
+        });
+
+        const meetings = response.data || [];
+        setAllMeetings(meetings);
+
+        // Display first page
+        const firstPageItems = meetings.slice(0, itemsPerPage);
+        setDisplayedMeetings(firstPageItems);
+        setHasMore(meetings.length > itemsPerPage);
+        setCurrentPage(1);
+        setTotalItemsLoaded(itemsPerPage);
+      } catch (error: any) {
+        console.error('Error fetching upcoming meetings:', error);
+        addToast({
+          title: error?.response?.data?.message || error?.message || PROFILE_MESSAGES.GENERAL_ERROR,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+        // Set empty state on error
+        setAllMeetings([]);
+        setDisplayedMeetings([]);
+        setHasMore(false);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    fetchUpcomingMeetings();
+  }, [mentorId]);
 
   // Load more items for infinite scroll
   const loadMoreItems = useCallback(() => {
@@ -200,20 +70,20 @@ const Content = () => {
     setTimeout(() => {
       const startIndex = totalItemsLoaded;
       const endIndex = startIndex + itemsPerPage;
-      const newItems = mockMeetings.slice(startIndex, endIndex);
+      const newItems = allMeetings.slice(startIndex, endIndex);
 
       if (newItems.length > 0) {
         setDisplayedMeetings((prev) => [...prev, ...newItems]);
         setCurrentPage((page) => page + 1);
         setTotalItemsLoaded(endIndex);
-        setHasMore(endIndex < mockMeetings.length);
+        setHasMore(endIndex < allMeetings.length);
       } else {
         setHasMore(false);
       }
 
       setLoadingMore(false);
     }, 500);
-  }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage]);
+  }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage, allMeetings]);
 
   // Handler to remove cancelled meeting from list and auto-load more if needed
   const handleMeetingCancelled = useCallback(
@@ -228,10 +98,10 @@ const Content = () => {
          */
         const MIN_ITEMS_FOR_SCROLL = 3;
         if (updatedMeetings.length < MIN_ITEMS_FOR_SCROLL && hasMore && !loadingMore) {
-          // Load next batch of items from mock data
+          // Load next batch of items from all meetings
           const startIndex = totalItemsLoaded;
-          const endIndex = Math.min(startIndex + itemsPerPage, mockMeetings.length);
-          const newItems = mockMeetings.slice(startIndex, endIndex);
+          const endIndex = Math.min(startIndex + itemsPerPage, allMeetings.length);
+          const newItems = allMeetings.slice(startIndex, endIndex);
 
           if (newItems.length > 0) {
             // Schedule the update to avoid React state update warnings
@@ -240,7 +110,7 @@ const Content = () => {
               setDisplayedMeetings((current) => [...current, ...newItems]);
               setCurrentPage((page) => page + 1);
               setTotalItemsLoaded(endIndex);
-              setHasMore(endIndex < mockMeetings.length);
+              setHasMore(endIndex < allMeetings.length);
             }, 100);
           } else {
             setHasMore(false);
@@ -250,9 +120,19 @@ const Content = () => {
         return updatedMeetings;
       });
     },
-    [hasMore, loadingMore, itemsPerPage, totalItemsLoaded]
+    [hasMore, loadingMore, itemsPerPage, totalItemsLoaded, allMeetings]
   );
 
+  // Show loading on initial fetch
+  if (isInitialLoading) {
+    return (
+      <div className='w-full text-center py-large'>
+        <p className='text-neutral-80'>Loading upcoming meetings...</p>
+      </div>
+    );
+  }
+
+  // Show empty state
   if (displayedMeetings.length === 0) {
     return (
       <div className='w-full text-center py-large'>

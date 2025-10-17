@@ -68,7 +68,7 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
               </div>
             </CardHeader>
             <CardBody>
-              <MentorUpcomingMeetings />
+              <MentorUpcomingMeetings mentorId={mentorId} />
             </CardBody>
           </Card>
         </Tab>
