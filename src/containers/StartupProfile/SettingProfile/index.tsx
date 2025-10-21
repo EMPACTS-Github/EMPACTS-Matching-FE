@@ -30,8 +30,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
   onFetchStartupProfile,
   onFetchStartupDocuments,
 }) => {
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false); // Add loading state
   const [image, setImage] = useState<string>(startup.avtUrl || '');
   const [startupName, setStartupName] = useState<string>(startup.name || '');
   const [location, setLocation] = useState<string>(startup.locationBased || '');
@@ -80,7 +78,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
 
   const onUpdateProfileClick = async () => {
     if (startup.id) {
-      setLoading(true);
       const requestBody = {
         name: startupName,
         locationBased: location,
@@ -106,7 +103,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
           timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
-        setLoading(false);
         onOpenChange();
       }
     }
@@ -114,7 +110,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
 
   const handleHideProfileClick = async () => {
     if (startup.id) {
-      setLoading(true);
       const requestBody = {
         isHide: !startup.isHide,
       };
@@ -150,7 +145,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
           });
         }
       } finally {
-        setLoading(false);
         onOpenChange();
       }
     }
@@ -158,7 +152,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
 
   const handleDeleteProfileClick = async () => {
     if (startup.id) {
-      setLoading(true);
       try {
         await startup_profile_delete(startup.id);
         addToast({
@@ -173,7 +166,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
           timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
-        setLoading(false);
         onOpenChange();
       }
     }
@@ -182,7 +174,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
   const handleProfilePictureChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setLoading(true);
       try {
         const fileType = file.type;
         const fileName = file.name;
@@ -193,25 +184,21 @@ const SettingModal: React.FC<SettingModalProps> = ({
 
         setImage(fileUrl);
         setProfilePicture(fileUrl);
-        setError(null);
         addToast({
           title: PROFILE_MESSAGES.IMAGE_UPLOADED_SUCCESS,
           color: TOAST_COLORS.SUCCESS,
           timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } catch (err) {
-        setError(PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED);
         addToast({
           title: PROFILE_MESSAGES.IMAGE_UPLOAD_FAILED,
           color: TOAST_COLORS.DANGER,
           timeout: DEFAULT_TOAST_TIMEOUT,
         });
       } finally {
-        setLoading(false);
         event.target.files = null;
       }
     } else {
-      setError(PROFILE_MESSAGES.NO_FILE_SELECTED);
       addToast({
         title: PROFILE_MESSAGES.NO_FILE_SELECTED,
         color: TOAST_COLORS.DANGER,
