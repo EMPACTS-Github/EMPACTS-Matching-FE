@@ -7,8 +7,10 @@ export const PROFILE_MESSAGES = {
   PROFILE_UNHIDDEN_SUCCESS: 'Profile has been unhidden successfully',
   PROFILE_DELETED_SUCCESS: 'Profile has been deleted successfully',
   IMAGE_UPLOADED_SUCCESS: 'Image uploaded successfully',
-  ATTACHMENT_UPLOADED_SUCCESS: 'Attachement uploaded successfully',
+  ATTACHMENTS_UPLOADED_SUCCESS: 'Attachments uploaded successfully',
   ATTACHMENT_DELETED_SUCCESS: 'Attachment deleted successfully',
+  ATTACHMENT_UPLOADED_SUCCESS: 'Attachment uploaded successfully',
+  ATTACHMENT_UPLOAD_FAILED: 'Failed to upload the attachment. Please try again.',
 
   // Error messages
   PROFILE_UPDATE_FAILED: 'Failed to update the profile. Please try again.',
@@ -18,9 +20,12 @@ export const PROFILE_MESSAGES = {
   PROFILE_UNHIDE_FAILED: 'Failed to unhide the profile',
   PROFILE_DELETE_FAILED: 'Failed to delete the profile',
   IMAGE_UPLOAD_FAILED: 'Failed to upload the image. Please try again.',
+  ATTACHMENTS_UPLOAD_FAILED: 'Failed to upload the attachments. Please try again.',
   ATTACHMENT_DELETE_FAILED: 'Failed to delete the attachment',
   NO_FILE_SELECTED: 'No file selected. Please choose an image file.',
   SUGGESTION_MENTORS_FAILED: 'Failed to fetch suggestion mentors profile',
+  INVALID_ATTACHMENT_TYPE: 'Invalid attachment type. Please choose a valid attachment type. Supported types: pdf, doc, docx, xls, xlsx, ppt, pptx, jpg, jpeg, png, mp4.',
+  INVALID_ATTACHMENT_SIZE: 'Invalid attachment size. Please choose a file smaller than 25MB.',
 
   // General messages
   GENERAL_ERROR: 'Oops! Something went wrong',

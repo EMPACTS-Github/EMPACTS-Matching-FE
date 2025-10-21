@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import ImagePlusIcon from '/public/assets/image-plus.svg';
 import { IDocument } from '@/interfaces/upload';
@@ -42,6 +42,10 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
     imageInputRef.current?.click();
   };
 
+  useEffect(() => {
+    setSelectedIndex(images.findIndex((image) => image.id === selectedImage?.id) || 0);
+  }, [images, selectedImage]);
+
   return (
     <div className='flex flex-col gap-4'>
       <div>
@@ -63,7 +67,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                 alt='Selected'
                 width={800}
                 height={400}
-                className='object-cover shadow-lg rounded-lg'
+                className='w-[800px] h-[400px] object-cover shadow-lg rounded-lg'
               />
               {displayDeleteIcon && (
                 <Button
@@ -93,7 +97,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                   width={56}
                   height={56}
                   className={`w-14 h-14 object-cover cursor-pointer box-border p-1 border-solid border-2 ${
-                    selectedIndex == index ? 'border-empacts' : 'border-transparent'
+                    selectedIndex == index ? 'border-primary' : 'border-transparent'
                   } rounded-lg`}
                 />
               </div>

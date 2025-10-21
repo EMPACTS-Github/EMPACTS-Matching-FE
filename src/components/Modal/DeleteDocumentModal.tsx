@@ -3,6 +3,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 import DocsIcon from '/public/assets/docs-icon.svg';
 import SheetsIcon from '/public/assets/sheets-icon.svg';
 import SlidesIcon from '/public/assets/slides-icon.svg';
+import PdfsIcon from '/public/assets/pdfs-icon.svg';
 import { IDocument } from '@/interfaces/upload';
 import Image from 'next/image';
 import DeleteWarningIcon from '/public/assets/delete-warning-icon.svg';
@@ -26,7 +27,7 @@ const DeleteDocumentModal = ({
     csv: SheetsIcon,
     pptx: SlidesIcon,
     xlsx: SheetsIcon,
-    pdf: SlidesIcon,
+    pdf: PdfsIcon,
   };
 
   // Get icon based on file type

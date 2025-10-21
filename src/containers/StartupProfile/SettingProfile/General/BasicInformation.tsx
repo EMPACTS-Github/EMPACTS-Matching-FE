@@ -12,7 +12,7 @@ interface BasicInformationProps {
   location: string;
   sdgGoal: string;
   description: string;
-  handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleProfilePictureChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setStartupName: (name: string) => void;
   setLocation: (location: string) => void;
   setSdgGoal: (sdgGoal: string) => void;
@@ -25,7 +25,7 @@ const BasicInformation = ({
   location,
   sdgGoal,
   description,
-  handleImageChange,
+  handleProfilePictureChange,
   setStartupName,
   setLocation,
   setSdgGoal,
@@ -58,7 +58,7 @@ const BasicInformation = ({
             type='file'
             accept='image/*'
             className='hidden'
-            onChange={handleImageChange}
+            onChange={handleProfilePictureChange}
           />
         </div>
       </div>

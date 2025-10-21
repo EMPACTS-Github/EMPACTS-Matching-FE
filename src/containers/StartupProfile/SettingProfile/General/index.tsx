@@ -20,7 +20,7 @@ interface GeneralTabProps {
   selectedDocument: IDocument | null;
   onUpdateProfileClick: () => void;
   onOpenChange: () => void;
-  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleProfilePictureChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleUploadNewStartupAttachment: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectImage: (image: IDocument) => void;
   handleSelectDocument: (document: IDocument) => void;
@@ -44,7 +44,7 @@ const GeneralTab = ({
   selectedDocument,
   onUpdateProfileClick,
   onOpenChange,
-  handleImageChange,
+  handleProfilePictureChange,
   handleUploadNewStartupAttachment,
   handleSelectImage,
   handleSelectDocument,
@@ -62,7 +62,7 @@ const GeneralTab = ({
         location={location}
         sdgGoal={sdgGoal}
         description={description}
-        handleImageChange={handleImageChange}
+        handleProfilePictureChange={handleProfilePictureChange}
         setStartupName={setStartupName}
         setLocation={setLocation}
         setSdgGoal={setSdgGoal}
