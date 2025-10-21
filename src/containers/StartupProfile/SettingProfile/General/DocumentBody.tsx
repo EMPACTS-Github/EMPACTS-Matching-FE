@@ -2,6 +2,7 @@ import { Button, Card, CardBody, Divider, useDisclosure } from '@heroui/react';
 import DocsIcon from '/public/assets/docs-icon.svg';
 import SheetsIcon from '/public/assets/sheets-icon.svg';
 import SlidesIcon from '/public/assets/slides-icon.svg';
+import PdfsIcon from '/public/assets/pdfs-icon.svg';
 import DocumentEmptyStateLogo from '/public/assets/document-empty-state-logo.svg';
 import Image from 'next/image';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react';
@@ -35,7 +36,7 @@ const DocumentBody: React.FC<DocumentBodyProps> = ({
     csv: SheetsIcon,
     pptx: SlidesIcon,
     xlsx: SheetsIcon,
-    pdf: SlidesIcon,
+    pdf: PdfsIcon,
   };
 
   const inputRef = useRef<HTMLInputElement>(null);

@@ -27,7 +27,7 @@ export const startup_list = async () => {
   return response.data;
 };
 
-export const startup_profile_update = async (id: string, data: IUpdateStartupProfile) => {
+export const startupProfileUpdate = async (id: string, data: IUpdateStartupProfile) => {
   const response = await axiosInstance.put(`/startup-profile/${id}`, data);
   return response.data;
 };
