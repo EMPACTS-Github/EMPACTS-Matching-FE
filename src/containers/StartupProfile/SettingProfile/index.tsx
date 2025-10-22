@@ -4,6 +4,7 @@ import { Tabs, Tab, Divider, Avatar, addToast, useDisclosure } from '@heroui/rea
 import React, { useState, useEffect } from 'react';
 import { uploadAttachemt, updateAttachment, getStartupDocuments, getS3PresignedUrl, uploadToS3ByPresignedUrl } from '@/apis/upload';
 import { startupProfileUpdate, startup_profile_delete } from '@/apis/startup-profile';
+import { AdvancedInformation } from '@/interfaces/startup';
 import { Startup } from '@/interfaces/StartupProfile';
 import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
@@ -36,6 +37,13 @@ const SettingModal: React.FC<SettingModalProps> = ({
   const [description, setDescription] = useState<string>(startup.description || '');
   const [sdgGoal, setSdgGoal] = useState<string>(startup.sdgGoal || '');
   const [profilePicture, setProfilePicture] = useState('');
+  const [advancedInformation, setAdvancedInformation] = useState<AdvancedInformation>({
+    activeUser: startup.activeUser?.toString(),
+    revenue: startup.revenue?.toString(),
+    legalEquityDetail: startup.legalEquityDetail,
+    investmentDetail: startup.investmentDetail,
+    fundraisingDetail: startup.fundraisingDetail,
+  });
 
   const [startupImages, setStartupImages] = useState<IDocument[]>([]);
   const [startupDocuments, setStartupDocuments] = useState<IDocument[]>([]);
@@ -56,6 +64,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
 
   const updateStartupAttachments = async () => {
     try {
+      if (pendingUploadAttachments.length === 0) return;
       await Promise.all(pendingUploadAttachments.map(async (file) => await uploadAttachemt({
         file,
         ownerId: startup.id,
@@ -76,14 +85,50 @@ const SettingModal: React.FC<SettingModalProps> = ({
     }
   }
 
+  const validateAdvancedInformation = () => {
+    const validateActiveUser =
+      Number.isNaN(Number(advancedInformation.activeUser)) ||
+      Number(advancedInformation.activeUser) < 0;
+    const validateRevenue =
+      Number.isNaN(Number(advancedInformation.revenue)) ||
+      Number(advancedInformation.revenue) < 0;
+
+    if (validateActiveUser) {
+      addToast({
+        title: PROFILE_MESSAGES.INVALID_ACTIVE_USER,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+      return false;
+    }
+
+    if (validateRevenue) {
+      addToast({
+        title: PROFILE_MESSAGES.INVALID_REVENUE,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
   const onUpdateProfileClick = async () => {
     if (startup.id) {
-      const requestBody = {
+      if (!validateAdvancedInformation()) return;
+
+      let requestBody = {
         name: startupName,
         locationBased: location,
         description: description,
         sdgGoal: sdgGoal,
         avtUrl: profilePicture ? profilePicture : startup.avtUrl,
+        activeUser: Number(advancedInformation.activeUser || 0),
+        revenue: Number(advancedInformation.revenue || 0),
+        legalEquityDetail: advancedInformation?.legalEquityDetail,
+        investmentDetail: advancedInformation?.investmentDetail,
+        fundraisingDetail: advancedInformation?.fundraisingDetail,
       };
 
       try {
@@ -417,6 +462,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     startupDocuments={startupDocuments}
                     selectedImage={selectedImage}
                     selectedDocument={selectedDocument}
+                    advancedInformation={advancedInformation}
                     onUpdateProfileClick={onUpdateProfileClick}
                     onOpenChange={onOpenChange}
                     handleProfilePictureChange={handleProfilePictureChange}
@@ -428,6 +474,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     setLocation={setLocation}
                     setSdgGoal={setSdgGoal}
                     setDescription={setDescription}
+                    setAdvancedInformation={setAdvancedInformation}
                   />
                 </Tab>
                 <Tab
