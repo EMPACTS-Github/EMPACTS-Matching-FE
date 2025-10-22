@@ -123,7 +123,7 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
       <Tabs aria-label='Explore' color='primary' variant='underlined' className='font-bold'>
         <Tab
           key='for-you'
-          className='h-full w-full text-base'
+          className='h-full w-full'
           title={
             <div className='flex items-center space-x-2'>
               <CompassIcon className='color-empacts' />
@@ -144,10 +144,10 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
             error={error}
           />
         </Tab>
-        <Tab key='search' title='Search' className='text-base'>
+        <Tab key='search' title='Search'>
           <SearchSection />
         </Tab>
-        <Tab key='matching-activity' title='Matching Activity' className='h-full w-full text-base'>
+        <Tab key='matching-activity' title='Matching Activity' className='h-full w-full'>
           <MatchingActivitySection startupId={startupId} />
         </Tab>
       </Tabs>
