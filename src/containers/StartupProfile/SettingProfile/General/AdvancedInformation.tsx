@@ -16,8 +16,10 @@ interface AdvancedInformationProps {
   setAdvancedInformation: (advancedInformation: AdvancedInformation) => void;
 }
 
-const AdvancedInformation = ({ advancedInformation, setAdvancedInformation }: AdvancedInformationProps) => {
-
+const AdvancedInformation = ({
+  advancedInformation,
+  setAdvancedInformation,
+}: AdvancedInformationProps) => {
   const [openAdvancedItems, setOpenAdvancedItems] = useState({
     activeUser: false || Boolean(advancedInformation.activeUser),
     revenue: false || Boolean(advancedInformation.revenue),

@@ -54,7 +54,7 @@ export const getS3PresignedUrl = async (fileName: string, fileType: string) => {
     },
   });
   return response.data;
-}
+};
 
 export const uploadToS3ByPresignedUrl = async (url: string, file: File) => {
   const response = await axiosInstance.put(url, file, {
@@ -63,4 +63,4 @@ export const uploadToS3ByPresignedUrl = async (url: string, file: File) => {
     },
   });
   return response.data;
-}
+};
