@@ -13,6 +13,7 @@ export const PROFILE_ERROR_MESSAGES = {
   AVAILABILITY_UPDATE_FAILED: 'Failed to update time availability',
   AVAILABILITY_FETCH_FAILED: 'Failed to fetch time availability',
   GENERAL_ERROR: 'Oops! Something went wrong',
+  STARTUP_NAME_ALREADY_TAKEN: 'Startup name already taken. Please try another name.',
 } as const;
 
 // Success Messages

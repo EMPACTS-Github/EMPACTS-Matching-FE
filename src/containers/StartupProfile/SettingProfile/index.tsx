@@ -15,6 +15,9 @@ import { IDocument } from '@/interfaces/upload';
 import CloseIcon from '@/components/Icons/CloseIcon';
 import GeneralTab from './General';
 import AdvancedTab from './Advanced';
+import { STARTUP_PROFILE_CODE, STARTUP_RESPONSE_CODE } from '@/constants/response';
+import { PROFILE_ERROR_MESSAGES } from '@/errors';
+import { AxiosError } from 'axios';
 
 interface SettingModalProps {
   isOpen: boolean;
@@ -178,6 +181,15 @@ const SettingModal: React.FC<SettingModalProps> = ({
         await onFetchStartupProfile();
         await onFetchStartupDocuments();
       } catch (err) {
+        const errorCode = (err as AxiosError<{ code: string }>)?.response?.data?.code;
+        if (errorCode === STARTUP_PROFILE_CODE.STARTUP_NAME_ALREADY_TAKEN) {
+          addToast({
+            title: PROFILE_ERROR_MESSAGES.STARTUP_NAME_ALREADY_TAKEN,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
+          });
+          return;
+        }
         addToast({
           title: PROFILE_MESSAGES.PROFILE_UPDATE_ERROR,
           color: TOAST_COLORS.DANGER,
