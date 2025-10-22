@@ -90,10 +90,7 @@ const GeneralTab = ({
         onUploadNewFile={handleUploadNewStartupAttachment}
       />
 
-      <AdvancedInformation
-        advancedInformation={advancedInformation}
-        setAdvancedInformation={setAdvancedInformation}
-      />
+      <AdvancedInformation advancedInformation={advancedInformation} setAdvancedInformation={setAdvancedInformation} />
 
       <ActionButton onOpenChange={onOpenChange} onUpdateProfileClick={onUpdateProfileClick} />
     </>

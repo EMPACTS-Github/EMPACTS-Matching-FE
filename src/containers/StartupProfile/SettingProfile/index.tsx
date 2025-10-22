@@ -2,13 +2,7 @@
 'use client';
 import { Tabs, Tab, Divider, Avatar, addToast, useDisclosure } from '@heroui/react';
 import React, { useState, useEffect } from 'react';
-import {
-  uploadAttachemt,
-  updateAttachment,
-  getStartupDocuments,
-  getS3PresignedUrl,
-  uploadToS3ByPresignedUrl,
-} from '@/apis/upload';
+import { uploadAttachemt, updateAttachment, getStartupDocuments, getS3PresignedUrl, uploadToS3ByPresignedUrl } from '@/apis/upload';
 import { startupProfileUpdate, startup_profile_delete } from '@/apis/startup-profile';
 import { AdvancedInformation } from '@/interfaces/startup';
 import { Startup } from '@/interfaces/StartupProfile';
@@ -16,13 +10,7 @@ import { UPLOAD_OWNER_TYPE } from '@/constants/upload';
 import { PROFILE_MESSAGES, UI_LABELS } from '@/constants';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import { Modal, ModalContent, ModalHeader, ModalBody } from '@heroui/modal';
-import {
-  isDocumentFile,
-  isImageFile,
-  isValidAttachmentSize,
-  isValidAttachmentType,
-  normalizeAttachmentType,
-} from '@/services/upload';
+import { isDocumentFile, isImageFile, isValidAttachmentSize, isValidAttachmentType, normalizeAttachmentType } from '@/services/upload';
 import { IDocument } from '@/interfaces/upload';
 import CloseIcon from '@/components/Icons/CloseIcon';
 import GeneralTab from './General';
@@ -77,16 +65,11 @@ const SettingModal: React.FC<SettingModalProps> = ({
   const updateStartupAttachments = async () => {
     try {
       if (pendingUploadAttachments.length === 0) return;
-      await Promise.all(
-        pendingUploadAttachments.map(
-          async (file) =>
-            await uploadAttachemt({
-              file,
-              ownerId: startup.id,
-              ownerType: UPLOAD_OWNER_TYPE.STARTUP,
-            })
-        )
-      );
+      await Promise.all(pendingUploadAttachments.map(async (file) => await uploadAttachemt({
+        file,
+        ownerId: startup.id,
+        ownerType: UPLOAD_OWNER_TYPE.STARTUP,
+      })));
       addToast({
         title: PROFILE_MESSAGES.ATTACHMENTS_UPLOADED_SUCCESS,
         color: TOAST_COLORS.SUCCESS,
@@ -100,14 +83,15 @@ const SettingModal: React.FC<SettingModalProps> = ({
         timeout: DEFAULT_TOAST_TIMEOUT,
       });
     }
-  };
+  }
 
   const validateAdvancedInformation = () => {
     const validateActiveUser =
       Number.isNaN(Number(advancedInformation.activeUser)) ||
       Number(advancedInformation.activeUser) < 0;
     const validateRevenue =
-      Number.isNaN(Number(advancedInformation.revenue)) || Number(advancedInformation.revenue) < 0;
+      Number.isNaN(Number(advancedInformation.revenue)) ||
+      Number(advancedInformation.revenue) < 0;
 
     if (validateActiveUser) {
       addToast({
@@ -128,7 +112,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
     }
 
     return true;
-  };
+  }
 
   const onUpdateProfileClick = async () => {
     if (startup.id) {
@@ -240,9 +224,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
         const fileName = file.name;
 
         const presignedUrlResponse = await getS3PresignedUrl(fileName, fileType);
-        const {
-          data: { uploadUrl, fileUrl },
-        } = presignedUrlResponse;
+        const { data: { uploadUrl, fileUrl } } = presignedUrlResponse;
         await uploadToS3ByPresignedUrl(uploadUrl, file);
 
         setImage(fileUrl);
@@ -298,9 +280,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
         }
 
         const presignedUrlResponse = await getS3PresignedUrl(fileName, fileType);
-        const {
-          data: { uploadUrl, fileUrl },
-        } = presignedUrlResponse;
+        const { data: { uploadUrl, fileUrl } } = presignedUrlResponse;
         await uploadToS3ByPresignedUrl(uploadUrl, file);
 
         addToast({
