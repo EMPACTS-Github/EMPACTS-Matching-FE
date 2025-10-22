@@ -1,12 +1,7 @@
 import { Divider, Switch, Input } from '@heroui/react';
 import React, { useState } from 'react';
 import { UI_LABELS } from '@/constants';
-import { Startup } from '@/interfaces/StartupProfile';
 import Typography from '@/components/Typography';
-
-interface AdvancedInformationProps {
-  startup: Startup;
-}
 
 interface AdvancedInformation {
   activeUser?: string;
@@ -16,20 +11,19 @@ interface AdvancedInformation {
   fundraisingDetail?: string;
 }
 
-const AdvancedInformation = ({ startup }: AdvancedInformationProps) => {
-  const [advancedInformation, setAdvancedInformation] = useState<AdvancedInformation>({
-    activeUser: startup.activeUser?.toString(),
-    revenue: startup.revenue?.toString(),
-    legalEquityDetail: startup.legalEquityDetail,
-    investmentDetail: startup.investmentDetail,
-    fundraisingDetail: startup.fundraisingDetail,
-  });
+interface AdvancedInformationProps {
+  advancedInformation: AdvancedInformation;
+  setAdvancedInformation: (advancedInformation: AdvancedInformation) => void;
+}
+
+const AdvancedInformation = ({ advancedInformation, setAdvancedInformation }: AdvancedInformationProps) => {
+
   const [openAdvancedItems, setOpenAdvancedItems] = useState({
-    activeUser: false,
-    revenue: false,
-    legalEquityDetail: false,
-    investmentDetail: false,
-    fundraisingDetail: false,
+    activeUser: false || Boolean(advancedInformation.activeUser),
+    revenue: false || Boolean(advancedInformation.revenue),
+    legalEquityDetail: false || Boolean(advancedInformation.legalEquityDetail),
+    investmentDetail: false || Boolean(advancedInformation.investmentDetail),
+    fundraisingDetail: false || Boolean(advancedInformation.fundraisingDetail),
   });
 
   const advancedInformationItems = Object.keys(advancedInformation);

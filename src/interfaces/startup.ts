@@ -33,3 +33,11 @@ export interface SuggestMentors {
   mentor_key: string;
   similarity: number;
 }
+
+export interface AdvancedInformation {
+  activeUser?: string;
+  revenue?: string;
+  legalEquityDetail?: string;
+  investmentDetail?: string;
+  fundraisingDetail?: string;
+}

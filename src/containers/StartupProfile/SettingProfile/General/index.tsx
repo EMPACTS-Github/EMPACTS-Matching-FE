@@ -6,6 +6,7 @@ import AdvancedInformation from '@/containers/StartupProfile/SettingProfile/Gene
 import ActionButton from '@/containers/StartupProfile/SettingProfile/General/ActionButton';
 import { Startup } from '@/interfaces/StartupProfile';
 import { IDocument } from '@/interfaces/upload';
+import { AdvancedInformation as IAdvancedInformation } from '@/interfaces/startup';
 
 interface GeneralTabProps {
   image: string;
@@ -18,6 +19,7 @@ interface GeneralTabProps {
   startupDocuments: IDocument[];
   selectedImage: IDocument | null;
   selectedDocument: IDocument | null;
+  advancedInformation: IAdvancedInformation;
   onUpdateProfileClick: () => void;
   onOpenChange: () => void;
   handleProfilePictureChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -29,6 +31,7 @@ interface GeneralTabProps {
   setLocation: (location: string) => void;
   setSdgGoal: (sdgGoal: string) => void;
   setDescription: (description: string) => void;
+  setAdvancedInformation: (advancedInformation: IAdvancedInformation) => void;
 }
 
 const GeneralTab = ({
@@ -42,6 +45,7 @@ const GeneralTab = ({
   startupDocuments,
   selectedImage,
   selectedDocument,
+  advancedInformation,
   onUpdateProfileClick,
   onOpenChange,
   handleProfilePictureChange,
@@ -53,6 +57,7 @@ const GeneralTab = ({
   setLocation,
   setSdgGoal,
   setDescription,
+  setAdvancedInformation,
 }: GeneralTabProps) => {
   return (
     <>
@@ -85,7 +90,7 @@ const GeneralTab = ({
         onUploadNewFile={handleUploadNewStartupAttachment}
       />
 
-      <AdvancedInformation startup={startup} />
+      <AdvancedInformation advancedInformation={advancedInformation} setAdvancedInformation={setAdvancedInformation} />
 
       <ActionButton onOpenChange={onOpenChange} onUpdateProfileClick={onUpdateProfileClick} />
     </>

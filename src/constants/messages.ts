@@ -26,6 +26,8 @@ export const PROFILE_MESSAGES = {
   SUGGESTION_MENTORS_FAILED: 'Failed to fetch suggestion mentors profile',
   INVALID_ATTACHMENT_TYPE: 'Invalid attachment type. Please choose a valid attachment type. Supported types: pdf, doc, docx, xls, xlsx, ppt, pptx, jpg, jpeg, png, mp4.',
   INVALID_ATTACHMENT_SIZE: 'Invalid attachment size. Please choose a file smaller than 25MB.',
+  INVALID_ACTIVE_USER: 'Invalid active user. Please enter a valid number.',
+  INVALID_REVENUE: 'Invalid revenue. Please enter a valid number.',
 
   // General messages
   GENERAL_ERROR: 'Oops! Something went wrong',
