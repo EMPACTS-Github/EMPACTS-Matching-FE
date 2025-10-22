@@ -222,6 +222,7 @@ const CreateNewMentor = () => {
     if (
       !mentorName.trim() ||
       !mentorUsername.trim() ||
+      !description.trim() ||
       !location ||
       !selectedGoals.length ||
       !skillOffered.length
@@ -256,6 +257,7 @@ const CreateNewMentor = () => {
     const requestBody = {
       name: mentorName,
       mentorUsername: mentorUsername,
+      description: description,
       locationBased: location,
       sdgFocusExpertises: selectedGoals,
       avtUrl: avtUrl as string,
@@ -370,7 +372,23 @@ const CreateNewMentor = () => {
               handleChangeMentorUsername(value);
             }}
             placeholder='Enter your preferred name as a mentor'
+            placeholderClassName='!text-sm'
             isRequired
+          />
+        </div>
+
+        {/* Description */}
+        <div className='space-y-2'>
+          <FormLabel
+            text='Description'
+            className='text-base font-bold text-secondary leading-[150%]'
+          />
+          <LabelWithTextarea
+            label=''
+            content={description}
+            setContent={handleDescriptionChange}
+            placeholder='Tell us about yourself and your expertise'
+            minRows={4}
           />
         </div>
 
@@ -431,7 +449,7 @@ const CreateNewMentor = () => {
         </div>
       </div>
     ),
-    [profilePictureUrl, mentorName, location, selectedGoals, handleFileChange]
+    [profilePictureUrl, mentorName, description, location, selectedGoals, handleFileChange, handleDescriptionChange, handleChangeMentorUsername]
   );
 
   // Step 2: Career
@@ -442,7 +460,7 @@ const CreateNewMentor = () => {
         <div className='space-y-2'>
           <FormLabel
             text='Year of Experience'
-            className='text-sm font-semibold text-secondary leading-[150%]'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Input
             variant='text'
@@ -450,6 +468,7 @@ const CreateNewMentor = () => {
             value={yearOfExperience}
             onChange={setYearOfExperience}
             placeholder='Enter year'
+            placeholderClassName='!text-sm'
           />
         </div>
 
@@ -457,7 +476,7 @@ const CreateNewMentor = () => {
         <div className='space-y-2'>
           <FormLabel
             text='Current Position'
-            className='text-sm font-semibold text-secondary leading-[150%]'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Input
             variant='text'
@@ -465,6 +484,7 @@ const CreateNewMentor = () => {
             value={currentPosition}
             onChange={setCurrentPosition}
             placeholder='Enter your current position'
+            placeholderClassName='!text-sm'
           />
         </div>
 
@@ -472,7 +492,7 @@ const CreateNewMentor = () => {
         <div className='space-y-2'>
           <FormLabel
             text='Current Workplace'
-            className='text-sm font-semibold text-secondary leading-[150%]'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Input
             variant='text'
@@ -480,6 +500,7 @@ const CreateNewMentor = () => {
             value={currentWorkplace}
             onChange={setCurrentWorkplace}
             placeholder='Enter your current workplace'
+            placeholderClassName='!text-sm'
           />
         </div>
 
@@ -487,7 +508,7 @@ const CreateNewMentor = () => {
         <div className='space-y-2'>
           <FormLabel
             text='Industry'
-            className='text-sm font-semibold text-secondary leading-[150%]'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Select
             variant='form-field'
@@ -525,7 +546,7 @@ const CreateNewMentor = () => {
         <div className='space-y-2'>
           <FormLabel
             text='Market Focus*'
-            className='text-sm font-semibold text-secondary leading-[150%]'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Select
             variant='form-field'
@@ -555,7 +576,7 @@ const CreateNewMentor = () => {
         <div className='space-y-2'>
           <FormLabel
             text='Skill offered*'
-            className='text-sm font-semibold text-secondary leading-[150%]'
+            className='text-base font-bold text-secondary leading-[150%]'
           />
           <Select
             variant='form-field'
@@ -587,7 +608,7 @@ const CreateNewMentor = () => {
     () => (
       <div className='space-y-6 w-full'>
         <div className='flex flex-col'>
-          <div className='text-md font-semibold'>Time Availability</div>
+          <div className='text-base font-bold text-secondary leading-[150%]'>Time Availability</div>
           <div className='text-sm'>This step is optional</div>
         </div>
         {weekDays.map((day) => (
