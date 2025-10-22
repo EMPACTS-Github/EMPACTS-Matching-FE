@@ -114,8 +114,44 @@ const SettingModal: React.FC<SettingModalProps> = ({
     return true;
   }
 
+  const validateBasicInformation = () => {
+    const validateStartupName = startupName.trim() === '';
+    const validateLocation = location.trim() === '';
+    const validateSdgGoal = sdgGoal.trim() === '';
+
+    if (validateStartupName) {
+      addToast({
+        title: PROFILE_MESSAGES.INVALID_STARTUP_NAME,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+      return false;
+    }
+
+    if (validateLocation) {
+      addToast({
+        title: PROFILE_MESSAGES.INVALID_LOCATION,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+      return false;
+    }
+
+    if (validateSdgGoal) {
+      addToast({
+        title: PROFILE_MESSAGES.INVALID_SDG_GOAL,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
   const onUpdateProfileClick = async () => {
     if (startup.id) {
+      if (!validateBasicInformation()) return;
       if (!validateAdvancedInformation()) return;
 
       let requestBody = {
@@ -457,7 +493,6 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     location={location}
                     sdgGoal={sdgGoal}
                     description={description}
-                    startup={startup}
                     startupImages={startupImages}
                     startupDocuments={startupDocuments}
                     selectedImage={selectedImage}

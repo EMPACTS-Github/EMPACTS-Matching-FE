@@ -10,7 +10,6 @@ import { AdvancedInformation as IAdvancedInformation } from '@/interfaces/startu
 
 interface GeneralTabProps {
   image: string;
-  startup: Startup;
   startupName: string;
   location: string;
   sdgGoal: string;
@@ -36,7 +35,6 @@ interface GeneralTabProps {
 
 const GeneralTab = ({
   image,
-  startup,
   startupName,
   location,
   sdgGoal,
@@ -90,9 +88,15 @@ const GeneralTab = ({
         onUploadNewFile={handleUploadNewStartupAttachment}
       />
 
-      <AdvancedInformation advancedInformation={advancedInformation} setAdvancedInformation={setAdvancedInformation} />
+      <AdvancedInformation
+        advancedInformation={advancedInformation}
+        setAdvancedInformation={setAdvancedInformation}
+      />
 
-      <ActionButton onOpenChange={onOpenChange} onUpdateProfileClick={onUpdateProfileClick} />
+      <ActionButton
+        onOpenChange={onOpenChange}
+        onUpdateProfileClick={onUpdateProfileClick}
+      />
     </>
   );
 };

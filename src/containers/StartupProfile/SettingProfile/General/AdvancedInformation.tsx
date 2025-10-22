@@ -61,6 +61,7 @@ const AdvancedInformation = ({ advancedInformation, setAdvancedInformation }: Ad
           </Typography>
           <Switch
             checked={openAdvancedItems[item]}
+            defaultSelected={openAdvancedItems[item]}
             onValueChange={() => handleOpenAdvancedItems(item)}
           />
         </div>

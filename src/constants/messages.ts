@@ -28,6 +28,9 @@ export const PROFILE_MESSAGES = {
   INVALID_ATTACHMENT_SIZE: 'Invalid attachment size. Please choose a file smaller than 25MB.',
   INVALID_ACTIVE_USER: 'Invalid active user. Please enter a valid number.',
   INVALID_REVENUE: 'Invalid revenue. Please enter a valid number.',
+  INVALID_STARTUP_NAME: 'Invalid startup name. Please enter a valid name.',
+  INVALID_LOCATION: 'Invalid location. Please enter a valid location.',
+  INVALID_SDG_GOAL: 'Invalid SDG goal. Please enter a valid SDG goal.',
 
   // General messages
   GENERAL_ERROR: 'Oops! Something went wrong',
