@@ -91,6 +91,8 @@ interface BaseInputProps {
   isDisabled?: boolean;
   baseRef?: React.RefObject<HTMLDivElement>;
   disableAnimation?: boolean;
+  // Placeholder customization
+  placeholderClassName?: string;
   // Legacy props for backward compatibility
   customVariant?: keyof typeof inputPresets;
   customStyle?: 'underlined' | 'bordered' | 'filled';
@@ -127,6 +129,7 @@ const Input = (props: TextInputProps) => {
     isDisabled,
     baseRef,
     disableAnimation,
+    placeholderClassName,
     // Legacy props
     customVariant,
     customStyle = 'bordered',
@@ -166,6 +169,18 @@ const Input = (props: TextInputProps) => {
     // Combine preset classes with additional className
     const finalClasses = [dynamicClassName, className].filter(Boolean).join(' ');
 
+    // Build classNames object for custom placeholder styling
+    const customClassNames = placeholderClassName
+      ? {
+          input: [
+            `[&::placeholder]:text-[14px]`,
+            `[&::-webkit-input-placeholder]:text-[14px]`,
+            `[&::-moz-placeholder]:text-[14px]`,
+            `[&:-ms-input-placeholder]:text-[14px]`,
+          ].join(' '),
+        }
+      : undefined;
+
     return (
       <HeroInput
         type={inputType}
@@ -194,6 +209,7 @@ const Input = (props: TextInputProps) => {
         baseRef={baseRef}
         disableAnimation={disableAnimation}
         className={finalClasses}
+        classNames={customClassNames}
       />
     );
   }
