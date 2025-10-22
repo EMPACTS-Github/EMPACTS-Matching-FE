@@ -477,7 +477,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     setAdvancedInformation={setAdvancedInformation}
                   />
                 </Tab>
-                <Tab
+                {/* <Tab
                   key='advanced'
                   title={UI_LABELS.ADVANCED}
                   className='w-full flex flex-col gap-2 py-3'
@@ -493,7 +493,7 @@ const SettingModal: React.FC<SettingModalProps> = ({
                     isHideProfileModalOpen={isHideProfileModalOpen}
                     isDeleteProfileModalOpen={isDeleteProfileModalOpen}
                   />
-                </Tab>
+                </Tab> */}
               </Tabs>
             </ModalBody>
           </>
