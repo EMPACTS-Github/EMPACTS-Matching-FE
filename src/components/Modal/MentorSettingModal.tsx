@@ -572,6 +572,7 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       scrollBehavior='inside'
+      hideCloseButton={true}
       className='p-0 rounded-3xl shadow-2xl'
     >
       <ModalContent>
