@@ -586,6 +586,8 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                   src={image}
                   size='md'
                   radius='full'
+                  isBordered
+                  color='primary'
                   className='w-10 h-10'
                 />
                 <div className='flex flex-col'>
@@ -666,6 +668,8 @@ const MentorSettingModal: React.FC<SettingModalProps> = ({
                           src={image}
                           className='w-10 h-10'
                           radius='full'
+                          isBordered
+                          color='primary'
                         />
                         <label htmlFor='profile-upload' className='cursor-pointer'>
                           <p className='font-bold text-base text-blue-600 hover:text-blue-700 transition-colors'>
