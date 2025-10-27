@@ -76,12 +76,12 @@ const Header = () => {
       <PopoverContent className='w-[200px] block'>
         <div className='px-1 py-2 flex flex-col gap-1 items-start'>
           {/* <Link className='text-black hover:bg-slate-200 w-full px-1.5 py-1.5 rounded-lg transition-all' href={'/'}>Account</Link> */}
-          <Link
+          {/* <Link
             className='text-black hover:bg-slate-200 w-full px-1.5 py-1.5 rounded-lg transition-all'
             href={'/'}
           >
             Setting
-          </Link>
+          </Link> */}
           <div
             onClick={handleLogout}
             className='cursor-pointer text-black hover:bg-slate-200 w-full px-1.5 py-1.5 rounded-lg transition-all'
