@@ -5,6 +5,7 @@ import HomepageBackground from '/public/homepage-bg.png';
 import ProtectedRoute from './ProtectedRoute';
 import HeaderDisplayHandler from './HeaderDisplayHandler';
 import Providers from './Providers';
+import ScreenSizeWarning from '@/components/ScreenSizeWarning';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </div>
           </ProtectedRoute>
+          <ScreenSizeWarning />
         </Providers>
       </body>
     </html>
