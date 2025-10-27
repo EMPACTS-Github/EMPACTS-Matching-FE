@@ -8,17 +8,8 @@ import { SuggestMentors } from '@/interfaces/startup';
 import { SuggestMentor } from '@/interfaces/MentorProfile';
 import { mentor_profile_detail } from '@/apis/mentor-profile';
 import ForyouSection from '@/containers/StartupExplore/Section/ForyouSection';
-import MatchingActivitySection from '@/containers/StartupExplore/Section/MatchingActivitySection';
 import SearchSection from '@/containers/StartupExplore/Section/SearchSection';
-import { useMatchingStore } from '@/stores/matching-store';
-import { startup_matching_activity } from '@/apis/startup-matching';
-import { useErrorStore } from '@/stores/error-store';
-import {
-  API_RESPONSE_CODES,
-  API_RESPONSE_NUMBER_CODES,
-  DEFAULT_TOAST_TIMEOUT,
-  TOAST_COLORS,
-} from '@/constants/api';
+import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
 
 interface StartupExploreProps {
   mentorList: SuggestMentors[] | undefined;
@@ -32,8 +23,6 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
   const [isOpen, setIsOpen] = useState(false);
   const [mentor, setMentor] = useState<SuggestMentor[]>([]);
   const [selectedMentor, setSelectedMentor] = useState(mentor[0]);
-  const setMatches = useMatchingStore((state) => state.setMatches);
-  const setError = useErrorStore((state) => state.setError);
 
   const fetchMentors = useCallback(async () => {
     if (!mentorList || mentorList.length === 0) return;
@@ -81,27 +70,6 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
     }
   }, [fetchMentors, mentorList]);
 
-  useEffect(() => {
-    const fetchMatching = async () => {
-      try {
-        const data = await startup_matching_activity(startupId);
-        setMatches(data.data);
-        setError(null);
-      } catch (err: any) {
-        setMatches(null);
-        if (
-          err?.response?.status === API_RESPONSE_NUMBER_CODES.MATCHING_ACTIVITY_NOT_FOUND &&
-          err?.response?.data?.code === API_RESPONSE_CODES.MATCHING_ACTIVITY_NOT_FOUND
-        ) {
-          setError('No matching activity found.');
-        } else {
-          setError('Failed to fetch matching activity.');
-        }
-      }
-    };
-    fetchMatching();
-  }, [startupId, setError, setMatches]);
-
   const handleFavoriteClick = (index: number) => {
     const newMentor = [...mentor];
     newMentor[index].isFavourite = !newMentor[index].isFavourite;
@@ -113,7 +81,7 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
   };
 
   return (
-    <div className='flex flex-col items-center w-full h-screen 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-4 relative z-10 gap-y-2'>
+    <div className='flex flex-col items-center w-full h-screen relative z-10 gap-y-2'>
       <SearchWithLocation
         placeholder='Search for anything'
         className='w-3/5 mt-4'
@@ -146,9 +114,6 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
         </Tab>
         <Tab key='search' title='Search' className='text-base'>
           <SearchSection />
-        </Tab>
-        <Tab key='matching-activity' title='Matching Activity' className='h-full w-full text-base'>
-          <MatchingActivitySection startupId={startupId} />
         </Tab>
       </Tabs>
     </div>
