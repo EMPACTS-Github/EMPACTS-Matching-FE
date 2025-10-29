@@ -93,20 +93,22 @@ const ProfileCard: React.FC<ProfileInfoSubCardProps> = ({
         </div>
         <Divider />
       </CardBody>
-      <CardFooter className='pt-regular'>
-        <Button onClick={onOpen} variant='tertiary-full' disabled={!isOwner}>
-          {UI_LABELS.SETTINGS}
-        </Button>
-        {isOpen && (
-          <SettingModal
-            onFetchStartupProfile={onFetchStartupProfile}
-            onFetchStartupDocuments={onFetchStartupDocuments}
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-            startup={startup}
-          />
-        )}
-      </CardFooter>
+      {isOwner && (
+        <CardFooter className='pt-regular'>
+          <Button onClick={onOpen} variant='tertiary-full'>
+            {UI_LABELS.SETTINGS}
+          </Button>
+          {isOpen && (
+            <SettingModal
+              onFetchStartupProfile={onFetchStartupProfile}
+              onFetchStartupDocuments={onFetchStartupDocuments}
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+              startup={startup}
+            />
+          )}
+        </CardFooter>
+      )}
     </Card>
   );
 };
