@@ -449,7 +449,16 @@ const CreateNewMentor = () => {
         </div>
       </div>
     ),
-    [profilePictureUrl, mentorName, description, location, selectedGoals, handleFileChange, handleDescriptionChange, handleChangeMentorUsername]
+    [
+      profilePictureUrl,
+      mentorName,
+      description,
+      location,
+      selectedGoals,
+      handleFileChange,
+      handleDescriptionChange,
+      handleChangeMentorUsername,
+    ]
   );
 
   // Step 2: Career

@@ -93,10 +93,7 @@ const GeneralTab = ({
         setAdvancedInformation={setAdvancedInformation}
       />
 
-      <ActionButton
-        onOpenChange={onOpenChange}
-        onUpdateProfileClick={onUpdateProfileClick}
-      />
+      <ActionButton onOpenChange={onOpenChange} onUpdateProfileClick={onUpdateProfileClick} />
     </>
   );
 };
