@@ -18,7 +18,8 @@ interface StartupExploreProps {
 }
 
 const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, startupId }) => {
-  const [location, setLocation] = useState<string>('');
+  // Location feature - Hidden until backend implementation is ready
+  // const [location, setLocation] = useState<string>('');
   const [isFavourite, setIsFavourite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mentor, setMentor] = useState<SuggestMentor[]>([]);
@@ -85,8 +86,9 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
       <SearchWithLocation
         placeholder='Search for anything'
         className='w-3/5 mt-4'
-        location={location}
-        onLocationChange={setLocation}
+        // Location feature - Hidden until backend implementation is ready
+        // location={location}
+        // onLocationChange={setLocation}
       />
       <Tabs aria-label='Explore' color='primary' variant='underlined' className='font-bold'>
         <Tab
