@@ -322,14 +322,13 @@ const Home = () => {
         isBordered
         color='primary'
       />
-      <h2 className='font-inter font-semibold text-lg text-secondary text-center'>{name}</h2>
-      <div className='font-inter text-sm font-normal text-neutral-80 text-ellipsis line-clamp-4'>
-        {description}
-      </div>
-      <div className='flex flex-col justify-between w-full gap-x-semi-regular'>
+      <h2 className='font-inter font-semibold text-lg text-secondary text-center w-full line-clamp-2'>
+        {name}
+      </h2>
+      <div className='flex flex-col justify-between w-full gap-semi-regular'>
         <div className='flex items-center w-full gap-1'>
           <Image src={GroupIcon} alt='Members' width={24} height={24} className='object-cover' />
-          <span className='font-inter font-semibold text-base text-secondary text-center text-wrap'>
+          <span className='font-inter font-semibold text-base text-secondary text-wrap'>
             {memberQty} {memberQty === 1 ? 'Member' : 'Members'}
           </span>
         </div>
@@ -339,6 +338,9 @@ const Home = () => {
             {sdgGoal}
           </span>
         </div>
+      </div>
+      <div className='font-inter text-sm font-normal text-neutral-80 w-full line-clamp-4'>
+        {description}
       </div>
     </div>
   );
