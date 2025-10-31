@@ -33,6 +33,9 @@ export const PROFILE_MESSAGES = {
   INVALID_LOCATION: 'Invalid location. Please enter a valid location.',
   INVALID_SDG_GOAL: 'Invalid SDG goal. Please enter a valid SDG goal.',
 
+  // Form validation errors
+  FIELD_REQUIRED: 'This field cannot be blank',
+
   // General messages
   GENERAL_ERROR: 'Oops! Something went wrong',
 
