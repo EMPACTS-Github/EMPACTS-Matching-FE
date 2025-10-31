@@ -125,7 +125,7 @@ const SearchWithLocation: React.FC<SearchWithLocationProps> = ({
       selectedElement?.scrollIntoView({ block: 'nearest' });
     }
   }, [selectedIndex]);
-  
+
   // Location feature - Hidden until backend implementation is ready
   // const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   //   onLocationChange(e.target.value);
