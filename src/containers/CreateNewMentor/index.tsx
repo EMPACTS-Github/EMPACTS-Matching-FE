@@ -14,6 +14,7 @@ import Input from '@/components/Input/Input';
 import Select from '@/components/Select/Select';
 import LabelWithTextarea from '@/components/Input/LabelWithTextarea';
 import { TOAST_COLORS, TOAST_MESSAGES, TOAST_TIMEOUT } from '@/constants/api';
+import { PROFILE_MESSAGES } from '@/constants/messages';
 import Image from 'next/image';
 import { getProvince } from '@/utils/getProvince';
 import provinces from '@/utils/data/provinces.json';
@@ -132,6 +133,18 @@ const CreateNewMentor = () => {
   const [currentWorkplace, setCurrentWorkplace] = useState('');
   const [industry, setIndustry] = useState('');
   const [marketFocus, setMarketFocus] = useState('');
+
+  // Validation error states
+  const [errors, setErrors] = useState({
+    mentorName: '',
+    description: '',
+    location: '',
+    selectedGoals: '',
+    yearOfExperience: '',
+    industry: '',
+    marketFocus: '',
+    skillOffered: '',
+  });
   const weekDays = useMemo(
     () => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     []
@@ -157,11 +170,75 @@ const CreateNewMentor = () => {
     { id: 4, label: 'Availability' },
   ];
 
+  const validateStep = useCallback(() => {
+    const newErrors = { ...errors };
+    let isValid = true;
+
+    // Clear all errors first
+    Object.keys(newErrors).forEach((key) => {
+      newErrors[key as keyof typeof newErrors] = '';
+    });
+
+    if (currentStep === 0) {
+      // Step 1: Profile validation
+      if (!mentorName.trim()) {
+        newErrors.mentorName = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+      if (!description.trim()) {
+        newErrors.description = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+      if (!location) {
+        newErrors.location = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+      if (selectedGoals.length === 0) {
+        newErrors.selectedGoals = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+    } else if (currentStep === 1) {
+      // Step 2: Career validation
+      if (!yearOfExperience.trim()) {
+        newErrors.yearOfExperience = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+      if (!industry) {
+        newErrors.industry = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+    } else if (currentStep === 2) {
+      // Step 3: Mentorship validation
+      if (!marketFocus) {
+        newErrors.marketFocus = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+      if (skillOffered.length === 0) {
+        newErrors.skillOffered = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  }, [
+    currentStep,
+    mentorName,
+    description,
+    location,
+    selectedGoals,
+    yearOfExperience,
+    industry,
+    marketFocus,
+    skillOffered,
+    errors,
+  ]);
+
   const handleNext = useCallback(() => {
-    if (currentStep < steps.length - 1) {
+    if (validateStep() && currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
-  }, [currentStep, steps.length]);
+  }, [currentStep, steps.length, validateStep]);
 
   const handleBack = useCallback(() => {
     if (currentStep > 0) {
@@ -218,22 +295,12 @@ const CreateNewMentor = () => {
   };
 
   const handleCreateProfile = async () => {
-    let avtUrl = profilePictureUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
-    if (
-      !mentorName.trim() ||
-      !mentorUsername.trim() ||
-      !description.trim() ||
-      !location ||
-      !selectedGoals.length ||
-      !skillOffered.length
-    ) {
-      addToast({
-        title: TOAST_MESSAGES.PROFILE_CREATE_ERROR,
-        color: TOAST_COLORS.DANGER,
-        timeout: TOAST_TIMEOUT.SHORT,
-      });
+    // Validate all steps before creating profile
+    if (!validateStep()) {
       return;
     }
+
+    let avtUrl = profilePictureUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
 
     setLoading(true);
 
@@ -337,7 +404,7 @@ const CreateNewMentor = () => {
             className='hidden'
             id='profile-picture'
           />
-          <label htmlFor='profile-picture' className='cursor-pointer flex justify-center'>
+          <label htmlFor='profile-picture' className='cursor-pointer flex flex-col items-center'>
             <div className='w-20 h-20 relative min-w-20 min-h-20 rounded-full bg-neutral-40 flex items-center justify-center overflow-hidden hover:bg-neutral-50 transition-colors'>
               {profilePictureUrl ? (
                 <Image
@@ -362,6 +429,7 @@ const CreateNewMentor = () => {
           <FormLabel
             text='Mentor name'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Input
             variant='text'
@@ -370,10 +438,15 @@ const CreateNewMentor = () => {
             onChange={(value) => {
               setMentorName(value);
               handleChangeMentorUsername(value);
+              if (errors.mentorName && value.trim()) {
+                setErrors({ ...errors, mentorName: '' });
+              }
             }}
             placeholder='Enter your preferred name as a mentor'
             placeholderClassName='!text-sm'
             isRequired
+            isInvalid={!!errors.mentorName}
+            errorMessage={errors.mentorName}
           />
         </div>
 
@@ -382,14 +455,23 @@ const CreateNewMentor = () => {
           <FormLabel
             text='Description'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
-          <LabelWithTextarea
-            label=''
-            content={description}
-            setContent={handleDescriptionChange}
-            placeholder='Tell us about yourself and your expertise'
-            minRows={4}
-          />
+          <div className={errors.description ? 'ring-2 ring-error rounded-lg' : ''}>
+            <LabelWithTextarea
+              label=''
+              content={description}
+              setContent={(value) => {
+                handleDescriptionChange(value);
+                if (errors.description && value.trim()) {
+                  setErrors({ ...errors, description: '' });
+                }
+              }}
+              placeholder='Tell us about yourself and your expertise'
+              minRows={4}
+            />
+          </div>
+          {errors.description && <p className='text-error text-sm'>{errors.description}</p>}
         </div>
 
         {/* Location */}
@@ -397,6 +479,7 @@ const CreateNewMentor = () => {
           <FormLabel
             text='Location based'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Select
             isVirtualized={false}
@@ -412,11 +495,16 @@ const CreateNewMentor = () => {
               if (keys !== 'all' && keys.size > 0) {
                 const selectedKey = Array.from(keys)[0];
                 setLocation(selectedKey.toString());
+                if (errors.location) {
+                  setErrors({ ...errors, location: '' });
+                }
               }
             }}
             className='[&_button]:h-12 [&_button]:min-h-12'
             renderValue={renderPurpleValue}
             isRequired
+            isInvalid={!!errors.location}
+            errorMessage={errors.location}
           />
         </div>
 
@@ -425,6 +513,7 @@ const CreateNewMentor = () => {
           <FormLabel
             text='SDG Goal'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Select
             variant='form-field'
@@ -437,7 +526,11 @@ const CreateNewMentor = () => {
             selectedKeys={selectedGoals}
             onSelectionChange={(keys) => {
               if (keys !== 'all') {
-                setSelectedGoals(Array.from(keys) as string[]);
+                const newGoals = Array.from(keys) as string[];
+                setSelectedGoals(newGoals);
+                if (errors.selectedGoals && newGoals.length > 0) {
+                  setErrors({ ...errors, selectedGoals: '' });
+                }
               }
             }}
             itemHeight={32}
@@ -445,6 +538,8 @@ const CreateNewMentor = () => {
             className="[&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
             renderValue={createChipsRenderValue(selectedGoals, setSelectedGoals)}
             isRequired
+            isInvalid={!!errors.selectedGoals}
+            errorMessage={errors.selectedGoals}
           />
         </div>
       </div>
@@ -455,6 +550,7 @@ const CreateNewMentor = () => {
       description,
       location,
       selectedGoals,
+      errors,
       handleFileChange,
       handleDescriptionChange,
       handleChangeMentorUsername,
@@ -470,14 +566,23 @@ const CreateNewMentor = () => {
           <FormLabel
             text='Year of Experience'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Input
             variant='text'
             preset='default-lg'
             value={yearOfExperience}
-            onChange={setYearOfExperience}
+            onChange={(value) => {
+              setYearOfExperience(value);
+              if (errors.yearOfExperience && value.trim()) {
+                setErrors({ ...errors, yearOfExperience: '' });
+              }
+            }}
             placeholder='Enter year'
             placeholderClassName='!text-sm'
+            isRequired
+            isInvalid={!!errors.yearOfExperience}
+            errorMessage={errors.yearOfExperience}
           />
         </div>
 
@@ -518,6 +623,7 @@ const CreateNewMentor = () => {
           <FormLabel
             text='Industry'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Select
             variant='form-field'
@@ -536,15 +642,21 @@ const CreateNewMentor = () => {
               if (keys !== 'all' && keys.size > 0) {
                 const selectedKey = Array.from(keys)[0];
                 setIndustry(selectedKey.toString());
+                if (errors.industry) {
+                  setErrors({ ...errors, industry: '' });
+                }
               }
             }}
             className='[&_button]:h-12 [&_button]:min-h-12'
             renderValue={renderPurpleValue}
+            isRequired
+            isInvalid={!!errors.industry}
+            errorMessage={errors.industry}
           />
         </div>
       </div>
     ),
-    [yearOfExperience, currentPosition, currentWorkplace, industry]
+    [yearOfExperience, currentPosition, currentWorkplace, industry, errors]
   );
 
   // Step 3: Mentorship
@@ -554,8 +666,9 @@ const CreateNewMentor = () => {
         {/* Market Focus */}
         <div className='space-y-2'>
           <FormLabel
-            text='Market Focus*'
+            text='Market Focus'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Select
             variant='form-field'
@@ -574,18 +687,25 @@ const CreateNewMentor = () => {
               if (keys !== 'all' && keys.size > 0) {
                 const selectedKey = Array.from(keys)[0];
                 setMarketFocus(selectedKey.toString());
+                if (errors.marketFocus) {
+                  setErrors({ ...errors, marketFocus: '' });
+                }
               }
             }}
             className='[&_button]:h-12 [&_button]:min-h-12'
             renderValue={renderPurpleValue}
+            isRequired
+            isInvalid={!!errors.marketFocus}
+            errorMessage={errors.marketFocus}
           />
         </div>
 
         {/* Skill Offered (Review) */}
         <div className='space-y-2'>
           <FormLabel
-            text='Skill offered*'
+            text='Skill offered'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Select
             variant='form-field'
@@ -598,18 +718,24 @@ const CreateNewMentor = () => {
             selectedKeys={skillOffered}
             onSelectionChange={(keys) => {
               if (keys !== 'all') {
-                setSkillOffered(Array.from(keys) as SkillOffered);
+                const newSkills = Array.from(keys) as SkillOffered;
+                setSkillOffered(newSkills);
+                if (errors.skillOffered && newSkills.length > 0) {
+                  setErrors({ ...errors, skillOffered: '' });
+                }
               }
             }}
             selectionMode='multiple'
             className="[&_button]:min-h-12 [&_button]:h-auto [&_div[data-slot='innerWrapper']]:flex-wrap"
             renderValue={createChipsRenderValue(skillOffered, setSkillOffered)}
             isRequired
+            isInvalid={!!errors.skillOffered}
+            errorMessage={errors.skillOffered}
           />
         </div>
       </div>
     ),
-    [marketFocus, skillOffered]
+    [marketFocus, skillOffered, errors]
   );
 
   // Step 4: Availability
