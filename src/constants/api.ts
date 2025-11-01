@@ -48,6 +48,7 @@ export const TOAST_MESSAGES = {
   VERIFICATION_EMAIL_SENT: 'Verification code sent to your email',
   AVATAR_UPLOADED: 'Avatar uploaded',
   CONNECT_REQUEST_SENT: 'Connect request sent successfully',
+  LOGOUT_SUCCESS: 'Logout successful',
 
   // Error messages
   INVALID_CREDENTIALS: 'Invalid credentials',
@@ -72,6 +73,7 @@ export const TOAST_MESSAGES = {
   STARTUP_ID_NOT_AVAILABLE: 'Startup ID is not available',
   USER_HAS_NO_PERMISSION: 'You have no permission to connect with this mentor',
   REQUEST_FAILED: 'Request failed. Please try again later.',
+  LOGOUT_ERROR: 'Logout failed. Please try again.',
 } as const;
 
 // API Response Codes
