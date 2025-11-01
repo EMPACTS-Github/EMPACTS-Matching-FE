@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { addToast, Form } from '@heroui/react';
 import { emailSignin, loginWithGoogleAPI } from '@/apis/auth';
 import { useSearchParams } from 'next/navigation';
@@ -47,6 +47,7 @@ function routeAfterLoginWithInvitation(router: any, userInfo: any) {
 function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const hasHandledAuth = useRef(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -145,7 +146,8 @@ function Login() {
   useEffect(() => {
     async function getUserAuthInfo() {
       const success = searchParams.get('success');
-      if (!success) return;
+      if (!success || hasHandledAuth.current) return;
+      hasHandledAuth.current = true;
       if (success === 'true') {
         try {
           const response = await getUserAuthInfoAPI();
