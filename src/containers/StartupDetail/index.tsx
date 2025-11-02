@@ -46,7 +46,7 @@ const StartupDetailContainer = ({ id }: StartupDetailContainerProps) => {
           isBordered
           color='primary'
           className='w-[60px] h-[60px] bg-neutral-20'
-          radius='md'
+          radius='full'
           src={startup?.avtUrl}
         />
         <div>

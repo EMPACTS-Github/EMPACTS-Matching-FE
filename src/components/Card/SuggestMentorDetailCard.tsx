@@ -47,7 +47,7 @@ const SuggestMentorDetailCard: React.FC<SuggestMentorDetailCardProps> = ({
         <div className='items-center justify-between flex-grow'>
           <div className='flex items-center justify-between'>
             <h3 className='text-[28px] font-semibold text-black'>{title}</h3>
-            <div className='flex items-center gap-2'>
+            {/* <div className='flex items-center gap-2'>
               <IconText icon={Star} text={rating} alt='Rating' />
               <Button isIconOnly onClick={onFavoriteClick} className='bg-transparent'>
                 {isFavorite ? (
@@ -56,7 +56,7 @@ const SuggestMentorDetailCard: React.FC<SuggestMentorDetailCardProps> = ({
                   <Image src={FavoriteIcon} alt='Favorite' width={24} height={24} />
                 )}
               </Button>
-            </div>
+            </div> */}
           </div>
           <div className='flex items-center justify-between'>
             <TextLine text={location} className='text-black text-[20px]' />

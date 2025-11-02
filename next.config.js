@@ -8,6 +8,7 @@ const nextConfig = {
       'startup-public-document-s3-empacts.s3.us-east-1.amazonaws.com',
       'lh3.googleusercontent.com',
       'i.pinimg.com',
+      'images5.alphacoders.com',
     ],
   },
 };
