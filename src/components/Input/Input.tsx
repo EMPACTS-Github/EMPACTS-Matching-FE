@@ -25,6 +25,13 @@ export const inputPresets = {
     size: 'lg' as const,
     radius: 'md' as const,
   },
+  'search-lg': {
+    className: 'bg-white text-lg',
+    variant: 'bordered' as const,
+    color: 'default' as const,
+    size: 'lg' as const,
+    radius: 'full' as const,
+  },
 
   // Line Fill variants with sizes (underlined style)
   'line-fill-sm': {

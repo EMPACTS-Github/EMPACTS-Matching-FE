@@ -2,26 +2,42 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Spinner } from '@heroui/spinner';
-import { Avatar } from '@heroui/react';
 import { cn } from '@heroui/react';
 import { startup_list, search_startup } from '@/apis/startup';
 import { useRouter } from 'next/navigation';
 import { FETCH_STARTUP_LIMIT } from '@/constants';
-import { HomepageStartup, SdgGoal } from '@/interfaces/startup';
+import { HomepageStartup, SdgGoal, Startup } from '@/interfaces/startup';
 import { STARTUP_SDG_GOALS } from '@/constants/sdgs';
 import { useDebounce } from '@/hooks/use-debounce';
 import Image from 'next/image';
 import GroupIcon from '/public/assets/group.png';
 import LabelIcon from '/public/assets/label.png';
+import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
+import { Avatar } from '@heroui/avatar';
 
 // Import components
 import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
-import UsersIcon from '@/components/Icons/UsersIcon';
 import ClearIcon from '@/components/Icons/ClearIcon';
 import SearchIcon from '@/components/Icons/SearchIcon';
 import ChevronDownIcon from '@/components/Icons/ChevronDownIcon';
 import ChevronUpIcon from '@/components/Icons/ChevronUpIcon';
+
+const SDG_LABEL_MAP: Record<string, string> = Object.values(STARTUP_SDG_GOALS).reduce(
+  (acc, goal) => {
+    acc[goal.textValue.toUpperCase()] = goal.label;
+    acc[String(goal.value)] = goal.label;
+    acc[goal.label.toUpperCase()] = goal.label;
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
+const getSdgLabel = (sdgCode?: string | number | null) => {
+  if (sdgCode === undefined || sdgCode === null) return null;
+  const key = typeof sdgCode === 'number' ? String(sdgCode) : sdgCode.toString().toUpperCase();
+  return SDG_LABEL_MAP[key] || null;
+};
 
 const Home = () => {
   const router = useRouter();
@@ -33,16 +49,14 @@ const Home = () => {
 
   // Search states
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Startup[]>([]);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
-  const debouncedQuery = useDebounce(query, 300);
-  const [startupList, setStartupList] = useState<any[]>([]);
-  const [selectedStartup, setSelectedStartup] = useState<any | null>(null);
+  const debouncedQuery = useDebounce(query, 500);
 
   // Category states
   const [showMore, setShowMore] = useState(false);
@@ -94,8 +108,7 @@ const Home = () => {
       search_startup(debouncedQuery)
         .then((data) => {
           const startups = Array.isArray(data.data) ? data.data : [];
-          setStartupList(startups);
-          setSuggestions(startups.map((m: any) => m.name));
+          setSuggestions(startups);
           setSearchError(null);
         })
         .catch(() => setSearchError('Failed to fetch startup'))
@@ -104,8 +117,10 @@ const Home = () => {
       setSelectedIndex(-1);
     } else {
       setSuggestions([]);
-      setStartupList([]);
       setIsSearchOpen(false);
+      setIsSearchLoading(false);
+      setSearchError(null);
+      setSelectedIndex(-1);
     }
   }, [debouncedQuery]);
 
@@ -118,18 +133,13 @@ const Home = () => {
     setSuggestions([]);
     setIsSearchOpen(false);
     setSearchError(null);
+    setSelectedIndex(-1);
     inputRef.current?.focus();
   };
 
-  const handleSelectSuggestion = (suggestion: string) => {
-    setQuery(suggestion);
+  const handleSelectSuggestion = (suggestion: Startup) => {
     setIsSearchOpen(false);
-
-    const startup = startupList.find((m) => m.name === suggestion);
-    if (startup) {
-      setSelectedStartup(startup);
-      router.push(`/startup/${startup.id}`);
-    }
+    router.push(`/startup/${suggestion.id}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -195,116 +205,26 @@ const Home = () => {
     setSelectedCategory([]);
   };
 
+  const isUserLoggedIn = () => {
+    const user = localStorage.getItem('user');
+    return !!user;
+  };
+
+  const handleCreateProfile = () => {
+    if (isUserLoggedIn()) {
+      router.push('/profiles/new');
+    } else {
+      router.push('/auth/login');
+    }
+  };
+
   // Inline HeroSection component
   const HeroSection = () => (
     <div className='text-center py-extra-large'>
       <h1 className='text-4xl font-bold text-secondary'>Discover SDGs startups</h1>
-      <p
-        className='mt-small text-lg text-secondary cursor-pointer'
-        onClick={() => router.push('/profiles/new')}
-      >
+      <p className='mt-small text-lg text-secondary cursor-pointer' onClick={handleCreateProfile}>
         or <span className='text-primary'>create your own</span>
       </p>
-    </div>
-  );
-
-  // Inline SearchBar component
-  const SearchBar = () => (
-    <div className='w-full max-w-2xl mx-auto relative'>
-      <div className='flex items-center justify-center'>
-        <div
-          onKeyDown={handleKeyDown}
-          onFocus={() => query.trim() && setIsSearchOpen(true)}
-          className='w-full'
-        >
-          <Input
-            variant='text'
-            preset='default-lg'
-            value={query}
-            onChange={handleInputChange}
-            placeholder='Search for anything'
-            startContent={
-              <SearchIcon className='text-2xl text-neutral-50 pointer-events-none flex-shrink-0' />
-            }
-            endContent={
-              <div className='pr-extra-small flex items-center gap-small z-20'>
-                {query && !isSearchLoading && (
-                  <Button
-                    variant='ghost-sm'
-                    onClick={handleSearchClear}
-                    isIconOnly
-                    className='p-1 hover:bg-neutral-40 rounded-full transition-colors'
-                  >
-                    <ClearIcon className='h-4 w-4' />
-                  </Button>
-                )}
-              </div>
-            }
-            className='border-secondary shadow-md w-full'
-          />
-        </div>
-      </div>
-      {isSearchOpen && (
-        <div className='absolute w-full top-full mt-small bg-neutral-20 border border-neutral-40 rounded-2xl shadow-xl z-50 overflow-hidden'>
-          {searchError && (
-            <div className='p-regular text-error text-sm border-b border-neutral-40'>
-              <span className='font-medium'>Error:</span> {searchError}
-            </div>
-          )}
-
-          {suggestions.length > 0 && (
-            <ul ref={listRef} className='max-h-80 overflow-y-auto'>
-              {suggestions.map((suggestion, index) => (
-                <li key={index}>
-                  <Button
-                    variant='ghost-sm'
-                    onClick={() => handleSelectSuggestion(suggestion)}
-                    className={cn(
-                      'w-full px-regular py-semi-regular text-left hover:bg-neutral-40 transition-colors flex items-center gap-semi-regular border-b border-neutral-40 last:border-b-0',
-                      selectedIndex === index && 'bg-primary-20 text-primary'
-                    )}
-                  >
-                    <UsersIcon className='h-4 w-4 text-neutral-50 flex-shrink-0' />
-                    <span className='truncate'>
-                      {(() => {
-                        const lowerSuggestion = suggestion.toLowerCase();
-                        const lowerQuery = query.toLowerCase();
-                        const matchIndex = lowerSuggestion.indexOf(lowerQuery);
-
-                        if (matchIndex === -1 || !query) {
-                          return suggestion;
-                        }
-
-                        return (
-                          <>
-                            {suggestion.slice(0, matchIndex)}
-                            <span className='font-medium text-primary'>
-                              {suggestion.slice(matchIndex, matchIndex + query.length)}
-                            </span>
-                            {suggestion.slice(matchIndex + query.length)}
-                          </>
-                        );
-                      })()}
-                    </span>
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {!isSearchLoading && suggestions.length === 0 && query.trim() && (
-            <div className='p-8 text-center text-neutral-50'>
-              <p className='text-sm'>No suggestions found for &quot;{query}&quot;</p>
-            </div>
-          )}
-
-          {suggestions.length > 0 && (
-            <div className='px-regular py-small bg-neutral-40 text-xs text-neutral-50 border-t border-neutral-40'>
-              Use ↑↓ to navigate, Enter to select, Esc to close
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 
@@ -423,7 +343,115 @@ const Home = () => {
     <main className='flex flex-col items-center min-h-screen'>
       <div className='flex flex-col items-center w-full 2xl:px-[20%] xl:px-56 lg:px-48 md:px-32 sm:px-16 xs:px-8 px-extra-small gap-none mt-medium'>
         <HeroSection />
-        <SearchBar />
+
+        {/* Search Bar Component. */}
+        <div className='w-full max-w-2xl mx-auto relative'>
+          <div className='flex items-center justify-center'>
+            <div onKeyDown={handleKeyDown} onFocus={() => query.trim()} className='w-full'>
+              <Input
+                variant='text'
+                preset='search-lg'
+                value={query}
+                onChange={handleInputChange}
+                placeholder='Search for startups'
+                startContent={
+                  <SearchIcon className='text-2xl text-neutral-50 pointer-events-none flex-shrink-0' />
+                }
+                endContent={
+                  <div className='pr-extra-small flex items-center gap-small z-20'>
+                    {query && !isSearchLoading && (
+                      <Button
+                        variant='ghost-sm'
+                        onClick={handleSearchClear}
+                        isIconOnly
+                        className='p-1 hover:bg-neutral-40 rounded-full transition-colors'
+                      >
+                        <ClearIcon className='h-4 w-4' />
+                      </Button>
+                    )}
+                  </div>
+                }
+                className='shadow-md w-full rounded-full'
+              />
+            </div>
+          </div>
+          {isSearchOpen && (
+            <div className='absolute w-full top-full mt-small bg-neutral-20 border border-neutral-40 rounded-2xl shadow-xl z-50 overflow-hidden'>
+              {searchError && (
+                <div className='p-regular text-error text-sm border-b border-neutral-40'>
+                  <span className='font-medium'>Error:</span> {searchError}
+                </div>
+              )}
+
+              {suggestions.length > 0 && (
+                <ul ref={listRef} className='max-h-96 overflow-y-auto px-small py-small'>
+                  {suggestions.map((suggestion, index) => {
+                    const lowerName = suggestion.name.toLowerCase();
+                    const lowerQuery = query.toLowerCase();
+                    const matchIndex = lowerQuery ? lowerName.indexOf(lowerQuery) : -1;
+                    const sdgLabel = getSdgLabel(suggestion.sdgGoal) || suggestion.sdgGoal;
+
+                    return (
+                      <li key={suggestion.id ?? index}>
+                        <button
+                          type='button'
+                          onClick={() => handleSelectSuggestion(suggestion)}
+                          className={cn(
+                            'w-full flex h-14 items-center gap-medium justify-start rounded-xl border border-transparent bg-white px-medium text-left shadow-sm transition-all hover:bg-neutral-30 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
+                            selectedIndex === index &&
+                              'bg-primary-20/40 text-secondary ring-1 ring-primary'
+                          )}
+                        >
+                          <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full bg-neutral-30'>
+                            <Image
+                              src={suggestion.avtUrl || AvatarPlaceholder}
+                              alt={`${suggestion.name} logo`}
+                              fill
+                              sizes='48px'
+                              className='object-cover'
+                            />
+                          </div>
+                          <div className='flex min-w-0 flex-1 flex-col items-start justify-center leading-tight'>
+                            <span className='truncate text-sm font-semibold text-secondary'>
+                              {matchIndex === -1 ? (
+                                suggestion.name
+                              ) : (
+                                <>
+                                  {suggestion.name.slice(0, matchIndex)}
+                                  <span className='text-primary'>
+                                    {suggestion.name.slice(matchIndex, matchIndex + query.length)}
+                                  </span>
+                                  {suggestion.name.slice(matchIndex + query.length)}
+                                </>
+                              )}
+                            </span>
+                            {sdgLabel && (
+                              <span className='text-xs font-medium text-secondary/80 truncate'>
+                                {sdgLabel}
+                              </span>
+                            )}
+                          </div>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+
+              {!isSearchLoading && suggestions.length === 0 && query.trim() && (
+                <div className='p-8 text-center text-neutral-50'>
+                  <p className='text-sm'>No suggestions found for &quot;{query}&quot;</p>
+                </div>
+              )}
+
+              {suggestions.length > 0 && (
+                <div className='px-medium py-small bg-neutral-30 text-xs text-neutral-60 border-t border-neutral-40'>
+                  Use ↑↓ to navigate, Enter to select, Esc to close
+                </div>
+              )}
+            </div>
+          )}
+        </div>
         <CategoryList />
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-regular gap-y-large mb-large'>
           {startups.length > 0

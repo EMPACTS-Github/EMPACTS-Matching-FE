@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Avatar, Popover, PopoverTrigger, PopoverContent, Divider, addToast } from '@heroui/react';
-import AvatarPlaceholder from '/public/assets/avatar-placeholder.png';
 import { useRouter } from 'next/navigation';
 import { Button } from '@heroui/button';
 import PlusSquareIcon from '/public/assets/plus-square.svg';
