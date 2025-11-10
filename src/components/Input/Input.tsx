@@ -103,11 +103,12 @@ interface BaseInputProps {
   // Legacy props for backward compatibility
   customVariant?: keyof typeof inputPresets;
   customStyle?: 'underlined' | 'bordered' | 'filled';
+  inputMode?: React.HTMLAttributes<HTMLInputElement>['inputMode'];
 }
 
 interface TextInputProps extends BaseInputProps {
   variant: 'text' | 'email' | 'url' | 'password' | 'tel' | 'search' | 'file';
-  type?: 'text' | 'email' | 'url' | 'password' | 'tel' | 'search' | 'file';
+  type?: 'text' | 'email' | 'url' | 'password' | 'tel' | 'search' | 'file' | 'number';
 }
 
 const Input = (props: TextInputProps) => {
@@ -140,6 +141,7 @@ const Input = (props: TextInputProps) => {
     // Legacy props
     customVariant,
     customStyle = 'bordered',
+    inputMode,
   } = props;
 
   // Determine input type based on variant
@@ -191,6 +193,7 @@ const Input = (props: TextInputProps) => {
     return (
       <HeroInput
         type={inputType}
+        inputMode={inputMode}
         variant={preset.variant}
         color={dynamicColor}
         size={preset.size}
@@ -231,6 +234,7 @@ const Input = (props: TextInputProps) => {
     return (
       <HeroInput
         type={inputType}
+        inputMode={inputMode}
         variant={heroVariant}
         radius='none'
         size={size}
@@ -275,6 +279,7 @@ const Input = (props: TextInputProps) => {
   return (
     <HeroInput
       type={inputType}
+      inputMode={inputMode}
       variant='bordered'
       radius='md'
       size={size}

@@ -135,12 +135,15 @@ const CreateNewMentor = () => {
   const [marketFocus, setMarketFocus] = useState('');
 
   // Validation error states
+  const YEAR_EXPERIENCE_NUMERIC_ERROR = 'Year of experience should be number only';
   const [errors, setErrors] = useState({
     mentorName: '',
     description: '',
     location: '',
     selectedGoals: '',
     yearOfExperience: '',
+    currentPosition: '',
+    currentWorkplace: '',
     industry: '',
     marketFocus: '',
     skillOffered: '',
@@ -201,6 +204,14 @@ const CreateNewMentor = () => {
       // Step 2: Career validation
       if (!yearOfExperience.trim()) {
         newErrors.yearOfExperience = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+      if (!currentPosition.trim()) {
+        newErrors.currentPosition = PROFILE_MESSAGES.FIELD_REQUIRED;
+        isValid = false;
+      }
+      if (!currentWorkplace.trim()) {
+        newErrors.currentWorkplace = PROFILE_MESSAGES.FIELD_REQUIRED;
         isValid = false;
       }
       if (!industry) {
@@ -570,12 +581,21 @@ const CreateNewMentor = () => {
           />
           <Input
             variant='text'
+            type='text'
+            inputMode='numeric'
             preset='default-lg'
             value={yearOfExperience}
             onChange={(value) => {
+              if (!/^\d*$/.test(value)) {
+                setErrors((prev) => ({
+                  ...prev,
+                  yearOfExperience: YEAR_EXPERIENCE_NUMERIC_ERROR,
+                }));
+                return;
+              }
               setYearOfExperience(value);
-              if (errors.yearOfExperience && value.trim()) {
-                setErrors({ ...errors, yearOfExperience: '' });
+              if (value.trim()) {
+                setErrors((prev) => ({ ...prev, yearOfExperience: '' }));
               }
             }}
             placeholder='Enter year'
@@ -591,14 +611,23 @@ const CreateNewMentor = () => {
           <FormLabel
             text='Current Position'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Input
             variant='text'
             preset='default-lg'
             value={currentPosition}
-            onChange={setCurrentPosition}
+            onChange={(value) => {
+              setCurrentPosition(value);
+              if (errors.currentPosition && value.trim()) {
+                setErrors((prev) => ({ ...prev, currentPosition: '' }));
+              }
+            }}
             placeholder='Enter your current position'
             placeholderClassName='!text-sm'
+            isRequired
+            isInvalid={!!errors.currentPosition}
+            errorMessage={errors.currentPosition}
           />
         </div>
 
@@ -607,14 +636,23 @@ const CreateNewMentor = () => {
           <FormLabel
             text='Current Workplace'
             className='text-base font-bold text-secondary leading-[150%]'
+            isRequired
           />
           <Input
             variant='text'
             preset='default-lg'
             value={currentWorkplace}
-            onChange={setCurrentWorkplace}
+            onChange={(value) => {
+              setCurrentWorkplace(value);
+              if (errors.currentWorkplace && value.trim()) {
+                setErrors((prev) => ({ ...prev, currentWorkplace: '' }));
+              }
+            }}
             placeholder='Enter your current workplace'
             placeholderClassName='!text-sm'
+            isRequired
+            isInvalid={!!errors.currentWorkplace}
+            errorMessage={errors.currentWorkplace}
           />
         </div>
 

@@ -16,6 +16,7 @@ interface ForyouSectionProps {
   setIsOpen: (open: boolean) => void;
   setIsFavourite: (fav: boolean) => void;
   error: string | null;
+  canConnect: boolean;
 }
 
 const ForyouSection: React.FC<ForyouSectionProps> = ({
@@ -29,6 +30,7 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
   setIsOpen,
   setIsFavourite,
   error,
+  canConnect,
 }) => {
   if (error === 'No suggestion found') {
     return (
@@ -64,17 +66,20 @@ const ForyouSection: React.FC<ForyouSectionProps> = ({
         onFavoriteClick={() => setIsFavourite(!isFavourite)}
         isFavorite={selectedMentor?.isFavourite || false}
         avtUrl={selectedMentor?.avtUrl || ''}
-        onClickButton={() => setIsOpen(true)}
+        onClickButton={canConnect ? () => setIsOpen(true) : undefined}
         mentorProfile={selectedMentor}
+        showConnectButton={canConnect}
       />
-      <ConnectModal
-        startupId={startupId}
-        mentorId={selectedMentor?.id || ''}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        mentorName={selectedMentor?.name || ''}
-        avtUrl={selectedMentor?.avtUrl || ''}
-      />
+      {canConnect && (
+        <ConnectModal
+          startupId={startupId}
+          mentorId={selectedMentor?.id || ''}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          mentorName={selectedMentor?.name || ''}
+          avtUrl={selectedMentor?.avtUrl || ''}
+        />
+      )}
     </div>
   ) : (
     <div className='flex justify-center items-center h-[50%]'>

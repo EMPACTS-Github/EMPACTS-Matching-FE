@@ -15,9 +15,15 @@ interface StartupExploreProps {
   mentorList: SuggestMentors[] | undefined;
   error: string | null;
   startupId: string;
+  isOwner?: boolean;
 }
 
-const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, startupId }) => {
+const StartupExplore: React.FC<StartupExploreProps> = ({
+  mentorList,
+  error,
+  startupId,
+  isOwner = false,
+}) => {
   // Location feature - Hidden until backend implementation is ready
   // const [location, setLocation] = useState<string>('');
   const [isFavourite, setIsFavourite] = useState(false);
@@ -112,10 +118,11 @@ const StartupExplore: React.FC<StartupExploreProps> = ({ mentorList, error, star
             setIsOpen={setIsOpen}
             setIsFavourite={setIsFavourite}
             error={error}
+            canConnect={isOwner}
           />
         </Tab>
         <Tab key='search' title='Search' className='text-base'>
-          <SearchSection />
+          <SearchSection canConnect={isOwner} />
         </Tab>
       </Tabs>
     </div>

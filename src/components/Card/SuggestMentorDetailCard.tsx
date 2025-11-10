@@ -25,6 +25,7 @@ interface SuggestMentorDetailCardProps {
   className?: string;
   onClickButton?: () => void;
   mentorProfile?: any;
+  showConnectButton?: boolean;
 }
 
 const SuggestMentorDetailCard: React.FC<SuggestMentorDetailCardProps> = ({
@@ -39,6 +40,7 @@ const SuggestMentorDetailCard: React.FC<SuggestMentorDetailCardProps> = ({
   className = '',
   onClickButton,
   mentorProfile,
+  showConnectButton = true,
 }) => {
   return (
     <div className={`bg-white rounded-lg shadow-xl p-7 gap-y-6 flex flex-col h-fit ${className}`}>
@@ -58,16 +60,20 @@ const SuggestMentorDetailCard: React.FC<SuggestMentorDetailCardProps> = ({
               </Button>
             </div> */}
           </div>
-          <div className='flex items-center justify-between'>
+          <div
+            className={`flex items-center ${showConnectButton ? 'justify-between' : 'justify-start'}`}
+          >
             <TextLine text={location} className='text-black text-[20px]' />
-            <Button
-              type='submit'
-              variant='primary-md'
-              startContent={<UserPlusIcon className='text-white' />}
-              onClick={onClickButton}
-            >
-              Connect
-            </Button>
+            {showConnectButton && (
+              <Button
+                type='submit'
+                variant='primary-md'
+                startContent={<UserPlusIcon className='text-white' />}
+                onClick={onClickButton}
+              >
+                Connect
+              </Button>
+            )}
           </div>
         </div>
       </div>
