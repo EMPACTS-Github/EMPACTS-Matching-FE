@@ -23,6 +23,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
   const [startup_profile, setStartupProfile] = useState<StartupProfileResponse>();
   const [suggestedMentors, setSuggestedMentors] = useState<SuggestMentors[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isOwner, setIsOwner] = useState(false);
   const setStartupId = useStartupIdStore((state) => state.setStartupId);
 
   const fetchStartupProfile = useCallback(async () => {
@@ -65,6 +66,23 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
     suggestMentorList();
   }, [startupId, setStartupId, fetchStartupProfile, suggestMentorList]);
 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (!user || !startup_profile) {
+      setIsOwner(false);
+      return;
+    }
+    try {
+      const userObj = JSON.parse(user);
+      const owner = startup_profile.members.some(
+        (member) => member.user.id === userObj?.id && member.role === 'OWNER'
+      );
+      setIsOwner(owner);
+    } catch (error) {
+      setIsOwner(false);
+    }
+  }, [startup_profile]);
+
   return (
     <div className='w-full flex justify-center'>
       <div className='flex-col w-full'>
@@ -82,6 +100,7 @@ const StartupProfileNavigation: React.FC<StartupProfileNavigationProps> = ({ sta
                 startupId={startupId}
                 mentorList={suggestedMentors}
                 error={error}
+                isOwner={isOwner}
               />
             </div>
           </Tab>

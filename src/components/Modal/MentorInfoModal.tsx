@@ -19,6 +19,7 @@ interface MentorInfoModalProps {
   mentorLanguagesSpoken: string[] | undefined;
   matchingStatus?: string;
   mentorId?: string;
+  showConnectButton?: boolean;
 }
 
 const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
@@ -33,6 +34,7 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
   mentorLanguagesSpoken,
   matchingStatus,
   mentorId,
+  showConnectButton = true,
 }) => {
   const {
     isOpen: isConnectModalOpen,
@@ -72,7 +74,7 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
                 </div>
               </div>
               <div className='flex flex-col items-end mr-2'>
-                {matchingStatus && (
+                {matchingStatus && showConnectButton && (
                   <Button
                     type='submit'
                     color={
@@ -146,14 +148,16 @@ const MentorInfoModal: React.FC<MentorInfoModalProps> = ({
                 )}
               </div>
             </div>
-            <ConnectModal
-              startupId={startupId}
-              mentorId={mentorId || ''}
-              isOpen={isConnectModalOpen}
-              onClose={onConnectModalOpenChange}
-              mentorName={mentorName}
-              avtUrl={avtUrl}
-            />
+            {showConnectButton && (
+              <ConnectModal
+                startupId={startupId}
+                mentorId={mentorId || ''}
+                isOpen={isConnectModalOpen}
+                onClose={onConnectModalOpenChange}
+                mentorName={mentorName}
+                avtUrl={avtUrl}
+              />
+            )}
           </ModalBody>
         )}
       </ModalContent>

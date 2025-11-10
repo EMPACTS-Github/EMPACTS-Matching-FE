@@ -11,7 +11,11 @@ import { useMatchingStore } from '@/stores/matching-store';
 import { mentor_list } from '@/apis/mentor-profile';
 import { MentorOfUserResponse } from '@/interfaces/StartupOfUser';
 
-const SearchSection: React.FC = () => {
+interface SearchSectionProps {
+  canConnect: boolean;
+}
+
+const SearchSection: React.FC<SearchSectionProps> = ({ canConnect }) => {
   const [mentors, setMentors] = useState<Mentor[]>([]);
   const [myMentors, setMyMentors] = useState<MentorOfUserResponse[]>([]);
   const myMentorIds = React.useMemo(() => myMentors.map((m) => m.mentorId), [myMentors]);
@@ -109,6 +113,7 @@ const SearchSection: React.FC = () => {
         mentorLanguagesSpoken={selectedMentor?.languagesSpoken || []}
         mentorId={selectedMentor?.id || ''}
         matchingStatus={matchStatus}
+        showConnectButton={canConnect}
       />
     </div>
   );

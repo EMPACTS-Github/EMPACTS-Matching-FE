@@ -231,30 +231,44 @@ const Home = () => {
   // Inline StartupCard component
   const StartupCard = ({ id, avtUrl, name, description, memberQty, sdgGoal }: HomepageStartup) => (
     <div
-      className='p-semi-medium bg-neutral-20 rounded-lg flex flex-col items-center gap-semi-regular shadow-md cursor-pointer'
+      className='p-4 bg-neutral-20 rounded-lg flex flex-col items-center gap-5 shadow-md cursor-pointer'
       onClick={() => handleStartupDetail(id)}
     >
-      <Avatar
-        src={avtUrl}
-        name={name}
-        radius='full'
-        className='bg-neutral-20 w-24 h-24'
-        isBordered
-        color='primary'
-      />
-      <h2 className='font-inter font-semibold text-lg text-secondary text-center w-full line-clamp-2'>
-        {name}
-      </h2>
-      <div className='flex flex-col justify-between w-full gap-semi-regular'>
+      <div className='flex flex-col items-center gap-2 w-full'>
+        <Avatar
+          src={avtUrl}
+          name={name}
+          radius='full'
+          className='bg-neutral-20 w-[120px] h-[120px]'
+          isBordered
+          color='primary'
+        />
+        <h2 className='font-inter font-semibold text-lg text-secondary text-center w-full line-clamp-2'>
+          {name}
+        </h2>
+      </div>
+      <div className='flex flex-col justify-between w-full gap-[5px]'>
         <div className='flex items-center w-full gap-1'>
-          <Image src={GroupIcon} alt='Members' width={24} height={24} className='object-cover' />
-          <span className='font-inter font-semibold text-base text-secondary text-wrap'>
+          <Image
+            src={GroupIcon}
+            alt='Members'
+            width={24}
+            height={24}
+            className='object-cover w-6 h-6'
+          />
+          <span className='font-inter font-normal text-[14px] text-secondary text-wrap'>
             {memberQty} {memberQty === 1 ? 'Member' : 'Members'}
           </span>
         </div>
         <div className='flex items-start gap-1 overflow-hidden'>
-          <Image src={LabelIcon} alt='Project' width={24} height={24} className='object-cover' />
-          <span className='font-inter font-semibold text-base text-secondary text-wrap'>
+          <Image
+            src={LabelIcon}
+            alt='Project'
+            width={24}
+            height={24}
+            className='object-cover w-6 h-6'
+          />
+          <span className='font-inter font-normal text-[14px] text-secondary text-wrap'>
             {sdgGoal}
           </span>
         </div>
