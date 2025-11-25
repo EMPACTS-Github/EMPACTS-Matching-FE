@@ -33,7 +33,8 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
           view: 'upcoming',
         });
 
-        const meetings = response.data || [];
+        // response is already the data array (getConnectionMeetings returns response.data)
+        const meetings = Array.isArray(response) ? response : [];
         setAllMeetings(meetings);
 
         // Display first page
@@ -41,7 +42,7 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
         setDisplayedMeetings(firstPageItems);
         setHasMore(meetings.length > itemsPerPage);
         setCurrentPage(1);
-        setTotalItemsLoaded(itemsPerPage);
+        setTotalItemsLoaded(firstPageItems.length);
       } catch (error: any) {
         console.error('Error fetching upcoming meetings:', error);
         addToast({
