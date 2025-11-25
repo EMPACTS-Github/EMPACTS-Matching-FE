@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Tab, Tabs, Card, CardHeader, CardBody, Chip } from '@heroui/react';
+import { Tab, Tabs, Card, CardHeader, CardBody } from '@heroui/react';
 import { UI_LABELS } from '@/constants';
 import { PAST_MEETING_STATUS, CONNECTION_REQUEST_STATUS } from '@/constants/matching';
 import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
@@ -39,22 +39,7 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
         onSelectionChange={setSelected as any}
         className='w-full font-bold flex justify-center'
       >
-        <Tab
-          key='upcoming-meeting'
-          title={
-            <div className='flex items-center space-x-2'>
-              <span>{UI_LABELS.UPCOMING_MEETING}</span>
-              <Chip
-                size='sm'
-                variant='solid'
-                color={selected == 'upcoming-meeting' ? 'primary' : 'secondary'}
-              >
-                2
-              </Chip>
-            </div>
-          }
-          className='px-2'
-        >
+        <Tab key='upcoming-meeting' title={UI_LABELS.UPCOMING_MEETING} className='px-2'>
           <Card
             shadow='sm'
             className='2xl:mx-[20%] xl:mx-56 lg:mx-48 md:mx-32 sm:mx-16 xs:mx-8 mx-4 px-3 py-2'
@@ -72,22 +57,7 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
             </CardBody>
           </Card>
         </Tab>
-        <Tab
-          key='connection-request'
-          title={
-            <div className='flex items-center space-x-2'>
-              <span>{UI_LABELS.CONNECTION_REQUEST}</span>
-              <Chip
-                size='sm'
-                variant='solid'
-                color={selected == 'connection-request' ? 'primary' : 'secondary'}
-              >
-                2
-              </Chip>
-            </div>
-          }
-          className='px-2'
-        >
+        <Tab key='connection-request' title={UI_LABELS.CONNECTION_REQUEST} className='px-2'>
           <Card
             shadow='sm'
             className='2xl:mx-[20%] xl:mx-56 lg:mx-48 md:mx-32 sm:mx-16 xs:mx-8 mx-4 px-3 py-2'
