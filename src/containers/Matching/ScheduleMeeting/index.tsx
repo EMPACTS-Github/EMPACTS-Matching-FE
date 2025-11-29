@@ -32,7 +32,7 @@ const ScheduleMeeting: React.FC<ScheduleMeetingProps> = ({ startupId }) => {
         const connectionMeetings = await getConnectionMeetings({
           actor: 'startup',
           profileId: startupId,
-          status: MEETING_STATUS.SCHEDULED,
+          status: MEETING_STATUS.SCHEDULING,
         });
 
         // Fetch mentor details for each connection meeting
