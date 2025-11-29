@@ -1,12 +1,12 @@
 'use client';
 
 import axiosInstance from '.';
-import { ConnectionMeeting } from '@/interfaces/matching';
+import { MEETING_STATUS } from '@/constants/matching';
 
 export const getConnectionMeetings = async (params: {
   actor: 'mentor' | 'startup';
   profileId: string;
-  status?: string;
+  status?: (typeof MEETING_STATUS)[keyof typeof MEETING_STATUS];
   view?: 'past' | 'upcoming' | 'canceled';
 }) => {
   const { actor, profileId, status, view } = params;
@@ -23,7 +23,7 @@ export const getConnectionMeetings = async (params: {
 
 export const updateConnectionMeetingStatus = async (
   meetingId: string,
-  status: 'SCHEDULING' | 'SCHEDULED' | 'CANCELLED' | 'COMPLETED' | 'EXPIRED'
+  status: (typeof MEETING_STATUS)[keyof typeof MEETING_STATUS]
 ) => {
   const response = await axiosInstance.patch(`/connection-meetings/${meetingId}/status`, {
     status,
@@ -33,4 +33,9 @@ export const updateConnectionMeetingStatus = async (
 
 export const cancelConnectionMeeting = async (meetingId: string) => {
   return updateConnectionMeetingStatus(meetingId, 'CANCELLED');
+};
+
+export const getMentorBusySchedule = async (mentorId: string) => {
+  const response = await axiosInstance.get(`/connection-meetings/mentor/${mentorId}/busy`);
+  return response.data;
 };
