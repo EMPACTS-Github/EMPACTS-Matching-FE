@@ -9,9 +9,11 @@ export const MATCHING_STATUS = {
 };
 
 export const MEETING_STATUS = {
-  COMPLETED: 'completed',
-  CANCELLED: 'cancelled',
-  EXPIRED: 'expired',
+  SCHEDULING: 'SCHEDULING',
+  SCHEDULED: 'SCHEDULED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED',
+  EXPIRED: 'EXPIRED',
 };
 
 export const PAST_MEETING_STATUS = [

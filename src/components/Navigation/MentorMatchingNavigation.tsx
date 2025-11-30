@@ -1,14 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tab, Tabs, Card, CardHeader, CardBody, Chip } from '@heroui/react';
 import { UI_LABELS } from '@/constants';
-import { PAST_MEETING_STATUS, CONNECTION_REQUEST_STATUS } from '@/constants/matching';
+import {
+  PAST_MEETING_STATUS,
+  CONNECTION_REQUEST_STATUS,
+  MATCHING_STATUS,
+} from '@/constants/matching';
 import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
 import FilterConnectionRequest from '@/containers/Matching/MentorConnectionRequest/FilterConnectionRequest';
 import PastMeetings from '@/containers/Matching/PastMeetings';
 import MentorUpcomingMeetings from '@/containers/Matching/MentorUpcomingMeetings';
 import MentorConnectionRequest from '@/containers/Matching/MentorConnectionRequest';
+import { getConnectionMeetings } from '@/apis/connection-meeting';
+import { mentor_matching_request_list } from '@/apis/mentor-matching';
 
 interface MentorMatchingNavigationProps {
   mentorId: string;
@@ -20,6 +26,8 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
   const [currentRequestStatus, setCurrentRequestStatus] = useState(
     CONNECTION_REQUEST_STATUS[0].value
   );
+  const [upcomingMeetingsCount, setUpcomingMeetingsCount] = useState<number>(0);
+  const [pendingRequestsCount, setPendingRequestsCount] = useState<number>(0);
 
   const handleMeetingStatusChange = (status: string) => {
     setCurrentMeetingStatus(status);
@@ -28,6 +36,36 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
   const handleRequestStatusChange = (status: string) => {
     setCurrentRequestStatus(status);
   };
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        // Fetch upcoming meetings count
+        const upcomingMeetings = await getConnectionMeetings({
+          actor: 'mentor',
+          profileId: mentorId,
+          view: 'upcoming',
+        });
+        setUpcomingMeetingsCount(upcomingMeetings.length || 0);
+      } catch (error) {
+        console.error('Error fetching upcoming meetings:', error);
+        setUpcomingMeetingsCount(0);
+      }
+
+      try {
+        // Fetch pending connection requests count
+        const pendingRequests = await mentor_matching_request_list(MATCHING_STATUS.PENDING);
+        setPendingRequestsCount(pendingRequests.length || 0);
+      } catch (error) {
+        console.error('Error fetching pending requests:', error);
+        setPendingRequestsCount(0);
+      }
+    };
+
+    if (mentorId) {
+      fetchCounts();
+    }
+  }, [mentorId]);
 
   return (
     <div className='w-full flex flex-col justify-center mt-8'>
@@ -44,13 +82,15 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
           title={
             <div className='flex items-center space-x-2'>
               <span>{UI_LABELS.UPCOMING_MEETING}</span>
-              <Chip
-                size='sm'
-                variant='solid'
-                color={selected == 'upcoming-meeting' ? 'primary' : 'secondary'}
-              >
-                2
-              </Chip>
+              {upcomingMeetingsCount > 0 && (
+                <Chip
+                  size='sm'
+                  variant='solid'
+                  color={selected == 'upcoming-meeting' ? 'primary' : 'secondary'}
+                >
+                  {upcomingMeetingsCount}
+                </Chip>
+              )}
             </div>
           }
           className='px-2'
@@ -77,13 +117,15 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
           title={
             <div className='flex items-center space-x-2'>
               <span>{UI_LABELS.CONNECTION_REQUEST}</span>
-              <Chip
-                size='sm'
-                variant='solid'
-                color={selected == 'connection-request' ? 'primary' : 'secondary'}
-              >
-                2
-              </Chip>
+              {pendingRequestsCount > 0 && (
+                <Chip
+                  size='sm'
+                  variant='solid'
+                  color={selected == 'connection-request' ? 'primary' : 'secondary'}
+                >
+                  {pendingRequestsCount}
+                </Chip>
+              )}
             </div>
           }
           className='px-2'
@@ -105,7 +147,7 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
               </div>
             </CardHeader>
             <CardBody>
-              <MentorConnectionRequest />
+              <MentorConnectionRequest mentorId={mentorId} />
             </CardBody>
           </Card>
         </Tab>

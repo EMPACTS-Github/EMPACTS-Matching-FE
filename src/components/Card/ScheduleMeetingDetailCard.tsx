@@ -8,14 +8,16 @@ import Calendar from '@/components/Calendar/Calendar';
 
 interface ScheduleMeetingDetailCardProps {
   name?: string;
-  location?: string | undefined;
+  location?: string;
   avtUrl?: string;
+  mentorId?: string;
 }
 
 const ScheduleMeetingDetailCard: React.FC<ScheduleMeetingDetailCardProps> = ({
   name,
   location,
   avtUrl,
+  mentorId,
 }) => {
   return (
     <Card fullWidth className='border-1 p-regular' shadow='none'>

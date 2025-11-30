@@ -7,7 +7,6 @@ import { mentor_profile_detail } from '@/apis/mentor-profile';
 import MentorProfileContainer from '@/containers/MentorProfile/MentorProfileContainer';
 import { mentor_matching_request_list } from '@/apis/mentor-matching';
 import { useErrorStore } from '@/stores/error-store';
-import { useMatchingRequestListStore } from '@/stores/matching-store';
 import { Mentor } from '@/interfaces/MentorProfile';
 import { MATCHING_STATUS } from '@/constants/matching';
 import { UI_LABELS } from '@/constants';
@@ -21,9 +20,6 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mento
   const [selectedTab, setSelectedTab] = useState('matching');
   const setError = useErrorStore((state) => state.setError);
   const [mentorProfile, setMentorProfile] = useState<Mentor | null>(null);
-  const setMatchingRequestList = useMatchingRequestListStore(
-    (state) => state.setMatchingRequestList
-  );
   const [countMatchedRequests, setCountMatchedRequests] = useState<number>(0);
 
   const fetchMentorProfile = async () => {
@@ -38,31 +34,27 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mento
 
   useEffect(() => {
     fetchMentorProfile();
-  }, [mentorId, setError]);
+  }, [mentorId]);
 
   useEffect(() => {
-    const matchingRequestList = async () => {
+    const fetchMatchingRequestList = async () => {
       try {
-        const matchingRequestList = await mentor_matching_request_list(mentorId);
-        setMatchingRequestList(matchingRequestList.data);
-        setCountMatchedRequests(
-          matchingRequestList.data.filter((match: any) => match.status === MATCHING_STATUS.ACCEPTED)
-            .length
-        );
+        const matchingRequestList = await mentor_matching_request_list(MATCHING_STATUS.ACCEPTED);
+        setCountMatchedRequests(matchingRequestList.length);
       } catch (err: any) {
         if (
           err?.response?.status === 404 &&
           err?.response?.data?.code === 'MATCHING_LIST_REQUEST_FROM_STARTUP_NOT_FOUND'
         ) {
-          setError('No matching request found for this mentor.');
+          console.log('No matching request found for this mentor.');
         } else {
-          setError('Failed to fetch matching requests.');
+          console.error('Failed to fetch matching requests:', err);
         }
-        console.error('Failed to fetch matching requests:', err);
+        setCountMatchedRequests(0);
       }
     };
-    matchingRequestList();
-  }, [mentorId, setMatchingRequestList, setError]);
+    fetchMatchingRequestList();
+  }, [mentorId]);
 
   return (
     <div className='w-full flex justify-center'>

@@ -31,7 +31,7 @@ import { PROFILE_MESSAGES } from '@/constants';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 
 interface MatchingRequestInfoCardProps {
-  connectRequestCode: string;
+  requestId: string;
   title: string;
   location: string | undefined;
   avtUrl: string;
@@ -47,7 +47,7 @@ interface MatchingRequestInfoCardProps {
 }
 
 const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
-  connectRequestCode,
+  requestId,
   title,
   location,
   status,
@@ -90,11 +90,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
   const handleAcceptRequestClick = async () => {
     setIsLoading(true);
     try {
-      const response = await response_matching_request(
-        MATCHING_STATUS.ACCEPTED,
-        mentorId,
-        connectRequestCode
-      );
+      const response = await response_matching_request(MATCHING_STATUS.ACCEPTED, requestId);
       if (response.code === 'RESPONSE_REQUEST_SENT') {
         addToast({
           title: PROFILE_MESSAGES.ACCEPTED_MATCHING_REQUEST,
@@ -119,11 +115,7 @@ const MatchingRequestInfoCard: React.FC<MatchingRequestInfoCardProps> = ({
   const handleRejectRequestClick = async () => {
     setIsLoading(true);
     try {
-      const response = await response_matching_request(
-        MATCHING_STATUS.REJECTED,
-        mentorId,
-        connectRequestCode
-      );
+      const response = await response_matching_request(MATCHING_STATUS.REJECTED, requestId);
       if (response.code === 'RESPONSE_REQUEST_SENT') {
         addToast({
           title: PROFILE_MESSAGES.REJECTED_MATCHING_REQUEST,
