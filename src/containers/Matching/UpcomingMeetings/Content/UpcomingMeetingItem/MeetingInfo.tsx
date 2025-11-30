@@ -11,7 +11,7 @@ const MeetingInfo: React.FC<MeetingInfoProps> = ({ meeting }) => {
   return (
     <div className='max-w-[1040px] flex justify-between min-h-[92px]'>
       <MeetingDetail meeting={meeting} />
-      <JoinMeetingAction meetLink={meeting.meet_link} />
+      <JoinMeetingAction meetLink={meeting.meetLink || ''} />
     </div>
   );
 };

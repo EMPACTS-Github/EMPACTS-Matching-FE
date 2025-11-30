@@ -144,7 +144,7 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
 
   return (
     <div
-      className='flex flex-col gap-6 h-full max-h-[40vh] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-40 scrollbar-track-neutral-20'
+      className='flex flex-col gap-6 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-40 scrollbar-track-neutral-20'
       onScroll={(e) => {
         const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
         // Trigger load more when scrolled to 80% of content
