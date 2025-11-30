@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tooltip } from '@heroui/react';
 import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';
@@ -6,6 +6,7 @@ import CopyIcon from '@/components/Icons/CopyIcon';
 import MentorCancelMeeting from './MentorCancelMeeting';
 import { ConnectionMeeting } from '@/interfaces/matching';
 import { getProvince } from '@/utils/getProvince';
+import { startup_profile_detail } from '@/apis/startup-profile';
 
 interface MentorUpcomingMeetingItemProps {
   meeting: ConnectionMeeting;
@@ -49,27 +50,82 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [startupData, setStartupData] = useState<{
+    name: string;
+    avtUrl?: string;
+    locationBased?: string;
+  } | null>(meeting.startup || null);
+  
+  const [representative, setRepresentative] = useState<{
+    name: string;
+    email: string;
+  } | null>(meeting.primaryContact || null);
+
+  // Fetch startup data and representative if not populated
+  useEffect(() => {
+    if (!meeting.startup && meeting.startupId) {
+      startup_profile_detail(meeting.startupId)
+        .then((response) => {
+          if (response?.data?.startup) {
+            setStartupData({
+              name: response.data.startup.name,
+              avtUrl: response.data.startup.avtUrl,
+              locationBased: response.data.startup.locationBased,
+            });
+
+            // Extract representative from members - prioritize OWNER role
+            if (response.data.members && response.data.members.length > 0) {
+              const owner = response.data.members.find((m: any) => m.role === 'OWNER');
+              const rep = owner || response.data.members[0];
+              
+              if (rep?.user) {
+                setRepresentative({
+                  name: rep.user.name,
+                  email: rep.user.email,
+                });
+              }
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching startup details:', error);
+          setStartupData({ name: 'Unknown Startup' });
+        });
+    }
+  }, [meeting.startup, meeting.startupId, meeting.primaryContact]);
 
   // Extract startup data
-  const startupName = meeting.startup?.name || 'Unknown Startup';
-  const startupAvatar = meeting.startup?.avtUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
-  const startupLocation = meeting.startup?.locationBased
-    ? getProvince(meeting.startup.locationBased)
+  const startupName = startupData?.name || 'Unknown Startup';
+  const startupAvatar = startupData?.avtUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
+  const startupLocation = startupData?.locationBased
+    ? getProvince(startupData.locationBased)
     : '';
 
   // Format meeting date and time
-  const meetingDateTime = formatMeetingDateTime(meeting.start_at, meeting.end_at);
+  const meetingDateTime = formatMeetingDateTime(meeting.startAt, meeting.endAt);
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://${meeting.meet_link}`);
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
+    if (meeting.meetLink) {
+      // Check if URL already has protocol
+      const url = meeting.meetLink.startsWith('http') 
+        ? meeting.meetLink 
+        : `https://${meeting.meetLink}`;
+      navigator.clipboard.writeText(url);
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    }
   };
 
   const handleJoinMeeting = () => {
-    window.open(`https://${meeting.meet_link}`, '_blank');
+    if (meeting.meetLink) {
+      // Check if URL already has protocol
+      const url = meeting.meetLink.startsWith('http') 
+        ? meeting.meetLink 
+        : `https://${meeting.meetLink}`;
+      window.open(url, '_blank');
+    }
   };
 
   const handleCancelMeeting = () => {
@@ -101,17 +157,19 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
 
         {/* Column 3 Row 1: Join Meeting Action */}
         <div className='flex flex-col gap-1 items-end'>
-          <Button variant='primary-lg' onClick={handleJoinMeeting}>
+          <Button variant='primary-lg' onClick={handleJoinMeeting} disabled={!meeting.meetLink}>
             <p className='text-base font-bold leading-6'>Join with Google Meet</p>
           </Button>
-          <div className='flex items-center gap-1'>
-            <p className='text-xs font-normal leading-4'>{meeting.meet_link}</p>
-            <Tooltip content={isCopied ? 'Copied' : 'Copy Link'}>
-              <div className='cursor-pointer' onClick={handleCopyLink}>
-                <CopyIcon />
-              </div>
-            </Tooltip>
-          </div>
+          {meeting.meetLink && (
+            <div className='flex items-center gap-1'>
+              <p className='text-xs font-normal leading-4'>{meeting.meetLink}</p>
+              <Tooltip content={isCopied ? 'Copied' : 'Copy Link'}>
+                <div className='cursor-pointer' onClick={handleCopyLink}>
+                  <CopyIcon />
+                </div>
+              </Tooltip>
+            </div>
+          )}
         </div>
 
         {/* Column 2 Row 2: Representative Info */}
@@ -120,8 +178,8 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
             <p className='text-xl font-bold leading-tight'>Representative:</p>
           </div>
           <div className='flex flex-col'>
-            <p className='text-base font-normal leading-relaxed'>{meeting.primary_contact.name}</p>
-            <p className='text-base font-normal leading-relaxed'>{meeting.primary_contact.email}</p>
+            <p className='text-base font-normal leading-relaxed'>{representative?.name || 'N/A'}</p>
+            <p className='text-base font-normal leading-relaxed'>{representative?.email || 'N/A'}</p>
           </div>
         </div>
 
@@ -138,7 +196,7 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
         isOpen={isCancelModalOpen}
         onOpenChange={handleCloseCancelModal}
         startupName={startupName}
-        representativeName={meeting.primary_contact.name}
+        representativeName={representative?.name || 'N/A'}
         meetingId={meeting.id}
         onCancelSuccess={onCancelSuccess}
       />

@@ -59,7 +59,7 @@ const MeetingAction: React.FC<MeetingActionProps> = ({ meeting, onCancelSuccess 
       <MemberModal
         isOpen={isMemberModalOpen}
         onOpenChange={handleCloseMemberModal}
-        attendees={meeting.attendees}
+        attendees={meeting.attendees || []}
       />
       <CancelMeeting
         isOpen={isCancelMeetingModalOpen}
