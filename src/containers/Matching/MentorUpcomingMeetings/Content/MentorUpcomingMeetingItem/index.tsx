@@ -56,12 +56,6 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
     locationBased?: string;
   } | null>(meeting.startup || null);
   
-  const [representative, setRepresentative] = useState<{
-    name: string;
-    email: string;
-  } | null>(meeting.primaryContact || null);
-
-  // Fetch startup data and representative if not populated
   useEffect(() => {
     if (!meeting.startup && meeting.startupId) {
       startup_profile_detail(meeting.startupId)
@@ -72,27 +66,13 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
               avtUrl: response.data.startup.avtUrl,
               locationBased: response.data.startup.locationBased,
             });
-
-            // Extract representative from members - prioritize OWNER role
-            if (response.data.members && response.data.members.length > 0) {
-              const owner = response.data.members.find((m: any) => m.role === 'OWNER');
-              const rep = owner || response.data.members[0];
-              
-              if (rep?.user) {
-                setRepresentative({
-                  name: rep.user.name,
-                  email: rep.user.email,
-                });
-              }
-            }
           }
         })
         .catch((error) => {
-          console.error('Error fetching startup details:', error);
           setStartupData({ name: 'Unknown Startup' });
         });
     }
-  }, [meeting.startup, meeting.startupId, meeting.primaryContact]);
+  }, [meeting.startup, meeting.startupId]);
 
   // Extract startup data
   const startupName = startupData?.name || 'Unknown Startup';
@@ -105,12 +85,8 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
   const meetingDateTime = formatMeetingDateTime(meeting.startAt, meeting.endAt);
 
   const handleCopyLink = () => {
-    if (meeting.meetLink) {
-      // Check if URL already has protocol
-      const url = meeting.meetLink.startsWith('http') 
-        ? meeting.meetLink 
-        : `https://${meeting.meetLink}`;
-      navigator.clipboard.writeText(url);
+    if (meeting.meetLink) { 
+      navigator.clipboard.writeText(meeting.meetLink);
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
@@ -120,11 +96,7 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
 
   const handleJoinMeeting = () => {
     if (meeting.meetLink) {
-      // Check if URL already has protocol
-      const url = meeting.meetLink.startsWith('http') 
-        ? meeting.meetLink 
-        : `https://${meeting.meetLink}`;
-      window.open(url, '_blank');
+      window.open(meeting.meetLink, '_blank');
     }
   };
 
@@ -178,8 +150,8 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
             <p className='text-xl font-bold leading-tight'>Representative:</p>
           </div>
           <div className='flex flex-col'>
-            <p className='text-base font-normal leading-relaxed'>{representative?.name || 'N/A'}</p>
-            <p className='text-base font-normal leading-relaxed'>{representative?.email || 'N/A'}</p>
+            <p className='text-base font-normal leading-relaxed'>{meeting.primaryContact?.name || 'N/A'}</p>
+            <p className='text-base font-normal leading-relaxed'>{meeting.primaryContact?.email || 'N/A'}</p>
           </div>
         </div>
 
@@ -196,7 +168,7 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
         isOpen={isCancelModalOpen}
         onOpenChange={handleCloseCancelModal}
         startupName={startupName}
-        representativeName={representative?.name || 'N/A'}
+        representativeName={meeting.primaryContact?.name || 'N/A'}
         meetingId={meeting.id}
         onCancelSuccess={onCancelSuccess}
       />
