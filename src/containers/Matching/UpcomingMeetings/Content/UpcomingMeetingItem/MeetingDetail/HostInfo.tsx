@@ -37,7 +37,7 @@ const formatMeetingDateTime = (startAt: string, endAt: string) => {
 };
 
 const HostInfo: React.FC<HostInfoProps> = ({ meeting }) => {
-  const meetingDateTime = formatMeetingDateTime(meeting.start_at, meeting.end_at);
+  const meetingDateTime = formatMeetingDateTime(meeting.startAt, meeting.endAt);
 
   return (
     <div className='max-w-[450px] flex flex-col gap-1 '>

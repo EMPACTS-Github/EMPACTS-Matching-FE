@@ -33,7 +33,8 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
           view: 'upcoming',
         });
 
-        const meetings = response.data || [];
+        // response is already the data array (getConnectionMeetings returns response.data)
+        const meetings = Array.isArray(response) ? response : [];
         setAllMeetings(meetings);
 
         // Display first page
@@ -41,7 +42,7 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
         setDisplayedMeetings(firstPageItems);
         setHasMore(meetings.length > itemsPerPage);
         setCurrentPage(1);
-        setTotalItemsLoaded(itemsPerPage);
+        setTotalItemsLoaded(firstPageItems.length);
       } catch (error: any) {
         console.error('Error fetching upcoming meetings:', error);
         addToast({
@@ -143,7 +144,7 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
 
   return (
     <div
-      className='flex flex-col gap-6 h-full max-h-[40vh] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-40 scrollbar-track-neutral-20'
+      className='flex flex-col gap-6 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-40 scrollbar-track-neutral-20'
       onScroll={(e) => {
         const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
         // Trigger load more when scrolled to 80% of content

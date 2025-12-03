@@ -124,7 +124,7 @@ const SentInvitations: React.FC<SentInvitationsProps> = ({ startupId }) => {
       setIsInitialLoading(true);
       try {
         const response = await startup_matching_activity(startupId);
-        const invitations = response.data || [];
+        const invitations = response || [];
         setAllInvitations(invitations);
 
         // Display first page

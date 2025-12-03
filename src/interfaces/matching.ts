@@ -47,16 +47,21 @@ export interface ConnectionMeetingPrimaryContact {
 
 export interface ConnectionMeeting {
   id: string;
-  mentor_id: string;
-  startup_id: string;
+  mentorId: string;
+  startupId: string;
   title: string;
-  description: string;
-  start_at: string;
-  end_at: string;
+  description: string | null;
+  startAt: string;
+  endAt: string;
   status: 'SCHEDULING' | 'SCHEDULED' | 'CANCELLED' | 'COMPLETED' | 'EXPIRED';
-  meet_link: string;
-  attendees: ConnectionMeetingAttendee[];
-  primary_contact: ConnectionMeetingPrimaryContact;
+  meetLink: string | null;
+  eventLink: string | null;
+  attendees: ConnectionMeetingAttendee[] | null;
+  primaryContact: ConnectionMeetingPrimaryContact | null;
+  schedulingStartedAt: string | null;
+  expiresAt: string | null;
+  createdAt: string;
+  updatedAt: string;
   mentor?: {
     id: string;
     name: string;
