@@ -3,14 +3,19 @@ import React, { useState } from 'react';
 import { Button } from '@heroui/react';
 import MemberModal from './MemberModal';
 import CancelMeeting from './CancelMeeting';
-import { ConnectionMeeting } from '@/interfaces/matching';
+import { ConnectionMeeting, ConnectionMeetingAttendee } from '@/interfaces/matching';
 
 interface MeetingActionProps {
   meeting: ConnectionMeeting;
   onCancelSuccess?: () => void;
+  onAttendeesUpdated?: (attendees: ConnectionMeetingAttendee[]) => void;
 }
 
-const MeetingAction: React.FC<MeetingActionProps> = ({ meeting, onCancelSuccess }) => {
+const MeetingAction: React.FC<MeetingActionProps> = ({
+  meeting,
+  onCancelSuccess,
+  onAttendeesUpdated,
+}) => {
   const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
   const [isCancelMeetingModalOpen, setIsCancelMeetingModalOpen] = useState(false);
 
@@ -60,6 +65,9 @@ const MeetingAction: React.FC<MeetingActionProps> = ({ meeting, onCancelSuccess 
         isOpen={isMemberModalOpen}
         onOpenChange={handleCloseMemberModal}
         attendees={meeting.attendees || []}
+        startupId={meeting.startupId}
+        meetingId={meeting.id}
+        onAttendeesUpdated={onAttendeesUpdated}
       />
       <CancelMeeting
         isOpen={isCancelMeetingModalOpen}

@@ -35,6 +35,16 @@ export const cancelConnectionMeeting = async (meetingId: string) => {
   return updateConnectionMeetingStatus(meetingId, 'CANCELLED');
 };
 
+export const updateMeetingAttendees = async (
+  meetingId: string,
+  attendees: Array<{ name: string; email: string }>
+) => {
+  const response = await axiosInstance.patch(`/connection-meetings/${meetingId}/attendees`, {
+    attendees,
+  });
+  return response.data;
+};
+
 export const getMentorBusySchedule = async (mentorId: string) => {
   const response = await axiosInstance.get(`/connection-meetings/mentor/${mentorId}/busy`);
   return response.data;
