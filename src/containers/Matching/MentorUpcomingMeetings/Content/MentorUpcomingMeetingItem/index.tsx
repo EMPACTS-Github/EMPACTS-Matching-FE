@@ -85,7 +85,7 @@ const MentorUpcomingMeetingItem: React.FC<MentorUpcomingMeetingItemProps> = ({
   const meetingDateTime = formatMeetingDateTime(meeting.startAt, meeting.endAt);
 
   const handleCopyLink = () => {
-    if (meeting.meetLink) { 
+    if (meeting.meetLink) {
       navigator.clipboard.writeText(meeting.meetLink);
       setIsCopied(true);
       setTimeout(() => {

@@ -4,7 +4,7 @@ import Button from '@/components/Button/Button';
 import CopyIcon from '@/components/Icons/CopyIcon';
 
 interface JoinMeetingActionProps {
-  meetLink: string;
+  meetLink: string | null;
 }
 
 const CopyLinkItem: React.FC<{ meetLink: string }> = ({ meetLink }) => {
@@ -32,6 +32,10 @@ const CopyLinkItem: React.FC<{ meetLink: string }> = ({ meetLink }) => {
 };
 
 const JoinMeetingAction: React.FC<JoinMeetingActionProps> = ({ meetLink }) => {
+  if (!meetLink) {
+    return null;
+  }
+
   const handleJoinMeeting = () => {
     const fullLink = meetLink.startsWith('http') ? meetLink : `https://${meetLink}`;
     window.open(fullLink, '_blank');
