@@ -43,7 +43,6 @@ const ScheduleMeeting: React.FC<ScheduleMeetingProps> = ({ startupId }) => {
           (meeting: { id: string; mentorId: string }) =>
             mentor_profile_detail(meeting.mentorId).then((response: any) => ({
               mentorData: response.data.mentor,
-              connectionId: meeting.id,
             }))
         );
 
@@ -51,12 +50,12 @@ const ScheduleMeeting: React.FC<ScheduleMeetingProps> = ({ startupId }) => {
 
         // Map mentor details to the expected format
         const formattedMentorList = mentorDetails.map((item: any) => ({
-          id: item.connectionId,
+          id: item.mentorData.id,
           name: item.mentorData.name || 'Unknown Mentor',
           locationBased: item.mentorData.locationBased || '',
           avtUrl: item.mentorData.avtUrl || '',
         }));
-
+        console.log('formattedMentorList', formattedMentorList);
         setMentorList(formattedMentorList);
       } catch (error) {
         addToast({
@@ -113,6 +112,15 @@ const ScheduleMeeting: React.FC<ScheduleMeetingProps> = ({ startupId }) => {
           location={getProvince(mentorList[selectedMatchIndex]?.locationBased || '')}
           avtUrl={mentorList[selectedMatchIndex]?.avtUrl}
           mentorId={mentorList[selectedMatchIndex]?.id}
+          startupId={startupId}
+          onMeetingScheduled={() => {
+            // Optionally refresh the mentor list after scheduling
+            addToast({
+              title: 'Meeting has been scheduled!',
+              color: TOAST_COLORS.SUCCESS,
+              timeout: DEFAULT_TOAST_TIMEOUT,
+            });
+          }}
         />
       </div>
     </div>

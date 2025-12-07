@@ -39,3 +39,24 @@ export const getMentorBusySchedule = async (mentorId: string) => {
   const response = await axiosInstance.get(`/connection-meetings/mentor/${mentorId}/busy`);
   return response.data;
 };
+
+export const createConnectionMeeting = async (params: {
+  startupId: string;
+  mentorId: string;
+  title: string;
+  description: string;
+  startDateTime: Date;
+  endDateTime: Date;
+  primaryContact: {
+    name: string;
+    email: string;
+    role: string;
+  };
+  attendees: {
+    name: string;
+    email: string;
+  }[];
+}) => {
+  const response = await axiosInstance.post('/connection-meetings', params);
+  return response.data;
+};
