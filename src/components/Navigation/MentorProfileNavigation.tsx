@@ -2,14 +2,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Tab, Tabs } from '@heroui/react';
+import { Tab, Tabs, addToast } from '@heroui/react';
 import { mentor_profile_detail } from '@/apis/mentor-profile';
 import MentorProfileContainer from '@/containers/MentorProfile/MentorProfileContainer';
 import { mentor_matching_request_list } from '@/apis/mentor-matching';
 import { useErrorStore } from '@/stores/error-store';
 import { Mentor } from '@/interfaces/MentorProfile';
 import { MATCHING_STATUS } from '@/constants/matching';
-import { UI_LABELS } from '@/constants';
+import { UI_LABELS, PROFILE_MESSAGES } from '@/constants';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import MentorMatchingNavigation from '@/components/Navigation/MentorMatchingNavigation';
 
 interface MentorProfileNavigationProps {
@@ -46,9 +47,17 @@ const MentorProfileNavigation: React.FC<MentorProfileNavigationProps> = ({ mento
           err?.response?.status === 404 &&
           err?.response?.data?.code === 'MATCHING_LIST_REQUEST_FROM_STARTUP_NOT_FOUND'
         ) {
-          console.log('No matching request found for this mentor.');
+          addToast({
+            title: PROFILE_MESSAGES.NO_MATCHING_REQUEST_FOUND,
+            color: TOAST_COLORS.WARNING,
+            timeout: DEFAULT_TOAST_TIMEOUT,
+          });
         } else {
-          console.error('Failed to fetch matching requests:', err);
+          addToast({
+            title: PROFILE_MESSAGES.FETCH_MATCHING_REQUESTS_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
+          });
         }
         setCountMatchedRequests(0);
       }

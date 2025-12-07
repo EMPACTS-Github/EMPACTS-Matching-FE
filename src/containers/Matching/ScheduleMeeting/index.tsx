@@ -1,4 +1,7 @@
 import { Spacer } from '@heroui/spacer';
+import { addToast } from '@heroui/react';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
+import { PROFILE_MESSAGES } from '@/constants';
 import { getProvince } from '@/utils/getProvince';
 import { useState, useEffect } from 'react';
 import ScheduleMeetingDetailCard from '@/components/Card/ScheduleMeetingDetailCard';
@@ -56,7 +59,11 @@ const ScheduleMeeting: React.FC<ScheduleMeetingProps> = ({ startupId }) => {
 
         setMentorList(formattedMentorList);
       } catch (error) {
-        console.error('Error fetching mentor list:', error);
+        addToast({
+          title: PROFILE_MESSAGES.FETCH_MENTOR_LIST_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
         setMentorList([]);
       } finally {
         setIsLoading(false);

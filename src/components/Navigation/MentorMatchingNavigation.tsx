@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Tab, Tabs, Card, CardHeader, CardBody, Chip } from '@heroui/react';
-import { UI_LABELS } from '@/constants';
+import { Tab, Tabs, Card, CardHeader, CardBody, Chip, addToast } from '@heroui/react';
+import { UI_LABELS, PROFILE_MESSAGES } from '@/constants';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import {
   PAST_MEETING_STATUS,
   CONNECTION_REQUEST_STATUS,
@@ -48,7 +49,11 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
         });
         setUpcomingMeetingsCount(upcomingMeetings.length || 0);
       } catch (error) {
-        console.error('Error fetching upcoming meetings:', error);
+        addToast({
+          title: PROFILE_MESSAGES.FETCH_UPCOMING_MEETINGS_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
         setUpcomingMeetingsCount(0);
       }
 
@@ -57,7 +62,11 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
         const pendingRequests = await mentor_matching_request_list(MATCHING_STATUS.PENDING);
         setPendingRequestsCount(pendingRequests.length || 0);
       } catch (error) {
-        console.error('Error fetching pending requests:', error);
+        addToast({
+          title: PROFILE_MESSAGES.FETCH_PENDING_REQUESTS_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
         setPendingRequestsCount(0);
       }
     };
