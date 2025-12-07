@@ -1,14 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Tab, Tabs, Card, CardHeader, CardBody } from '@heroui/react';
-import { UI_LABELS } from '@/constants';
-import { PAST_MEETING_STATUS, CONNECTION_REQUEST_STATUS } from '@/constants/matching';
+import React, { useState, useEffect } from 'react';
+import { Tab, Tabs, Card, CardHeader, CardBody, Chip, addToast } from '@heroui/react';
+import { UI_LABELS, PROFILE_MESSAGES } from '@/constants';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
+import {
+  PAST_MEETING_STATUS,
+  CONNECTION_REQUEST_STATUS,
+  MATCHING_STATUS,
+} from '@/constants/matching';
 import FilterPastMeeting from '@/containers/Matching/PastMeetings/FilterPastMeeting';
 import FilterConnectionRequest from '@/containers/Matching/MentorConnectionRequest/FilterConnectionRequest';
 import PastMeetings from '@/containers/Matching/PastMeetings';
 import MentorUpcomingMeetings from '@/containers/Matching/MentorUpcomingMeetings';
 import MentorConnectionRequest from '@/containers/Matching/MentorConnectionRequest';
+import { getConnectionMeetings } from '@/apis/connection-meeting';
+import { mentor_matching_request_list } from '@/apis/mentor-matching';
 
 interface MentorMatchingNavigationProps {
   mentorId: string;
@@ -20,6 +27,8 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
   const [currentRequestStatus, setCurrentRequestStatus] = useState(
     CONNECTION_REQUEST_STATUS[0].value
   );
+  const [upcomingMeetingsCount, setUpcomingMeetingsCount] = useState<number>(0);
+  const [pendingRequestsCount, setPendingRequestsCount] = useState<number>(0);
 
   const handleMeetingStatusChange = (status: string) => {
     setCurrentMeetingStatus(status);
@@ -28,6 +37,44 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
   const handleRequestStatusChange = (status: string) => {
     setCurrentRequestStatus(status);
   };
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        // Fetch upcoming meetings count
+        const upcomingMeetings = await getConnectionMeetings({
+          actor: 'mentor',
+          profileId: mentorId,
+          view: 'upcoming',
+        });
+        setUpcomingMeetingsCount(upcomingMeetings.length || 0);
+      } catch (error) {
+        addToast({
+          title: PROFILE_MESSAGES.FETCH_UPCOMING_MEETINGS_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+        setUpcomingMeetingsCount(0);
+      }
+
+      try {
+        // Fetch pending connection requests count
+        const pendingRequests = await mentor_matching_request_list(MATCHING_STATUS.PENDING);
+        setPendingRequestsCount(pendingRequests.length || 0);
+      } catch (error) {
+        addToast({
+          title: PROFILE_MESSAGES.FETCH_PENDING_REQUESTS_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+        setPendingRequestsCount(0);
+      }
+    };
+
+    if (mentorId) {
+      fetchCounts();
+    }
+  }, [mentorId]);
 
   return (
     <div className='w-full flex flex-col justify-center mt-8'>
@@ -39,7 +86,24 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
         onSelectionChange={setSelected as any}
         className='w-full font-bold flex justify-center'
       >
-        <Tab key='upcoming-meeting' title={UI_LABELS.UPCOMING_MEETING} className='px-2'>
+        <Tab
+          key='upcoming-meeting'
+          title={
+            <div className='flex items-center space-x-2'>
+              <span>{UI_LABELS.UPCOMING_MEETING}</span>
+              {upcomingMeetingsCount > 0 && (
+                <Chip
+                  size='sm'
+                  variant='solid'
+                  color={selected == 'upcoming-meeting' ? 'primary' : 'secondary'}
+                >
+                  {upcomingMeetingsCount}
+                </Chip>
+              )}
+            </div>
+          }
+          className='px-2'
+        >
           <Card
             shadow='sm'
             className='2xl:mx-[20%] xl:mx-56 lg:mx-48 md:mx-32 sm:mx-16 xs:mx-8 mx-4 px-3 py-2'
@@ -57,7 +121,24 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
             </CardBody>
           </Card>
         </Tab>
-        <Tab key='connection-request' title={UI_LABELS.CONNECTION_REQUEST} className='px-2'>
+        <Tab
+          key='connection-request'
+          title={
+            <div className='flex items-center space-x-2'>
+              <span>{UI_LABELS.CONNECTION_REQUEST}</span>
+              {pendingRequestsCount > 0 && (
+                <Chip
+                  size='sm'
+                  variant='solid'
+                  color={selected == 'connection-request' ? 'primary' : 'secondary'}
+                >
+                  {pendingRequestsCount}
+                </Chip>
+              )}
+            </div>
+          }
+          className='px-2'
+        >
           <Card
             shadow='sm'
             className='2xl:mx-[20%] xl:mx-56 lg:mx-48 md:mx-32 sm:mx-16 xs:mx-8 mx-4 px-3 py-2'
@@ -75,7 +156,7 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
               </div>
             </CardHeader>
             <CardBody>
-              <MentorConnectionRequest />
+              <MentorConnectionRequest mentorId={mentorId} />
             </CardBody>
           </Card>
         </Tab>

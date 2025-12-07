@@ -77,3 +77,23 @@ export interface ConnectionMeeting {
     description?: string;
   };
 }
+
+export interface MentorMatchingRequest {
+  id: string;
+  startupId: string;
+  mentorId: string;
+  startupFounderId: string;
+  startupFounderEmail: string;
+  mentorEmail: string | null;
+  connectRequestCode: string;
+  requestSchedule: string | null;
+  note: string | null;
+  meetingLink: string | null;
+  status: string;
+  respondedBy: string | null;
+  respondedAt: string | null;
+  expiredAt: string | null;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

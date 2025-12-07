@@ -50,6 +50,11 @@ export const PROFILE_MESSAGES = {
   FAILED_FETCH_STARTUP_DETAILS: 'Failed to fetch Startup details.',
   FAILED_FETCH_STARTUP_DOCUMENTS: 'Failed to fetch startup documents:',
   FINDING_MATCHING_REQUEST: 'The system is finding your matching reuquest. Please wait...',
+  FETCH_UPCOMING_MEETINGS_FAILED: 'Failed to fetch upcoming meetings',
+  FETCH_PENDING_REQUESTS_FAILED: 'Failed to fetch pending requests',
+  NO_MATCHING_REQUEST_FOUND: 'No matching request found for this mentor',
+  FETCH_MATCHING_REQUESTS_FAILED: 'Failed to fetch matching requests',
+  FETCH_MENTOR_LIST_FAILED: 'Failed to fetch mentor list',
 
   // Matching status labels
   STATUS: 'Status:',
