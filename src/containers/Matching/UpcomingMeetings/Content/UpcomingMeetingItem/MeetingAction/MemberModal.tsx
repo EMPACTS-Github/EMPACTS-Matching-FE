@@ -83,8 +83,12 @@ const MemberModal: React.FC<MemberModalProps> = ({
         if (response?.data?.members) {
           setStartupMembers(response.data.members);
         }
-      } catch (error) {
-        console.error('Error fetching startup members:', error);
+      } catch (error: any) {
+        addToast({
+          title: error?.response?.data?.message || 'Failed to fetch startup members',
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
       } finally {
         setIsLoadingMembers(false);
       }
@@ -129,7 +133,6 @@ const MemberModal: React.FC<MemberModalProps> = ({
         timeout: DEFAULT_TOAST_TIMEOUT,
       });
     } catch (error: any) {
-      console.error('Error updating meeting attendees:', error);
       addToast({
         title: error?.response?.data?.message || 'Failed to update meeting members',
         color: TOAST_COLORS.DANGER,
