@@ -1,6 +1,7 @@
 import { Calendar as HeroCalendar } from '@heroui/react';
 import { today, getLocalTimeZone, CalendarDate, getDayOfWeek } from '@internationalized/date';
 import { DayOfWeek } from '@/interfaces/mentor';
+import React from 'react';
 
 interface CalendarProps {
   onDateSelect?: (date: CalendarDate, dayOfWeek: DayOfWeek) => void;
@@ -32,8 +33,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
   return (
     <HeroCalendar
       aria-label='Date'
-      value={selectedDate}
-      defaultValue={today(getLocalTimeZone())}
+      value={selectedDate ?? today(getLocalTimeZone())}
       minValue={today(getLocalTimeZone())}
       maxValue={today(getLocalTimeZone()).add({ days: 28 })}
       firstDayOfWeek='mon'
