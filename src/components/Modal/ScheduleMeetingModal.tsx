@@ -67,6 +67,14 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
       return;
     }
 
+    // Check if primary contact email matches any attendee email
+    const primaryEmail = primaryContactEmail.trim();
+    const duplicateAttendee = attendees.find((a) => a.email === primaryEmail);
+    if (duplicateAttendee) {
+      setError('Primary contact email cannot be the same as an attendee email');
+      return;
+    }
+
     setIsLoading(true);
     try {
       await createConnectionMeeting({
@@ -95,7 +103,6 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
         onSuccess();
       }
     } catch (err) {
-      console.error('Failed to schedule meeting:', err);
       addToast({
         title: 'Failed to schedule meeting. Please try again.',
         color: TOAST_COLORS.DANGER,
@@ -153,14 +160,16 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
       return;
     }
 
-    // Check if email already exists
-    if (attendees.some((a) => a.email === newAttendeeEmail.trim())) {
+    const newEmail = newAttendeeEmail.trim();
+
+    // Check if email already exists in attendees
+    if (attendees.some((a) => a.email === newEmail)) {
       setError('This email is already added!');
       return;
     }
 
     // Check if same as primary contact
-    if (newAttendeeEmail.trim() === primaryContactEmail.trim()) {
+    if (primaryContactEmail.trim() === newEmail) {
       setError('This email is the same as primary contact!');
       return;
     }
@@ -267,7 +276,7 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
                   <div className='flex flex-row flex-wrap gap-4 mt-4'>
                     {attendees.map((attendee, index) => (
                       <div
-                        key={index}
+                        key={attendee.email}
                         className='flex flex-row gap-3 p-2.5 rounded items-center w-full md:w-auto bg-primary-20'
                       >
                         <div className='flex flex-col gap-0.5'>

@@ -54,7 +54,6 @@ const ScheduleMeetingDetailCard: React.FC<ScheduleMeetingDetailCardProps> = ({
   useEffect(() => {
     const fetchAvailability = async () => {
       if (!mentorId) return;
-      console.log('mentorId', mentorId);
       setIsLoading(true);
       try {
         const response = await get_mentor_availability(mentorId);

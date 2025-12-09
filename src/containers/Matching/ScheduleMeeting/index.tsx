@@ -55,7 +55,6 @@ const ScheduleMeeting: React.FC<ScheduleMeetingProps> = ({ startupId }) => {
           locationBased: item.mentorData.locationBased || '',
           avtUrl: item.mentorData.avtUrl || '',
         }));
-        console.log('formattedMentorList', formattedMentorList);
         setMentorList(formattedMentorList);
       } catch (error) {
         addToast({
