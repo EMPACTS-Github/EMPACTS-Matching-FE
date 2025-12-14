@@ -44,7 +44,6 @@ const Content: React.FC<ContentProps> = ({ startupId }) => {
         setCurrentPage(1);
         setTotalItemsLoaded(firstPageItems.length);
       } catch (error: any) {
-        console.error('Error fetching upcoming meetings:', error);
         addToast({
           title: error?.response?.data?.message || error?.message || PROFILE_MESSAGES.GENERAL_ERROR,
           color: TOAST_COLORS.DANGER,
