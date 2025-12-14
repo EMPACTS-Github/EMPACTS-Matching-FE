@@ -60,7 +60,6 @@ const MentorCancelMeeting: React.FC<MentorCancelMeetingProps> = ({
         onCancelSuccess();
       }
     } catch (error: any) {
-      console.error('Error cancelling meeting:', error);
       addToast({
         title: error?.response?.data?.message || error?.message || PROFILE_MESSAGES.GENERAL_ERROR,
         color: TOAST_COLORS.DANGER,
