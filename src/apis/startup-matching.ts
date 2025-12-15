@@ -20,14 +20,12 @@ export const cancel_matching_request = async (startupId: string, connectRequestC
 export const request_matching_to_mentor = async (
   startupId: string,
   mentorId: string,
-  note: string,
-  requestSchedule: Date
+  note: string
 ) => {
   const params = {
     startupId: startupId,
     mentorId: mentorId,
     note: note,
-    requestSchedule: requestSchedule,
   };
   const response = await axiosInstance.post(`/matching-for-startup/`, params);
   return response.data;

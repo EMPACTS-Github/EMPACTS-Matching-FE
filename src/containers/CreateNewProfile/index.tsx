@@ -3,11 +3,40 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/Button/Button';
 import ArrowRightIcon from '@/components/Icons/ArrowRightIcon';
+import { mentor_list } from '@/apis/mentor-profile';
+import { addToast } from '@heroui/react';
+import { TOAST_COLORS, TOAST_MESSAGES, TOAST_TIMEOUT } from '@/constants/api';
 
 const CreateNewProfile = () => {
   const router = useRouter();
 
-  const handleChooseOption = (link: string) => {
+  const handleChooseOption = async (link: string) => {
+    const isMentorLink = link === '/profiles/new/mentor';
+
+    if (isMentorLink) {
+      try {
+        const mentorProfiles = await mentor_list();
+        const mentorCount = mentorProfiles?.data?.length || 0;
+
+        if (mentorCount >= 1) {
+          addToast({
+            title: TOAST_MESSAGES.MENTOR_PROFILE_LIMIT,
+            color: TOAST_COLORS.DANGER,
+            timeout: TOAST_TIMEOUT.MEDIUM,
+          });
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to check mentor profiles:', error);
+        addToast({
+          title: TOAST_MESSAGES.REQUEST_FAILED,
+          color: TOAST_COLORS.DANGER,
+          timeout: TOAST_TIMEOUT.MEDIUM,
+        });
+        return;
+      }
+    }
+
     router.push(link);
   };
 
