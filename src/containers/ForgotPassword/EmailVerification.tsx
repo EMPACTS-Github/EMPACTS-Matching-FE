@@ -4,7 +4,8 @@ import { addToast, Form } from '@heroui/react';
 import { verifyForgotPasswordOTP } from '@/apis/auth';
 import Image from 'next/image';
 import OtpInput from '@/components/Input/OtpInput';
-import Button from '@/components/Button/Button';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/link';
 import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
 
@@ -23,6 +24,7 @@ function EmailVerification({
   title,
   description,
 }: EmailVerificationProps) {
+  const router = useRouter();
   const [otp, setOtp] = useState('');
   const [isResendDisabled, setIsResendDisabled] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(60);
@@ -152,19 +154,17 @@ function EmailVerification({
 
   const handleGoBack = () => {
     setEmailSent(false);
+    router.push(`${ROUTES.AUTH.FORGOT_PASSWORD}`);
   };
 
   return (
     <div className='text-center'>
-      <div className='flex flex-col items-center text-center h-3/4'>
+      <div className='flex flex-col items-center text-center'>
         <BackButton onClick={handleGoBack} />
         <LogoHeader title={title} />
       </div>
       <p className='text-gray-600' dangerouslySetInnerHTML={{ __html: description }} />
-      <Form
-        className='flex flex-col items-center justify-center w-full gap-10'
-        onSubmit={handleVerifyOTP}
-      >
+      <Form className='flex flex-col items-center justify-center w-full gap-10'>
         <OtpInput
           value={otp}
           onValueChange={setOtp}
@@ -172,9 +172,6 @@ function EmailVerification({
           length={6}
           className='w-full items-center' // Inside the class of OtpInput, there is already a flex flex-col
         />
-        <Button variant='primary-full' type='submit'>
-          Verify
-        </Button>
       </Form>
       <div className='text-gray-500 mt-4'>
         Did not receive code? <span> </span>

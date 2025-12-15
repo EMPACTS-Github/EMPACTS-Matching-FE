@@ -36,7 +36,6 @@ const MentorConnectionRequestItem: React.FC<MentorConnectionRequestItemProps> = 
       setIsFetchingStartup(true);
       const data = await startup_detail(request.startupId);
       setStartupData(data.data);
-      console.log('Fetched startup profile:', data.data);
     } catch (err) {
       console.error(CONSOLE_ERRORS.FETCH_STARTUP_PROFILE_FAILED, err);
     } finally {
@@ -54,7 +53,6 @@ const MentorConnectionRequestItem: React.FC<MentorConnectionRequestItemProps> = 
     try {
       setProcessingAction('accept');
       const response = await response_matching_request('ACCEPTED', request.id);
-      console.log('Accept response:', response);
 
       // Always show success toast and refresh
       addToast({
@@ -81,7 +79,6 @@ const MentorConnectionRequestItem: React.FC<MentorConnectionRequestItemProps> = 
     try {
       setProcessingAction('decline');
       const response = await response_matching_request('REJECTED', request.id);
-      console.log('Decline response:', response);
 
       // Always show success toast and refresh
       addToast({
@@ -161,7 +158,7 @@ const MentorConnectionRequestItem: React.FC<MentorConnectionRequestItemProps> = 
       <div className='flex flex-col gap-2'>
         <div className='text-lg font-semibold'>Notes</div>
         <div className='text-sm font-normal text-neutral-80'>
-          {request.note ? `"${request.note}"` : 'No note provided'}
+          {request.note ? `${request.note}` : 'No note provided'}
         </div>
       </div>
       {startupData && (

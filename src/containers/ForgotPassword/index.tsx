@@ -33,7 +33,7 @@ function ForgotPassword() {
   }, []);
 
   const handleBackButton = () => {
-    router.back();
+    router.push(`${ROUTES.AUTH.LOGIN}`);
   };
 
   const handleSentCode = async (e: React.FormEvent) => {

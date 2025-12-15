@@ -68,6 +68,7 @@ export const TOAST_MESSAGES = {
   INVALID_EMAIL_FORMAT: 'Invalid email format',
   AVATAR_UPLOAD_ERROR: 'An error occured while uploading avatar. Please try again.',
   PROFILE_CREATE_ERROR: 'An error occurred while creating profile',
+  MENTOR_PROFILE_LIMIT: 'You can only create one mentor profile.',
   PASSWORD_RESET_FAILED: 'Failed to reset password',
   SELECT_DATE_TIME: 'Select a date time to connect',
   STARTUP_ID_NOT_AVAILABLE: 'Startup ID is not available',

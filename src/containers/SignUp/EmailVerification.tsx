@@ -7,7 +7,6 @@ import { ROUTES } from '@/constants/link';
 import EmpactsLogo from '/public/empacts-logo.png';
 import Image from 'next/image';
 import OtpInput from '@/components/Input/OtpInput';
-import Button from '@/components/Button/Button';
 import FormFooterAction from '@/components/Form/FormFooterAction';
 import { API_RESPONSE_CODES, TOAST_TIMEOUT, TOAST_COLORS, TOAST_MESSAGES } from '@/constants/api';
 import ArrowLeftIcon from '/public/assets/arrow_left.svg';
@@ -92,10 +91,7 @@ function EmailVerification() {
         A verification code has been sent to <strong>{email}</strong>. Please input your OTP code to
         finish the registration process.
       </p>
-      <Form
-        className='flex flex-col items-center justify-center w-full gap-10'
-        onSubmit={handleVerifyOTP}
-      >
+      <Form className='flex flex-col items-center justify-center w-full gap-10'>
         <OtpInput
           value={otp}
           onValueChange={setOtp}
@@ -103,9 +99,6 @@ function EmailVerification() {
           length={6}
           className='w-full items-center' // Inside the class of OtpInput, there is already a flex flex-col
         />
-        <Button variant='primary-full' type='submit'>
-          Verify
-        </Button>
       </Form>
       <FormFooterAction text='Did not receive code?' action={<ResendAction />} />
     </div>

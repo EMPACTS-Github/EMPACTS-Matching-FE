@@ -67,27 +67,25 @@ function CreatePassword({ email: propEmail }: CreatePasswordProps) {
         <h2 className='text-2xl font-bold mt-6 mb-6 text-black'>Sign up</h2>
       </div>
       <Form
-        className='flex flex-col items-center justify-center w-full gap-10'
+        className='flex flex-col items-center justify-center w-full space-y-6'
         onSubmit={handleCreatePassword}
       >
-        <div className='space-y-4'>
-          <Input
-            label='Password'
-            variant='password'
-            value={password}
-            onChange={setPassword}
-            preset='line-fill-sm'
-            isRequired={true}
-          />
-          <Input
-            variant='password'
-            value={confirmPassword}
-            onChange={setConfirmPassword}
-            label='Confirm Password'
-            preset='line-fill-sm'
-            isRequired={true}
-          />
-        </div>
+        <Input
+          label='Password'
+          variant='password'
+          value={password}
+          onChange={setPassword}
+          preset='line-fill-sm'
+          isRequired={true}
+        />
+        <Input
+          variant='password'
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          label='Confirm Password'
+          preset='line-fill-sm'
+          isRequired={true}
+        />
         <Button onClick={handleCreatePassword} variant='primary-full'>
           Continue
         </Button>

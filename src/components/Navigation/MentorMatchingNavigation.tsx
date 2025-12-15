@@ -147,7 +147,7 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
               <div className='flex justify-between w-full'>
                 <div className='flex flex-col'>
                   <p className='text-lg font-bold text-primary'>Connection Request</p>
-                  <p className='text-sm text-default-500'>placeholder text</p>
+                  <p className='text-sm text-default-500'> Request to connect from Startups</p>
                 </div>
                 <FilterConnectionRequest
                   currentRequestStatus={currentRequestStatus}
