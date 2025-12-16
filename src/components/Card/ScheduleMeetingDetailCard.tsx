@@ -273,6 +273,31 @@ const ScheduleMeetingDetailCard: React.FC<ScheduleMeetingDetailCardProps> = ({
     return localBusySlots;
   };
 
+  // Split a time slot into 1-hour chunks
+  // Example: 5:00-8:00 → 5:00-6:00, 6:00-7:00, 7:00-8:00
+  // Example: 5:15-8:00 → 5:15-6:15, 6:15-7:15, 7:15-8:15 (start time as anchor)
+  const splitSlotIntoHourlyChunks = (slot: TimeSlot): TimeSlot[] => {
+    const ONE_HOUR_SECONDS = 3600;
+    const chunks: TimeSlot[] = [];
+
+    let currentStart = slot.from;
+    let chunkIndex = 0;
+
+    while (currentStart + ONE_HOUR_SECONDS <= slot.to) {
+      const currentEnd = currentStart + ONE_HOUR_SECONDS;
+      chunks.push({
+        id: `${slot.id}-chunk-${chunkIndex}`,
+        from: currentStart,
+        to: currentEnd,
+        isAvailable: slot.isAvailable,
+      });
+      currentStart = currentEnd;
+      chunkIndex++;
+    }
+
+    return chunks;
+  };
+
   // Get available time slots for selected day, excluding busy slots
   const getAvailableSlots = (): TimeSlot[] => {
     if (!availability || !selectedDay) return [];
@@ -280,11 +305,20 @@ const ScheduleMeetingDetailCard: React.FC<ScheduleMeetingDetailCardProps> = ({
     const daySlots = (availability[selectedDay] || []).filter((slot) => slot.isAvailable);
     const busySlots = getBusySlotsForDate();
 
-    // If no busy slots, return all available slots
-    if (busySlots.length === 0) return daySlots;
-
     // Filter out slots that overlap with busy slots
-    return daySlots.filter((slot) => !isSlotBusy(slot, busySlots));
+    const filteredSlots =
+      busySlots.length === 0 ? daySlots : daySlots.filter((slot) => !isSlotBusy(slot, busySlots));
+
+    // Split each slot into 1-hour chunks
+    const hourlySlots: TimeSlot[] = [];
+    filteredSlots.forEach((slot) => {
+      const chunks = splitSlotIntoHourlyChunks(slot);
+      // Filter chunks that don't overlap with busy slots
+      const availableChunks = chunks.filter((chunk) => !isSlotBusy(chunk, busySlots));
+      hourlySlots.push(...availableChunks);
+    });
+
+    return hourlySlots;
   };
 
   const availableSlots = getAvailableSlots();
