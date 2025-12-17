@@ -180,7 +180,11 @@ const MentorMatchingNavigation: React.FC<MentorMatchingNavigationProps> = ({ men
               </div>
             </CardHeader>
             <CardBody>
-              <PastMeetings />
+              <PastMeetings 
+                actor='mentor' 
+                profileId={mentorId} 
+                filterStatus={currentMeetingStatus} 
+              />
             </CardBody>
           </Card>
         </Tab>

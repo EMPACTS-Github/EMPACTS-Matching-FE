@@ -105,7 +105,11 @@ const StartupMatchingNavigation: React.FC<StartupMatchingNavigationProps> = ({ s
               </div>
             </CardHeader>
             <CardBody>
-              <PastMeetings />
+              <PastMeetings 
+                actor='startup' 
+                profileId={startupId} 
+                filterStatus={currentMeetingStatus} 
+              />
             </CardBody>
           </Card>
         </Tab>
