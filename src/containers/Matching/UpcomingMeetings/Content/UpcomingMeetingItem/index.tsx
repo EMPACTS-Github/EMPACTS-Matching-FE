@@ -70,10 +70,7 @@ const UpcomingMeetingItem: React.FC<UpcomingMeetingItemProps> = ({
 
   const handleCopyLink = () => {
     if (meeting.meetLink) {
-      const fullLink = meeting.meetLink.startsWith('http')
-        ? meeting.meetLink
-        : `https://${meeting.meetLink}`;
-      navigator.clipboard.writeText(fullLink);
+      navigator.clipboard.writeText(meeting.meetLink);
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
@@ -83,10 +80,7 @@ const UpcomingMeetingItem: React.FC<UpcomingMeetingItemProps> = ({
 
   const handleJoinMeeting = () => {
     if (meeting.meetLink) {
-      const fullLink = meeting.meetLink.startsWith('http')
-        ? meeting.meetLink
-        : `https://${meeting.meetLink}`;
-      window.open(fullLink, '_blank');
+      window.open(meeting.meetLink, '_blank');
     }
   };
 
