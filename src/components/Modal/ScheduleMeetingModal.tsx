@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ModalBody, Modal, ModalContent, ModalHeader, ModalFooter, addToast } from '@heroui/react';
 import Image from 'next/image';
 import CloseXIcon from '/public/assets/icons/close-x-icon.svg';
@@ -6,13 +6,26 @@ import { Spinner } from '@heroui/spinner';
 import Button from '@/components/Button/Button';
 import Avatar from '@/components/Avatar/Avatar';
 import Input from '@/components/Input/Input';
+import Autocomplete, { AutocompleteOption } from '@/components/Autocomplete/Autocomplete';
 import { createConnectionMeeting } from '@/apis/connection-meeting';
+import { startup_profile_detail } from '@/apis/startup-profile';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import TextLine from '../common/TextLine';
 
 interface Attendee {
   name: string;
   email: string;
+}
+
+interface StartupMember {
+  id: string;
+  positionTitle?: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    avtUrl?: string;
+  };
 }
 
 interface ScheduleMeetingModalProps {
@@ -39,26 +52,82 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
   endDateTime,
 }) => {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
-  const [newAttendeeName, setNewAttendeeName] = useState('');
-  const [newAttendeeEmail, setNewAttendeeEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [primaryContactName, setPrimaryContactName] = useState('');
   const [primaryContactEmail, setPrimaryContactEmail] = useState('');
   const [description, setDescription] = useState('');
 
+  // Startup members autocomplete states
+  const [startupMembers, setStartupMembers] = useState<StartupMember[]>([]);
+  const [isLoadingMembers, setIsLoadingMembers] = useState(false);
+  const [attendeeInputValue, setAttendeeInputValue] = useState('');
+  const [selectedAttendeeKey, setSelectedAttendeeKey] = useState<string | number | null>(null);
+
   // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       setAttendees([]);
-      setNewAttendeeName('');
-      setNewAttendeeEmail('');
       setError(null);
       setPrimaryContactName('');
       setPrimaryContactEmail('');
       setDescription('');
+      setAttendeeInputValue('');
+      setSelectedAttendeeKey(null);
     }
   }, [isOpen]);
+
+  // Fetch startup members when modal opens
+  useEffect(() => {
+    const fetchStartupMembers = async () => {
+      if (!isOpen || !startupId) return;
+
+      setIsLoadingMembers(true);
+      try {
+        const response = await startup_profile_detail(startupId);
+        if (response?.data?.members) {
+          setStartupMembers(response.data.members);
+        }
+      } catch {
+        addToast({
+          title: 'Failed to fetch startup members',
+          color: TOAST_COLORS.DANGER,
+          timeout: DEFAULT_TOAST_TIMEOUT,
+        });
+      } finally {
+        setIsLoadingMembers(false);
+      }
+    };
+
+    fetchStartupMembers();
+  }, [isOpen, startupId]);
+
+  // Convert startup members to autocomplete options
+  const attendeeAutocompleteOptions: AutocompleteOption[] = useMemo(() => {
+    const searchTerm = attendeeInputValue.toLowerCase().trim();
+
+    return startupMembers
+      .filter((member) => {
+        // Filter out already added attendees
+        const isAlreadyAdded = attendees.some((a) => a.email === member.user.email);
+        if (isAlreadyAdded) return false;
+
+        // Filter out if same as primary contact
+        if (member.user.email === primaryContactEmail.trim()) return false;
+
+        // Filter by search term (name or email)
+        if (!searchTerm) return true;
+        return (
+          member.user.name.toLowerCase().includes(searchTerm) ||
+          member.user.email.toLowerCase().includes(searchTerm)
+        );
+      })
+      .map((member) => ({
+        key: member.user.email,
+        label: member.user.name,
+        value: member.user.email,
+      }));
+  }, [startupMembers, attendees, attendeeInputValue, primaryContactEmail]);
 
   const handleScheduleMeeting = async () => {
     // Validate required fields
@@ -113,14 +182,6 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
     }
   };
 
-  const handleChangeAttendeeEmail = (value: string) => {
-    setNewAttendeeEmail(value);
-  };
-
-  const handleChangeAttendeeName = (value: string) => {
-    setNewAttendeeName(value);
-  };
-
   const handleChangePrimaryContactEmail = (value: string) => {
     setPrimaryContactEmail(value);
   };
@@ -154,29 +215,51 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
     return `${dateStr} at ${formatTime(start)} - ${formatTime(end)}`;
   };
 
+  // Autocomplete handlers
+  const handleAttendeeSelectionChange = (key: string | number | null) => {
+    setSelectedAttendeeKey(key);
+    if (key) {
+      const selectedMember = startupMembers.find((m) => m.user.email === key);
+      if (selectedMember) {
+        setAttendeeInputValue(selectedMember.user.name);
+      }
+    }
+  };
+
+  const handleAttendeeInputChange = (value: string) => {
+    setAttendeeInputValue(value);
+    if (selectedAttendeeKey) {
+      setSelectedAttendeeKey(null);
+    }
+  };
+
   const handleAddAttendee = () => {
-    if (!newAttendeeName.trim() || !newAttendeeEmail.trim()) {
-      setError('Please enter both name and email for the attendee');
+    if (!selectedAttendeeKey) {
+      setError('Please select a member from the list');
       return;
     }
 
-    const newEmail = newAttendeeEmail.trim();
+    const selectedMember = startupMembers.find((m) => m.user.email === selectedAttendeeKey);
+    if (!selectedMember) return;
 
     // Check if email already exists in attendees
-    if (attendees.some((a) => a.email === newEmail)) {
-      setError('This email is already added!');
+    if (attendees.some((a) => a.email === selectedMember.user.email)) {
+      setError('This member is already added!');
       return;
     }
 
     // Check if same as primary contact
-    if (primaryContactEmail.trim() === newEmail) {
-      setError('This email is the same as primary contact!');
+    if (primaryContactEmail.trim() === selectedMember.user.email) {
+      setError('This member is the same as primary contact!');
       return;
     }
 
-    setAttendees([...attendees, { name: newAttendeeName.trim(), email: newAttendeeEmail.trim() }]);
-    setNewAttendeeName('');
-    setNewAttendeeEmail('');
+    setAttendees([
+      ...attendees,
+      { name: selectedMember.user.name, email: selectedMember.user.email },
+    ]);
+    setAttendeeInputValue('');
+    setSelectedAttendeeKey(null);
     setError(null);
   };
 
@@ -186,7 +269,7 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
 
   useEffect(() => {
     setError(null);
-  }, [newAttendeeEmail, newAttendeeName]);
+  }, [attendeeInputValue]);
 
   return (
     <Modal isKeyboardDismissDisabled={true} size='xl' isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -245,26 +328,40 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
                 <div className='flex flex-col gap-2'>
                   <div className='text-md font-semibold text-secondary'>Add Attendees</div>
                   <div className='flex flex-col gap-2 w-full'>
-                    <div className='flex flex-col md:flex-row gap-2 w-full'>
-                      <Input
-                        variant='text'
+                    <div className='flex items-center gap-2 w-full'>
+                      <Autocomplete
                         preset='default-md'
-                        value={newAttendeeName}
-                        onChange={handleChangeAttendeeName}
-                        placeholder='Name'
-                        className='w-1/3'
-                      />
-                      <Input
-                        variant='email'
-                        preset='default-md'
-                        value={newAttendeeEmail}
-                        onChange={handleChangeAttendeeEmail}
-                        placeholder='Attendee E-mail'
+                        placeholder='Search member by name or email'
+                        options={attendeeAutocompleteOptions}
+                        selectedKey={selectedAttendeeKey ?? undefined}
+                        onSelectionChange={handleAttendeeSelectionChange}
+                        inputValue={attendeeInputValue}
+                        onInputChange={handleAttendeeInputChange}
+                        isLoading={isLoadingMembers}
+                        isClearable
+                        menuTrigger='input'
+                        className='flex-1'
+                        renderItem={(item) => {
+                          const member = startupMembers.find((m) => m.user.email === item.key);
+                          return (
+                            <div className='flex items-center gap-3'>
+                              <Avatar
+                                variant='default-sm'
+                                src={member?.user.avtUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL}
+                              />
+                              <div className='flex flex-col'>
+                                <span className='text-sm font-medium'>{item.label}</span>
+                                <span className='text-xs text-neutral-60'>{item.value}</span>
+                              </div>
+                            </div>
+                          );
+                        }}
                       />
                       <Button
                         variant='secondary-md'
-                        className='w-full md:w-[100px] h-[40px]'
+                        className='w-[100px] h-[40px]'
                         onClick={handleAddAttendee}
+                        disabled={!selectedAttendeeKey}
                       >
                         Add
                       </Button>
