@@ -5,7 +5,7 @@ import Button from '@/components/Button/Button';
 import StartupInfoModal from '@/components/Modal/StartupInfoModal';
 import { startup_detail } from '@/apis/startup';
 import { response_matching_request } from '@/apis/mentor-matching';
-import { CONSOLE_ERRORS, PROFILE_MESSAGES } from '@/constants';
+import { PROFILE_MESSAGES } from '@/constants';
 import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
 import { Startup } from '@/interfaces/StartupProfile';
 import { MentorMatchingRequest } from '@/interfaces/matching';
@@ -37,7 +37,11 @@ const MentorConnectionRequestItem: React.FC<MentorConnectionRequestItemProps> = 
       const data = await startup_detail(request.startupId);
       setStartupData(data.data);
     } catch (err) {
-      console.error(CONSOLE_ERRORS.FETCH_STARTUP_PROFILE_FAILED, err);
+      addToast({
+        title: PROFILE_MESSAGES.PROFILE_FETCH_FAILED,
+        color: TOAST_COLORS.DANGER,
+        timeout: DEFAULT_TOAST_TIMEOUT,
+      });
     } finally {
       setIsFetchingStartup(false);
     }
@@ -64,7 +68,6 @@ const MentorConnectionRequestItem: React.FC<MentorConnectionRequestItemProps> = 
         onRefresh();
       }, 1000);
     } catch (err) {
-      console.error('Failed to accept connection request:', err);
       addToast({
         title: PROFILE_MESSAGES.RESPONSE_MATCHING_FAILED,
         color: TOAST_COLORS.DANGER,
@@ -90,7 +93,6 @@ const MentorConnectionRequestItem: React.FC<MentorConnectionRequestItemProps> = 
         onRefresh();
       }, 1000);
     } catch (err) {
-      console.error('Failed to decline connection request:', err);
       addToast({
         title: PROFILE_MESSAGES.RESPONSE_MATCHING_FAILED,
         color: TOAST_COLORS.DANGER,

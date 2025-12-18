@@ -13,6 +13,7 @@ export const PROFILE_MESSAGES = {
   ATTACHMENT_UPLOAD_FAILED: 'Failed to upload the attachment. Please try again.',
 
   // Error messages
+  PROFILE_FETCH_FAILED: 'Failed to fetch profile data. Please try again.',
   PROFILE_UPDATE_FAILED: 'Failed to update the profile. Please try again.',
   PROFILE_UPDATE_ERROR: 'Failed to update profile',
   TIME_AVAILABILITY_UPDATE_FAILED: 'Failed to update time availability. Please try again.',
