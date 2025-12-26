@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Tooltip } from '@heroui/react';
+import { Tooltip, addToast } from '@heroui/react';
 import Avatar from '@/components/Avatar/Avatar';
 import Button from '@/components/Button/Button';
 import CopyIcon from '@/components/Icons/CopyIcon';
@@ -9,42 +9,14 @@ import CancelMeeting from './MeetingAction/CancelMeeting';
 import { ConnectionMeeting } from '@/interfaces/matching';
 import { getProvince } from '@/utils/getProvince';
 import { mentor_profile_detail } from '@/apis/mentor-profile';
+import { formatMeetingDateTime, generateMeetingTitle } from '@/services/matching';
+import { TOAST_COLORS, DEFAULT_TOAST_TIMEOUT } from '@/constants/api';
+import { PROFILE_MESSAGES } from '@/constants';
 
 interface UpcomingMeetingItemProps {
   meeting: ConnectionMeeting;
   onCancelSuccess?: () => void;
 }
-
-// Helper function to format date with ordinal
-const getOrdinal = (n: number) => {
-  const s = ['th', 'st', 'nd', 'rd'];
-  const v = n % 100;
-  return n + (s[(v - 20) % 10] || s[v] || s[0]);
-};
-
-// Format date range from start_at and end_at
-const formatMeetingDateTime = (startAt: string, endAt: string) => {
-  const start = new Date(startAt);
-  const end = new Date(endAt);
-
-  const weekday = start.toLocaleDateString('en-US', { weekday: 'long' });
-  const month = start.toLocaleDateString('en-US', { month: 'long' });
-  const day = getOrdinal(start.getDate());
-  const year = start.getFullYear();
-
-  const startTime = start.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
-  const endTime = end.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
-
-  return `${weekday}, ${month} ${day}, ${year} at ${startTime} - ${endTime}`;
-};
 
 const UpcomingMeetingItem: React.FC<UpcomingMeetingItemProps> = ({
   meeting,
@@ -73,6 +45,11 @@ const UpcomingMeetingItem: React.FC<UpcomingMeetingItemProps> = ({
         })
         .catch((error) => {
           setMentorData({ name: 'Unknown Mentor' });
+          addToast({
+            title: PROFILE_MESSAGES.FETCH_MENTOR_INFO_FAILED,
+            color: TOAST_COLORS.DANGER,
+            timeout: DEFAULT_TOAST_TIMEOUT,
+          });
         });
     }
   }, [meeting.mentor, meeting.mentorId]);
@@ -81,6 +58,12 @@ const UpcomingMeetingItem: React.FC<UpcomingMeetingItemProps> = ({
   const mentorName = mentorData?.name || 'Unknown Mentor';
   const mentorAvatar = mentorData?.avtUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL;
   const mentorLocation = mentorData?.locationBased ? getProvince(mentorData.locationBased) : '';
+
+  // Extract startup data
+  const startupName = meeting.startup?.name || 'Unknown Startup';
+
+  // Generate proper meeting title
+  const meetingTitle = generateMeetingTitle(mentorName, startupName);
 
   // Format meeting date and time
   const meetingDateTime = formatMeetingDateTime(meeting.startAt, meeting.endAt);
@@ -138,7 +121,7 @@ const UpcomingMeetingItem: React.FC<UpcomingMeetingItemProps> = ({
 
         {/* Column 2 Row 1: EMPACTS Connect Meeting Info */}
         <div className='flex flex-col gap-1'>
-          <p className='text-xl font-bold leading-tight'>{meeting.title}</p>
+          <p className='text-xl font-bold leading-tight'>{meetingTitle}</p>
           <p className='text-base font-normal leading-relaxed'>{meetingDateTime}</p>
         </div>
 
