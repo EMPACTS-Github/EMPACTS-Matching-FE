@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { addToast } from '@heroui/react';
 import MentorUpcomingMeetingItem from './MentorUpcomingMeetingItem';
+import LoadingSkeleton from '@/components/LoadingSkeleton';
 import { ConnectionMeeting } from '@/interfaces/matching';
 import { getConnectionMeetings } from '@/apis/connection-meeting';
 import { PROFILE_MESSAGES } from '@/constants';
@@ -85,6 +86,18 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
     }, 500);
   }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage, allMeetings]);
 
+  // Handle infinite scroll
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+      // Trigger load more when scrolled to 80% of content
+      if (scrollTop + clientHeight >= scrollHeight * 0.8 && hasMore && !loadingMore) {
+        loadMoreItems();
+      }
+    },
+    [hasMore, loadingMore, loadMoreItems]
+  );
+
   // Handler to remove cancelled meeting from list and auto-load more if needed
   const handleMeetingCancelled = useCallback(
     (meetingId: string) => {
@@ -144,13 +157,7 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
   return (
     <div
       className='flex flex-col gap-6 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-40 scrollbar-track-neutral-20'
-      onScroll={(e) => {
-        const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-        // Trigger load more when scrolled to 80% of content
-        if (scrollTop + clientHeight >= scrollHeight * 0.8 && hasMore && !loadingMore) {
-          loadMoreItems();
-        }
-      }}
+      onScroll={handleScroll}
     >
       {displayedMeetings.map((meeting) => (
         <MentorUpcomingMeetingItem
@@ -161,20 +168,7 @@ const Content: React.FC<ContentProps> = ({ mentorId }) => {
       ))}
 
       {/* Loading more indicator */}
-      {loadingMore && (
-        <div className='text-center py-medium'>
-          <div className='bg-neutral-30 rounded-xl p-medium animate-pulse'>
-            <div className='flex items-start gap-regular'>
-              <div className='w-12 h-12 bg-neutral-50 rounded-full'></div>
-              <div className='flex-1'>
-                <div className='h-4 bg-neutral-50 rounded mb-2 w-1/3'></div>
-                <div className='h-3 bg-neutral-50 rounded mb-4 w-1/4'></div>
-                <div className='h-3 bg-neutral-50 rounded w-3/4'></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {loadingMore && <LoadingSkeleton />}
 
       {/* End of results indicator */}
       {!hasMore && displayedMeetings.length > 0 && (

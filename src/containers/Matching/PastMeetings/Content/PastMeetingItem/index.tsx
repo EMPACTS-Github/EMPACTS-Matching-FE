@@ -6,42 +6,12 @@ import { ConnectionMeeting } from '@/interfaces/matching';
 import { getProvince } from '@/utils/getProvince';
 import { MEETING_STATUS } from '@/constants/matching';
 import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
+import { formatMeetingDateTime } from '@/services/matching';
 
 interface PastMeetingItemProps {
   meeting: ConnectionMeeting;
   actor: 'mentor' | 'startup';
 }
-
-// Helper function to format date with ordinal
-const getOrdinal = (n: number) => {
-  const s = ['th', 'st', 'nd', 'rd'];
-  const v = n % 100;
-  return n + (s[(v - 20) % 10] || s[v] || s[0]);
-};
-
-// Format date range from start_at and end_at
-const formatMeetingDateTime = (startAt: string, endAt: string) => {
-  const start = new Date(startAt);
-  const end = new Date(endAt);
-
-  const weekday = start.toLocaleDateString('en-US', { weekday: 'long' });
-  const month = start.toLocaleDateString('en-US', { month: 'long' });
-  const day = getOrdinal(start.getDate());
-  const year = start.getFullYear();
-
-  const startTime = start.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
-  const endTime = end.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
-
-  return `${weekday}, ${month} ${day}, ${year} at ${startTime} - ${endTime}`;
-};
 
 const PastMeetingItem: React.FC<PastMeetingItemProps> = ({ meeting, actor }) => {
   // Extract person data based on actor
