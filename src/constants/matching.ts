@@ -31,6 +31,25 @@ export const PAST_MEETING_STATUS = [
   },
 ];
 
+export const FILTER_STATUS = {
+  COMPLETED: 'completed',
+  CANCELLED: 'cancelled',
+  EXPIRED: 'expired',
+} as const;
+
+export const MEETING_VIEW = {
+  PAST: 'past',
+  UPCOMING: 'upcoming',
+  CANCELED: 'canceled',
+} as const;
+
+export type MeetingViewType = (typeof MEETING_VIEW)[keyof typeof MEETING_VIEW];
+
+export const SCROLL_CONFIG = {
+  THRESHOLD: 0.8,
+  LOAD_MORE_DELAY: 500,
+} as const;
+
 export const CONNECTION_REQUEST_STATUS = [
   {
     label: 'Pending',

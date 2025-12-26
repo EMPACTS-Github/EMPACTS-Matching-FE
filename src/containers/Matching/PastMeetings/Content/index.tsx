@@ -3,7 +3,13 @@ import { addToast } from '@heroui/react';
 import PastMeetingItem from './PastMeetingItem';
 import LoadingSkeleton from '@/components/LoadingSkeleton';
 import { ConnectionMeeting } from '@/interfaces/matching';
-import { MEETING_STATUS } from '@/constants/matching';
+import {
+  MEETING_STATUS,
+  FILTER_STATUS,
+  MEETING_VIEW,
+  SCROLL_CONFIG,
+  MeetingViewType,
+} from '@/constants/matching';
 import { PROFILE_MESSAGES } from '@/constants';
 import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
 import { getConnectionMeetings } from '@/apis/connection-meeting';
@@ -36,7 +42,7 @@ const Content: React.FC<ContentProps> = ({ actor, profileId, filterStatus }) => 
           actor: 'mentor' | 'startup';
           profileId: string;
           status?: string;
-          view?: 'past' | 'upcoming' | 'canceled';
+          view?: MeetingViewType;
         } = {
           actor,
           profileId,
@@ -44,17 +50,17 @@ const Content: React.FC<ContentProps> = ({ actor, profileId, filterStatus }) => 
 
         // Determine which parameter to use based on filter status
         switch (filterStatus) {
-          case 'completed':
+          case FILTER_STATUS.COMPLETED:
             apiParams.status = MEETING_STATUS.COMPLETED;
             break;
-          case 'cancelled':
-            apiParams.view = 'canceled';
+          case FILTER_STATUS.CANCELLED:
+            apiParams.view = MEETING_VIEW.CANCELED;
             break;
-          case 'expired':
+          case FILTER_STATUS.EXPIRED:
             apiParams.status = MEETING_STATUS.EXPIRED;
             break;
           default:
-            apiParams.view = 'past';
+            apiParams.view = MEETING_VIEW.PAST;
         }
 
         const meetings = await getConnectionMeetings(apiParams);
@@ -105,15 +111,15 @@ const Content: React.FC<ContentProps> = ({ actor, profileId, filterStatus }) => 
       }
 
       setLoadingMore(false);
-    }, 500);
+    }, SCROLL_CONFIG.LOAD_MORE_DELAY);
   }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage, allMeetings]);
 
   // Handle infinite scroll
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-      // Trigger load more when scrolled to 80% of content
-      if (scrollTop + clientHeight >= scrollHeight * 0.8 && hasMore && !loadingMore) {
+      // Trigger load more when scrolled to threshold of content
+      if (scrollTop + clientHeight >= scrollHeight * SCROLL_CONFIG.THRESHOLD && hasMore && !loadingMore) {
         loadMoreItems();
       }
     },

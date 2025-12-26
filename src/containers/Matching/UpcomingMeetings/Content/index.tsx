@@ -6,6 +6,7 @@ import { ConnectionMeeting } from '@/interfaces/matching';
 import { getConnectionMeetings } from '@/apis/connection-meeting';
 import { PROFILE_MESSAGES } from '@/constants';
 import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
+import { SCROLL_CONFIG } from '@/constants/matching';
 
 interface ContentProps {
   startupId: string;
@@ -83,15 +84,15 @@ const Content: React.FC<ContentProps> = ({ startupId }) => {
       }
 
       setLoadingMore(false);
-    }, 500);
+    }, SCROLL_CONFIG.LOAD_MORE_DELAY);
   }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage, allMeetings]);
 
   // Handle infinite scroll
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-      // Trigger load more when scrolled to 80% of content
-      if (scrollTop + clientHeight >= scrollHeight * 0.8 && hasMore && !loadingMore) {
+      // Trigger load more when scrolled to threshold of content
+      if (scrollTop + clientHeight >= scrollHeight * SCROLL_CONFIG.THRESHOLD && hasMore && !loadingMore) {
         loadMoreItems();
       }
     },
