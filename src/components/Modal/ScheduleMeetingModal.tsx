@@ -40,6 +40,26 @@ interface ScheduleMeetingModalProps {
   endDateTime: Date;
 }
 
+interface MemberItemProps {
+  item: AutocompleteOption;
+  member?: StartupMember;
+}
+
+const MemberItem: React.FC<MemberItemProps> = ({ item, member }) => {
+  return (
+    <div className='flex items-center gap-3'>
+      <Avatar
+        variant='default-sm'
+        src={member?.user.avtUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL}
+      />
+      <div className='flex flex-col'>
+        <span className='text-sm font-medium'>{item.label}</span>
+        <span className='text-xs text-neutral-60'>{item.value}</span>
+      </div>
+    </div>
+  );
+};
+
 const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
   isOpen,
   onOpenChange,
@@ -343,18 +363,7 @@ const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
                         className='flex-1'
                         renderItem={(item) => {
                           const member = startupMembers.find((m) => m.user.email === item.key);
-                          return (
-                            <div className='flex items-center gap-3'>
-                              <Avatar
-                                variant='default-sm'
-                                src={member?.user.avtUrl || process.env.NEXT_PUBLIC_DEFAULT_AVT_URL}
-                              />
-                              <div className='flex flex-col'>
-                                <span className='text-sm font-medium'>{item.label}</span>
-                                <span className='text-xs text-neutral-60'>{item.value}</span>
-                              </div>
-                            </div>
-                          );
+                          return <MemberItem item={item} member={member} />;
                         }}
                       />
                       <Button
