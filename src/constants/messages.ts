@@ -56,6 +56,8 @@ export const PROFILE_MESSAGES = {
   NO_MATCHING_REQUEST_FOUND: 'No matching request found for this mentor',
   FETCH_MATCHING_REQUESTS_FAILED: 'Failed to fetch matching requests',
   FETCH_MENTOR_LIST_FAILED: 'Failed to fetch mentor list',
+  FETCH_MENTOR_INFO_FAILED: 'Có lỗi xảy ra khi tải thông tin mentor, vui lòng thử lại',
+  FETCH_STARTUP_INFO_FAILED: 'Có lỗi xảy ra khi tải thông tin startup, vui lòng thử lại',
 
   // Matching status labels
   STATUS: 'Status:',
