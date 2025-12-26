@@ -8,6 +8,7 @@ import { getProvince } from '@/utils/getProvince';
 import { startup_matching_activity } from '@/apis/startup-matching';
 import { PROFILE_MESSAGES } from '@/constants';
 import { DEFAULT_TOAST_TIMEOUT, TOAST_COLORS } from '@/constants/api';
+import { SCROLL_CONFIG } from '@/constants/matching';
 
 interface SentInvitationsProps {
   startupId: string;
@@ -173,7 +174,7 @@ const SentInvitations: React.FC<SentInvitationsProps> = ({ startupId }) => {
       }
 
       setLoadingMore(false);
-    }, 500);
+    }, SCROLL_CONFIG.LOAD_MORE_DELAY);
   }, [totalItemsLoaded, loadingMore, hasMore, itemsPerPage, allInvitations]);
 
   // Show loading on initial fetch
@@ -199,8 +200,8 @@ const SentInvitations: React.FC<SentInvitationsProps> = ({ startupId }) => {
       className='h-full overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-40 scrollbar-track-neutral-20 p-medium'
       onScroll={(e) => {
         const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-        // Trigger load more when scrolled to 80% of content
-        if (scrollTop + clientHeight >= scrollHeight * 0.8 && hasMore && !loadingMore) {
+        // Trigger load more when scrolled to threshold of content
+        if (scrollTop + clientHeight >= scrollHeight * SCROLL_CONFIG.THRESHOLD && hasMore && !loadingMore) {
           loadMoreItems();
         }
       }}
